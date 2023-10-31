@@ -1,0 +1,526 @@
+RoiDB
+
+Introduction
+
+The RoiDB module (region of interest database module) allows the
+global definition of 2D and 3D regions of interest, which can then be
+used in many detection modules. The ROIs are available for all modules
+supporting 2D or 3D ROIs on the
+
+rc_visard NG
+
+.
+
+The RoiDB module is a base module which is available on every
+
+rc_visard NG
+
+.
+
+3D ROIs can be used in
+
+ItemPick and BoxPick
+
+. 2D ROIs can be used in
+
+SilhouetteMatch
+
+, and
+
+LoadCarrier
+
+.
+
+Specifications of the RoiDB module      Supported ROI types  2D, 3D
+Supported ROI geometries  2D ROI: rectangle, 3D ROI: box, sphere  Max.
+number of ROIs  2D: 100, 3D: 100  ROIs available in  2D:
+SilhouetteMatch\:(Section \ref{silhouettematch:sect-silhouettematch}),
+LoadCarrier\:(Section \ref{loadcarrier:sect-loadcarrier}), 3D:
+ItemPick and BoxPick\:(Section \ref{itempick:sect-itempick})
+Supported reference frames  camera, external
+
+Region of interest
+
+A region of interest (ROI) defines a volume in space (3D region of
+interest, "region_of_interest"), or a rectangular region in the left
+camera image (2D region of interest, "region_of_interest_2d") which is
+of interest for a specific user-application.
+
+A ROI can narrow the volume where a load carrier is searched for, or
+select a volume which only contains items to be detected and/or
+grasped. Processing times can significantly decrease when using a ROI.
+
+3D regions of interest of the following types ("type") are supported:
+
+   BOX, with dimensions box.x, box.y, box.z.
+
+   SPHERE, with radius sphere.radius.
+
+The user can specify the 3D region of interest "pose" in the "camera"
+or the "external" coordinate system. "External" can only be chosen if
+a
+
+Hand-eye calibration
+
+ is available. When the sensor is robot mounted, and the region of
+interest is defined in the external frame, the current robot pose must
+be given to every detect service call that uses this region of
+interest.
+
+A 2D ROI is defined as a rectangular part of the left camera image,
+and can be set via the
+
+REST-API interface
+
+ or the
+
+rc_visard NG
+
+
+Web GUI
+
+ on the page
+
+Regions of Interest
+
+ under
+
+Database
+
+. The Web GUI offers an easy-to-use selection tool. Each ROI must have
+a unique name to address a specific 2D ROI.
+
+In the REST-API, a 2D ROI is defined by the following values:
+
+id: Unique name of the region of interest
+
+offset_x, offset_y: offset in pixels along the x-axis and y-axis from
+the top-left corner of the image, respectively
+
+width, height: width and height in pixels
+
+The
+
+rc_visard NG
+
+ can persistently store up to 100 different 3D regions of interest and
+the same number of 2D regions of interest. The configuration of
+regions of interest is normally performed offline, during the set up
+of the desired application. This can be done via the
+
+REST-API interface
+
+ of RoiDB module, or in the
+
+rc_visard NG
+
+
+Web GUI
+
+ on the page
+
+Regions of Interest
+
+ under
+
+Database
+
+.
+
+Note: The configured regions of interest are persistent even over
+  firmware updates and rollbacks.
+
+Interaction with other modules
+
+Internally, the RoiDB module depends on, and interacts with other on-
+board modules as listed below.
+
+Hand-eye calibration
+
+In case the camera has been calibrated to a robot, the pose of a 3D
+ROI can be provided in the robot coordinate frame by setting the
+corresponding "pose_frame" argument.
+
+Two different "pose_frame" values can be chosen:
+
+Camera frame (camera). The ROI pose is provided in the camera frame,
+and no prior knowledge about the pose of the camera in the environment
+is required. This means that the configured load carriers move with
+the camera. It is the user's responsibility to update the configured
+poses if the camera frame moves (e.g. with a robot-mounted camera).
+
+External frame (external). The ROI pose is provided in the external
+frame, configured by the user during the hand-eye calibration process.
+The module relies on the on-board Hand-eye calibration
+module\:(Section \ref{handeye_calibration:sect-handeye-calibration})
+to retrieve the sensor mounting (static or robot mounted) and the
+hand-eye transformation.
+
+Note: If no hand-eye calibration is available, all "pose_frame"
+  values should be set to "camera".
+
+All "pose_frame" values that are not "camera" or "external" are
+rejected.
+
+Services
+
+The RoiDB module is called "rc_roi_db" in the REST-API and is
+represented in the
+
+Web GUI
+
+ under Database ‣ Regions of Interest. The user can explore and call
+the RoiDB module's services, e.g. for development and testing, using
+the
+
+REST-API interface
+
+ or the Web GUI.
+
+The RoiDB module offers the following services.
+
+set_region_of_interest
+
+   Persistently stores a 3D region of interest on the
+
+   rc_visard NG
+
+   . All configured 3D regions of interest are persistent over
+   firmware updates and rollbacks.
+
+   Details
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v2/nodes/rc_roi_db/services/set_region_of_interest
+
+   Request
+
+   Details for the definition of the "region_of_interest" type are
+   given in
+
+   Region of interest
+
+   .
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest": {
+            "box": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "sphere": {
+              "radius": "float64"
+            },
+            "type": "string"
+          }
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_region_of_interest",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_region_of_interest_2d
+
+   Persistently stores a 2D region of interest on the
+
+   rc_visard NG
+
+   . All configured 2D regions of interest are persistent over
+   firmware updates and rollbacks.
+
+   Details
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v2/nodes/rc_roi_db/services/set_region_of_interest_2d
+
+   Request
+
+   Details for the definition of the "region_of_interest_2d" type are
+   given in
+
+   Region of interest
+
+   .
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_2d": {
+            "height": "uint32",
+            "id": "string",
+            "offset_x": "uint32",
+            "offset_y": "uint32",
+            "width": "uint32"
+          }
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_region_of_interest_2d",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_regions_of_interest
+
+   Returns the configured 3D regions of interest with the requested
+   "region_of_interest_ids".
+
+   Details
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v2/nodes/rc_roi_db/services/get_regions_of_interest
+
+   Request
+
+   If no "region_of_interest_ids" are provided, all configured 3D
+   regions of interest are returned.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_regions_of_interest",
+        "response": {
+          "regions_of_interest": [
+            {
+              "box": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "sphere": {
+                "radius": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_regions_of_interest_2d
+
+   Returns the configured 2D regions of interest with the requested
+   "region_of_interest_2d_ids".
+
+   Details
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v2/nodes/rc_roi_db/services/get_regions_of_interest_2d
+
+   Request
+
+   If no "region_of_interest_2d_ids" are provided, all configured 2D
+   regions of interest are returned.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_2d_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_regions_of_interest_2d",
+        "response": {
+          "regions_of_interest": [
+            {
+              "height": "uint32",
+              "id": "string",
+              "offset_x": "uint32",
+              "offset_y": "uint32",
+              "width": "uint32"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_regions_of_interest
+
+   Deletes the configured 3D regions of interest with the requested
+   "region_of_interest_ids".
+
+   Details
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v2/nodes/rc_roi_db/services/delete_regions_of_interest
+
+   Request
+
+   All regions of interest to be deleted must be explicitly stated in
+   "region_of_interest_ids".
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "delete_regions_of_interest",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_regions_of_interest_2d
+
+   Deletes the configured 2D regions of interest with the requested
+   "region_of_interest_2d_ids".
+
+   Details
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v2/nodes/rc_roi_db/services/delete_regions_of_interest_2d
+
+   Request
+
+   All 2D regions of interest to be deleted must be explicitly stated
+   in "region_of_interest_2d_ids".
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "region_of_interest_2d_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "delete_regions_of_interest_2d",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Return codes
+
+Each service response contains a "return_code", which consists of a
+"value" plus an optional "message". A successful service returns with
+a "return_code" value of "0". Negative "return_code" values indicate
+that the service failed. Positive "return_code" values indicate that
+the service succeeded with additional information. The smaller value
+is selected in case a service has multiple "return_code" values, but
+all messages are appended in the "return_code" message.
+
+The following table contains a list of common codes:
+
+Return codes of the RoiDB module's services      Code  Description  0
+Success  -1  An invalid argument was provided  -10  New element could
+not be added as the maximum storage capacity of regions of interest
+has been exceeded  10  The maximum storage capacity of regions of
+interest has been reached  11  An existent persistent model was
+overwritten by the call to set_region_of_interest or
+set_region_of_interest_2d

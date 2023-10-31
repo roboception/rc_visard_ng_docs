@@ -1,0 +1,43 @@
+Softwaremodule
+
+Der
+
+rc_visard NG
+
+ wird mit einer Reihe von On-Board-Softwaremodulen mit verschiedenen
+Funktionalitäten ausgeliefert. Jedes Softwaremodul bietet über seinen
+zugehörigen
+
+Node
+
+ eine
+
+REST-API-Schnittstelle
+
+ als Programmierschnittstelle an.
+
+Die Softwaremodule des
+
+rc_visard NG
+
+ können unterteilt werden in
+
+3D-Kamera-Module\:(Abschnitt \ref{camera_modules:sect-3d-camera-
+modules})  welche Bildpaare aufnehmen und 3D Tiefeninformationen
+bereitstellen, und auch über die GigE Vision/GenICam-Schnittstelle des
+rc_visard NG konfigurierbar sind.
+
+Detektionsmodule\:(Abschnitt \ref{detection_modules:sect-detection-
+modules})  welche eine Vielzahl verschiedener Detektionsfunktionen,
+wie Greifpunktberechnungen und Objekterkennung anbieten.
+
+Konfigurationsmodule\:(Abschnitt \ref{configuration_modules:sect-
+configuration-modules})  welche es dem Nutzer ermöglichen,
+Kalibrierungen durchzuführen und den rc_visard NG für spezielle
+Anwendungen zu konfigurieren.
+
+Datenbankmodule\:(Abschnitt \ref{database_modules:sect-database-
+modules})  welche dem Nutzer die Konfiguration globaler Daten
+ermöglichen, die in allen anderen Modulen verfügbar sind, wie Load
+Carrier, Regions of Interest und Greifer.
+

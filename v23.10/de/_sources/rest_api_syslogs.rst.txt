@@ -1,0 +1,768 @@
+System und Logs
+
+Die folgenden Ressourcen und Anfragen sind für die System-Level-API
+des
+
+rc_visard NG
+
+ verfügbar. Sie ermöglichen Folgendes:
+
+   Zugriff auf Logdateien (systemweit oder modulspezifisch),
+
+   Abruf von Informationen zum Gerät und zur Laufzeitstatistik, wie
+   Datum, MAC-Adresse, Uhrzeitsynchronisierungsstatus und verfügbare
+   Ressourcen,
+
+   Verwaltung installierter Softwarelizenzen, und
+
+   Aktualisierung des Firmware-Images des rc_visard NG.
+
+GET /logs
+
+   Abruf einer Liste aller verfügbaren Logdateien.
+
+   Musteranfrage
+
+      GET /api/v2/logs HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "date": 1503060035.0625782,
+          "name": "rcsense-api.log",
+          "size": 730
+        },
+        {
+          "date": 1503060035.741574,
+          "name": "stereo.log",
+          "size": 39024
+        },
+        {
+          "date": 1503060044.0475223,
+          "name": "camera.log",
+          "size": 1091
+        }
+      ]
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: LogInfo-Array)
+
+   Referenzierte Datenmodelle:
+      LogInfo\:(Abschnitt \ref{rest_api_datamodel:sect-rest-datamodel-
+      loginfo})
+
+GET /logs/{log}
+
+   Abruf einer Logdatei: Die Art des Inhalts der Antwort richtet sich
+   nach dem *format*-Parameter.
+
+   Musteranfrage
+
+      GET /api/v2/logs/<log>?format=<format>&limit=<limit> HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "date": 1581609251.8168414,
+        "log": [
+          {
+            "component": "rc_gev_server",
+            "level": "INFO",
+            "message": "Application from IP 10.0.1.7 registered with control access.",
+            "timestamp": 1581609249.61
+          },
+          {
+            "component": "rc_gev_server",
+            "level": "INFO",
+            "message": "Application from IP 10.0.1.7 deregistered.",
+            "timestamp": 1581609249.739
+          },
+          {
+            "component": "rc_gev_server",
+            "level": "INFO",
+            "message": "Application from IP 10.0.1.7 registered with control access.",
+            "timestamp": 1581609250.94
+          },
+          {
+            "component": "rc_gev_server",
+            "level": "INFO",
+            "message": "Application from IP 10.0.1.7 deregistered.",
+            "timestamp": 1581609251.819
+          }
+        ],
+        "name": "gev.log",
+        "size": 42112
+      }
+
+   Parameter:
+      log (string) -- Name der Logdatei (obligatorisch)
+
+   Anfrageparameter:
+      format (string) -- Rückgabe des Logs im JSON- oder
+      Rohdatenformat (mögliche Werte: json oder raw; Voreinstellung:
+      json) (optional)
+
+      limit (integer) -- Beschränkung auf die letzten x Zeilen im
+      JSON-Format (Voreinstellung: 100) (optional)
+
+   Antwort-Headers:
+      Content-Type -- text/plain application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: Log)
+
+      404 Not Found -- Log nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Log\:(Abschnitt \ref{rest_api_datamodel:sect-rest-datamodel-
+      log})
+
+GET /system
+
+   Abruf von Systeminformationen zum Sensor.
+
+   Musteranfrage
+
+      GET /api/v2/system HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "dns": {
+          "dns_servers": [
+            "10.0.0.1",
+            "1.1.1.1"
+          ],
+          "manual_dns_servers": [
+            "1.1.1.1"
+          ]
+        },
+        "firmware": {
+          "active_image": {
+            "image_version": "rc_visard_v1.1.0"
+          },
+          "fallback_booted": true,
+          "inactive_image": {
+            "image_version": "rc_visard_v1.0.0"
+          },
+          "next_boot_image": "active_image"
+        },
+        "hostname": "rc-visard-ng-1421823000987",
+        "link_speed": 1000,
+        "mac": "00:14:2D:2B:D8:AB",
+        "ntp_status": {
+          "accuracy": "48 ms",
+          "synchronized": true
+        },
+        "ptp_status": {
+          "master_ip": "",
+          "offset": 0,
+          "offset_dev": 0,
+          "offset_mean": 0,
+          "state": "off"
+        },
+        "ready": true,
+        "serial": "1421823000987",
+        "time": 1504080462.641875,
+        "uptime": 65457.42
+      }
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: SysInfo)
+
+   Referenzierte Datenmodelle:
+      SysInfo\:(Abschnitt \ref{rest_api_datamodel:sect-rest-datamodel-
+      sysinfo})
+
+GET /system/backup
+
+   Abruf eines Backups der Einstellungen.
+
+   Musteranfrage
+
+      GET /api/v2/system/backup?pipelines=<pipelines>&load_carriers=<load_carriers>&regions_of_interest=<regions_of_interest>&grippers=<grippers> HTTP/1.1
+
+   Anfrageparameter:
+      pipelines (boolean) -- Backup der Pipelines mit
+      Moduleinstellungen, d.h. Parameter und bevorzugte TCP-
+      Orientierung (Standardwert: True) (optional)
+
+      load_carriers (boolean) -- Backup der Load Carrier
+      (Standardwert: True) (optional)
+
+      regions_of_interest (boolean) -- Backup der Regions of Interest
+      (Standardwert: True) (optional)
+
+      grippers (boolean) -- Backup der Greifer (Standardwert: True)
+      (optional)
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+POST /system/backup
+
+   Backup einspielen.
+
+   Musteranfrage
+
+      POST /api/v2/system/backup HTTP/1.1
+      Accept: application/json
+
+      {}
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "return_code": {
+          "message": "backup restored",
+          "value": 0
+        },
+        "warnings": []
+      }
+
+   Request JSON Object:
+      backup (object) -- Backup-Daten als json-Objekt (erforderlich)
+
+   Anfrage-Header:
+      Accept -- application/json
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+GET /system/dns
+
+   Abfragen der DNS-Server Einstellungen.
+
+   Musteranfrage
+
+      GET /api/v2/system/dns HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "dns": {
+          "dns_servers": [
+            "10.0.0.1",
+            "1.1.1.1"
+          ],
+          "manual_dns_servers": [
+            "1.1.1.1"
+          ]
+        }
+      }
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: DNS)
+
+   Referenzierte Datenmodelle:
+      DNS\:(Abschnitt \ref{rest_api_datamodel:sect-rest-datamodel-
+      dns})
+
+PUT /system/dns
+
+   Setze manuelle DNS-Server.
+
+   Musteranfrage
+
+      PUT /api/v2/system/dns HTTP/1.1
+      Accept: application/json
+
+      {}
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "dns": {
+          "dns_servers": [
+            "10.0.0.1",
+            "1.1.1.1"
+          ],
+          "manual_dns_servers": [
+            "1.1.1.1"
+          ]
+        }
+      }
+
+   Request JSON Object:
+      manual_dns_servers (ManualDNSServers) -- Manuelle DNS-Server
+      (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- application/json
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: DNS)
+
+      400 Bad Request -- ungültige/fehlende Argumente
+
+   Referenzierte Datenmodelle:
+      DNS\:(Abschnitt \ref{rest_api_datamodel:sect-rest-datamodel-
+      dns})
+
+      ManualDNSServers\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-manualdnsservers})
+
+GET /system/license
+
+   Abruf von Informationen zu den auf dem Sensor installierten
+   Lizenzen.
+
+   Musteranfrage
+
+      GET /api/v2/system/license HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "components": {
+          "calibration": true,
+          "hand_eye_calibration": true,
+          "rectification": true,
+          "self_calibration": true,
+          "stereo": true
+        },
+        "valid": true
+      }
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: LicenseInfo)
+
+   Referenzierte Datenmodelle:
+      LicenseInfo\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-licenseinfo})
+
+POST /system/license
+
+   Aktualisierung der auf dem Sensor installierten Lizenz mithilfe
+   einer Lizenzdatei.
+
+   Musteranfrage
+
+      POST /api/v2/system/license HTTP/1.1
+      Accept: multipart/form-data
+
+   Formularparameter:
+      file -- Lizenzdatei (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- Multipart/Formulardaten
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+      400 Bad Request -- Keine gültige Lizenz
+
+GET /system/network
+
+   Abruf der aktuellen Netzwerk Konfiguration.
+
+   Musteranfrage
+
+      GET /api/v2/system/network HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "current_method": "DHCP",
+        "default_gateway": "10.0.3.254",
+        "ip_address": "10.0.1.41",
+        "settings": {
+          "dhcp_enabled": true,
+          "persistent_default_gateway": "",
+          "persistent_ip_address": "192.168.0.10",
+          "persistent_ip_enabled": false,
+          "persistent_subnet_mask": "255.255.255.0"
+        },
+        "subnet_mask": "255.255.252.0"
+      }
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: NetworkInfo)
+
+   Referenzierte Datenmodelle:
+      NetworkInfo\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-networkinfo})
+
+GET /system/network/settings
+
+   Abruf der aktuellen Netzwerkeinstellungen.
+
+   Musteranfrage
+
+      GET /api/v2/system/network/settings HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "dhcp_enabled": true,
+        "persistent_default_gateway": "",
+        "persistent_ip_address": "192.168.0.10",
+        "persistent_ip_enabled": false,
+        "persistent_subnet_mask": "255.255.255.0"
+      }
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: NetworkSettings)
+
+   Referenzierte Datenmodelle:
+      NetworkSettings\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-networksettings})
+
+PUT /system/network/settings
+
+   Setzen der aktuellen Netzwerkeinstellungen.
+
+   Musteranfrage
+
+      PUT /api/v2/system/network/settings HTTP/1.1
+      Accept: application/json
+
+      {}
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "dhcp_enabled": true,
+        "persistent_default_gateway": "",
+        "persistent_ip_address": "192.168.0.10",
+        "persistent_ip_enabled": false,
+        "persistent_subnet_mask": "255.255.255.0"
+      }
+
+   Request JSON Object:
+      settings (NetworkSettings) -- Anzuwendende Netzwerkeinstellungen
+      (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- application/json
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: NetworkSettings)
+
+      400 Bad Request -- ungültige/fehlende Argumente
+
+      403 Forbidden -- Das Ändern der Netzwerkeinstellungen ist nicht
+      erlaubt, da eine laufende GigE Vision-Applikation diese sperrt.
+
+   Referenzierte Datenmodelle:
+      NetworkSettings\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-networksettings})
+
+PUT /system/reboot
+
+   Neustart des Geräts.
+
+   Musteranfrage
+
+      PUT /api/v2/system/reboot HTTP/1.1
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+GET /system/rollback
+
+   Abruf von Informationen zu Firmware/System-Images, die aktuell auf
+   dem Gerät aktiv oder inaktiv sind.
+
+   Musteranfrage
+
+      GET /api/v2/system/rollback HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "active_image": {
+          "image_version": "rc_visard_ng_v22.10.0"
+        },
+        "fallback_booted": false,
+        "inactive_image": {
+          "image_version": "rc_visard_ng_v22.10.0"
+        },
+        "next_boot_image": "active_image"
+      }
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: FirmwareInfo)
+
+   Referenzierte Datenmodelle:
+      FirmwareInfo\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-firmwareinfo})
+
+PUT /system/rollback
+
+   Rollback auf vorherige Firmware-Version (inaktives System-Image).
+
+   Musteranfrage
+
+      PUT /api/v2/system/rollback HTTP/1.1
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+      400 Bad Request -- Bereits auf die Verwendung der inaktiven
+      Partition beim nächsten Boot-Vorgang gesetzt.
+
+      500 Internal Server Error -- Interner Fehler
+
+GET /system/time
+
+   Abfrage der Systemzeit in UTC als String mit dem Format "YYYY-MM-DD
+   hh:mm:ss"
+
+   Musteranfrage
+
+      GET /api/v2/system/time HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "utc": "2023-10-05 08:35:26"
+      }
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+PUT /system/time
+
+   Setzen der Systemzeit in UTC als String mit dem Format "YYYY-MM-DD
+   hh:mm:ss"
+
+   Musteranfrage
+
+      PUT /api/v2/system/time?utc=<utc> HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "utc": "2023-10-05 08:35:26"
+      }
+
+   Anfrageparameter:
+      utc (string) -- Zeit in UTC als String mit dem Format "YYYY-MM-
+      DD hh:mm:ss" (obligatorisch)
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+      400 Bad Request -- ungültige/fehlende Argumente
+
+      403 Forbidden -- Ändern der Zeit nicht erlaubt, da
+      Zeitsynchronisation via NTP oder PTP aktiv ist.
+
+GET /system/ui_lock
+
+   Abruf des UI Lock Status
+
+   Musteranfrage
+
+      GET /api/v2/system/ui_lock HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "enabled": false
+      }
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: UILock)
+
+   Referenzierte Datenmodelle:
+      UILock\:(Abschnitt \ref{rest_api_datamodel:sect-rest-datamodel-
+      uilock})
+
+DELETE /system/ui_lock
+
+   UI Lock entfernen.
+
+   Musteranfrage
+
+      DELETE /api/v2/system/ui_lock HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "enabled": false,
+        "valid": false
+      }
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+POST /system/ui_lock
+
+   Verifizieren oder Setzen des UI Locks.
+
+   Musteranfrage
+
+      POST /api/v2/system/ui_lock?hash=<hash>&set=<set> HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "enabled": true,
+        "valid": true
+      }
+
+   Anfrageparameter:
+      hash (string) -- Hash des UI Lock Passworts (obligatorisch)
+
+      set (boolean) -- neuen Hash setzen anstatt zu verifizieren
+      (optional)
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+GET /system/update
+
+   Abruf von Informationen zu Firmware/System-Images, die aktuell auf
+   dem Gerät aktiv oder inaktiv sind.
+
+   Musteranfrage
+
+      GET /api/v2/system/update HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "active_image": {
+          "image_version": "rc_visard_ng_v22.10.0"
+        },
+        "fallback_booted": false,
+        "inactive_image": {
+          "image_version": "rc_visard_ng_v22.10.0"
+        },
+        "next_boot_image": "active_image"
+      }
+
+   Antwort-Headers:
+      Content-Type -- application/json
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabe: FirmwareInfo)
+
+   Referenzierte Datenmodelle:
+      FirmwareInfo\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-firmwareinfo})
+
+POST /system/update
+
+   Aktualisierung des Firmware/System-Images mit einer Mender-
+   Artefakt-Datei: Um die aktualisierte Firmware zu aktivieren, ist
+   anschließend ein Neustart erforderlich.
+
+   Musteranfrage
+
+      POST /api/v2/system/update HTTP/1.1
+      Accept: multipart/form-data
+
+   Formularparameter:
+      file -- Mender-Artefakt-Datei (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- Multipart/Formulardaten
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+      400 Bad Request -- Client-Fehler, z.B. kein gültiges Mender-
+      Artefakt

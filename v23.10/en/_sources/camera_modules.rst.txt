@@ -1,0 +1,39 @@
+3D camera modules
+
+The
+
+rc_visard NG
+
+'s 3D camera software consists of the following modules:
+
+Camera (rc_camera, Section \ref{stereo_camera:sect-stereo-camera})
+acquires image pairs and performs planar rectification for using the
+camera as a measurement device. Images are provided both for further
+internal processing by other modules and for external use as GenICam
+image streams.
+
+Stereo matching (rc_stereomatching, Section \ref{stereo_matching:sect-
+stereo-matching})  uses the rectified stereo image pairs to compute 3D
+depth information such as disparity, error, and confidence images.
+These are provided as GenICam streams, too.
+
+The
+
+Camera
+
+ and the
+
+Stereo matching
+
+ modules, which acquire image pairs and compute 3D depth information
+such as disparity, error, and confidence images, are also accessible
+via the
+
+rc_visard NG
+
+'s
+
+GigE Vision/GenICam interface
+
+.
+

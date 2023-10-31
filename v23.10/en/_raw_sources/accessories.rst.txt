@@ -1,0 +1,110 @@
+.. include:: global_rst.glb
+
+.. _sect-accessories:
+
+Accessories
+===========
+
+Connectivity kit
+----------------
+
+.. index::
+   single: connectivity kit
+   single: cables
+   single: power cable
+   single: network cable
+
+|company| offers an optional connectivity kit to aid customers with setting up the |rc_xxx|. 
+For permanent installation, the customer is responsible for providing a suitable power supply.
+The connectivity kit consists of a:
+
+- network cable with straight M12 plug to straight RJ45 connector in either 2 m, 5 m, or 10 m length,
+- power adapter cable with straight M12 socket to DC barrel connector in 30 cm length,
+- 24 V, 30 W wall power supply, or a 24 V, 60 W desktop power supply.
+
+Connecting the |rc_xxx| to residential or office grid power requires a power supply that 
+meets EN 55011 Class B emission standards. The E2CFS 30W 24V by EGSTON System Electronics 
+Eggenburg GmbH (http://www.egston.com) contained in the connectivity kit is certified 
+accordingly. However, it does not meet immunity standards for industrial environments 
+under EN 61000-6-2.
+
+.. figure:: images/rc_visard_connectivity_kit.*
+   :width:  160mm
+   :align: center
+
+   The optional connectivity kit's components
+
+
+Wiring
+------
+
+Cables are by default not provided with the |rc_xxx|. It is the customer's responsibility 
+to obtain appropriate parts. The following sections provide an overview of suggested components.
+
+Ethernet connections
+""""""""""""""""""""
+.. index::
+   single: network cable
+
+The |rc_xxx| provides an industrial 8-pin A-coded M12 socket connector for Ethernet connectivity. 
+Various cabling solutions can be obtained directly from third party vendors.
+
+**CAT5 (1 Gbps) M12 plug to RJ45**
+
+- Straight M12 plug to straight RJ45 connector, 10 m length: Phoenix Contact NBC-MS/ 10,0-94B/R4AC SCO, Art.-Nr.: 1407417
+- Straight M12 plug to straight RJ45 connector, 10 m length: MURR Electronics Art.-Nr.: 7700-48521-S4W1000
+- Angled M12 plug to straight RJ45 connector, 10 m length: MURR Electronics Art.-Nr.: 7700-48551-S4W1000
+
+Power connections
+"""""""""""""""""
+
+.. index::
+   single: power cable
+
+An 8-pin A-coded M12 plug connector is provided for power and GPIO connectivity. 
+Various cabling solutions can be obtained from third party vendors. A selection of M12 
+to open ended cables is provided below. Customers are required to provide power and GPIO 
+connections to the cables according to the pinouts described in 
+:ref:`sect-wiring`:latex:`\:(Section \ref{hardware_spec:sect-wiring})`. 
+The |rc_xxx|'s housing must be connected to ground.
+
+**Sensor/Actor cable M12 socket to open end**
+
+- Straight M12 socket connector to open end, shielded, 10m length: Phoenix Contact SAC-8P-10,0-PUR/M12FS SH, Art.Nr.: 1522891
+- Angled M12 socket connector to open end, shielded 10m length: Phoenix Contact SAC-8P-10,0-PUR/M12FR SH, Art.Nr.: 1522943
+
+**Sensor/Actor M12 socket for field termination**
+
+- Phoenix Contact SACC-M12FS-8CON-PG9-M, Art.Nr.:1513347
+- TE Connectivity T4110011081-000 (metal housing)
+- TE Connectivity T4110001081-000 (plastic housing)
+
+Power supplies
+""""""""""""""
+
+.. index::
+   single: power supply
+
+The |rc_xxx| is classified as an EN-55011 Class B device and immune to light 
+industrial and industrial environments. For connecting the sensor to residential 
+grid power, a power supply under EN 55011/55022 Class B has to be used.
+
+It is the customer's responsibility to obtain and install a suitable power supply 
+satisfying EN 61000-6-2 for permanent installation in industrial environments. One 
+example that satisfies both EN 61000-6-2 and EN 55011/55022 Class B is the DIN-Rail
+mounted PULS MiniLine ML60.241 24V/DC 2.5 A by PULS GmbH (http://www.pulspower.com). 
+A certified electrician must perform installation.
+
+Only one |rc_xxx| shall be connected to a power supply at any time, and the total 
+length of cables must be less than 30 m.
+
+
+
+Spare parts
+-----------
+
+.. index::
+   single: spare parts
+
+No user-serviceable spare parts are currently available for |rc_xxx|
+devices.

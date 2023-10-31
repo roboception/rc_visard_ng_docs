@@ -1,0 +1,19 @@
+OPC UA Interface
+
+Der
+
+rc_visard NG
+
+ bietet auch ein optionales OPC interface. Der OPC UA Server kann via
+Lizenzupdate aktiviert werden.
+
+Der OPC UA Server nutzt das "DataTypeDefinition" Attribut (verfügbar
+in OPC UA Version 1.04) für benutzerdefinierte Datentypen und
+verwendet auch Methoden und Arrays variabler Länge. Bitte überprüfen
+Sie ob Ihr OPC UA Client dies unterstützt.
+
+Bitte kontaktieren Sie
+
+support@roboception.de
+
+ wenn Sie Interesse haben den OPC UA Server zu nutzen.

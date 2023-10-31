@@ -1,0 +1,125 @@
+UserSpace
+
+Der UserSpace ermöglicht es Benutzern, Container auf dem
+
+rc_visard NG
+
+ bereitzustellen und zu verwalten. Es werden Standalone-Container und
+docker-compose Stacks unterstützt.
+
+Bemerkung: Kenntnisse von Docker-Containern werden vorausgesetzt.
+
+Falls der UserSpace verfügbar und aktiviert ist, kann er durch Klicken
+des Menüeintrags
+
+UserSpace
+
+ in der
+
+Web GUI
+
+ angesteuert werden. Diese Seite zeigt die laufenden Apps und
+Container mit ihrem aktuellen Status und, falls verfügbar, einem
+Health-Check. Jeder Container listet die veröffentlichten Ports. Falls
+deren Protokoll http oder https ist, können diese Container direkt in
+der Web GUI erreicht werden.
+
+Konfiguration
+
+Wenn der UserSpace zum ersten Mal aktiviert wird, muss ein Benutzer
+für
+
+Portainer
+
+ erstellt werden: Navigieren Sie in der
+
+Web GUI
+
+ zu
+
+UserSpace
+
+ und klicken Sie auf
+
+UserSpace Apps verwalten
+
+. Anschließend registrieren Sie das Benutzerkonto des Administrators.
+Dieser Schritt muss innerhalb von fünf Minuten abgeschlossen werden,
+nachdem der
+
+rc_visard NG
+
+ hochgefahren wurde.
+
+Netzwerkzugriff auf die UserSpace Anwendungen
+
+Um die Container über Netzwerk zu erreichen, müssen die Container-
+Ports für den Host veröffentlicht sein.
+
+UserSpace Informationen einschließlich laufender Apps und ihre
+veröffentlichten Ports können über den
+
+REST-API userspace Endpunkt
+
+ abgefragt werden, oder in der
+
+Web GUI
+
+ im Menü unter
+
+UserSpace
+
+ angezeigt werden.
+
+Alle Ports, die für den Host veröffentlicht sind, werden mit ihrem
+Protokoll (UDP oder TCP) aufgelistet. Um ein Protokoll explizit für
+einen App-Port zu setzen (z.B. http oder https), können Container-
+Labels verwendet werden:
+
+com.roboception.app.http: alle öffentlichen TCP-Ports nutzen http
+
+com.roboception.app.https.port=1234,5678: Komma-separierte Liste mit
+https-Ports
+
+Schnittstellen
+
+Im UserSpace verwaltete Container können auf öffentliche
+Schnittstellen des
+
+rc_cube
+
+ zugreifen. Insbesondere können die Container über
+
+gRPC
+
+ auf die Bilddaten zugreifen und die
+
+REST-API-Schnittstelle
+
+ aufrufen. Auf den
+
+rc_cube
+
+ (den Host) kann durch die Docker-Bridge-IP zugegriffen werden (im
+Standard-Docker-Bridge-Netzwerk 172.17.0.1).
+
+Einschränkungen
+
+Container unterliegen bestimmten Einschränkungen:
+
+Container können nicht privilegiert ausgeführt werden.
+
+Keinen Zugriff auf das Host-Netzwerk (das Docker Bridge-Netzwerk wird
+benutzt).
+
+Nur Pfade innerhalb geklonter git Repositories mit einem docker-
+compose Stack können eingebunden werden, alle anderen Hostpfade nicht.
+
+Auf Hostgeräte kann nicht zugegriffen werden. Dazu gehören z.B  USB-
+und GPU-Geräte.
+
+System Ports und intern verwendete Ports des Hosts können nicht
+gebunden werden. Dazu gehören Ports unter 1024, Ports von 4200 bis
+4299 und die Ports 2342, 2343, 2344, 2345, 3956, 4840, 5353, 6379,
+7000, 7001, 7002, 7003, 9100, 9118, 9256, 9445, 9446, 11311, 22350,
+22352, 50010, 50051, 50052, 50053 und 50054.

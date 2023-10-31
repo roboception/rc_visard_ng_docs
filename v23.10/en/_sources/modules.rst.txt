@@ -1,0 +1,42 @@
+Software modules
+
+The
+
+rc_visard NG
+
+ comes with several on-board software modules, each of which
+corresponds to a certain functionality and can be interfaced via its
+respective
+
+node
+
+ in the
+
+REST-API interface
+
+.
+
+The
+
+rc_visard NG
+
+'s software modules can be divided into
+
+3D camera modules\:(Section \ref{camera_modules:sect-3d-camera-
+modules})  which acquire image pairs and compute 3D depth information
+such as disparity, error, and confidence images, and are also
+accessible via the rc_visard NG's GigE Vision/GenICam interface,
+
+Detection modules\:(Section \ref{detection_modules:sect-detection-
+modules})  which provide a variety of detection functionalities, such
+as grasp point computation and object detection,
+
+Configuration modules\:(Section \ref{configuration_modules:sect-
+configuration-modules})  which enable the user to perform calibrations
+and configure the rc_visard NG for specific applications.
+
+Database modules\:(Section \ref{database_modules:sect-database-
+modules})  which enable the user to configure global data available to
+all other modules, such as load carriers, regions of interest and
+grippers.
+

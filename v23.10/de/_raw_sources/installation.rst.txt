@@ -1,0 +1,426 @@
+.. include:: global_rst.glb
+
+.. _sect-installation:
+
+Installation
+============
+
+.. index::
+   single: installation
+
+.. Warning:: The instructions on :ref:`sect-safety`:latex:`\:(Section \ref{safety:sect-safety})` related to the |rc_xxx| must be read and understood prior to installation.
+
+.. only:: rc_visard or rc_visard_ng
+
+   The |rc_xxx| offers a Gigabit Ethernet interface for connecting the device to a computer
+   network. All communications to and from the device are performed via this interface. The
+   |rc_xxx| has an on-board computing resource that requires booting time after powering
+   up the device.
+
+.. only:: rc_cube
+
+   The |rc_cube| offers multiple Gigabit Ethernet interfaces:
+
+   * One interface labeled "external" for connecting the device to a local computer network, and
+   * up to four interfaces labeled "sensor<N>" for connecting one or more 3D cameras such as the
+     |rc_visard| or |rc_viscore| :mvexclude:`or Basler blaze` sensor
+     (see :ref:`sect-camera-connection`:latex:`, Section \ref{installation:sect-camera-connection}`).
+
+   All other Ethernet ports are disabled.
+
+   For commissioning, operation, or troubleshooting the user can connect input devices
+   such as a mouse and a keyboard as well as a computer screen directly to the |rc_xxx|.
+   However, this is optional as the functionality of the |rc_cube| is fully accessible
+   via the local network it is connected to.
+
+   .. note:: If a screen is used on the |rc_cube|, it must be connected before booting,
+            or the |rc_cube| must be restarted to activate the screen.
+
+Software license
+----------------
+
+.. only:: rc_visard or rc_visard_ng
+
+    Every |rc_xxx| device ships with a pre-installed license file for licensing
+    and protection of the installed software packages. The license
+    is bound to that specific |rc_xxx| device and cannot be used or
+    transferred to other devices.
+
+.. only:: rc_cube
+
+    Every |rc_xxx| device ships with a USB dongle for licensing
+    and protection of the installed software packages. The purchased
+    software licenses are installed on and are bound to this dongle and
+    its ID.
+
+The functionality of the |rc_xxx| can
+be enhanced anytime by
+:ref:`upgrading the license<sect-updating-license>`:latex:`\:(Section \ref{maintenance:sect-updating-license})`,
+e.g., for optionally available software modules.
+
+.. note:: The |rc_xxx| requires to be rebooted whenever the installed
+          licenses have changed.
+
+.. only:: rc_visard or rc_visard_ng
+
+    .. note:: The license status can be retrieved
+              via the |rc_xxx|'s various interfaces
+              such as the :menuselection:`System --> Firmware & License` page of the
+              :ref:`Web GUI<sect-web-gui>`:latex:`\ (Section \ref{webgui:sect-web-gui})`.
+
+.. only:: rc_cube
+
+    .. note:: The dongle ID and the license status can be retrieved
+              via the |rc_xxx|'s various interfaces
+              such as the :menuselection:`System --> Firmware & License` page of the
+              :ref:`Web GUI<sect-web-gui>`:latex:`\ (Section \ref{webgui:sect-web-gui})`.
+
+    .. note:: For the software components to be properly licensed, the USB dongle
+              must be plugged to the |rc_xxx| **before power up**.
+
+    .. note:: The |rc_xxx| requires to be rebooted, whenever the license
+              dongle is plugged to or unplugged from the device.
+
+Power up
+--------
+
+.. only:: rc_visard or rc_visard_ng
+
+    .. index::
+      single: LED
+
+    .. Note:: Always fully connect and tighten the M12 power connector on the |rc_xxx|
+      *before* turning on the power supply.
+
+    After connecting the |rc_xxx| to the power, the LED on the front of the device should
+    immediately illuminate. During the device's boot process, the LED will change
+    color and will eventually turn green. This signals that all processes are up and
+    running.
+
+    If the network is not plugged in or the network is not properly configured, then the LED
+    will flash red every 5 seconds. In this case, the device's network configuration
+    should be verified. See :ref:`sect-led-colors`:latex:`\:(Section \ref{troubleshooting:sect-led-colors})`
+    for more information on the LED color codes.
+
+.. only:: rc_cube
+
+    .. note:: The *rc_cube I* does not come with a power supply. A separate 24V/20Amp (e.g. top hat rail) power supply is required.
+
+    The |rc_xxx| is booted by using the power switch on the device.
+    If a computer screen is connected it will display the |rc_xxx|'s
+    |webgui| when the boot process is finished.
+
+    .. Note:: For successful operation please make sure that the |rcvisard| being
+       connected to the |rc_xxx| is powered and booted.
+
+.. _sect-discovery-of-rcvisard-devices:
+
+Discovery of |rc_xxx| devices
+-------------------------------
+
+.. index::
+   single: discovery GUI
+   single: reset
+
+|company| |rc_xxx| devices that are powered up and connected to the local network or directly to a
+computer can be found using the standard GigE Vision\ |reg| discovery mechanism.
+
+.. only:: basler
+
+   |manufacturer| offers the open-source tool ``rcdiscover-gui``, which is available for Windows and Linux.
+   The tool's Windows version consists of a single executable for Windows 7 and Windows 10, which can be executed without installation.
+   For Linux an installation package is available for Ubuntu.
+
+.. only:: roboception or matrixvision
+
+   |manufacturer| offers the open-source tool ``rcdiscover-gui``, which can be downloaded free of charge from
+   http://www.roboception.com/download for Windows and Linux.
+   The tool's Windows version consists of a single executable for Windows 7 and Windows 10, which can be executed without installation.
+   For Linux an installation package is available for Ubuntu.
+
+.. only:: schunk
+
+   |manufacturer| offers the open-source tool ``rcdiscover-gui``, which can be downloaded free of charge from
+   http://www.schunk.com/de_de/services/downloads/software for Windows and Linux.
+   The tool's Windows version consists of a single executable for Windows 7 and Windows 10, which can be executed without installation.
+   For Linux an installation package is available for Ubuntu.
+
+
+At startup, all available GigE Vision\ |reg| devices -- including |rc_xxx| devices -- are
+listed with their names, serial numbers, current IP addresses, and unique MAC addresses. The
+discovery tool finds all devices reachable by global broadcasts. Misconfigured devices
+that are located in different subnets than the application host may also be listed. A tickmark in the
+discovery tool indicates whether devices are actually reachable via a
+web browser.
+
+.. index::
+   single: serial number
+
+.. only:: rc_visard or rc_visard_ng
+
+    .. figure:: images/typelabel.png
+      :width: 50%
+      :align: center
+
+      Label on the |rc_xxx| indicating model, serial number and MAC address
+
+.. only:: roboception or schunk or matrixvision
+
+   .. figure:: images/rcdiscover_guiwin.png
+      :width: 90 %
+      :align: center
+
+      ``rcdiscover-gui`` tool for finding connected GigE Vision\ |reg| devices
+
+.. only:: basler
+
+   .. figure:: images/rcdiscover_guiwin_basler.png
+      :width: 90 %
+      :align: center
+
+      ``rcdiscover-gui`` tool for finding connected GigE Vision\ |reg| devices
+
+After successful discovery, a double click on the device row opens the :ref:`Web GUI<sect-web-gui>`:latex:`\ (Section
+\ref{webgui:sect-web-gui})` of the device in the operating system's default web browser.
+Google Chrome or Mozilla Firefox are recommended as web browser.
+
+Resetting configuration
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. only:: rc_cube
+
+    .. Note:: The ``rcdiscover-gui`` resetting mechanism is currently not implemented for |rc_cube| devices.
+
+.. only:: rc_visard or rc_visard_ng
+
+    A misconfigured device can be reset by using the *Reset rc_visard* button in the
+    discovery tool. The reset mechanism is only available for two minutes
+    after device startup. Thus, the |rc_xxx| may require rebooting before
+    being able to reset the device.
+
+    .. figure:: images/rcdiscover_reset.png
+      :width: 50 %
+      :align: center
+
+      Reset dialog of the ``rcdiscover-gui`` tool
+
+    If the discovery tool still successfully detects the the misconfigured |rc_xxx|,
+    then the latter can be selected from the *rc-visard* drop-down menu. Otherwise,
+    the |rc_xxx|'s MAC address, which is printed on the device label, can be entered
+    manually into the designated fields.
+
+    One of four options can be chosen after entering the MAC address:
+
+    - *Reset Parameters*: Reset all |rc_xxx| parameters, such as frame rate, that are configurable via
+      :ref:`Web GUI<sect-web-gui>`:latex:`\ (Section \ref{webgui:sect-web-gui})`.
+    - *Reset Network*: Reset network settings and user-defined name.
+    - *Reset All*: Reset the |rc_xxx| parameters as well as network settings and user-defined name.
+    - *Switch Partitions*: Allows a rollback to be performed as described in
+      :ref:`sect-restoring-the-previous-firmware-version`:latex:`\:(Section \ref{maintenance:sect-restoring-the-previous-firmware-version})`.
+
+    A white status LED followed by a device reboot indicates a successful reset.
+    If no reaction is noticeable, the two minutes time slot may have elapsed, requiring
+    another reboot.
+
+    .. Note:: The reset mechanism is only available for the first two minutes after startup.
+
+.. _sect-network-configuration:
+
+Network configuration
+---------------------
+
+.. index::
+   single: network configuration
+   single: IP address
+
+The |rc_xxx| requires an Internet Protocol (:term:`IP`) address for communication with other network
+devices. The IP address must be unique in the local network, and can be set either manually via a
+user-configurable persistent IP address, or automatically via :term:`DHCP`.
+If none of these IP configuration methods apply, the |rc_xxx| falls back to a :term:`Link-Local` IP address.
+
+.. only:: rc_cube
+
+    The network settings of the |rc_visard| that is used in combination with the |rc_xxx|
+    are automatically configured when the |rc_visard| is connected to the |rc_xxx|.
+
+    .. note:: To not conflict with the internal network between the |rc_xxx| and
+              the connected |rc_visard|, the IP address assigned to the |rc_xxx| in the
+              local network must not be in the range of ``172.23.42.0/24`` and ``172.17.0.0/16``.
+
+Following the :term:`GigE Vision`\ |reg| standard, the priority of IP configuration methods on the |rc_xxx| is
+
+    1. Persistent IP (if enabled)
+    2. DHCP (if enabled)
+    3. Link-Local
+
+.. figure:: images/ip_configuration_flowchart.*
+   :width:  60%
+   :align: center
+
+   |rc_xxx|'s IP configuration method selection flowchart
+
+Options for changing the |rc_xxx|'s network settings and IP configuration are:
+
+    * the :menuselection:`System --> Network` page of the |rc_xxx|'s |webgui| -- if it is reachable in the local network already,
+      see :ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+    * any configuration tool compatible with :term:`GigE Vision`\ |reg| 2.0,
+      or |manufacturer|'s command-line tool ``gc_config``. Typically, these tools scan for all available GigE Vision\ |reg|
+      devices on the network. All |rc_xxx| devices can be uniquely identified by their serial number and MAC address,
+      which are both printed on the device.
+    * temporarily changing or completely resetting the |rc_xxx|'s network configuration via |manufacturer|'s
+      ``rcdiscover-gui`` tool, see :ref:`sect-discovery-of-rcvisard-devices`:latex:`\:(Section \ref{installation:sect-discovery-of-rcvisard-devices})`
+
+.. only:: roboception or schunk or matrixvision
+
+   .. note:: The command-line tool ``gc_config`` is part of |manufacturer|'s open-source convenience layer ``rc_genicam_api``,
+             which can be downloaded free of charge for Windows and Linux from http://www.roboception.com/download.
+
+.. _sect-network-hostname:
+
+Host name
+^^^^^^^^^
+
+.. index::
+   single: host name
+   single: serial number
+
+.. only:: rc_visard
+
+       The |rc_xxx|'s host name is based on its serial number, which is printed on the device, and
+       is defined as ``rc-visard-<serial number>``.
+
+.. only:: rc_visard_ng
+
+       The |rc_xxx|'s host name is based on its serial number, which is printed on the device, and
+       is defined as ``rc-visard-ng-<serial number>``.
+
+.. only:: rc_cube
+
+       The |rc_xxx|'s host name is based on its serial number, which is printed on the device, and
+       is defined as ``rc-cube-<serial number>``.
+
+.. _sect-auto-network-configuration:
+
+Automatic configuration (factory default)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+   single: DHCP
+   single: host name
+   single: MAC address
+
+The Dynamic Host Configuration Protocol (:term:`DHCP`) is preferred for setting an IP
+address. If DHCP is active on the |rc_xxx|, which is the factory default, the
+device tries to contact a DHCP server at startup and every time the network cable is being
+plugged in. If a DHCP server is available on the network, the IP address
+is automatically configured.
+
+In some networks, the DHCP server is configured so that it only accepts known
+devices. In this case, the Media Access Control address (:term:`MAC address`), which is printed on
+the device label, needs to be configured in the DHCP server. At the same time, the |rc_xxx|'s host
+name can also be set in the Domain Name Server (:term:`DNS`). Both MAC address and host name should
+be sent to the network administrator for configuration.
+
+.. index::
+   single: Link-Local
+
+If the |rc_xxx| cannot contact a DHCP server within about 15 seconds after startup, or
+after plugging in the network cable, it assigns itself a unique
+IP address. This process is called :term:`Link-Local`. This option is especially useful for
+connecting the |rc_xxx| directly to a computer. The computer must be configured for Link-Local
+as well. Link-Local might already be configured as a standard fallback option,
+as it is under Windows 10. Other operating systems such as Linux require Link-Local
+to be explicitly configured in their network managers.
+
+.. _sect-manual-network-configuration:
+
+Manual configuration
+^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+   pair: Baumer; IpConfigTool
+   pair: GigE Vision; IP address
+
+Specifying a persistent, i.e. static IP address manually might be useful in some cases.
+This address is stored on the |rc_xxx| to be used on device startup or network reconnection.
+Please make sure the selected IP address, subnet mask and gateway will not cause any
+conflicts on the network.
+
+.. Warning:: The IP address must be unique within the local network and within the local network's range of valid addresses.
+             Furthermore, the subnet mask must match the local network; otherwise, the |rcxxx|
+             may become inaccessible. This can be avoided by using
+             automatic configuration as explained in :ref:`sect-auto-network-configuration`:latex:`\ (Section \ref{installation:sect-auto-network-configuration})`.
+
+If this IP address cannot be assigned, e.g. because it is already used by another device in the network,
+IP configuration will fall back to automatic configuration via :term:`DHCP` (if enabled) or a :term:`Link-Local` address.
+
+.. only:: rc_cube
+
+   .. _sect-camera-connection:
+
+   Connection of cameras
+   ---------------------
+
+   .. index::
+      pair: camera connection; installation
+
+   Depending on the |rc_cube| model, two or more 3D cameras can be connected
+   to the Ethernet ports labelled *sensor0*, *sensor1*, etc.
+
+   The *rc_cube S* has one 2.5 Gigabit Ethernet port for connecting up to two sensors, e.g.
+
+   .. only:: matrixvision
+
+      * connecting one |rc_visard| without additional hardware
+      * connecting two |rc_visard| devices via a separate 2.5Gbit switch
+      * connecting one |rc_viscore| via a separate 2.5Gbit switch
+
+   .. only:: roboception or schunk or basler
+
+      * connecting one |rc_visard| without additional hardware
+      * connecting two |rc_visard| devices via a separate 2.5Gbit switch
+      * connecting one |rc_viscore| via a separate 2.5Gbit switch
+      * connecting one |blaze| via a separate 2.5Gbit switch
+
+   The *rc_cube I* has four 1 Gigabit Ethernet ports for connecting up to four sensors, e.g.
+
+   .. only:: matrixvision
+
+      * connecting up to four |rc_visard| devices without additional hardware
+      * connecting up to two |rc_viscore| devices without additional hardware
+
+   .. only:: roboception or schunk or basler
+
+      * connecting up to four |rc_visard| devices without additional hardware
+      * connecting up to two |rc_viscore| devices without additional hardware
+      * connecting up to two |blaze| sensors devices without additional hardware
+
+   It is also possible to connect 3D cameras of different types to an |rc_cube|, if the
+   number of Ethernet ports permits. However, the
+   *rc_cube S* cannot process more than two sensors at the same time, the *rc_cube I* not
+   more than four.
+
+   .. Warning:: The |rc_viscore| :mvexclude:`or Basler blaze` sensor must not be connected via a 1Gbit switch or slower, as this
+               leads to severe loss of images.
+
+   The |rc_cube| offers up to four software *camera pipelines* for processing data from the connected sensors.
+   The configuration of the camera pipelines is explained in :doc:`pipelines`:latex:`\:(see Section \ref{pipelines:sect-pipelines})`.
+
+   .. only:: roboception or schunk or basler
+
+      .. _sect-blaze-installation:
+
+      Basler blaze sensors
+      ^^^^^^^^^^^^^^^^^^^^
+
+      .. index::
+         pair: blaze; installation
+         pair: blaze; calibration
+
+      After connecting the Basler blaze sensor, it can take up to about one minute until it is found. Upon first
+      connection of the sensor to the |rc_cube|, the sensor must be calibrated before it can be used.
+      Calibration can be done through the |webgui| on the page :ref:`sect-camera-calibration`:latex:`\:(Section
+      \ref{camera_calibration:sect-camera-calibration})` under *Configuration* in the respective pipeline.
+      After storing the calibration, it will persistently reside on the |rc_cube| and automatically be
+      used whenever the sensor is connected to the |rc_cube| again, regardless of the port or pipeline.
+

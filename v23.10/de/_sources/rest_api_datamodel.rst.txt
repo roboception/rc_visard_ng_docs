@@ -1,0 +1,1099 @@
+Datentyp-Definitionen
+
+Die REST-API definiert folgende Datenmodelle, die verwendet werden, um
+auf die
+
+verfügbaren Ressourcen
+
+  zuzugreifen oder diese zu ändern, entweder als benötigte
+Attribute/Parameter oder als Rückgabewerte.
+
+DNS:
+   DNS-Server Einstellungen.
+
+   Ein Objekt des Typs DNS besitzt folgende Eigenschaften:
+
+   dns_servers (string-Array)
+
+   manual_dns_servers (string-Array)
+
+   Musterobjekt
+
+      {
+        "dns_servers": [
+          "string",
+          "string"
+        ],
+        "manual_dns_servers": [
+          "string",
+          "string"
+        ]
+      }
+
+   DNS-Objekte sind in
+
+   SysInfo
+
+    enthalten und werden für folgende Anfragen verwendet:
+
+      GET /system/dns
+
+      PUT /system/dns
+
+FirmwareInfo:
+   Informationen zu aktuell aktiven und inaktiven Firmware-Images und
+   dazu, welches Image für den Boot-Vorgang verwendet wird.
+
+   Ein Objekt des Typs FirmwareInfo besitzt folgende Eigenschaften:
+
+   active_image (ImageInfo): siehe Beschreibung von ImageInfo.
+
+   fallback_booted (boolean): TRUE, wenn das gewünschte Image nicht
+   hochgefahren werden konnte und ein Fallback auf das zuvor genutzte
+   Image vorgenommen wurde.
+
+   inactive_image (ImageInfo): siehe Beschreibung von ImageInfo.
+
+   next_boot_image (string): Firmware-Image, das beim nächsten
+   Neustart geladen wird (entweder active_image oder inactive_image).
+
+   Musterobjekt
+
+      {
+        "active_image": {
+          "image_version": "string"
+        },
+        "fallback_booted": false,
+        "inactive_image": {
+          "image_version": "string"
+        },
+        "next_boot_image": "string"
+      }
+
+   FirmwareInfo-Objekte sind in
+
+   SysInfo
+
+    enthalten und werden für folgende Anfragen verwendet:
+
+      GET /system/rollback
+
+      GET /system/update
+
+GripperElement:
+   CAD-Greiferelement
+
+   Ein Objekt des Typs GripperElement besitzt folgende Eigenschaften:
+
+   id (string): Eindeutiger Name des Elements
+
+   Musterobjekt
+
+      {
+        "id": "string"
+      }
+
+   GripperElement-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /cad/gripper_elements
+
+      GET /cad/gripper_elements/{id}
+
+      PUT /cad/gripper_elements/{id}
+
+HostPort:
+   Auf dem Host verfügbarer Port
+
+   Ein Objekt des Typs HostPort besitzt folgende Eigenschaften:
+
+   port (integer)
+
+   protocol (string)
+
+   Musterobjekt
+
+      {
+        "port": 0,
+        "protocol": "string"
+      }
+
+   HostPort-Objekte sind in
+
+   UserSpaceContainer
+
+    enthalten.
+
+ImageInfo:
+   Informationen zu einem bestimmten Firmware-Image.
+
+   Ein Objekt des Typs ImageInfo besitzt folgende Eigenschaften:
+
+   image_version (string): Image-Version.
+
+   Musterobjekt
+
+      {
+        "image_version": "string"
+      }
+
+   ImageInfo-Objekte sind in
+
+   FirmwareInfo
+
+    enthalten.
+
+LicenseComponentConstraint:
+   Einschränkungen für die Modul-Version.
+
+   Ein Objekt des Typs LicenseComponentConstraint besitzt folgende
+   Eigenschaften:
+
+   max_version (string) - optionale höchste unterstützte Version
+   (exclusive)
+
+   min_version (string) - optionale minimale unterstützte Version
+   (inclusive)
+
+   Musterobjekt
+
+      {
+        "max_version": "string",
+        "min_version": "string"
+      }
+
+   LicenseComponentConstraint-Objekte sind in
+
+   LicenseConstraints
+
+    enthalten.
+
+LicenseComponents:
+   Liste der Lizenzstatus-Angaben der einzelnen Softwaremodule: Der
+   zugehörige Statusindikator ist auf TRUE gesetzt, wenn das
+   entsprechende Modul mit einer installierten Softwarelizenz
+   entsperrt ist.
+
+   Ein Objekt des Typs LicenseComponents besitzt folgende
+   Eigenschaften:
+
+   hand_eye_calibration (boolean): Modul zur Hand-Auge-Kalibrierung.
+
+   rectification (boolean): Modul zur Bildrektifizierung.
+
+   stereo (boolean): Stereo-Matching-Modul.
+
+   Musterobjekt
+
+      {
+        "hand_eye_calibration": false,
+        "rectification": false,
+        "stereo": false
+      }
+
+   LicenseComponents-Objekte sind in
+
+   LicenseInfo
+
+    enthalten.
+
+LicenseConstraints:
+   Versionseinschränkungen für Module.
+
+   Ein Objekt des Typs LicenseConstraints besitzt folgende
+   Eigenschaften:
+
+   image_version (LicenseComponentConstraint) - siehe Beschreibung von
+   LicenseComponentConstraint
+
+   Musterobjekt
+
+      {
+        "image_version": {
+          "max_version": "string",
+          "min_version": "string"
+        }
+      }
+
+   LicenseConstraints-Objekte sind in
+
+   LicenseInfo
+
+    enthalten.
+
+LicenseInfo:
+   Informationen zur aktuell auf dem Gerät angewandten Softwarelizenz.
+
+   Ein Objekt des Typs LicenseInfo besitzt folgende Eigenschaften:
+
+   components (LicenseComponents): siehe Beschreibung von
+   LicenseComponents.
+
+   components_constraints (LicenseConstraints) - siehe Beschreibung
+   von LicenseConstraints
+
+   valid (boolean): Angabe, ob eine Lizenz gültig ist oder nicht.
+
+   Musterobjekt
+
+      {
+        "components": {
+          "hand_eye_calibration": false,
+          "rectification": false,
+          "stereo": false
+        },
+        "components_constraints": {
+          "image_version": {
+            "max_version": "string",
+            "min_version": "string"
+          }
+        },
+        "valid": false
+      }
+
+   LicenseInfo-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /system/license
+
+Log:
+   Inhalt einer bestimmten Logdatei im JSON-Format.
+
+   Ein Objekt des Typs Log besitzt folgende Eigenschaften:
+
+   date (float): UNIX-Uhrzeit, zu der das Log zuletzt geändert wurde.
+
+   log (LogEntry-Array): die eigentlichen Logeinträge.
+
+   name (string): Name der Logdatei.
+
+   size (Integer): Größe der Logdatei in Bytes.
+
+   Musterobjekt
+
+      {
+        "date": 0,
+        "log": [
+          {
+            "component": "string",
+            "level": "string",
+            "message": "string",
+            "timestamp": 0
+          },
+          {
+            "component": "string",
+            "level": "string",
+            "message": "string",
+            "timestamp": 0
+          }
+        ],
+        "name": "string",
+        "size": 0
+      }
+
+   Log-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /logs/{log}
+
+LogEntry:
+   Darstellung eines einzelnen Logeintrags in einer Logdatei.
+
+   Ein Objekt des Typs LogEntry besitzt folgende Eigenschaften:
+
+   component (string): Name des Moduls, das diesen Eintrag angelegt
+   hat.
+
+   level (string): Logstufe (mögliche Werte: DEBUG, INFO, WARN, ERROR
+   oder FATAL)
+
+   message (string): eigentliche Lognachricht.
+
+   timestamp (float): UNIX-Uhrzeit des Logeintrags.
+
+   Musterobjekt
+
+      {
+        "component": "string",
+        "level": "string",
+        "message": "string",
+        "timestamp": 0
+      }
+
+   LogEntry-Objekte sind in
+
+   Log
+
+    enthalten.
+
+LogInfo:
+   Informationen zu einer bestimmten Logdatei.
+
+   Ein Objekt des Typs LogInfo besitzt folgende Eigenschaften:
+
+   date (float): UNIX-Uhrzeit, zu der das Log zuletzt geändert wurde.
+
+   name (string): Name der Logdatei.
+
+   size (Integer): Größe der Logdatei in Bytes.
+
+   Musterobjekt
+
+      {
+        "date": 0,
+        "name": "string",
+        "size": 0
+      }
+
+   LogInfo-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /logs
+
+ManualDNSServers:
+   Liste der manuellen DNS-Server.
+
+   Ein Objekt des Typs ManualDNSServers besitzt folgende
+   Eigenschaften:
+
+   manual_dns_servers (string-Array)
+
+   Musterobjekt
+
+      {
+        "manual_dns_servers": [
+          "string",
+          "string"
+        ]
+      }
+
+   ManualDNSServers-Objekte werden in folgenden Anfragen verwendet:
+
+      PUT /system/dns
+
+NetworkInfo:
+   Aktuelle Netzwerk Konfiguration.
+
+   Ein Objekt des Typs NetworkInfo besitzt folgende Eigenschaften:
+
+   current_method (string) - Methode mit der die aktuellen
+   Einstellungen gesetzt wurden (mögliche Werte: INIT, LinkLocal,
+   DHCP, PersistentIP, TemporaryIP)
+
+   default_gateway (string) - aktueller Default Gateway
+
+   ip_address (string) - aktuelle IP-Adresse
+
+   settings (NetworkSettings) - siehe Beschreibung von NetworkSettings
+
+   subnet_mask (string) - aktuelle Subnetzmaske
+
+   Musterobjekt
+
+      {
+        "current_method": "string",
+        "default_gateway": "string",
+        "ip_address": "string",
+        "settings": {
+          "dhcp_enabled": false,
+          "persistent_default_gateway": "string",
+          "persistent_ip_address": "string",
+          "persistent_ip_enabled": false,
+          "persistent_subnet_mask": "string"
+        },
+        "subnet_mask": "string"
+      }
+
+   NetworkInfo-Objekte sind in
+
+   SysInfo
+
+    enthalten und werden für folgende Anfragen verwendet:
+
+      GET /system/network
+
+NetworkSettings:
+   Aktuelle Netzwerk Einstellungen.
+
+   Ein Objekt des Typs NetworkSettings besitzt folgende Eigenschaften:
+
+   dhcp_enabled (boolean) - DHCP eingeschaltet
+
+   persistent_default_gateway (string) - Persistenter Default Gateway
+
+   persistent_ip_address (string) - Persistente IP-Adresse
+
+   persistent_ip_enabled (boolean) - Persistente IP aktiviert
+
+   persistent_subnet_mask (string) - Persistente Subnetzmaske
+
+   Musterobjekt
+
+      {
+        "dhcp_enabled": false,
+        "persistent_default_gateway": "string",
+        "persistent_ip_address": "string",
+        "persistent_ip_enabled": false,
+        "persistent_subnet_mask": "string"
+      }
+
+   NetworkSettings-Objekte sind in
+
+   NetworkInfo
+
+    enthalten und werden für folgende Anfragen verwendet:
+
+      GET /system/network/settings
+
+      PUT /system/network/settings
+
+NodeInfo:
+   Beschreibung eines auf dem Gerät laufenden Softwaremoduls.
+
+   Ein Objekt des Typs NodeInfo besitzt folgende Eigenschaften:
+
+   name (string): Name des Moduls.
+
+   parameters (string-Array): Liste der Laufzeitparameter des Moduls.
+
+   services (string-Array): Liste der von diesem Modul angebotenen
+   Services.
+
+   status (string): Status des Moduls (mögliche Werte: unknown, down,
+   idle oder running).
+
+   Musterobjekt
+
+      {
+        "name": "string",
+        "parameters": [
+          "string",
+          "string"
+        ],
+        "services": [
+          "string",
+          "string"
+        ],
+        "status": "string"
+      }
+
+   NodeInfo-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /nodes
+
+      GET /nodes/{node}
+
+      GET /pipelines/{pipeline}/nodes
+
+      GET /pipelines/{pipeline}/nodes/{node}
+
+NodeStatus:
+   Detaillierter aktueller Status des Moduls, einschließlich
+   Laufzeitstatistik.
+
+   Ein Objekt des Typs NodeStatus besitzt folgende Eigenschaften:
+
+   status (string): Status des Moduls (mögliche Werte: unknown, down,
+   idle oder running).
+
+   timestamp (float): UNIX-Uhrzeit, zu der die Werte zuletzt
+   aktualisiert wurden.
+
+   values (object): Dictionary (Schlüssel-Werte-Auflistung) mit den
+   aktuellen Statuswerten/Statistiken des Moduls.
+
+   Musterobjekt
+
+      {
+        "status": "string",
+        "timestamp": 0,
+        "values": {}
+      }
+
+   NodeStatus-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /nodes/{node}/status
+
+      GET /pipelines/{pipeline}/nodes/{node}/status
+
+NtpStatus:
+   Status der NTP-Zeitsynchronisierung.
+
+   Ein Objekt des Typs NtpStatus besitzt folgende Eigenschaften:
+
+   accuracy (string): vom Network Time Protocol (NTP) gemeldete
+   Genauigkeit der Zeitsynchronisierung.
+
+   synchronized (boolean): synchronisiert mit dem NTP-Server.
+
+   Musterobjekt
+
+      {
+        "accuracy": "string",
+        "synchronized": false
+      }
+
+   NtpStatus-Objekte sind in
+
+   SysInfo
+
+    enthalten.
+
+Parameter:
+   Darstellung der Laufzeitparameter eines Moduls: Der Datentyp des
+   Werts („value“) eines Parameters (und damit der Datentyp der Felder
+   „min“, „max“ und „default“) lässt sich vom Feld „type“ ableiten und
+   kann ein primitiver Datentyp sein.
+
+   Ein Objekt des Typs Parameter besitzt folgende Eigenschaften:
+
+   default (Typ nicht definiert): ab Werk voreingestellter Wert des
+   Parameters.
+
+   description (string): Beschreibung des Parameters.
+
+   max (Typ nicht definiert): Höchstwert, der diesem Parameter
+   zugewiesen werden kann.
+
+   min (Typ nicht definiert): Mindestwert, der diesem Parameter
+   zugewiesen werden kann.
+
+   name (string): Name des Parameters.
+
+   type (string): als Zeichenfolge dargestellter primitiver Datentyp
+   des Parameters (mögliche Werte: bool, int8, uint8, int16, uint16,
+   int32, uint32, int64, uint64, float32, float64 oder string).
+
+   value (Typ nicht definiert): aktueller Wert des Parameters.
+
+   Musterobjekt
+
+      {
+        "default": {},
+        "description": "string",
+        "max": {},
+        "min": {},
+        "name": "string",
+        "type": "string",
+        "value": {}
+      }
+
+   Parameter-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /pipelines/{pipeline}/nodes/{node}/parameters
+
+      PUT /pipelines/{pipeline}/nodes/{node}/parameters
+
+      GET /pipelines/{pipeline}/nodes/{node}/parameters/{param}
+
+      PUT /pipelines/{pipeline}/nodes/{node}/parameters/{param}
+
+ParameterNameValue:
+   Parametername und -wert. Der Typ des Parameterwerts (Felder 'value'
+   und 'min', 'max', 'default') ist durch das Feld 'type' angegeben
+   und kann einer der eingebauten primitiven Datentypen sein.
+
+   Ein Objekt des Typs ParameterNameValue besitzt folgende
+   Eigenschaften:
+
+   name (string): Name des Parameters.
+
+   value (Typ nicht definiert): aktueller Wert des Parameters.
+
+   Musterobjekt
+
+      {
+        "name": "string",
+        "value": {}
+      }
+
+   ParameterNameValue-Objekte werden in folgenden Anfragen verwendet:
+
+      PUT /pipelines/{pipeline}/nodes/{node}/parameters
+
+ParameterValue:
+   Parameterwert. Der Typ des Parameterwerts (Felder 'value' und
+   'min', 'max', 'default') ist durch das Feld 'type' angegeben und
+   kann einer der eingebauten primitiven Datentypen sein.
+
+   Ein Objekt des Typs ParameterValue besitzt folgende Eigenschaften:
+
+   value (Typ nicht definiert): aktueller Wert des Parameters.
+
+   Musterobjekt
+
+      {
+        "value": {}
+      }
+
+   ParameterValue-Objekte werden in folgenden Anfragen verwendet:
+
+      PUT /pipelines/{pipeline}/nodes/{node}/parameters/{param}
+
+PtpStatus:
+   Status der PTP-Zeitsynchronisierung gemäß IEEE 1588.
+
+   Ein Objekt des Typs PtpStatus besitzt folgende Eigenschaften:
+
+   master_ip (string): IP-Adresse des Haupttaktgebers.
+
+   offset (float): zeitlicher Versatz zum Haupttaktgeber in Sekunden.
+
+   offset_dev (float): Standardabweichung des zeitlichen Versatzes zum
+   Haupttaktgeber in Sekunden.
+
+   offset_mean (float): mittlere Zeitverschiebung in Sekunden zum
+   Haupttaktgeber.
+
+   state (string): PTP-Zustand (mögliche Werte: off, unknown,
+   INITIALIZING, FAULTY, DISABLED, LISTENING, PASSIVE, UNCALIBRATED
+   oder SLAVE).
+
+   Musterobjekt
+
+      {
+        "master_ip": "string",
+        "offset": 0,
+        "offset_dev": 0,
+        "offset_mean": 0,
+        "state": "string"
+      }
+
+   PtpStatus-Objekte sind in
+
+   SysInfo
+
+    enthalten.
+
+Service:
+   Darstellung eines von einem Modul angebotenen Services.
+
+   Ein Objekt des Typs Service besitzt folgende Eigenschaften:
+
+   args (ServiceArgs): siehe Beschreibung von ServiceArgs.
+
+   description (string): Kurzbeschreibung des Services.
+
+   name (string): Name des Services.
+
+   response (ServiceResponse): siehe Beschreibung von ServiceResponse.
+
+   Musterobjekt
+
+      {
+        "args": {},
+        "description": "string",
+        "name": "string",
+        "response": {}
+      }
+
+   Service-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /nodes/{node}/services
+
+      GET /nodes/{node}/services/{service}
+
+      PUT /nodes/{node}/services/{service}
+
+      GET /pipelines/{pipeline}/nodes/{node}/services
+
+      GET /pipelines/{pipeline}/nodes/{node}/services/{service}
+
+      PUT /pipelines/{pipeline}/nodes/{node}/services/{service}
+
+ServiceArgs:
+   Argumente, die für den Aufruf eines Services benötigt werden: Diese
+   Argumente werden in der Regel in einem (verschachtelten) Dictionary
+   (Schlüssel-Werte-Auflistung) dargestellt. Der genaue Inhalt dieses
+   Dictionarys hängt vom jeweiligen Modul und vom Serviceaufruf ab.
+
+   ServiceArg-Objekte sind in
+
+   Service
+
+    enthalten.
+
+ServiceResponse:
+   Die von dem Serviceaufruf zurückgegebene Antwort: Die Antwort wird
+   in der Regel in einem (verschachtelten) Dictionary (Schlüssel-
+   Werte-Auflistung) dargestellt. Der genaue Inhalt dieses Dictionarys
+   hängt vom jeweiligen Modul und von dem Serviceaufruf ab.
+
+   ServiceResponse-Objekte sind in
+
+   Service
+
+    enthalten.
+
+SysInfo:
+   Systeminformationen über das Gerät.
+
+   Ein Objekt des Typs SysInfo besitzt folgende Eigenschaften:
+
+   dns (DNS): siehe Beschreibung von DNS.
+
+   firmware (FirmwareInfo): siehe Beschreibung von FirmwareInfo.
+
+   hostname (string): Host-Name.
+
+   link_speed (Integer): Ethernet-Verbindungsgeschwindigkeit in
+   Mb/Sekunde.
+
+   mac (string): MAC-Adresse.
+
+   network (NetworkInfo): siehe Beschreibung von NetworkInfo
+
+   ntp_status (NtpStatus): siehe Beschreibung von NtpStatus.
+
+   ptp_status (PtpStatus): siehe Beschreibung von PtpStatus.
+
+   ready (boolean): Das System ist vollständig hochgefahren und
+   betriebsbereit.
+
+   serial (string): Seriennummer des Geräts.
+
+   time (float): Systemzeit als UNIX-Zeitstempel.
+
+   ui_lock (UILock): siehe Beschreibung von UILock
+
+   uptime (float):  Betriebszeit in Sekunden.
+
+   Musterobjekt
+
+      {
+        "dns": {
+          "dns_servers": [
+            "string",
+            "string"
+          ],
+          "manual_dns_servers": [
+            "string",
+            "string"
+          ]
+        },
+        "firmware": {
+          "active_image": {
+            "image_version": "string"
+          },
+          "fallback_booted": false,
+          "inactive_image": {
+            "image_version": "string"
+          },
+          "next_boot_image": "string"
+        },
+        "hostname": "string",
+        "link_speed": 0,
+        "mac": "string",
+        "network": {
+          "current_method": "string",
+          "default_gateway": "string",
+          "ip_address": "string",
+          "settings": {
+            "dhcp_enabled": false,
+            "persistent_default_gateway": "string",
+            "persistent_ip_address": "string",
+            "persistent_ip_enabled": false,
+            "persistent_subnet_mask": "string"
+          },
+          "subnet_mask": "string"
+        },
+        "ntp_status": {
+          "accuracy": "string",
+          "synchronized": false
+        },
+        "ptp_status": {
+          "master_ip": "string",
+          "offset": 0,
+          "offset_dev": 0,
+          "offset_mean": 0,
+          "state": "string"
+        },
+        "ready": false,
+        "serial": "string",
+        "time": 0,
+        "ui_lock": {
+          "enabled": false
+        },
+        "uptime": 0
+      }
+
+   SysInfo-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /system
+
+Template:
+   Template für die Erkennung
+
+   Ein Objekt des Typs Template besitzt folgende Eigenschaften:
+
+   id (string): Eindeutiger Name des Templates
+
+   Musterobjekt
+
+      {
+        "id": "string"
+      }
+
+   Template-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /templates/rc_silhouettematch
+
+      GET /templates/rc_silhouettematch/{id}
+
+      PUT /templates/rc_silhouettematch/{id}
+
+UILock:
+   UI Lock Status.
+
+   Ein Objekt des Typs UILock besitzt folgende Eigenschaften:
+
+   enabled (boolean)
+
+   Musterobjekt
+
+      {
+        "enabled": false
+      }
+
+   UILock-Objekte sind in
+
+   SysInfo
+
+    enthalten und werden für folgende Anfragen verwendet:
+
+      GET /system/ui_lock
+
+UserSpace:
+   UserSpace Information
+
+   Ein Objekt des Typs UserSpace besitzt folgende Eigenschaften:
+
+   apps (UserSpaceApp-Array): die UserSpace Apps.
+
+   available (boolean) - UserSpace verfügbar
+
+   enabled (boolean) - UserSpace eingeschaltet
+
+   Musterobjekt
+
+      {
+        "apps": [
+          {
+            "containers": [
+              {
+                "description": "string",
+                "health": "string",
+                "host_ports": [
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  },
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  }
+                ],
+                "name": "string",
+                "status": "string",
+                "title": "string",
+                "url": "string",
+                "vendor": "string",
+                "version": "string"
+              },
+              {
+                "description": "string",
+                "health": "string",
+                "host_ports": [
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  },
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  }
+                ],
+                "name": "string",
+                "status": "string",
+                "title": "string",
+                "url": "string",
+                "vendor": "string",
+                "version": "string"
+              }
+            ],
+            "name": "string",
+            "type": "string"
+          },
+          {
+            "containers": [
+              {
+                "description": "string",
+                "health": "string",
+                "host_ports": [
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  },
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  }
+                ],
+                "name": "string",
+                "status": "string",
+                "title": "string",
+                "url": "string",
+                "vendor": "string",
+                "version": "string"
+              },
+              {
+                "description": "string",
+                "health": "string",
+                "host_ports": [
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  },
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  }
+                ],
+                "name": "string",
+                "status": "string",
+                "title": "string",
+                "url": "string",
+                "vendor": "string",
+                "version": "string"
+              }
+            ],
+            "name": "string",
+            "type": "string"
+          }
+        ],
+        "available": false,
+        "enabled": false
+      }
+
+   UserSpace-Objekte werden in folgenden Anfragen verwendet:
+
+      GET /userspace
+
+UserSpaceApp:
+   UserSpace app
+
+   Ein Objekt des Typs UserSpaceApp besitzt folgende Eigenschaften:
+
+   containers (UserSpaceContainer-Array) - Container in dieser App
+
+   name (string): Name der App.
+
+   type (string): Typ der App (mögliche Werte: container, compose).
+
+   Musterobjekt
+
+      {
+        "containers": [
+          {
+            "description": "string",
+            "health": "string",
+            "host_ports": [
+              {
+                "port": 0,
+                "protocol": "string"
+              },
+              {
+                "port": 0,
+                "protocol": "string"
+              }
+            ],
+            "name": "string",
+            "status": "string",
+            "title": "string",
+            "url": "string",
+            "vendor": "string",
+            "version": "string"
+          },
+          {
+            "description": "string",
+            "health": "string",
+            "host_ports": [
+              {
+                "port": 0,
+                "protocol": "string"
+              },
+              {
+                "port": 0,
+                "protocol": "string"
+              }
+            ],
+            "name": "string",
+            "status": "string",
+            "title": "string",
+            "url": "string",
+            "vendor": "string",
+            "version": "string"
+          }
+        ],
+        "name": "string",
+        "type": "string"
+      }
+
+   UserSpaceApp-Objekte sind in
+
+   UserSpace
+
+    enthalten.
+
+UserSpaceContainer:
+   Container
+
+   Ein Objekt des Typs UserSpaceContainer besitzt folgende
+   Eigenschaften:
+
+   description (string) - Wert des Labels
+   org.opencontainers.image.description
+
+   health (string): Health (Gesundheit) des Containers (falls der
+   Container einen Health-Check hat) (mögliche Werte: starting,
+   healthy oder unhealthy).
+
+   host_ports (HostPort-Array): auf dem Host verfügbare Ports
+
+   name (string): Name des Containers.
+
+   status (string): Status des Containers (mögliche Werte: restarting,
+   running, paused oder exited).
+
+   title (string) - Wert des Labels org.opencontainers.image.title
+
+   url (string) - Wert des Labels org.opencontainers.image.url
+
+   vendor (string) - Wert des Labels org.opencontainers.image.vendor
+
+   version (string) - Wert des Labels org.opencontainers.image.version
+
+   Musterobjekt
+
+      {
+        "description": "string",
+        "health": "string",
+        "host_ports": [
+          {
+            "port": 0,
+            "protocol": "string"
+          },
+          {
+            "port": 0,
+            "protocol": "string"
+          }
+        ],
+        "name": "string",
+        "status": "string",
+        "title": "string",
+        "url": "string",
+        "vendor": "string",
+        "version": "string"
+      }
+
+   UserSpaceContainer-Objekte sind in
+
+   UserSpaceApp
+
+    enthalten.

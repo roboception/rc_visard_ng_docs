@@ -1,0 +1,1372 @@
+
+.. include:: global_rst.glb
+
+.. _sect-itempick:
+
+ItemPick and BoxPick
+====================
+
+.. index:: ! ItemPick
+   single: bin picking
+   single: grasp computation
+
+.. index:: ! BoxPick
+
+Introduction
+------------
+
+.. Short description and functionalities
+
+The ItemPick and BoxPick modules provide out-of-the-box perception solutions for robotic pick-and-place
+applications. ItemPick targets the detection of flat surfaces of unknown objects for picking
+with a suction gripper. BoxPick detects rectangular surfaces and determines their position,
+orientation and size for grasping. The interface of both modules is very similar. Therefore
+both modules are described together in this chapter.
+
+In addition, both modules offer:
+
+- A dedicated page on the |rc_xxx| :ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+  for easy setup, configuration, testing, and application tuning.
+- The definition of regions of interest to select relevant volumes in the scene
+  (see :ref:`sect-roi`:latex:`, Section \ref{roi:sect-roi}`).
+- A load carrier detection functionality for bin-picking applications
+  (see :ref:`sect-loadcarrier`:latex:`, Section \ref{loadcarrier:sect-loadcarrier}`),
+  to provide grasps for items inside a bin only.
+- The definition of compartments inside a load carrier to provide grasps
+  for specific volumes of the bin only.
+- Support for static and robot-mounted cameras and
+  optional integration with the :doc:`handeye_calibration`
+  :latex:`(Section \ref{handeye_calibration:sect-handeye-calibration})` module,
+  to provide grasps in the user-configured external reference frame.
+- A quality value associated to each suggested grasp and related to the flatness of the grasping surface.
+- Selection of a sorting strategy to sort the returned grasps.
+- 3D visualization of the detection results with grasp points and gripper animations in the |webgui|.
+
+.. only:: rc_cube
+
+   .. note::
+
+      These modules are pipeline specific. Changes to their settings or parameters only affect
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+
+.. Note::
+
+  In this chapter, cluster and surface are used as synonyms and identify a set of
+  points (or pixels) with defined geometrical properties.
+
+The modules are optional on-board modules of the |rc_xxx|
+and require separate ItemPick or BoxPick :ref:`licenses<sect-updating-license>`
+:latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
+
+.. _sect-itempick-detect-items:
+
+Detection of items (BoxPick)
+----------------------------
+
+.. index::
+   single: BoxPick; item model
+
+The BoxPick module supports the detection of multiple ``item_models`` of
+``type`` ``RECTANGLE``.
+Each item model is defined by its minimum and maximum size, with the
+minimum dimensions strictly smaller than the maximum dimensions.
+The dimensions should be given fairly accurately to avoid misdetections,
+while still considering a certain tolerance to account for possible production variations
+and measurement inaccuracies.
+
+The detection of boxes runs in several steps. First, the point cloud is segmented into
+preferably plane clusters. Then, straight line segments are detected in the 2D images
+and projected onto the corresponding clusters. The clusters and the detected lines are
+visualized in the "Surfaces" visualization
+on the |webgui|'s *BoxPick* page. Finally, for each cluster, the set of
+rectangles best fitting to the detected line segments is extracted.
+
+Optionally, further information can be given to the BoxPick module:
+
+- The ID of the load carrier which contains the items to be detected.
+- A compartment inside the load carrier where to detect items.
+- The ID of the region of interest where to search for the load carriers if a
+  load carrier is set.
+  Otherwise, the ID of the region of interest where to search for the items.
+- The current robot pose in case the camera is mounted on the robot and
+  the chosen coordinate frame for the poses is ``external`` or the chosen
+  region of interest is defined in the external frame.
+
+The returned ``pose`` of a detected ``item`` is the pose of the center of the detected rectangle in the
+desired reference frame (``pose_frame``), with its z axis pointing towards the camera.
+Each detected item includes a ``uuid`` (Universally Unique Identifier) and the
+``timestamp`` of the oldest image that was used to detect it.
+
+.. _sect-itempick-compute-grasps:
+
+Computation of grasps
+---------------------
+
+.. index::
+   single: BoxPick; grasp
+   single: ItemPick; grasp
+   single: BoxPick; grasp sorting
+   single: ItemPick; grasp sorting
+
+The ItemPick and BoxPick modules offer a service for computing grasps for
+suction grippers. The gripper is defined by its suction surface length and width.
+
+The ItemPick module identifies flat surfaces in the scene and supports
+flexible and/or deformable items. The ``type`` of these ``item_models`` is
+called ``UNKNOWN`` since they don't need to have a standard geometrical shape.
+Optionally, the user can also specify the minimum and maximum size of the item.
+
+For BoxPick, the grasps are computed on the detected rectangular ``items``
+(see :ref:`sect-itempick-detect-items`:latex:`, Section \ref{itempick:sect-itempick-detect-items}`).
+
+Optionally, further information can be given to the modules in a grasp
+computation request:
+
+- The ID of the load carrier which contains the items to be grasped.
+- A compartment inside the load carrier where to compute grasps
+  (see :ref:`sect-loadcarrier-compartment`:latex:`, Section \ref{loadcarrier_db:sect-loadcarrier-compartment}`).
+- The ID of the 3D region of interest where to search for the load carriers if a
+  load carrier is set.
+  Otherwise, the ID of the 3D region of interest where to compute grasps.
+- Collision detection information: The ID of the gripper to enable collision checking and optionally
+  a pre-grasp offset to define a pre-grasp position.
+  Details on collision
+  checking are given below in :ref:`sect-itempick-collision-check-dep`:latex:`\:(Section \ref{itempick:sect-itempick-collision-check-dep})`.
+
+
+A grasp provided by the ItemPick and BoxPick modules represents the recommended
+pose of the TCP (Tool Center Point) of the suction gripper.
+The grasp ``type`` is always set to ``SUCTION``.
+The computed grasp pose is the center of the biggest ellipse that can be inscribed in
+each surface.
+The grasp orientation is a right-handed coordinate system and is defined such
+that its z axis is normal to the surface pointing inside the object at the grasp position and
+its x axis is directed along the maximum elongation of the ellipse.
+
+.. _fig-itempick-grasp-surface:
+.. figure:: images/itempick_grasp_surface.png
+   :width: 300 px
+   :align: center
+
+   Illustration of suction grasp with coordinate system and ellipse representing
+   the maximum suction surface.
+
+Each grasp includes the dimensions of the maximum suction surface available,
+modelled as an ellipse of axes ``max_suction_surface_length`` and
+``max_suction_surface_width``. The user is enabled to filter grasps by specifying
+the minimum suction surface required by the suction device in use.
+
+In the BoxPick module, the grasp position corresponds to the center of the detected
+rectangle and the dimensions of the maximum suction surface available matches the estimated
+rectangle dimensions. Detected rectangles with missing data or occlusions by other objects for more
+than 15% of their surface do not get an associated grasp.
+
+Each grasp also includes a ``quality`` value, which gives an
+indication of the flatness of the grasping surface.
+The ``quality`` value varies between 0 and 1, where higher numbers correspond to a
+flatter reconstructed surface.
+
+.. In case of multi-cup suction devices, the suction surface
+.. is expected to cover all suction elements.
+
+The grasp definition is complemented by a ``uuid`` (Universally Unique Identifier)
+and the ``timestamp`` of the oldest image that was used to compute the grasp.
+
+Grasp sorting is performed based on the selected sorting strategy. The following sorting strategies
+are available and can be set in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+or using the ``set_sorting_strategies`` service call:
+
+- ``gravity``: highest grasp points along the gravity direction are returned first,
+- ``surface_area``: grasp points with the largest surface area are returned first,
+- ``direction``: grasp points with the shortest distance along a defined direction ``vector`` in a given ``pose_frame`` are returned first.
+
+If no sorting strategy is set or default sorting is chosen in the |webgui|, sorting is done based on a combination of
+``gravity`` and ``surface_area``.
+
+.. _sect-itempick-dependencies:
+
+Interaction with other modules
+------------------------------
+
+Internally, the ItemPick and BoxPick modules depend on, and interact with other on-board
+modules as listed below.
+
+.. Note::
+  All changes and configuration updates to these modules will affect
+  the performance of the ItemPick and BoxPick modules.
+
+.. For each load carrier detection and grasp computation, the ItemPick module
+.. acquires datasets of synchronized images and estimates the gravity vector.
+.. The data acquisition step normally takes between 500 ms and 600 ms
+.. with "High" depth image quality.
+
+.. _sect-itempick-stereo-camera-matching:
+
+Stereo camera and Stereo matching
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ItemPick and BoxPick modules make internally use of the following data:
+
+- Rectified images from the :doc:`stereo_camera` module
+  (``rc_camera``:latex:`, Section \ref{stereo_camera:sect-stereo-camera}`);
+
+- Disparity, error, and confidence images from the :doc:`stereo_matching` module
+  (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`).
+
+All processed images are guaranteed to be captured after the module trigger time.
+
+.. _sect-itempick-iocontrol-dep:
+
+IO and Projector Control
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+In case the |rc_xxx| is used in conjunction with an external random dot projector and
+the :doc:`iocontrol` module (``rc_iocontrol``:latex:`, Section \ref{iocontrol:sect-iocontrol}`),
+it is recommended to connect the projector to GPIO Out 1 and set
+the stereo-camera module's acquisition mode to ``SingleFrameOut1``
+(see :ref:`Stereo matching parameters<sect-disp-image-parameters>`:latex:`, Section \ref{stereo_matching:sect-disp-image-parameters}`), so that
+on each image acquisition trigger an image with and without projector pattern is acquired.
+
+Alternatively, the output mode for the GPIO output in use should be set to ``ExposureAlternateActive``
+(see :ref:`sect-iocontrol-params`:latex:`, Section \ref{iocontrol:sect-iocontrol-params}`).
+
+In either case,
+the *Auto Exposure Mode* ``exp_auto_mode`` should be set to ``AdaptiveOut1`` to optimize the exposure
+of both images (see :ref:`Stereo camera parameters<sect-cam-params>`:latex:`, Section \ref{stereo_camera:sect-cam-params}`).
+
+.. _sect-itempick-hand-eye-dep:
+
+Hand-eye calibration
+^^^^^^^^^^^^^^^^^^^^
+
+In case the camera has been calibrated to a robot, the ItemPick and BoxPick modules
+can automatically provide poses in the robot coordinate frame.
+For the ItemPick and BoxPick nodes' :ref:`sect-itempick-services`:latex:`\:(Section \ref{itempick:sect-itempick-services})`, the frame of the
+output poses can be controlled with the ``pose_frame`` argument.
+
+Two different ``pose_frame`` values can be chosen:
+
+1. **Camera frame** (``camera``).
+   All poses provided by the modules are in the camera frame,
+   and no prior knowledge about the pose of the camera in the environment is required.
+   This means that the configured regions of interest and load carriers move with the camera.
+   It is the user's responsibility to update the configured poses
+   if the camera frame moves (e.g. with a robot-mounted camera).
+
+2. **External frame** (``external``).
+   All poses provided by the modules are in the external frame,
+   configured by the user during the hand-eye calibration process.
+   The module relies on the on-board
+   :doc:`Hand-eye calibration module<handeye_calibration>`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`
+   to retrieve the sensor mounting (static or robot mounted) and
+   the hand-eye transformation.
+   If the mounting is static, no further information is needed.
+   If the sensor is robot-mounted, the ``robot_pose`` is required
+   to transform poses to and from the ``external`` frame.
+
+.. Note::
+   If no hand-eye calibration is available, all ``pose_frame`` values should be set to ``camera``.
+
+All ``pose_frame`` values that are not ``camera`` or ``external`` are rejected.
+
+If the sensor is robot-mounted, the current ``robot_pose`` has to be provided depending on the value of ``pose_frame``
+and the definition of the sorting direction:
+
+- If ``pose_frame`` is set to ``external``, providing the robot pose is obligatory.
+- If the sorting direction is defined in ``external``, providing the robot pose is obligatory.
+- In all other cases, providing the robot pose is optional.
+
+.. _sect-itempick-load-carrier-dep:
+
+LoadCarrier
+^^^^^^^^^^^
+
+The ItemPick and BoxPick modules use the load carrier detection functionality provided by the
+:doc:`loadcarrier` module (``rc_load_carrier``:latex:`, Section \ref{loadcarrier:sect-loadcarrier}`),
+with the run-time parameters specified for this module. However, only one load carrier will be
+returned and used in case multiple matching load carriers could be found in the scene. In case multiple
+load carriers of the same type are visible, a 3D region of interest should be set to ensure that always the
+same load carrier is used for the ItemPick and BoxPick modules.
+
+.. _sect-itempick-collision-check-dep:
+
+CollisionCheck
+^^^^^^^^^^^^^^
+
+Collision checking can be easily enabled for
+grasp computation of the ItemPick and BoxPick modules by passing the ID of the used gripper and
+optionally a pre-grasp offset to the
+``compute_grasps`` service call. The gripper has to be
+defined in the GripperDB module
+(see :ref:`sect-gripper-db-gripper`:latex:`, Section \ref{gripper_db:sect-gripper-db-gripper}`)
+and details about collision checking are given in :ref:`sect-collision-check-other-modules`:latex:`\:(Section \ref{collisioncheck:sect-collision-check-other-modules})`.
+
+If collision checking is enabled, only grasps which are collision free will be returned.
+However, the visualization images on the *ItemPick* or *BoxPick*
+page of the |webgui| also show colliding grasp points as black ellipses.
+
+The CollisionCheck module's run-time parameters affect the collision detection as described in
+:ref:`CollisionCheck Parameters<sect-collisioncheck-parameters>`:latex:`\:(Section \ref{collisioncheck:sect-collisioncheck-parameters})`.
+
+
+.. _sect-itempick-parameters:
+
+Parameters
+----------
+
+.. index::
+   single: BoxPick; parameters
+   single: ItemPick; parameters
+
+The ItemPick and BoxPick modules are called ``rc_itempick`` and ``rc_boxpick``
+in the |rest-api| and are represented in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+:cubeonly:`in the desired pipeline` under
+:menuselection:`Modules --> ItemPick` and :menuselection:`Modules --> BoxPick`.
+The user can explore and configure the ``rc_itempick`` and ``rc_boxpick``
+module's run-time parameters, e.g. for development and testing, using the |webgui| or the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. only:: rc_cube
+
+   .. note:: The default values in the parameter table
+             below show the values of the |rc_visard|. The values can be
+             different for other sensors.
+
+.. include:: _gen/nodes/params/rc_itempick_split.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the |webgui|'s *ItemPick* or *BoxPick* page.
+The name in the |webgui| is given in brackets behind the parameter name and the parameters are
+listed in the order they appear in the |webgui|:
+
+.. _expl-itempick-max-grasps:
+
+``max_grasps`` (*Maximum Grasps*)
+'''''''''''''''''''''''''''''''''
+    sets the maximum number of provided grasps.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/<rc_itempick|rc_boxpick>/parameters/parameters?max_grasps=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_itempick|rc_boxpick>/parameters?max_grasps=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/parameters?max_grasps=<value>
+
+.. _expl-itempick-cluster-max-dimension:
+
+``cluster_max_dimension`` (**Only for ItemPick**, *Cluster Maximum Dimension*)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    is the maximum allowed diameter for a cluster in meters. Clusters with a diameter larger than this value are not used for grasp computation.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?cluster_max_dimension=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_itempick/parameters?cluster_max_dimension=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_itempick/parameters?cluster_max_dimension=<value>
+
+.. _expl-itempick-cluster-max-curvature:
+
+``cluster_max_curvature`` (*Cluster Maximum Curvature*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    is the maximum curvature allowed within one cluster. The smaller this value, the more clusters will be split apart.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/<rc_itempick|rc_boxpick>/parameters/parameters?cluster_max_curvature=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_itempick|rc_boxpick>/parameters?cluster_max_curvature=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/parameters?cluster_max_curvature=<value>
+
+.. _expl-itempick-clustering-patch-size:
+
+``clustering_patch_size`` (**Only for ItemPick**, *Patch Size*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    is the size of the square patches the depth map is subdivided into during the first clustering step in pixels.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?clustering_patch_size=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_itempick/parameters?clustering_patch_size=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_itempick/parameters?clustering_patch_size=<value>
+
+.. _expl-itempick-clustering-discontinuity-factor:
+
+``clustering_discontinuity_factor`` (*Discontinuity Factor*)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    is the factor used to discriminate depth discontinuities within a patch. The smaller this value, the more clusters will be split apart.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/<rc_itempick|rc_boxpick>/parameters/parameters?clustering_discontinuity_factor=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_itempick|rc_boxpick>/parameters?clustering_discontinuity_factor=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/parameters?clustering_discontinuity_factor=<value>
+
+.. _expl-itempick-clustering-max-surface-rmse:
+
+``clustering_max_surface_rmse`` (*Maximum Surface RMSE*)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    is the maximum root-mean-square error (RMSE) in meters of points belonging to a surface.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/<rc_itempick|rc_boxpick>/parameters/parameters?clustering_max_surface_rmse=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_itempick|rc_boxpick>/parameters?clustering_max_surface_rmse=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/parameters?clustering_max_surface_rmse=<value>
+
+.. _expl-boxpick-mode:
+
+``mode`` (**Only for BoxPick**, *Mode*)
+'''''''''''''''''''''''''''''''''''''''
+    determines the mode of the rectangle detection. Possible values are ``Unconstrained`` and ``PackedGridLayout``.
+    In ``PackedGridLayout`` mode, rectangles of a cluster are detected in a dense grid pattern. This mode
+    is appropriate for many palletizing/de-palletizing scenarios.
+    In ``Unconstrained`` mode (default), rectangles are detected without posing any constraints on their relative locations.
+    :numref:`fig-boxpick-modes` illustrates the scenarios for the different modes.
+
+    .. _fig-boxpick-modes:
+    .. figure:: images/boxpick_modes.*
+       :width: 100%
+       :align: center
+
+       Illustration of appropriate scenarios for the available BoxPick modes
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?mode=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_boxpick/parameters?mode=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_boxpick/parameters?mode=<value>
+
+.. _expl-boxpick-manual-line-sensitivity:
+
+``manual_line_sensitivity`` (**Only for BoxPick**, *Manual Line Sensitivity*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    determines whether the user-defined line sensitivity should be used
+    to extract the lines for rectangle detection. If this
+    parameter is set to true, the user-defined ``line_sensitivity`` value
+    will be used. If this parameter is set to false, automatic line sensitivity
+    will be used. This parameter should be set to true when automatic line sensitivity
+    does not give enough lines at the box boundaries so that boxes cannot be detected.
+    The detected line segments are visualized in the "Surfaces" visualization on the
+    |webgui|'s *BoxPick* page.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?manual_line_sensitivity=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_boxpick/parameters?manual_line_sensitivity=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_boxpick/parameters?manual_line_sensitivity=<value>
+
+.. _expl-boxpick-line-sensitivity:
+
+``line_sensitivity`` (**Only for BoxPick**, *Line Sensitivity*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    determines the line sensitivity for extracting the lines for rectangle detection, if the
+    parameter ``manual_line_sensitivity`` is set to true. Otherwise, the value of this parameter
+    has no effect on the rectangle detection. Higher values give more line segments, but also
+    increase the runtime of the box detection. This parameter should be increased when boxes
+    cannot be detected because their boundary edges are not detected. The detected line segments
+    are visualized in the "Surfaces" visualization on the |webgui|'s *BoxPick* page.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?line_sensitivity=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_boxpick/parameters?line_sensitivity=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_boxpick/parameters?line_sensitivity=<value>
+
+.. _expl-boxpick-prefer-splits:
+
+``prefer_splits`` (**Only for BoxPick**, *Prefer Splits*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    determines whether rectangles should be split into smaller ones if the smaller ones also match the given
+    item models. This parameter should be set to true for packed box layouts in which the given item models
+    would also match a rectangle of the size of two adjoining boxes. If this parameter is set to false, the larger
+    rectangles will be preferred in these cases.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?prefer_splits=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_boxpick/parameters?prefer_splits=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_boxpick/parameters?prefer_splits=<value>
+
+
+.. _sect-itempick-status-values:
+
+Status values
+-------------
+
+.. index::
+   single: BoxPick; status
+   single: ItemPick; status
+
+The ``rc_itempick`` and ``rc_boxpick`` modules report the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_itempick`` and ``rc_boxpick`` modules status values
+	:header:  Name, Description
+
+	"``data_acquisition_time``","Time in seconds required by the last active service to acquire images"
+	"``grasp_computation_time``","Processing time of the last grasp computation in seconds"
+	"``last_timestamp_processed``","The timestamp of the last processed dataset"
+	"``load_carrier_detection_time``","Processing time of the last load carrier detection in seconds"
+	"``processing_time``","Processing time of the last detection (including load carrier detection) in seconds"
+	"``state``","The current state of the rc_itempick and rc_boxpick node"
+
+The reported ``state`` can take one of the following values.
+
+.. tabularcolumns:: |l|l|
+.. _tab-itempick-states:
+.. csv-table:: Possible states of the ItemPick and BoxPick modules
+	:header:  State name, Description
+
+	"IDLE", "The module is idle."
+	"RUNNING", "The module is running and ready for load carrier detection and grasp computation."
+	"FATAL", "A fatal error has occurred."
+
+.. _sect-itempick-services:
+
+Services
+--------
+
+.. index::
+   single: BoxPick; services
+   single: ItemPick; services
+
+The user can explore and call the ``rc_itempick`` and ``rc_boxpick`` module's services,
+e.g. for development and testing, using the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |rc_xxx|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+The ItemPick and BoxPick modules offer the following services.
+
+.. _expl-itempick-srv-detect-items:
+
+``detect_items`` (BoxPick only)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   Triggers the detection of rectangles as described in
+   :ref:`sect-itempick-detect-items`:latex:`\:(Section \ref{itempick:sect-itempick-detect-items})`.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/services/detect_items
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_boxpick/services/detect_items
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_boxpick/services/detect_items
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Required arguments:
+
+               ``pose_frame``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+               ``item_models``: list of rectangles with minimum and maximum size, with the
+               minimum dimensions strictly smaller than the maximum dimensions.
+               The type of each item model must be ``RECTANGLE``.
+               The dimensions should be given fairly accurately to avoid misdetections,
+               while still considering a certain tolerance to account for possible production variations
+               and measurement inaccuracies.
+
+            Potentially required arguments:
+
+               ``robot_pose``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+            Optional arguments:
+
+               ``load_carrier_id``: ID of the load carrier which contains the items to be detected.
+
+               ``load_carrier_compartment``: compartment inside the load carrier where to detect items
+               (see :ref:`sect-loadcarrier-compartment`:latex:`, Section \ref{loadcarrier_db:sect-loadcarrier-compartment}`).
+
+               ``region_of_interest_id``: if ``load_carrier_id`` is set,
+               ID of the 3D region of interest where to search for the load carriers.
+               Otherwise, ID of the 3D region of interest where to search for the items.
+
+            .. include:: _gen/nodes/services/rc_boxpick_detect_items_request.txt
+
+
+         .. tab:: **Response**
+
+            ``load_carriers``: list of detected load carriers.
+
+            ``items``: list of detected rectangles.
+
+            ``timestamp``: timestamp of the image set the detection ran on.
+
+            ``return_code``: holds possible warnings or error codes and messages.
+
+            .. include:: _gen/nodes/services/rc_boxpick_detect_items_response.txt
+
+.. _expl-itempick-srv-compute-grasps:
+
+``compute_grasps`` (for ItemPick)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers the computation of grasping poses for a suction device as described in
+   :ref:`sect-itempick-compute-grasps`:latex:`\:(Section \ref{itempick:sect-itempick-compute-grasps})`.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/services/compute_grasps
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_itempick/services/compute_grasps
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_itempick/services/compute_grasps
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Required arguments:
+
+               ``pose_frame``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+               ``suction_surface_length``: length of the suction device grasping surface.
+
+               ``suction_surface_width``: width of the suction device grasping surface.
+
+            Potentially required arguments:
+
+               ``robot_pose``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+            Optional arguments:
+
+               ``load_carrier_id``: ID of the load carrier which contains the items to be grasped.
+
+               ``load_carrier_compartment``: compartment inside the load carrier where to compute grasps
+               (see :ref:`sect-loadcarrier-compartment`:latex:`, Section \ref{loadcarrier_db:sect-loadcarrier-compartment}`).
+
+               ``region_of_interest_id``: if ``load_carrier_id`` is set,
+               ID of the 3D region of interest where to search for the load carriers.
+               Otherwise, ID of the 3D region of interest where to compute grasps.
+
+               ``item_models``: list of unknown items with minimum and maximum dimensions, with the
+               minimum dimensions strictly smaller than the maximum dimensions.
+               Only one ``item_model`` of type ``UNKNOWN`` is currently supported.
+
+               ``collision_detection``: see :ref:`sect-collision-check-other-modules`:latex:`\:(Section \ref{collisioncheck:sect-collision-check-other-modules})`.
+
+            .. include:: _gen/nodes/services/rc_itempick_compute_grasps_request.txt
+
+
+         .. tab:: **Response**
+
+            ``load_carriers``: list of detected load carriers.
+
+            ``grasps``: sorted list of suction grasps.
+
+            ``timestamp``: timestamp of the image set the detection ran on.
+
+            ``return_code``: holds possible warnings or error codes and messages.
+
+            .. include:: _gen/nodes/services/rc_itempick_compute_grasps_response.txt
+
+
+
+.. _expl-itempick-srv-compute-grasps-boxpick:
+
+``compute_grasps`` (for BoxPick)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers the detection of rectangles and the computation of grasping poses
+   for the detected rectangles as described in
+   :ref:`sect-itempick-compute-grasps`:latex:`\:(Section \ref{itempick:sect-itempick-compute-grasps})`.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/services/compute_grasps
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_boxpick/services/compute_grasps
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_boxpick/services/compute_grasps
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Required arguments:
+
+               ``pose_frame``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+               ``item_models``: list of rectangles with minimum and maximum size, with the
+               minimum dimensions strictly smaller than the maximum dimensions.
+               The type of each item model must be ``RECTANGLE``.
+               The dimensions should be given fairly accurately to avoid misdetections,
+               while still considering a certain tolerance to account for possible production variations
+               and measurement inaccuracies.
+
+               ``suction_surface_length``: length of the suction device grasping surface.
+
+               ``suction_surface_width``: width of the suction device grasping surface.
+
+            Potentially required arguments:
+
+               ``robot_pose``: see :ref:`sect-itempick-hand-eye-dep`:latex:`\:(Section \ref{itempick:sect-itempick-hand-eye-dep})`.
+
+            Optional arguments:
+
+               ``load_carrier_id``: ID of the load carrier which contains the items to be grasped.
+
+               ``load_carrier_compartment``: compartment inside the load carrier where to compute grasps
+               (see :ref:`sect-loadcarrier-compartment`:latex:`, Section \ref{loadcarrier_db:sect-loadcarrier-compartment}`).
+
+               ``region_of_interest_id``: if ``load_carrier_id`` is set,
+               ID of the 3D region of interest where to search for the load carriers.
+               Otherwise, ID of the 3D region of interest where to compute grasps.
+
+               ``collision_detection``: see :ref:`sect-collision-check-other-modules`:latex:`\:(Section \ref{collisioncheck:sect-collision-check-other-modules})`.
+
+            .. include:: _gen/nodes/services/rc_boxpick_compute_grasps_request.txt
+
+
+         .. tab:: **Response**
+
+            ``load_carriers``: list of detected load carriers.
+
+            ``items``: list of detected rectangles.
+
+            ``grasps``: sorted list of suction grasps.
+
+            ``timestamp``: timestamp of the image set the detection ran on.
+
+            ``return_code``: holds possible warnings or error codes and messages.
+
+            .. include:: _gen/nodes/services/rc_boxpick_compute_grasps_response.txt
+
+
+.. _expl-itempick-srv-set-sorting-strategies:
+
+``set_sorting_strategies``
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores the sorting strategy for sorting the grasps returned by the ``compute_grasps`` service
+   (see :ref:`sect-itempick-compute-grasps`:latex:`, Section \ref{itempick:sect-itempick-compute-grasps}`).
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/<rc_itempick|rc_boxpick>/services/set_sorting_strategies
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_itempick|rc_boxpick>/services/set_sorting_strategies
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/services/set_sorting_strategies
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Only one strategy may have a ``weight`` greater than 0. If all ``weight`` values are set to 0, the module will use the
+            default sorting strategy.
+
+            If the weight for ``direction`` is set, the
+            ``vector`` must contain the direction vector and ``pose_frame`` must be either ``camera`` or ``external``.
+
+            .. include:: _gen/nodes/services/rc_itempick_set_sorting_strategies_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_itempick_set_sorting_strategies_response.txt
+
+.. _expl-itempick-srv-get-sorting-strategies:
+
+``get_sorting_strategies``
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the sorting strategy for sorting the grasps returned by the ``compute-grasps`` service
+   (see :ref:`sect-itempick-compute-grasps`:latex:`, Section \ref{itempick:sect-itempick-compute-grasps}`).
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/<rc_itempick|rc_boxpick>/services/get_sorting_strategies
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_itempick|rc_boxpick>/services/get_sorting_strategies
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/services/get_sorting_strategies
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_itempick_get_sorting_strategies_request.txt
+
+         .. tab:: **Response**
+
+            All ``weight`` values are 0 when the module uses the default sorting strategy.
+
+            .. include:: _gen/nodes/services/rc_itempick_get_sorting_strategies_response.txt
+
+.. _expl-itempick-srv-start:
+
+``start``
+^^^^^^^^^
+
+   Starts the module. If the command is accepted, the module moves to state ``RUNNING``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/<rc_itempick|rc_boxpick>/services/start
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_itempick|rc_boxpick>/services/start
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/services/start
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_itempick_start_request.txt
+
+         .. tab:: **Response**
+
+            The ``current_state`` value in the service response may differ from ``RUNNING`` if
+            the state transition is still in process when the service returns.
+
+            .. include:: _gen/nodes/services/rc_itempick_start_response.txt
+
+.. _expl-itempick-srv-stop:
+
+``stop``
+^^^^^^^^
+
+   Stops the module. If the command is accepted, the module moves to state ``IDLE``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/<rc_itempick|rc_boxpick>/services/stop
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_itempick|rc_boxpick>/services/stop
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/services/stop
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_itempick_stop_request.txt
+
+         .. tab:: **Response**
+
+            The ``current_state`` value in the service response may differ from ``IDLE`` if
+            the state transition is still in process when the service returns.
+
+            .. include:: _gen/nodes/services/rc_itempick_stop_response.txt
+
+.. only:: rc_cube
+
+   .. _expl-itempick-srv-trigger-dump:
+
+   ``trigger_dump``
+   ^^^^^^^^^^^^^^^^
+      Triggers dumping of the detection that corresponds to the given timestamp, 
+      or the latest detection, if no timestamp is given. The dumps are saved to the
+      connected USB drive.
+
+      .. toggle-header::
+         :header: **Details**
+
+         This service can be called as follows.
+
+         .. tabs::
+
+            .. tab:: **API version 2**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_itempick|rc_boxpick>/services/trigger_dump
+
+            .. tab:: **API version 1 (deprecated)**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/services/trigger_dump
+
+         .. tabs::
+
+            .. tab:: **Request**
+
+               .. include:: _gen/nodes/services/<rc_itempick|rc_boxpick>_trigger_dump_request.txt
+
+            .. tab:: **Response**
+
+               .. include:: _gen/nodes/services/<rc_itempick|rc_boxpick>_trigger_dump_response.txt
+
+
+.. _expl-itempick-srv-reset-params:
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Resets all parameters of the module to its default values,
+   as listed in above table. The reset does not apply to sorting strategies.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/<rc_itempick|rc_boxpick>/services/reset_defaults
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_itempick|rc_boxpick>/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_itempick_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_itempick_reset_defaults_response.txt
+
+.. _expl-itempick-srv-set-roi:
+
+``set_region_of_interest`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a 3D region of interest on the |rc_xxx|.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            This service is not available in API version 2.
+            Use :ref:`expl-roi-srv-set-roi`:latex:`\:(Section \ref{roi:expl-roi-srv-set-roi})` in ``rc_roi_db`` instead.
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/services/set_region_of_interest
+
+.. _expl-itempick-srv-get-roi:
+
+``get_regions_of_interest`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured 3D regions of interest with the requested ``region_of_interest_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            This service is not available in API version 2.
+            Use :ref:`expl-roi-srv-get-roi`:latex:`\:(Section \ref{roi:expl-roi-srv-get-roi})` in ``rc_roi_db`` instead.
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/services/get_regions_of_interest
+
+.. _expl-itempick-srv-delete-roi:
+
+``delete_regions_of_interest`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured 3D regions of interest with the requested ``region_of_interest_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            This service is not available in API version 2.
+            Use :ref:`expl-roi-srv-delete-roi`:latex:`\:(Section \ref{roi:expl-roi-srv-delete-roi})` in ``rc_roi_db`` instead.
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_itempick|rc_boxpick>/services/delete_regions_of_interest
+
+
+.. _sect-itempick-return-codes:
+
+Return codes
+------------
+
+.. index::
+   pair: ItemPick; return codes
+   pair: BoxPick; return codes
+
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common codes:
+
+.. tabularcolumns:: |c|L|
+.. _tab-itempick-return-codes:
+.. csv-table:: Return codes of the ItemPick and BoxPick services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+    "-3",   "An internal timeout occurred, e.g. during box detection if the given dimension range is too large"
+    "-4",   "Data acquisition took longer than allowed"
+    "-10",  "New element could not be added as the maximum storage capacity of load carriers or regions of interest has been exceeded"
+    "-11",  "Sensor not connected, not supported or not ready"
+    "-200", "Fatal internal error"
+    "-301", "More than one item model of type ``UNKNOWN`` provided to the ``compute_grasps`` service"
+    "10",   "The maximum storage capacity of load carriers or regions of interest has been reached"
+    "11",   "An existent persistent model was overwritten by the call to ``set_load_carrier`` or ``set_region_of_interest``"
+    "100",  "The requested load carriers were not detected in the scene"
+    "101",  "No valid surfaces or grasps were found in the scene"
+    "102",  "The detected load carrier is empty"
+    "103",  "All computed grasps are in collision with the load carrier"
+    "300",  "A valid ``robot_pose`` was provided as argument but it is not required"
+    "999",  "Additional hints for application development"
+

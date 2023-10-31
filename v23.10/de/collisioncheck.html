@@ -1,0 +1,1279 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>CollisionCheck &mdash; rc_visard NG 23.10.2-1-gead13e42
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/sphinx_tabs/tabs.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/contentui.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard NG 23.10.2-1-gead13e42
+ Dokumentation" href="index.html"/>
+        <link rel="up" title="Konfigurationsmodule" href="configuration_modules.html"/>
+        <link rel="next" title="Kamerakalibrierung" href="camera_calibration.html"/>
+        <link rel="prev" title="Hand-Auge-Kalibrierung" href="handeye_calibration.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard NG
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                23.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="disposal.html">Informationen zur Entsorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Aufspüren von <em>rc_visard NG</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host-Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werksseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Messprinzipien</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereovision</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Softwaremodule</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="camera_modules.html">3D-Kamera-Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html">Kamera</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#rectification">Rektifizierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#viewing-and-downloading-images">Anzeigen und Herunterladen von Bildern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html">Stereo-Matching</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#viewing-and-downloading-images-and-point-clouds">Anzeigen und Herunterladen von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="detection_modules.html">Detektionsmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">LoadCarrier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Erkennung von Load Carriern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Füllstandserkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-reading">Tagerkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag-Wiedererkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html">ItemPick und BoxPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detection-of-items-boxpick">Erkennung von Rechtecken (BoxPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="configuration_modules.html">Konfigurationsmodule</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Kameramontage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CollisionCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#collision-checking">Kollisionsprüfung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html">IOControl und Projektor-Kontrolle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database_modules.html">Datenbankmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier_db.html">LoadCarrierDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-definition">Load Carrier Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-compartments">Load Carrier Abteile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">RoiDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gripper_db.html">GripperDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#setting-a-gripper">Erstellen eines Greifers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#cad-element-api">CAD-Greiferelement API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Web GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#accessing-the-web-gui">Zugriff auf die Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#exploring-the-web-gui">Kennenlernen der Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#web-gui-access-control">Web GUI Zugriffskontrolle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-camera-images">Herunterladen von Kamerabildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Herunterladen von Tiefenbildern und Punktwolken</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_userspace.html">UserSpace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#example-applications">Beispielanwendungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Fehlerbehebung</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC Bilddatenschnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC Servicedefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Beispielclient</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#setting-time-manually">Manuelles Setzen der Zeit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userspace.html">UserSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configuration">Konfiguration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#network-access-to-userspace-applications">Netzwerkzugriff auf die UserSpace Anwendungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#restrictions">Einschränkungen</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Backup der Einstellungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard NG</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#pose-formats">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_rt.html">Rotationsmatrix und Translationsvektor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-rotation-matrix-to-quaternion">Umrechnung von Rotationsmatrizen in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-quaternion-to-rotation-matrix">Umrechnung von Quaternionen in Rotationsmatrizen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_abb.html">ABB Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fanuc.html">FANUC XYZ-WPR Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-fanuc-wpr-to-quaternion">Umrechnung von FANUC-WPR in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-quaternion-to-fanuc-wpr">Umrechnung von Quaternionen in FANUC-WPR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_franka_emika.html">Franka Emika Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-transformation-matrix-to-quaternion">Umrechnung von Transformation in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-rotation-xyz-to-quaternion">Umrechnung von Rotation-XYZ in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-and-translation-to-transformation">Umrechnung von Quaternion und Translation in Transformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-to-rotation-xyz">Umrechnung von Quaternion in Rotation-XYZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#pose-representation-in-racecom-messages-and-state-machines">Posenrepräsentation in RaceCom Messages und Statemachines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fruitcore_horst.html">Fruitcore HORST Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kawasaki.html">Kawasaki XYZ-OAT Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-kawasaki-oat-to-quaternion">Umrechnung von Kawasaki-OAT in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-quaternion-to-kawasaki-oat">Umrechnung von Quaternionen in Kawasaki-OAT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kuka.html">KUKA XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-kuka-abc-to-quaternion">Umrechnung von KUKA-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-quaternion-to-kuka-abc">Umrechnung von Quaternionen in KUKA-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_mitsubishi.html">Mitsubishi XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-mitsubishi-abc-to-quaternion">Umrechnung von Mitsubishi-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-quaternion-to-mitsubishi-abc">Umrechnung von Quaternionen in Mitsubishi-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_ur.html">Universal Robots Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-angle-axis-format-to-quaternion">Umrechnung vom Angle-Axis Format in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-quaternion-to-angle-axis-format">Umrechnung von Quaternionen ins Angle-Axis Format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_yaskawa.html">Yaskawa Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-yaskawa-rx-ry-rz-to-quaternion">Umrechnung von Yaskawa Rx, Ry, Rz in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-quaternion-to-yaskawa-rx-ry-rz">Umrechnung von Quaternionen in Yaskawa Rx, Ry, Rz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard NG</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">rc_visard NG</a> &gt;</li>
+        
+          <li><a href="modules.html">Softwaremodule</a> &gt;</li>
+        
+          <li><a href="configuration_modules.html">Konfigurationsmodule</a> &gt;</li>
+        
+      <li>CollisionCheck</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="collisioncheck">
+<span id="sect-collision"></span><h1>CollisionCheck<a class="headerlink" href="#collisioncheck" title="Link zu dieser Überschrift">¶</a></h1>
+<div class="section" id="introduction">
+<span id="index-0"></span><h2>Einleitung<a class="headerlink" href="#introduction" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Das CollisionCheck Modul ist ein optionales Modul, welches intern auf dem <em>rc_visard NG</em> läuft, und ist freigeschaltet, sobald eine gültige Lizenz für eines der Module <a class="reference internal" href="itempick.html#sect-itempick"><span class="std std-ref">ItemPick und BoxPick</span></a> oder <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a> vorhanden ist. Andernfalls benötigt dieses Modul eine separate <a class="reference internal" href="maintenance.html#sect-updating-license"><span class="std std-ref">Lizenz</span></a>.</p>
+<p>Das Modul ermöglicht die Kollisionsprüfung zwischen dem Greifer und dem Load Carrier,  oder anderen detektierten Objekten (nur in Kombination mit <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a>). Es ist in die Module <a class="reference internal" href="itempick.html#sect-itempick"><span class="std std-ref">ItemPick und BoxPick</span></a> und <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a> integriert, kann aber auch als eigenständiges Modul genutzt werden. Die Greifermodelle für die Kollisionsprüfung müssen über das <a class="reference internal" href="gripper_db.html"><span class="doc">GripperDB</span></a> Modul definiert werden.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Es werden nur Kollisionen zwischen dem Load Carrier und dem Greifer geprüft, aber nicht Kollisionen mit dem Roboter, dem Flansch, anderen Objekten oder dem Objekt im Greifer. Nur in Kombination mit <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a>, und nur wenn das gewählte Template eine Kollisionsgeometrie enthält und <code class="docutils literal notranslate"><span class="pre">check_collisions_with_matches</span></code> im entsprechenden Modul aktiviert ist, werden auch Kollisionen zwischen dem Greifer und den anderen <em>detektierten</em> Objekten geprüft. Kollisionen mit Objekten, die nicht detektiert werden können, werden nicht geprüft.</p>
+</div>
+<span id="tab-collisioncheck-spec"></span><table border="1" class="docutils" id="spezifikationen-des-collisioncheck-moduls">
+<caption><span class="caption-number">Tab. 39 </span><span class="caption-text">Spezifikationen des CollisionCheck-Moduls</span><a class="headerlink" href="#spezifikationen-des-collisioncheck-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Kollisionsprüfung mit</td>
+<td>detektierter Load Carrier, detektierte Objekte (nur <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a>), Basisebene (nur <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a>)</td>
+</tr>
+<tr class="row-even"><td>Kollisionsprüfung verfügbar in</td>
+<td><a class="reference internal" href="itempick.html#sect-itempick"><span class="std std-ref">ItemPick und BoxPick</span></a>, <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="collision-checking">
+<h2>Kollisionsprüfung<a class="headerlink" href="#collision-checking" title="Link zu dieser Überschrift">¶</a></h2>
+<div class="section" id="stand-alone-collision-checking">
+<span id="sect-collision-check-pre-grasp-offset"></span><h3>Stand-Alone Kollisionsprüfung<a class="headerlink" href="#stand-alone-collision-checking" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Der Service <code class="docutils literal notranslate"><span class="pre">check_collisions</span></code> triggert die Kollisionsprüfung zwischen dem angegebenen Greifer und dem angegebenen Load Carrier für jeden der übergebenen Greifpunkte. Eine Kollisionsprüfung mit anderen Objekten  ist nicht möglich. Das CollisionCheck-Modul überprüft, ob sich der Greifer in Kollision mit mindestens einem Load Carrier befindet, wenn sich der TCP an der Greifposition befindet. Es können mehrere Load Carrier gleichzeitig getestet werden. Der Griff wird als Kollision markiert, wenn es mit mindestens einem der definierten Load Carriern zu einer Kollision kommen würde.</p>
+<p>Das Argument <code class="docutils literal notranslate"><span class="pre">pre_grasp_offset</span></code> (Greif-Offset) kann für eine erweiterte Kollisionsprüfung genutzt werden. Der Greif-Offset <span class="math notranslate nohighlight">\(P_{off}\)</span> ist der Offset vom Greifpunkt <span class="math notranslate nohighlight">\(P_{grasp}\)</span> zur Vorgreifposition <span class="math notranslate nohighlight">\(P_{pre}\)</span> im Koordinatensystem des Greifpunkts (siehe <a class="reference internal" href="#fig-collision-check-pre-grasp-offset"><span class="std std-numref">Abb. 40</span></a>). Wenn der Greif-Offset angegeben wird, werden Greifpunkte auch dann als Kollisionen erkannt, wenn der Greifer an einem beliebigen Punkt während der linearen Bewegung zwischen Vorgreifposition und Greifposition in Kollision geraten würde.</p>
+<div class="figure align-center" id="id1">
+<span id="fig-collision-check-pre-grasp-offset"></span><a class="reference internal image-reference" href="_images/pre_grasp_offset.svg"><img alt="_images/pre_grasp_offset.svg" src="_images/pre_grasp_offset.svg" width="300px" /></a>
+<p class="caption"><span class="caption-number">Abb. 40 </span><span class="caption-text">Darstellung des Greif-Offsets für die Kollisionsprüfung. Im dargestellten Fall sind sowohl die Vorgreifposition als auch die Greifposition kollisionsfrei, aber die Trajektorie zwischen diesen Punkten hätte eine Kollision mit dem Load Carrier. Deswegen wird dieser Greifpunkt als Kollision erkannt.</span></p>
+</div>
+</div>
+<div class="section" id="collision-checking-within-other-modules">
+<span id="sect-collision-check-other-modules"></span><h3>Integrierte Kollisionsprüfung in anderen Modulen<a class="headerlink" href="#collision-checking-within-other-modules" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Die Kollisionsprüfung ist in die Services der folgenden Softwaremodule integriert:</p>
+<ul class="simple">
+<li><a class="reference internal" href="itempick.html#sect-itempick"><span class="std std-ref">ItemPick und BoxPick</span></a>: <code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> (siehe <a class="reference internal" href="itempick.html#expl-itempick-srv-compute-grasps"><span class="std std-ref">compute_grasps für ItemPick</span></a> und <a class="reference internal" href="itempick.html#expl-itempick-srv-compute-grasps-boxpick"><span class="std std-ref">compute_grasps für BoxPick</span></a>)</li>
+<li><a class="reference internal" href="silhouettematch.html#sect-silhouettematch"><span class="std std-ref">SilhouetteMatch</span></a>: <code class="docutils literal notranslate"><span class="pre">detect_object</span></code> (siehe <a class="reference internal" href="silhouettematch.html#expl-silhouettematch-srv-detect-objects"><span class="std std-ref">detect_object</span></a>)</li>
+</ul>
+<p>Jedem dieser Services kann ein <code class="docutils literal notranslate"><span class="pre">collision_detection</span></code>-Argument übergeben werden, das aus der ID des Greifers (<code class="docutils literal notranslate"><span class="pre">gripper_id</span></code>) und optional aus dem Greif-Offset (<code class="docutils literal notranslate"><span class="pre">pre_grasp_offset</span></code>, siehe <a class="reference internal" href="#sect-collision-check-pre-grasp-offset"><span class="std std-ref">Stand-Alone Kollisionsprüfung</span></a>) besteht. Wenn das <code class="docutils literal notranslate"><span class="pre">collision_detection</span></code> Argument übergeben wird, liefern diese Services nur die Greifpunkte zurück, an denen der Greifer nicht in Kollision mit dem erkannten Load Carrier ist. Dazu muss dem jeweiligen Service auch die ID des zu erkennenden Load Carriers übergeben werden.</p>
+<p>Nur in <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a>, und nur wenn das gewählte Template eine Kollisionsgeometrie enthält und <code class="docutils literal notranslate"><span class="pre">check_collisions_with_matches</span></code> im SilhouetteMatch Modul aktiviert ist, werden auch Greifpunkte, bei denen der Greifer in Kollision mit anderen <em>detektierten</em> Objekten wäre, herausgefiltert. Dabei ist das Objekt, auf dem sich der jeweilige Greifpunkt befindet, von der Prüfung ausgenommen.</p>
+<p>Wenn ein Greifer für einen Greifpunkt in einem Template von <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a> definiert ist, wird dieser Greifer und nicht der im <code class="docutils literal notranslate"><span class="pre">collision_detection</span></code> Argument des <code class="docutils literal notranslate"><span class="pre">detect_object</span></code> Services angegebene Greifer zur Kollisionsprüfung dieses Greifpunkts verwendet (siehe <a class="reference internal" href="silhouettematch.html#sect-silhouettematch-grasps"><span class="std std-ref">Setzen von Greifpunkten</span></a>). Die vom <code class="docutils literal notranslate"><span class="pre">detect_object</span></code> Service  zurückgelieferten Greifpunkte enthalten ein Flag <code class="docutils literal notranslate"><span class="pre">collision_checked</span></code>, das angibt ob der jeweilige Greifpunkt auf Kollisionen geprüft wurde, und das Feld <code class="docutils literal notranslate"><span class="pre">gripper_id</span></code>. Wenn <code class="docutils literal notranslate"><span class="pre">collision_checked</span></code> true ist, enthält das Feld <code class="docutils literal notranslate"><span class="pre">gripper_id</span></code> die ID des Greifers, der für die Kollisionsprüfung dieses Greifpunkts verwendet wurde. Dies ist die ID des Greifers, der für den jeweiligen Greifpunkt definiert wurde, oder, falls kein Greifer definiert wurde, die ID des Greifers die im <code class="docutils literal notranslate"><span class="pre">collision_detection</span></code> Argument des Serviceaufrufs angegeben wurde. Wenn <code class="docutils literal notranslate"><span class="pre">collision_checked</span></code> false ist, enthält <code class="docutils literal notranslate"><span class="pre">gripper_id</span></code> die ID des Greifers, die für den Greifpunkt definiert wurde.</p>
+<p>In <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a> werden Kollisionen zwischen dem Greifer und der Basisebene geprüft, wenn der Parameter <code class="docutils literal notranslate"><span class="pre">check_collisions_with_base_plane</span></code> in SilhouetteMatch aktiviert ist.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Es werden nur Kollisionen zwischen dem Load Carrier und dem Greifer geprüft, aber nicht Kollisionen mit dem Roboter, dem Flansch, anderen Objekten oder dem Objekt im Greifer. Nur in Kombination mit <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a>, und nur wenn das gewählte Template eine Kollisionsgeometrie enthält und <code class="docutils literal notranslate"><span class="pre">check_collisions_with_matches</span></code> im entsprechenden Modul aktiviert ist, werden auch Kollisionen zwischen dem Greifer und den anderen <em>detektierten</em> Objekten geprüft. Kollisionen mit Objekten, die nicht detektiert werden können, werden nicht geprüft.</p>
+</div>
+<p>Die Kollisionsprüfung wird von Laufzeitparametern beeinflusst, die weiter unten aufgeführt und beschrieben werden.</p>
+</div>
+</div>
+<div class="section" id="parameters">
+<h2>Parameter<a class="headerlink" href="#parameters" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Das CollisionCheck-Modul wird in der REST-API als <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code> bezeichnet und in der <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>  unter <span class="menuselection">Konfiguration ‣ CollisionCheck</span> dargestellt. Der Benutzer kann die Parameter entweder dort oder über die <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a> ändern.</p>
+<div class="section" id="parameter-overview">
+<span id="sect-collisioncheck-parameters"></span><h3>Übersicht der Parameter<a class="headerlink" href="#parameter-overview" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Dieses Softwaremodul bietet folgende Laufzeitparameter:</p>
+<table border="1" class="docutils" id="applikationsspezifische-laufzeitparameter-des-rc-collision-check-moduls">
+<caption><span class="caption-number">Tab. 40 </span><span class="caption-text">Applikationsspezifische Laufzeitparameter des <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code> Moduls</span><a class="headerlink" href="#applikationsspezifische-laufzeitparameter-des-rc-collision-check-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Typ</th>
+<th class="head">Min</th>
+<th class="head">Max</th>
+<th class="head">Default</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">check_bottom</span></code></td>
+<td>bool</td>
+<td>false</td>
+<td>true</td>
+<td>true</td>
+<td>Aktiviert die Kollisionsprüfung mit dem Boden des Load Carriers.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">check_flange</span></code></td>
+<td>bool</td>
+<td>false</td>
+<td>false</td>
+<td>true</td>
+<td>Bestimmt, ob ein Greifpunkt als Kollision erkannt wird, sobald der Flansch innerhalb des Load Carriers ist.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">collision_dist</span></code></td>
+<td>float64</td>
+<td>0.0</td>
+<td>0.1</td>
+<td>0.01</td>
+<td>Minimaler Abstand in Metern zwischen einem Greiferelement und dem Load Carrier und/oder der Basisebene (nur SilhouetteMatch) für einen kollisionsfreien Griff.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="description-of-run-time-parameters">
+<h3>Beschreibung der Laufzeitparameter<a class="headerlink" href="#description-of-run-time-parameters" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Jeder Laufzeitparameter ist durch eine eigene Zeile in der Web GUI im Abschnitt <em>Einstellungen</em>  unter <span class="menuselection">Konfiguration ‣ CollisionCheck</span> repräsentiert. Der Web GUI-Name des Parameters ist in Klammern hinter dem Namen des Parameters angegeben:</p>
+<div class="section" id="collision-dist-collision-distance">
+<span id="expl-collisioncheck-collision-dist"></span><h4><code class="docutils literal notranslate"><span class="pre">collision_dist</span></code> (<em>Sicherheitsabstand</em>)<a class="headerlink" href="#collision-dist-collision-distance" title="Link zu dieser Überschrift">¶</a></h4>
+<blockquote>
+<div><p>Minimaler Abstand in Metern zwischen einem Greiferelement und dem Load Carrier und/oder der Basisebene (nur SilhouetteMatch) für einen kollisionsfreien Griff.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Der Sicherheitsabstand wird nicht für die Kollisionsprüfung zwischen  dem Greifer und anderen detektierten Objekten angewendet. Er wird auch nicht verwendet um zu prüfen, ob sich der Flansch innerhalb des Load Carriers befindet (<code class="docutils literal notranslate"><span class="pre">check_flange</span></code>).</p>
+</div>
+<p>Über die REST-API kann dieser Parameter wie folgt gesetzt werden.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-0-0 docutils container">
+<div class="docutils container">
+<strong>API Version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-0-1 docutils container">
+<div class="docutils container">
+<strong>API Version 1 (veraltet)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-0-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_collision_check/parameters?collision_dist<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-0-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_collision_check/parameters?collision_dist<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="check-flange-check-flange">
+<span id="expl-collisioncheck-check-flange"></span><h4><code class="docutils literal notranslate"><span class="pre">check_flange</span></code> (<em>Flansch-Check</em>)<a class="headerlink" href="#check-flange-check-flange" title="Link zu dieser Überschrift">¶</a></h4>
+<blockquote>
+<div><p>Ermöglicht einen Sicherheitscheck mit dem Flansch, wie in <a class="reference internal" href="gripper_db.html#sect-collisioncheck-flange"><span class="std std-ref">Flanschradius</span></a> beschrieben. Wenn dieser Parameter gesetzt ist, gelten alle Griffe, bei denen der Flansch innerhalb des Load Carriers wäre, als Kollisionen.</p>
+<p>Über die REST-API kann dieser Parameter wie folgt gesetzt werden.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-1-0 docutils container">
+<div class="docutils container">
+<strong>API Version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-1-1 docutils container">
+<div class="docutils container">
+<strong>API Version 1 (veraltet)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-1-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_collision_check/parameters?check_flange<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-1-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_collision_check/parameters?check_flange<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="check-bottom-check-bottom">
+<span id="expl-collisioncheck-check-bottom"></span><h4><code class="docutils literal notranslate"><span class="pre">check_bottom</span></code> (<em>Boden-Check</em>)<a class="headerlink" href="#check-bottom-check-bottom" title="Link zu dieser Überschrift">¶</a></h4>
+<blockquote>
+<div><p>Wenn dieser Check aktiviert ist, werden Kollisionen nicht nur mit den Load Carrier Wänden, sondern auch mit dem Boden geprüft. Falls der TCP innerhalb der Kollisionsgeometrie (z.B. innerhalb des Sauggreifers) liegt, ist es möglicherweise nötig, diesen Check zu deaktivieren.</p>
+<p>Über die REST-API kann dieser Parameter wie folgt gesetzt werden.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-2-0 docutils container">
+<div class="docutils container">
+<strong>API Version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-2-1 docutils container">
+<div class="docutils container">
+<strong>API Version 1 (veraltet)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-2-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_collision_check/parameters?check_bottom<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-2-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_collision_check/parameters?check_bottom<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="status-values">
+<span id="sect-collisioncheck-status-values"></span><h2>Statuswerte<a class="headerlink" href="#status-values" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Statuswerte des <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code>-Moduls:</p>
+<table border="1" class="docutils" id="statuswerte-des-rc-collision-check-moduls">
+<caption><span class="caption-number">Tab. 41 </span><span class="caption-text">Statuswerte des <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code>-Moduls</span><a class="headerlink" href="#statuswerte-des-rc-collision-check-moduls" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">last_evaluated_grasps</span></code></td>
+<td>Anzahl der ausgewerteten Griffe</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">last_collision_free_grasps</span></code></td>
+<td>Anzahl der kollisionsfreien Griffe</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">collision_check_time</span></code></td>
+<td>Laufzeit der Kollisionsprüfung</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="services">
+<span id="sect-collisioncheck-services"></span><h2>Services<a class="headerlink" href="#services" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Die angebotenen Services von <code class="docutils literal notranslate"><span class="pre">rc_collision_check</span></code> können mithilfe der <a class="reference internal" href="rest_api.html"><span class="doc">REST-API-Schnittstelle</span></a> oder der <em>rc_visard NG</em> <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> ausprobiert und getestet werden.</p>
+<p>Das CollisionCheck-Modul stellt folgende Services zur Verfügung.</p>
+<div class="section" id="reset-defaults">
+<span id="expl-collisioncheck-srv-reset-params"></span><h3><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code><a class="headerlink" href="#reset-defaults" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>stellt die Werkseinstellungen der Parameter dieses Moduls wieder her und wendet sie an („factory reset“).</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>Dieser Service kann wie folgt aufgerufen werden.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-3-0 docutils container">
+<div class="docutils container">
+<strong>API Version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-3-1 docutils container">
+<div class="docutils container">
+<strong>API Version 1 (veraltet)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-3-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_collision_check/services/reset_defaults
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-3-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_collision_check/services/reset_defaults
+</pre></div>
+</div>
+</div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-4-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-4-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-4-0 active docutils container">
+Dieser Service hat keine Argumente.</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-4-1 docutils container">
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;reset_defaults&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="check-collisions-deprecated">
+<span id="expl-collisioncheck-srv-check-collision"></span><h3><code class="docutils literal notranslate"><span class="pre">check_collisions</span></code> (veraltet)<a class="headerlink" href="#check-collisions-deprecated" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>löst eine Kollisionsprüfung zwischen dem Greifer und einem Load Carrier aus.</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>Dieser Service kann wie folgt aufgerufen werden.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-5-0 docutils container">
+<div class="docutils container">
+<strong>API Version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-5-1 docutils container">
+<div class="docutils container">
+<strong>API Version 1 (veraltet)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-5-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_collision_check/services/check_collisions
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-5-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_collision_check/services/check_collisions
+</pre></div>
+</div>
+</div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-6-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-6-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-6-0 active docutils container">
+<p>Obligatorische Serviceargumente:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">grasps</span></code>: Liste von Griffen, die überprüft werden sollen.</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_carriers</span></code>: Liste von Load Carriern, die auf Kollisionen überprüft werden sollen. Die Felder der Load Carrier Definition sind in <a class="reference internal" href="loadcarrier.html#sect-loadcarrier-detect-lc"><span class="std std-ref">Erkennung von Load Carriern</span></a> beschrieben. Die Griffe und die Load Carrier Positionen müssen im selben Koordinatensystem angegeben werden.</p>
+<p><code class="docutils literal notranslate"><span class="pre">gripper_id</span></code>: Die ID des Greifers, der in der Kollisionsprüfung verwendet werden soll. Der Greifer muss zuvor konfiguriert worden sein.</p>
+</div></blockquote>
+<p>Optionale Serviceargumente:</p>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">pre_grasp_offset</span></code>: Der Greif-Offset in Metern vom Greifpunkt zur Vorgreifposition. Wird ein Greif-Offset angegeben, dann wird die Kollisionsprüfung auf der gesamten linearen Trajektorie von der Vorgreifposition bis zur Greifposition durchgeführt.</div></blockquote>
+<p>Die Definition der <cite>Request</cite>-Argumente mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;grasps&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;gripper_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;load_carriers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;inner_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;outer_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;rim_thickness&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;pre_grasp_offset&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-6-1 docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">colliding_grasps</span></code>: Liste von Griffen, die in Kollision mit einem oder mehreren Load Carriern sind.</p>
+<p><code class="docutils literal notranslate"><span class="pre">collision_free_grasps</span></code>: Liste von kollisionsfreien Griffen.</p>
+<p><code class="docutils literal notranslate"><span class="pre">return_code</span></code>: enthält mögliche Warnungen oder Fehlercodes und Nachrichten.</p>
+<p>Die Definition der <cite>Response</cite> mit jeweiligen Datentypen ist:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;check_collisions&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;colliding_grasps&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;collision_free_grasps&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="set-gripper-deprecated">
+<span id="expl-collisioncheck-srv-set-grippers"></span><h3><code class="docutils literal notranslate"><span class="pre">set_gripper</span></code> (veraltet)<a class="headerlink" href="#set-gripper-deprecated" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>konfiguriert und speichert einen Greifer auf dem <em>rc_visard NG</em>.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-7-0 docutils container">
+<div class="docutils container">
+<strong>API Version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-7-1 docutils container">
+<div class="docutils container">
+<strong>API Version 1 (veraltet)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-7-0 active docutils container">
+Dieser Service ist in API Version 2 nicht verfügbar. Nutzen Sie stattdessen <a class="reference internal" href="gripper_db.html#expl-gripper-db-srv-set-gripper"><span class="std std-ref">set_gripper</span></a> in <code class="docutils literal notranslate"><span class="pre">rc_gripper_db</span></code>.</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-7-1 docutils container">
+<p>Dieser Service kann wie folgt aufgerufen werden.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_collision_check/services/set_gripper
+</pre></div>
+</div>
+<p>Die Definitionen von Request und Response sind dieselben wie in <a class="reference internal" href="gripper_db.html#expl-gripper-db-srv-set-gripper"><span class="std std-ref">set_gripper</span></a> in <code class="docutils literal notranslate"><span class="pre">rc_gripper_db</span></code> beschrieben.</p>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="get-grippers-deprecated">
+<span id="expl-collisioncheck-srv-get-grippers"></span><h3><code class="docutils literal notranslate"><span class="pre">get_grippers</span></code> (veraltet)<a class="headerlink" href="#get-grippers-deprecated" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>gibt die mit <code class="docutils literal notranslate"><span class="pre">gripper_ids</span></code> spezifizierten und gespeicherten Greifer zurück.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-8-0 docutils container">
+<div class="docutils container">
+<strong>API Version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-8-1 docutils container">
+<div class="docutils container">
+<strong>API Version 1 (veraltet)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-8-0 active docutils container">
+Dieser Service ist in API Version 2 nicht verfügbar. Nutzen Sie stattdessen <a class="reference internal" href="gripper_db.html#expl-gripper-db-srv-get-grippers"><span class="std std-ref">get_grippers</span></a> in <code class="docutils literal notranslate"><span class="pre">rc_gripper_db</span></code>.</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-8-1 docutils container">
+<p>Dieser Service kann wie folgt aufgerufen werden.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_collision_check/services/get_grippers
+</pre></div>
+</div>
+<p>Die Definitionen von Request und Response sind dieselben wie in <a class="reference internal" href="gripper_db.html#expl-gripper-db-srv-get-grippers"><span class="std std-ref">get_grippers</span></a> in <code class="docutils literal notranslate"><span class="pre">rc_gripper_db</span></code> beschrieben.</p>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="delete-grippers-deprecated">
+<span id="expl-collisioncheck-srv-delete-grippers"></span><h3><code class="docutils literal notranslate"><span class="pre">delete_grippers</span></code> (veraltet)<a class="headerlink" href="#delete-grippers-deprecated" title="Link zu dieser Überschrift">¶</a></h3>
+<blockquote>
+<div><p>löscht die mit <code class="docutils literal notranslate"><span class="pre">gripper_ids</span></code> spezifizierten, gespeicherten Greifer.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-9-0 docutils container">
+<div class="docutils container">
+<strong>API Version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-9-1 docutils container">
+<div class="docutils container">
+<strong>API Version 1 (veraltet)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-9-0 active docutils container">
+Dieser Service ist in API Version 2 nicht verfügbar. Nutzen Sie stattdessen <a class="reference internal" href="gripper_db.html#expl-gripper-db-srv-delete-grippers"><span class="std std-ref">delete_grippers</span></a> in <code class="docutils literal notranslate"><span class="pre">rc_gripper_db</span></code>.</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-9-1 docutils container">
+<p>Dieser Service kann wie folgt aufgerufen werden.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_collision_check/services/delete_grippers
+</pre></div>
+</div>
+<p>Die Definitionen von Request und Response sind dieselben wie in <a class="reference internal" href="gripper_db.html#expl-gripper-db-srv-delete-grippers"><span class="std std-ref">delete_grippers</span></a> in <code class="docutils literal notranslate"><span class="pre">rc_gripper_db</span></code> beschrieben.</p>
+</div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="return-codes">
+<span id="sect-collisioncheck-return-codes"></span><h2>Rückgabecodes<a class="headerlink" href="#return-codes" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-1">Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen sogenannten <code class="docutils literal notranslate"><span class="pre">return_code</span></code> bestehend aus einem Integer-Wert und einer optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden mit einem Wert von <code class="docutils literal notranslate"><span class="pre">0</span></code> quittiert. Positive Werte bedeuten, dass die Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche Informationen zur Verfügung stehen. Negative Werte bedeuten, dass Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte zutreffend wären, wird der kleinste zurückgegeben, und die entsprechenden Textnachrichten werden in <code class="docutils literal notranslate"><span class="pre">return_code.message</span></code> akkumuliert.</p>
+<p>Die folgende Tabelle listet die möglichen Rückgabecodes auf:</p>
+<span id="tab-collisioncheck-return-codes"></span><table border="1" class="docutils" id="fehlercodes-des-collisioncheck-services">
+<caption><span class="caption-number">Tab. 42 </span><span class="caption-text">Fehlercodes des CollisionCheck-Services</span><a class="headerlink" href="#fehlercodes-des-collisioncheck-services" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Code</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>Erfolgreich</td>
+</tr>
+<tr class="row-odd"><td>-1</td>
+<td>Ein ungültiges Argument wurde übergeben.</td>
+</tr>
+<tr class="row-even"><td>-7</td>
+<td>Daten konnten nicht in den persistenten Speicher geschrieben oder vom persistenten Speicher gelesen werden.</td>
+</tr>
+<tr class="row-odd"><td>-9</td>
+<td>Lizenz für CollisionCheck ist nicht verfügbar.</td>
+</tr>
+<tr class="row-even"><td>-10</td>
+<td>Das neue Element konnte nicht hinzugefügt werden, da die maximal speicherbare Anzahl an Greifern überschritten wurde.</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>Die maximal speicherbare Anzahl an Greifern wurde erreicht.</td>
+</tr>
+<tr class="row-even"><td>11</td>
+<td>Bestehender Greifer wurde überschrieben.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="camera_calibration.html" class="btn btn-neutral float-right" title="Kamerakalibrierung" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="handeye_calibration.html" class="btn btn-neutral" title="Hand-Auge-Kalibrierung" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../en/collisioncheck.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/collisioncheck.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v20.10/index.html">v20.10</a></dd>
+          
+            <dd><a href="../../v20.11/index.html">v20.11</a></dd>
+          
+            <dd><a href="../../v21.01/index.html">v21.01</a></dd>
+          
+            <dd><a href="../../v21.04/index.html">v21.04</a></dd>
+          
+            <dd><a href="../../v21.07/index.html">v21.07</a></dd>
+          
+            <dd><a href="../../v21.10/index.html">v21.10</a></dd>
+          
+            <dd><a href="../../v22.01/index.html">v22.01</a></dd>
+          
+            <dd><a href="../../v22.04/index.html">v22.04</a></dd>
+          
+            <dd><a href="../../v22.07/index.html">v22.07</a></dd>
+          
+            <dd><a href="../../v22.10/index.html">v22.10</a></dd>
+          
+            <dd><a href="../../v23.01/index.html">v23.01</a></dd>
+          
+            <dd><a href="../../v23.04/index.html">v23.04</a></dd>
+          
+            <dd><a href="../../v23.07/index.html">v23.07</a></dd>
+          
+            <dd><a href="../../v23.10/index.html">v23.10</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'23.10.2-1-gead13e42',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.js"></script>
+      <script type="text/javascript" src="_static/sphinx_tabs/tabs.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="_static/contentui.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

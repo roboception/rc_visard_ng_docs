@@ -1,0 +1,46 @@
+.. include:: global_rst.glb
+
+.. _sect-fanuc-format:
+
+FANUC XYZ-WPR format
+--------------------
+
+The pose format that is used by FANUC robots consists of a position :math:`XYZ`
+in millimeters and an orientation :math:`WPR` that is given by three angles in
+degrees, with :math:`W` rotating around :math:`x`-axis, :math:`P` rotating
+around :math:`y`-axis and :math:`R` rotating around :math:`z`-axis. The
+rotation order is :math:`x`-:math:`y`-:math:`z` and computed by :math:`r_z(R)
+r_y(P) r_x(W)`.
+
+Conversion from FANUC-WPR to quaternion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from the :math:`WPR` angles in degrees to a quaternion
+:math:`q=(\begin{array}{cccc}x & y & z & w\end{array})` can be done by
+first converting all angles to radians
+
+.. math::
+   W_r = W \frac{\pi}{180} \text{,} \\
+   P_r = P \frac{\pi}{180} \text{,} \\
+   R_r = R \frac{\pi}{180} \text{,} \\
+
+and then calculating the quaternion with
+
+.. math::
+   x = \cos{(R_r/2)}\cos{(P_r/2)}\sin{(W_r/2)} - \sin{(R_r/2)}\sin{(P_r/2)}\cos{(W_r/2)} \text{,} \\
+   y = \cos{(R_r/2)}\sin{(P_r/2)}\cos{(W_r/2)} + \sin{(R_r/2)}\cos{(P_r/2)}\sin{(W_r/2)} \text{,} \\
+   z = \sin{(R_r/2)}\cos{(P_r/2)}\cos{(W_r/2)} - \cos{(R_r/2)}\sin{(P_r/2)}\sin{(W_r/2)} \text{,} \\
+   w = \cos{(R_r/2)}\cos{(P_r/2)}\cos{(W_r/2)} + \sin{(R_r/2)}\sin{(P_r/2)}\sin{(W_r/2)} \text{.}
+
+Conversion from quaternion to FANUC-WPR
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from a quaternion :math:`q=(\begin{array}{cccc}x & y & z &
+w\end{array})` with :math:`||q||=1` to the :math:`WPR` angles in degrees can
+be done as follows.
+
+.. math::
+   R &= \text{atan}_2{(2(wz + xy), 1 - 2(y^2 + z^2))} \frac{180}{\pi}  \\
+   P &= \text{asin}{(2(wy - zx))} \frac{180}{\pi} \\
+   W &= \text{atan}_2{(2(wx + yz), 1 - 2(x^2 + y^2))} \frac{180}{\pi}
+

@@ -1,0 +1,25 @@
+Navigation modules
+
+The
+
+rc_visard NG
+
+'s navigation modules contain:
+
+dynamics (rc_dynamics, Section \ref{dynamics:sect-dynamics})  provides
+estimates of rc_visard's dynamic state such as its pose, velocity, and
+acceleration. These states are transmitted as continuous data streams
+via the rc_dynamics interface. For this purpose, the dynamics module
+manages and fuses data from the following individual subcomponents:
+stereo_visodo (rc_stereovisodo, Section \ref{stereo_visodo:sect-
+visual-odometry})  estimates the motion of the rc_visard device based
+on the motion of characteristic visual features in the left camera
+images.  stereo_ins (rc_stereo_ins, Section \ref{stereo_ins:sect-
+stereo-ins})  combines visual odometry measurements with readings from
+the on-board Inertial Measurement Unit (IMU) to provide accurate and
+high-frequency state estimates in real time.  slam (rc_slam, Section
+\ref{slam:sect-slam})  performs simultaneous localization and mapping
+for correcting accumulated poses. The rc_visard's covered trajectory
+is offered via the REST-API interface\:(Section \ref{rest_api:sect-
+rest-api}).
+

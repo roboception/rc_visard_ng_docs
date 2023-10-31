@@ -1,0 +1,76 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="1"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_silhouettematch" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/check_collisions_with_base_plane/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/check_collisions_with_matches/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/check_collisions_with_point_cloud/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/edge_sensitivity/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/match_max_distance/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/match_percentile/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/max_number_of_detected_objects/@value" Type="INT"/>
+      <ELEMENT Tag="req/parameters/only_highest_priority_grasps/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/point_cloud_enhancement/@value" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/quality/@value" Type="STRING"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/parameters/check_collisions_with_base_plane/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_base_plane/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_base_plane/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_base_plane/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_matches/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_matches/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_matches/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_matches/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_point_cloud/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_point_cloud/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_point_cloud/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_point_cloud/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/edge_sensitivity/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/edge_sensitivity/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/edge_sensitivity/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/edge_sensitivity/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/match_max_distance/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/match_max_distance/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/match_max_distance/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/match_max_distance/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/match_percentile/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/match_percentile/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/match_percentile/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/match_percentile/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/max_number_of_detected_objects/@value" Type="INT"/>
+      <ELEMENT Tag="res/parameters/max_number_of_detected_objects/@default" Type="INT"/>
+      <ELEMENT Tag="res/parameters/max_number_of_detected_objects/@min" Type="INT"/>
+      <ELEMENT Tag="res/parameters/max_number_of_detected_objects/@max" Type="INT"/>
+      <ELEMENT Tag="res/parameters/only_highest_priority_grasps/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/only_highest_priority_grasps/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/only_highest_priority_grasps/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/only_highest_priority_grasps/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/point_cloud_enhancement/@value" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/point_cloud_enhancement/@default" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/point_cloud_enhancement/@min" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/point_cloud_enhancement/@max" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/quality/@value" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/quality/@default" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/quality/@min" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/quality/@max" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

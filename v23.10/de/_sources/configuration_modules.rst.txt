@@ -1,0 +1,34 @@
+Konfigurationsmodule
+
+Der
+
+rc_visard NG
+
+ bietet mehrere verschiedene Konfigurationsmodule, welche es dem
+Nutzer ermöglichen, den
+
+rc_visard NG
+
+ für spezielle Anwendungen zu konfigurieren.
+
+Die Konfigurationsmodule sind:
+
+Hand-Auge-Kalibrierung (rc_hand_eye_calibration, Abschnitt
+\ref{handeye_calibration:sect-handeye-calibration})  ermöglicht dem
+Benutzer, die Kamera entweder über die Web GUI oder die REST-API zu
+einem Roboter zu kalibrieren.
+
+CollisionCheck (rc_collision_check, Abschnitt \ref{collisioncheck
+:sect-collision})  bietet eine einfache Möglichkeit zu prüfen, ob ein
+Greifer in Kollision ist.
+
+Kamerakalibrierung (rc_stereocalib, Abschnitt \ref{camera_calibration
+:sect-camera-calibration})  ermöglicht die Überprüfung und
+Durchführung der Kamerakalibrierung über die Web GUI\:(Abschnitt
+\ref{webgui:sect-web-gui}).
+
+IOControl und Projektor-Kontrolle (rc_iocontrol, Abschnitt
+\ref{iocontrol:sect-iocontrol})  bietet die Kontrolle über die Ein-
+und Ausgänge des Sensors mit speziellen Betriebsarten zur Kontrolle
+eines externen Musterprojektors.
+

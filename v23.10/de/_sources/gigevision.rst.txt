@@ -1,0 +1,837 @@
+GigE Vision 2.0/GenICam-Schnittstelle
+
+Gigabit Ethernet for Machine Vision (oder kurz "GigE Vision®") ist ein
+industrieller Standard für Kameraschnittstellen, der auf UDP/IP
+basiert (siehe
+
+http://www.gigevision.com
+
+). Der
+
+rc_visard NG
+
+ nutzt den GigE Vision®-Standard der Version 2.0 und ist damit mit
+allen GigE Vision®-2.0-Standard-konformen Frameworks und Bibliotheken
+kompatibel.
+
+GigE Vision® verwendet GenICam (
+
+Generic Interface for Cameras
+
+), um die Eigenschaften der Kamera bzw. des Geräts zu beschreiben. Für
+nähere Informationen zu dieser generischen Programmierschnittstelle
+für Kameras siehe
+
+http://www.genicam.org/
+
+.
+
+Über diese Schnittstelle stellt der
+
+rc_visard NG
+
+ folgende Funktionen zur Verfügung:
+
+Discovery-Mechanismus,
+
+IP-Konfiguration,
+
+Konfiguration kamerabezogener Parameter,
+
+Bildaufnahme und
+
+Zeitsynchronisierung über das im Standard IEEE 1588-2008 definierte
+Precision Time Protocol (PTPv2).
+
+Bemerkung: Der
+
+  rc_visard NG
+
+   unterstützt Jumbo-Frames mit einer Größe bis 9000 Byte. Für höchste
+  Leistung wird empfohlen, die maximale Übertragungseinheit (MTU) des
+  GigE-Vision-Clients auf 9000 zu stellen.
+
+Bemerkung: Über seine Homepage stellt Roboception Tools und eine
+  C++-Programmierschnittstelle mit Beispielen zum Discovery-
+  Mechanismus, zur Konfiguration und zum Bild-Streaming über die GigE
+  Vision/GenICam-Schnittstelle zur Verfügung (
+
+  http://www.roboception.com/download
+
+  ).
+
+GigE Vision Ports
+
+GigE Vision ist ein UDP basiertes Protokoll. Auf dem
+
+rc_visard NG
+
+ sind die UDP Ports statisch und bekannt:
+
+UDP Port 3956: GigE Vision Control Protocol (GVCP). Zum Auffinden,
+steuern und konfigurieren des Geräts.
+
+UDP Port 50010: Stream channel source port. Nutzt das GigE Vision
+Stream Protocol (GVSP) zum transferieren der Bilder.
+
+Wichtige Parameter der GenICam-Schnittstelle
+
+Die folgende Liste enthält einen Überblick über relevante GenICam-
+Parameter des
+
+rc_visard NG
+
+, die über die GenICam-Schnittstelle abgerufen und/oder geändert
+werden können. Neben den Standardparametern, die in der *Standard
+Feature Naming Convention* (SFNC, siehe
+
+http://www.emva.org/standards-technology/genicam/genicam-downloads/
+
+) definiert werden, bietet der
+
+rc_visard NG
+
+ zudem eigene Parameter, die sich auf spezielle Eigenschaften der
+Module
+
+Kamera
+
+ und
+
+Stereo-Matching
+
+ beziehen.
+
+Wichtige Standardparameter der GenICam-Schnittstelle
+
+Kategorie: ImageFormatControl
+
+"ComponentSelector"
+   Typ: Aufzählung, mögliche Werte: Intensity, IntensityCombined,
+   Disparity, Confidence oder Error
+
+   Voreinstellung: -
+
+   Beschreibung: Erlaubt dem Benutzer, einen der fünf Bild-Streams zur
+   Konfiguration auszuwählen (siehe Verfügbare Bild-Streams,
+   \:Abschnitt \ref{gigevision:sect-provided-image-streams}).
+
+"ComponentIDValue" (schreibgeschützt)
+   Typ: Integer
+
+   Beschreibung: ID des vom ComponentSelector ausgewählten Bild-
+   Streams.
+
+"ComponentEnable"
+   Typ: Boolean
+
+   Voreinstellung: -
+
+   Beschreibung: Ist der Parameter auf true gesetzt, aktiviert er den
+   im ComponentSelector ausgewählten Bild-Stream. Anderenfalls
+   deaktiviert er diesen Stream. Über ComponentSelector und
+   ComponentEnable lassen sich einzelne Bild-Streams ein- und
+   ausschalten.
+
+"Width" (schreibgeschützt)
+   Typ: Integer
+
+   Beschreibung: Bildbreite des vom ComponentSelector ausgewählten
+   Bild-Streams in Pixeln.
+
+"Height" (schreibgeschützt)
+   Typ: Integer
+
+   Beschreibung: Bildhöhe des vom ComponentSelector ausgewählten Bild-
+   Streams in Pixeln.
+
+"WidthMax" (schreibgeschützt)
+   Typ: Integer
+
+   Beschreibung: Maximale Breite eines Bildes.
+
+"HeightMax" (schreibgeschützt)
+   Typ: Integer
+
+   Beschreibung: Maximale Höhe eines Bildes im Stream. Der Wert
+   beträgt  aufgrund der gestapelten Bilder der linken und rechten
+   Kamera im IntensityCombined-Stream immer 1920 Pixel (siehe
+   Verfügbare Bild-Streams, Abschnitt \ref{gigevision:sect-provided-
+   image-streams}).
+
+"PixelFormat"
+   Typ: Aufzählung, mögliche Werte: Mono8 oder YCbCr411_8 (nur bei
+   Farbkameras), Coord3D_C16, Confidence8 und Error8
+
+   Beschreibung: Pixelformat der selektierten Komponente. Die
+   Aufzählung erlaubt nur aus Pixelformaten auszuwählen, die für die
+   ausgewählte Komponente möglich sind. Bei einer Farbkamera kann man
+   bei den Komponenten Intensity und IntensityCombined zwischen den
+   Pixelformaten Mono8 oder YCbCr411_8 wählen.
+
+Kategorie: AcquisitionControl
+
+"AcquisitionFrameRate"
+   Typ: Float, Wertebereich: 1–25 Hz
+
+   Voreinstellung: 25 Hz
+
+   Beschreibung: Bildwiederholrate der Kamera (FPS, Abschnitt
+   \ref{stereo_camera:sect-cam-params}).
+
+"ExposureAuto"
+   Typ: Aufzählung, mögliche Werte: Continuous, Out1High,
+   AdaptiveOut1, HDR oder Off
+
+   Voreinstellung: Continuous
+
+   Beschreibung: Kombiniert exp_control (Belichtungsregelung,
+   Abschnitt \ref{stereo_camera:expl-exp-control}) und exp_auto_mode
+   (Belichtungszeitautomatik Modus, Abschnitt \ref{stereo_camera:expl-
+   exp-auto-mode}). Off entspricht Manual Belichtungsregelung.
+   Continuous, Out1High oder AdaptiveOut1 aktivieren Auto
+   Belichtungsregelung mit dem entsprechenden Belichtungszeitautomatik
+   Modus wobei Continuous dem Normal exp_auto_mode entspricht. HDR
+   aktiviert die HDR Belichtungsregelung.
+
+"ExposureTime"
+   Typ: Float, Wertebereich: 66–18000 µs
+
+   Voreinstellung: 5000 µs
+
+   Beschreibung: Belichtungszeit der Kameras für den manuellen
+   Belichtungsmodus, ausgedrückt in Mikrosekunden (Belichtungszeit,
+   Abschnitt \ref{stereo_camera:expl-exp-value}).
+
+Kategorie: AnalogControl
+
+"GainSelector" (schreibgeschützt)
+   Typ: Aufzählung, Wert: ist immer All
+
+   Voreinstellung: All
+
+   Beschreibung: Der rc_visard NG unterstützt aktuell nur einen
+   globalen Verstärkungsfaktor.
+
+"Gain"
+   Typ: Float, Wertebereich: 0–18 dB
+
+   Voreinstellung: 0 dB
+
+   Beschreibung: Verstärkungsfaktor der Kameras für den manuellen
+   Belichtungsmodus, ausgedrückt in Dezibel (Verstärkungsfaktor,
+   Abschnitt \ref{stereo_camera:expl-gain-value}).
+
+"BalanceWhiteAuto" (nur für Farbkameras)
+   Typ: Aufzählung, mögliche Werte: Continuous oder Off
+
+   Voreinstellung: Continuous
+
+   Beschreibung: Lässt sich für den manuellen Weißabgleich auf Off
+   bzw. für den automatischen Weißabgleich auf Continuous setzen.
+   Dieser Parameter ist nur für Farbkameras verfügbar (Weißabgleich,
+   Abschnitt \ref{stereo_camera:expl-wb-auto}).
+
+"BalanceRatioSelector" (nur für Farbkameras)
+   Typ: Aufzählung, mögliche Werte: Red oder Blue
+
+   Voreinstellung: Red
+
+   Beschreibung: Auswahl des Verhältnisses welches mit BalanceRatio
+   einstellbar ist. Red bedeutet Verhältnis von Rot zu Grün, und Blue
+   bedeutet Verhältnis von Blau zu Grün. Diese Einstellung ist nur für
+   Farbkameras verfügbar.
+
+"BalanceRatio" (nur für Farbkameras)
+   Typ: Float, Wertebereich: 0.125 – 8
+
+   Voreinstellung: 1.2 wenn Red und 2.4 wenn Blue im
+   BalanceRatioSelector eingestellt sind
+
+   Beschreibung: Gewichtung vom roten oder blauen zum grünen
+   Farbkanal. Diese Einstellung ist nur für Farbkameras verfügbar
+   (wb_ratio, Abschnitt \ref{stereo_camera:expl-wb-ratio}).
+
+Kategorie: DigitalIOControl
+
+"LineSelector"
+   Typ: Aufzählung, mögliche Werte: Out1, Out2, In1 oder In2
+
+   Voreinstellung: Out1
+
+   Beschreibung: Wählt den Ein- oder Ausgang, um den aktuellen Zustand
+   abzufragen oder die Betriebsart zu setzen.
+
+"LineStatus" (schreibgeschützt)
+   Typ: Boolean
+
+   Beschreibung: Aktueller Zustand des mit LineSelector ausgewählten
+   Ein- oder Ausgangs.
+
+"LineStatusAll" (schreibgeschützt)
+   Typ: Integer
+
+   Beschreibung: Aktueller Zustand der Ein- und Ausgänge, welche in
+   den unteren vier Bits angegeben werden.
+
+   Bedeutung der Bits des LineStatusAll Parameters.            Bit  4
+   3  2  1  GPIO  Eingang 2  Eingang 1  Ausgang 2  Ausgang 1
+
+"LineSource"
+   Typ: Aufzählung, mögliche Werte: ExposureActive,
+   ExposureAlternateActive, Low oder High
+
+   Voreinstellung: Low
+
+   Beschreibung: Betriebszustand des mit LineSelector gewählten
+   Ausgangs, wie im Abschnitt zum IOControl Modul beschrieben
+   (out1_mode und out2_mode, Abschnitt \ref{iocontrol:sect-iocontrol-
+   params}). Siehe auch den Parameter AcquisitionAlternateFilter zum
+   Filtern von Bildern im Betriebszustand ExposureAlternateActive.
+
+Kategorie: TransportLayerControl / PtpControl
+
+"PtpEnable"
+   Typ: Boolean
+
+   Voreinstellung: false
+
+   Beschreibung: Schaltet die PTP-Synchronisierung ein und aus.
+
+Kategorie: Scan3dControl
+
+"Scan3dDistanceUnit" (schreibgeschützt)
+   Typ: Aufzählung, Wert: ist immer Pixel
+
+   Beschreibung: Einheit für die Disparitätsmessungen, ist immer
+   Pixel.
+
+"Scan3dOutputMode" (schreibgeschützt)
+   Typ: Aufzählung, Wert: ist immer DisparityC
+
+   Beschreibung: Modus für die Tiefenmessungen, ist immer DisparityC.
+
+"Scan3dFocalLength" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Brennweite des mit ComponentSelector ausgewählten
+   Bild-Streams in Pixeln. Im Fall der Komponenten Disparity,
+   Confidence und Error hängt der Wert auch von der Auflösung ab, die
+   implizit über DepthQuality eingestellt wurde.
+
+"Scan3dBaseline" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Basisabstand der Stereokamera in Metern.
+
+"Scan3dPrinciplePointU" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Horizontale Position des Bildhauptpunktes des mit
+   ComponentSelector ausgewählten Bild-Streams. Im Fall der
+   Komponenten Disparity, Confidence und Error hängt der Wert auch von
+   der Auflösung ab, die implizit über DepthQuality eingestellt wurde.
+
+"Scan3dPrinciplePointV" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Vertikale Position des Bildhauptpunktes des mit
+   ComponentSelector ausgewählten Bild-Streams. Im Fall der
+   Komponenten Disparity, Confidence und Error hängt der Wert auch von
+   der Auflösung ab, die implizit über DepthQuality eingestellt wurde.
+
+"Scan3dCoordinateScale" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Der Skalierungsfaktor, der mit den Disparitätswerten
+   im Disparitätsbild-Stream zu multiplizieren ist, um die
+   tatsächlichen Disparitätswerte zu erhalten. Der Wert beträgt immer
+   0,0625.
+
+"Scan3dCoordinateOffset" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Der Versatz, der zu den Disparitätswerten im
+   Disparitätsbild-Stream addiert werden muss, um die tatsächlichen
+   Disparitätswerte zu erhalten. Für den rc_visard NG beträgt der Wert
+   immer 0 und kann daher ignoriert werden.
+
+"Scan3dInvalidDataFlag" (schreibgeschützt)
+   Typ: Boolean
+
+   Beschreibung: Ist immer true, was bedeutet, dass ungültige Daten im
+   Disparitätsbild mit einem spezifischen Wert markiert werden, der
+   durch den Parameter Scan3dInvalidDataValue definiert wird.
+
+"Scan3dInvalidDataValue" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Ist der Wert, der für ungültige Disparität steht. Der
+   Wert ist immer 0, was bedeutet, dass Disparitätswerte von 0 immer
+   ungültigen Messungen entsprechen. Um zwischen ungültigen
+   Disparitätsmessungen und Messungen, bei denen die Disparität
+   aufgrund der unendlich weit entfernten Objekte 0 beträgt,
+   unterscheiden zu können, wird der Disparitätswert für den
+   letztgenannten Fall auf 0,0625 gesetzt. Dies entspricht noch immer
+   einer Objektentfernung von mehreren hundert Metern.
+
+Kategorie: ChunkDataControl
+
+"ChunkModeActive"
+   Typ: Boolean
+
+   Voreinstellung: false
+
+   Beschreibung: Schaltet Chunk-Daten an, die mit jedem Bild
+   mitgeliefert werden.
+
+Besondere Parameter der GenICam-Schnittstelle des rc_visard NG
+
+Kategorie: DeviceControl
+
+"RcSystemReady" (schreibgeschützt)
+   Typ: Boolean
+
+   Beschreibung: Gibt an, ob der Bootprozess des Geräts abgeschlossen
+   ist und alle Modules laufen.
+
+"RcParamLockDisable"
+   Typ: Boolean
+
+   Voreinstellung: false
+
+   Beschreibung: Wenn dieser Wert auf true gesetzt ist, werden die
+   Kamera- und Tiefenbildparameter nicht gesperrt, wenn ein GigE
+   Vision Client mit dem Gerät verbunden wird. Es ist zu beachten,
+   dass -- abhängig vom verbundenen GigE Vision Client --
+   Parameteränderungen durch andere Anwendungen (z.B. die Web GUI)
+   möglicherweise nicht durch den GigE Vision Client bemerkt werden,
+   was zu ungewolltem Verhalten führen kann.
+
+Kategorie: AcquisitionControl
+
+"AcquisitionAlternateFilter"
+   Typ: Aufzählung, mögliche Werte: Off, OnlyHigh oder OnlyLow
+
+   Voreinstellung: Off
+
+   Beschreibung: Falls dieser Parameter auf OnlyHigh (oder
+   entsprechend OnlyLow) und die LineSource für mindestens einen
+   Ausgang auf ExposureAlternateActive eingestellt wird, dann werden
+   nur die Kamerabilder übertragen, welche aufgenommen wurden, während
+   der konfigurierte Ausgang an war, d.h. ein potentiell
+   angeschlossener Projektor war an (oder bei OnlyLow entsprechend
+   aus). Dieser Parameter ist ein einfaches Mittel um nur Bilder ohne
+   ein projiziertes Muster zu bekommen. Der minimale Zeitunterschied
+   zwischen einem Kamera- und einem Disparitätsbild ist in diesem Fall
+   etwa 40 ms (siehe IOControl, Abschnitt \ref{iocontrol:sect-
+   iocontrol-params}).
+
+"AcquisitionMultiPartMode"
+   Typ: Aufzählung, mögliche Werte: SingleComponent oder
+   SynchronizedComponents
+
+   Voreinstellung: SingleComponent
+
+   Beschreibung: Nur wirksam im MultiPart-Modus. Ist dieser Parameter
+   auf SingleComponent gesetzt, werden die Bilder jeweils sofort als
+   einzelne Komponente pro Frame/Puffer geschickt, sobald sie
+   verfügbar sind. Dies entspricht dem Verhalten von Clients, die
+   MultiPart nicht unterstützen. Ist dieser Parameter auf
+   SynchronizedComponents gesetzt, werden die aktivierten Komponenten
+   auf dem rc_visard NG zeitlich synchronisiert und in einem
+   gemeinsamen Frame/Puffer versendet -- allerdings nur, falls alle
+   für diesen Zeitpunkt verfügbar sind.
+
+"ExposureTimeAutoMax"
+   Typ: Float, Wertebereich: 66–18000 µs
+
+   Voreinstellung: 18000 µs
+
+   Beschreibung: Maximale Belichtungszeit im automatischen
+   Belichtungsmodus (Maximale Belichtungszeit, Abschnitt
+   \ref{stereo_camera:expl-exp-max}).
+
+"ExposureRegionOffsetX"
+   Typ: Integer, Wertebereich: 0 bis maximale Bildbreite
+
+   Voreinstellung: 0
+
+   Beschreibung: Horizontaler Offset des Bereichs für die
+   Belichtungszeitregelung\:(Abschnitt \ref{stereo_camera:expl-exp-
+   region}) in Pixeln.
+
+"ExposureRegionOffsetY"
+   Typ: Integer, Wertebereich: 0 bis maximale Bildhöhe
+
+   Voreinstellung: 0
+
+   Beschreibung: Vertikaler Offset des Bereichs für die
+   Belichtungszeitregelung\:(Abschnitt \ref{stereo_camera:expl-exp-
+   region}) in Pixeln.
+
+"ExposureRegionWidth"
+   Typ: Integer, Wertebereich: 0 bis maximale Bildbreite
+
+   Voreinstellung: 0
+
+   Beschreibung: Breite des Bereichs für die
+   Belichtungszeitregelung\:(Abschnitt \ref{stereo_camera:expl-exp-
+   region}) in Pixeln.
+
+"ExposureRegionHeight"
+   Typ: Integer, Wertebereich: 0 bis maximale Bildhöhe
+
+   Voreinstellung: 0
+
+   Beschreibung: Höhe des Bereichs für die
+   Belichtungszeitregelung\:(Abschnitt \ref{stereo_camera:expl-exp-
+   region}) in Pixeln.
+
+"RcExposureAutoAverageMax"
+   Typ: Float, Wertebereich 0-1
+
+   Voreinstellung: 0.75
+
+   Beschreibung: Maximale Helligkeit der automatischen
+   Belichtungszeitsteuerung\:(Abschnitt \ref{stereo_camera:exp-auto-
+   max-min-average}) als Wert zwischen 0 (dunkel) und 1 (hell).
+
+"RcExposureAutoAverageMin"
+   Typ: Float, Wertebereich 0-1
+
+   Voreinstellung: 0.25
+
+   Beschreibung: Minimale Helligkeit der automatischen
+   Belichtungszeitsteuerung\:(Abschnitt \ref{stereo_camera:exp-auto-
+   max-min-average}) als Wert zwischen 0 (dunkel) und 1 (hell).
+
+Kategorie: Scan3dControl
+
+"FocalLengthFactor" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Brennweite skaliert auf eine Bildbreite von einem
+   Pixel. Um die Brennweite für ein bestimmtes Bild in Pixeln zu
+   ermitteln, muss dieser Wert mit der Breite des empfangenen Bilds
+   multipliziert werden. Siehe auch den Parameter Scan3dFocalLength.
+
+"Baseline" (schreibgeschützt)
+   Typ: Float
+
+   Beschreibung: Dieser Parameter ist überholt. Der Parameter
+   Scan3dBaseline sollte stattdessen benutzt werden.
+
+Kategorie: DepthControl
+
+"DepthAcquisitionMode"
+   Typ: Aufzählung, mögliche Werte: SingleFrame, SingleFrameOut1 oder
+   Continuous
+
+   Voreinstellung: Continuous
+
+   Beschreibung: Im Modus SingleFrame wird das Stereo-Matching mit
+   jedem Aufruf von DepthAcquisitionTrigger durchgeführt. Der Modus
+   SingleFrameOut1 kann zum Kontrollieren eines externen Projektors
+   genutzt werden. Dabei wird bei jedem Trigger Out1 auf
+   ExposureAlternateActive und nach dem Empfangen der Stereobilder auf
+   Low gesetzt. Im Modus Continuous wird das Stereo-Matching
+   kontinuierlich durchgeführt.
+
+"DepthAcquisitionTrigger"
+   type: Command
+
+   Beschreibung: Dieses Kommando triggert das Stereo-Matching auf den
+   nächsten verfügbaren Stereobildern, falls DepthAcquisitionMode auf
+   SingleFrame oder SingleFrameOut1 eingestellt ist.
+
+"DepthQuality"
+   Typ: Aufzählung, mögliche Werte: Low, Medium, High oder Full (nur
+   mit StereoPlus-Lizenz)
+
+   Voreinstellung: High
+
+   Beschreibung: Qualität der Disparitätsbilder. Eine geringere
+   DepthQuality führt zu Disparitätsbildern mit einer geringeren
+   Auflösung (Qualität, Abschnitt \ref{stereo_matching:expl-depth-
+   quality}).
+
+"DepthDoubleShot"
+   Typ: Boolean
+
+   Voreinstellung: false
+
+   Beschreibung: True zum Verbessern des Stereo-Matching-Resultats bei
+   Szenen mit Projektor. Löcher im Tiefenbild werden gefüllt mit
+   Tiefendaten aus dem Stereo Matching des Bildpaars ohne
+   Projektormuster (Double-Shot, Abschnitt \ref{stereo_matching:expl-
+   depth-double-shot}).
+
+"DepthStaticScene"
+   Typ: Boolean
+
+   Voreinstellung: false
+
+   Beschreibung: True zum Mitteln über acht aufeinanderfolgende
+   Kamerabilder zur Verbesserung des Stereo-Matching-Resultats
+   (Statisch, Abschnitt \ref{stereo_matching:expl-depth-static}).
+
+"DepthSmooth"  (schreibgeschützt ohne StereoPlus-Lizenz)
+   Typ: Boolean
+
+   Voreinstellung: false
+
+   Beschreibung: True um Disparitätswerte zu glätten (Glättung,
+   Abschnitt \ref{stereo_matching:expl-depth-smooth}).
+
+"DepthFill"
+   Typ: Integer, Wertebereich: 0–4 Pixel
+
+   Voreinstellung: 3 Pixel
+
+   Beschreibung: Wert in Pixeln für Füllen\:(Abschnitt
+   \ref{stereo_matching:expl-depth-fill}).
+
+"DepthSeg"
+   Typ: Integer, Wertebereich: 0–4000 Pixel
+
+   Voreinstellung: 200 Pixel
+
+   Beschreibung: Wert in Pixeln für Segmentierung\:(Abschnitt
+   \ref{stereo_matching:expl-depth-seg}).
+
+"DepthMinConf"
+   Typ: Float, Wertebereich: 0.0–1.0
+
+   Voreinstellung: 0.0
+
+   Beschreibung: Wert für die Minimale Konfidenz-Filterung\:(Abschnitt
+   \ref{stereo_matching:expl-depth-min-conf}).
+
+"DepthMinDepth"
+   Typ: Float, Wertebereich: 0.1–100.0 m
+
+   Voreinstellung: 0.1 m
+
+   Beschreibung: Wert in Metern für die Minimale Abstands-
+   Filterung\:(Abschnitt \ref{stereo_matching:expl-depth-min-depth}).
+
+"DepthMaxDepth"
+   Typ: Float, Wertebereich: 0.1–100.0 m
+
+   Voreinstellung: 100.0 m
+
+   Beschreibung: Wert in Metern für die Maximale Abstands-
+   Filterung\:(Abschnitt \ref{stereo_matching:expl-depth-max-depth}).
+
+"DepthMaxDepthErr"
+   Typ: Float, Wertebereich: 0.01–100.0 m
+
+   Voreinstellung: 100.0 m
+
+   Beschreibung: Wert in Metern für die Maximale Fehler-
+   Filterung\:(Abschnitt \ref{stereo_matching:expl-depth-max-depth-
+   err}).
+
+Chunk-Daten
+
+Der
+
+rc_visard NG
+
+ unterstützt Chunk-Parameter, die mit jedem Bild mitgeschickt werden.
+Chunk-Parameter haben alle den Präfix "Chunk". Ihre Bedeutung
+entspricht den gleichlautenden Nicht-Chunk-Parametern. Sie passen
+jedoch immer zu dem zugehörigen Bild. Zum Beispiel hängt
+"Scan3dFocalLength" von "ComponentSelector" und "DepthQuality" ab, da
+die Bildauflösung von beiden Parametern abhängt. Der Parameter
+"ChunkScan3dFocalLength", welcher zu einem Bild geliefert wird, passt
+hingegen zu der Auflösung dieses Bildes.
+
+Nützliche Chunk-Parameter:
+
+ChunkComponentSelector selektiert, für welche Komponente Chunk-Daten
+aus dem MultiPart-Puffer gelesen werden.
+
+ChunkComponentID und ChunkComponentIDValue dienen der eindeutigen
+Zuordnung des Bildes zu seiner Komponente (z.B. Kamerabild oder
+Disparitätsbild), ohne dies vom Bildformat oder der Bildgröße ableiten
+zu müssen.
+
+ChunkLineStatusAll bietet den Status der Ein- und Ausgänge zum
+Zeitpunkt der Bildaufnahme. Siehe LineStatusAll für eine Beschreibung
+der Bits.
+
+ChunkScan3d... sind nützlich zur 3D-Rekonstruktion wie im Abschnitt
+Umwandlung von Bild-Streams\:(Abschnitt \ref{gigevision:sect-image-
+stream-conversions}) beschrieben.
+
+ChunkPartIndex gibt  den Index des Bild-Parts im MultiPart-Block für
+die ausgewählte Komponente (ChunkComponentSelector) zurück.
+
+ChunkRcOut1Reduction gibt den Anteil der Bildhelligkeit an, um den
+Bilder mit GPIO Ausgang 1 (Out1) LOW  dunkler sind als Bilder mit Out1
+HIGH. Ein Wert von beispielsweise 0.2 bedeutet, dass die Bilder mit
+GPIO Out1 LOW 20% weniger Helligkeit haben als Bilder mit GPIO Out1
+HIGH. Dieser Wert ist nur verfügbar, wenn exp_auto_mode der
+Stereokamera auf AdaptiveOut1 oder Out1High gesetzt ist (auto exposure
+mode, Abschnitt \ref{stereo_camera:expl-exp-auto-mode}).
+
+Chunk-Daten werden durch das Setzen des GenICam-Parameters
+"ChunkModeActive" auf "True" eingeschaltet.
+
+Verfügbare Bild-Streams
+
+Der
+
+rc_visard NG
+
+ stellt über die GenICam-Schnittstelle die folgenden fünf Bild-Streams
+zur Verfügung:
+
+      Name der Komponente  PixelFormat  Beschreibung  Intensity  Mono8
+(monochrome Kameras)  YCbCr411_8 (Farbkameras)  Rektifiziertes Bild
+der linken Kamera  IntensityCombined  Mono8 (monochrome Kameras)
+YCbCr411_8 (Farbkameras)  Rektifiziertes Bild der linken Kamera,
+gestapelt auf das rektifizierte Bild der rechten Kamera  Disparity
+Coord3D_C16  Disparitätsbild in gewünschter Auflösung, d.h.
+DepthQuality in Full, High, Medium oder Low  Confidence  Confidence8
+Konfidenzbild  Error  Error8 (Sonderformat: 0x81080001)  Fehlerbild
+
+Jedes Bild wird mit einem Zeitstempel und dem in der Tabelle
+angegebenen
+
+PixelFormat
+
+ ausgegeben. Dieses
+
+PixelFormat
+
+ sollte verwendet werden, um zwischen den verschiedenen Bildtypen zu
+unterscheiden. Bilder, die den gleichen Aufnahmezeitpunkt haben,
+können durch Vergleich der GenICam-Zeitstempel einander zugeordnet
+werden.
+
+Umwandlung von Bild-Streams
+
+Das Disparitätsbild enthält vorzeichenlose 16-Bit-Ganzzahlwerte. Diese
+Werte müssen mit dem im GenICam-Parameter
+
+Scan3dCoordinateScale
+
+ angegebenen Skalierungsfaktor multipliziert werden, um die
+Disparitätswerte d in Pixeln zu ermitteln. Um die 3D-Objektkoordinaten
+aus den Disparitätswerten berechnen zu können, werden die Brennweite,
+der Basisabstand und der Bildhauptpunkt benötigt. Diese Parameter
+werden als GenICam-Parameter
+
+Scan3dFocalLength
+
+,
+
+Scan3dBaseline
+
+,
+
+Scan3dPrincipalPointU
+
+ und
+
+Scan3dPrincipalPointV
+
+ zur Verfügung gestellt. Die Brennweite und der Bildhauptpunkt hängen
+von der Bildauflösung der mit dem
+
+ComponentSelector
+
+ selektierten Komponente ab. Sind diese Werte bekannt, können die
+Pixel-Koordinaten und die Disparitätswerte mithilfe der im Abschnitt
+
+Berechnung von Tiefenbildern und Punktwolken
+
+ angegebenen Gleichungen in 3D-Objektkoordination im Kamera-
+Koordinatensystem umgerechnet werden.
+
+Bemerkung: Das Kamera-Koordinatensystem des
+
+  rc_visard NG
+
+   ist in
+
+  Sensor-Koordinatensystem
+
+   definiert.
+
+Unter der Annahme, dass es sich bei d_{ik} um den 16-Bit-
+Disparitätswert in der Spalte i und Zeile k eines Disparitätsbildes
+handelt, ist der Fließkomma-Disparitätswert in Pixeln d_{ik} gegeben
+durch
+
+   d_{ik}=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale}
+
+Die 3D-Rekonstruktion (in Metern) kann wie folgt mit den GenICam-
+Parametern durchgeführt werden:
+
+   P_x&=\left(i+0.5-\mathrm{Scan3dPrincipalPointU}\right)
+   \frac{\mathrm{Scan3dBaseline}}{d_{ik}},\\
+   P_y&=\left(k+0.5-\mathrm{Scan3dPrincipalPointV}\right)
+   \frac{\mathrm{Scan3dBaseline}}{d_{ik}},\\
+   P_z&=\mathrm{Scan3dFocalLength}
+   \frac{\mathrm{Scan3dBaseline}}{d_{ik}}.
+
+Das Konfidenzbild umfasst vorzeichenlose 8-Bit-Ganzzahlwerte. Diese
+Werte müssen durch 255 geteilt werden, um die zwischen 0 und 1
+liegenden Konfidenzwerte zu berechnen.
+
+Das Fehlerbild umfasst vorzeichenlose 8-Bit-Ganzzahlwerte. Der Fehler
+e_{ik} muss mit dem im GenICam-Parameter
+
+Scan3dCoordinateScale
+
+ angegebenen Skalierungsfaktor multipliziert werden, um die
+Disparitätsfehlerwerte d_{eps} in Pixeln zu ermitteln. Der
+Beschreibung in
+
+Konfidenz- und Fehlerbilder
+
+ zufolge lässt sich der Tiefenfehler z_{eps} (in Metern) mit den
+GenICam-Parametern wie folgt berechnen:
+
+   d_{ik}&=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale},\\
+   z_{eps}&=\frac{e_{ik} \cdot \mathrm{Scan3dCoordinateScale} \cdot
+   \mathrm{Scan3dFocalLength}               \cdot
+   \mathrm{Scan3dBaseline}}              {(d_{ik})^2}.
+
+Bemerkung: Chunk-Daten sollten nach Möglichkeit mit dem Parameter
+
+  ChunkModeActive
+
+   angeschaltet und die zum Bild zugehörigen Parameter
+
+  ChunkScan3dCoordinateScale
+
+  ,
+
+  ChunkScan3dFocalLength
+
+  ,
+
+  ChunkScan3dBaseline
+
+  ,
+
+  ChunkScan3dPrincipalPointU
+
+   und
+
+  ChunkScan3dPrincipalPointV
+
+   genutzt werden, denn deren Werte passen zu der Auflösung des
+  zugehörigen Bildes.
+
+Für nähere Informationen zu Disparitäts-, Fehler- und Konfidenzbildern
+siehe
+
+Stereo-Matching
+
+.

@@ -1,0 +1,28 @@
+Datenbankmodule
+
+Der
+
+rc_visard NG
+
+ stellt mehrere Datenbankmodule zur Verfügung, die das Konfigurieren
+von globalen Daten ermöglichen, die in vielen Detektionsmodulen
+benötigt werden, zum Beispiel Load Carrier und Regions of Interest.
+Über die
+
+REST-API-Schnittstelle
+
+ sind die Datenbankmodule nur in API Version 2 verfügbar.
+
+Die Datenbankmodule sind:
+
+LoadCarrierDB (rc_load_carrier_db, Abschnitt \ref{loadcarrier_db:sect-
+loadcarrier-db})  ermöglicht das Erstellen, Abfragen und Löschen von
+Load Carriern.
+
+RoiDB (rc_roi_db\:, Abschnitt \ref{roi:sect-roi})  ermöglicht das
+Erstellen, Abfragen und Löschen von 2D und 3d Regions of Interest.
+
+GripperDB (rc_gripper_db, Abschnitt \ref{gripper_db:sect-gripper-db})
+ermöglicht das Erstellen, Abfragen und Löschen von Greifern für die
+Kollisionsprüfung.
+

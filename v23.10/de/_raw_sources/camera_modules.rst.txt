@@ -1,0 +1,62 @@
+.. include:: global_rst.glb
+
+.. _sect-3d-camera-modules:
+
+3D camera modules
+=================
+
+The |rc_xxx|'s 3D camera software consists of the following modules:
+
+- :doc:`stereo_camera` (``rc_camera``:latex:`, Section \ref{stereo_camera:sect-stereo-camera}`)
+   acquires image pairs and performs planar rectification for using the
+   camera as a measurement device.
+   Images are provided both for further internal processing by other modules
+   and for external use as :ref:`GenICam image streams <sect-genicam>`.
+
+.. only:: rc_cube
+
+   - :doc:`stereo_matching` (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`)
+      uses the rectified stereo image pairs of the connected stereo camera, e.g. the |rc_visard|, to compute 3D depth
+      information such as disparity, error, and confidence images.
+      These are provided as GenICam streams, too.
+
+.. only:: rc_visard or rc_visard_ng
+
+   - :doc:`stereo_matching` (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`)
+      uses the rectified stereo image pairs to compute 3D depth
+      information such as disparity, error, and confidence images.
+      These are provided as GenICam streams, too.
+
+.. only:: rc_cube and (roboception or schunk or basler)
+
+   - :doc:`blaze` (``rc_blaze``:latex:`, Section \ref{blaze:sect-blaze}`)
+      provides 3D depth information such as disparity, error, and confidence images of the connected
+      Basler blaze RGB-D camera.
+      These are provided as GenICam streams, too.
+
+.. only:: rc_cube
+
+   These modules are pipeline specific, which means that they run inside each
+   camera pipeline. Changes to their settings or parameters
+   only affect the corresponding pipeline and have no influence on the other
+   camera pipelines running on the |rc_cube|.
+
+.. only:: rc_cube and (roboception or schunk or basler)
+
+   .. note:: 
+      The Stereo Matching module is only available in camera pipelines of type ``rc_visard`` or ``rc_viscore``.
+      The Blaze module is only available in camera pipelines of type ``blaze``.
+
+The :doc:`stereo_camera` and the :doc:`stereo_matching` modules, which
+acquire image pairs and compute 3D depth information such as disparity,
+error, and confidence images, are also accessible via the |rc_xxx|'s
+:doc:`GigE Vision/GenICam interface<gigevision>`.
+
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+
+   stereo_camera
+   stereo_matching
+   :matrixvision_visard_exclude:blaze
