@@ -1,0 +1,9 @@
+.. include:: global_rst.glb
+
+.. _sect-abb-format:
+
+ABB pose format
+---------------
+
+ABB robots use a position and a quaternion for describing a pose, like |rc_xxx|
+devices. There is no conversion of the orientation needed.

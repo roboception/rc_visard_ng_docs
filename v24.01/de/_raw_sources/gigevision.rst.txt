@@ -1,0 +1,771 @@
+.. include:: global_rst.glb
+
+.. _sect-genicam:
+
+GigE Vision 2.0/GenICam image interface
+-----------------------------------------
+
+.. index::
+   see: GigE Vision; GenICam
+
+Gigabit Ethernet for Machine Vision ("GigE Vision\ |reg|" for short) is an industrial camera interface standard based on UDP/IP
+(see http://www.gigevision.com).
+The |rc_xxx| is a GigE Vision\ |reg| version 2.0 device and is hence compatible with all GigE Vision\ |reg| 2.0 compliant frameworks and libraries.
+
+GigE Vision\ |reg| uses GenICam to describe the camera/device features. For more information about this *Generic Interface for Cameras* see http://www.genicam.org/.
+
+Via this interface the |rc_xxx| provides features such as
+
+* discovery,
+* IP configuration,
+* configuration of camera related parameters,
+* image grabbing, and
+* time synchronization via IEEE 1588-2008 PrecisionTimeProtocol (PTPv2).
+
+.. note::   The |rc_xxx| supports jumbo frames of up to 9000 bytes. Setting an MTU of 9000
+            on your GigE Vision client side is recommended for best performance.
+
+.. only:: roboception or schunk or matrixvision
+
+   .. note:: |manufacturer| provides tools and a C++ API with examples for discovery, configuration, and image
+             streaming via the GigE Vision/GenICam interface. See http://www.roboception.com/download.
+
+.. _sect-gev-ports:
+
+GigE Vision ports
+^^^^^^^^^^^^^^^^^
+
+GigE Vision is a UDP based protocol. On the |rc_xxx| the UDP ports are fixed and known:
+
+* UDP port 3956: GigE Vision Control Protocol (GVCP). Used for discovery, control and configuration.
+* UDP port 50010: Stream channel source port for GigE Vision Stream Protocol (GVSP) used for image streaming.
+
+.. _sect-genicam-params:
+
+Important GenICam parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following list gives an overview of the relevant GenICam features of
+the |rc_xxx| that can be read and/or changed
+via the GenICam interface. In addition to the standard parameters, which are defined in
+the Standard Feature Naming Convention (SFNC, see
+http://www.emva.org/standards-technology/genicam/genicam-downloads/),
+|rc_xxx| devices also offer custom parameters that account for special
+features of the
+:ref:`sect-stereo-camera`:latex:`\:(Section \ref{stereo_camera:sect-stereo-camera})`
+and the
+:ref:`sect-stereo-matching`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`
+module.
+
+Important standard GenICam features
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Category: ImageFormatControl
+++++++++++++++++++++++++++++
+
+.. index::
+   pair: ComponentSelector; GenICam
+
+``ComponentSelector``
+  - type: Enumeration, one of ``Intensity``, ``IntensityCombined``, ``Disparity``, ``Confidence``, or ``Error``
+  - default: -
+  - description: Allows the user to select one of the five image streams for configuration (see :ref:`sect-provided-image-streams`:latex:`, \:Section \ref{gigevision:sect-provided-image-streams}`).
+
+.. index::
+   pair: ComponentIDValue; GenICam
+
+``ComponentIDValue`` (read-only)
+  - type: Integer
+  - description: The ID of the image stream selected by the ``ComponentSelector``.
+
+.. index::
+   pair: ComponentEnable; GenICam
+
+``ComponentEnable``
+  - type: Boolean
+  - default: -
+  - description: If set to ``true``, it enables the image stream selected by ``ComponentSelector``; otherwise, it disables the stream.
+    Using ``ComponentSelector`` and ``ComponentEnable``, individual image streams can be switched on and off.
+
+.. index::
+   pair: Width; GenICam
+
+``Width`` (read-only)
+  - type: Integer
+  - description: Image width in pixel of image stream that is currently selected by ``ComponentSelector``.
+
+.. index::
+   pair: Height; GenICam
+
+``Height`` (read-only)
+  - type: Integer
+  - description: Image height in pixel of image stream that is currently selected by ``ComponentSelector``.
+
+.. index::
+   pair: WidthMax; GenICam
+
+``WidthMax`` (read-only)
+  - type: Integer
+  - description: Maximum width of an image.
+
+.. index::
+   pair: HeightMax; GenICam
+
+``HeightMax`` (read-only)
+  - type: Integer
+  - description: Maximum height of an image in the streams. This is always 1920 pixels due to the
+    stacked left and right images in the ``IntensityCombined`` stream (see :ref:`sect-provided-image-streams`:latex:`, Section \ref{gigevision:sect-provided-image-streams}`).
+
+.. index::
+   pair: PixelFormat; GenICam
+
+``PixelFormat``
+  - type: Enumeration, one of ``Mono8``, ``YCbCr411_8`` (color cameras only), ``Coord3D_C16``, ``Confidence8`` and ``Error8``
+  - description: Pixel format of the selected component. The enumeration only permits to choose the format
+    among the possibly formats for the selected component. For a color camera, ``Mono8`` or ``YCbCr411_8``
+    can be chosen for the ``Intensity`` and ``IntensityCombined`` component.
+
+Category: AcquisitionControl
+++++++++++++++++++++++++++++
+
+.. index::
+   pair: AcquisitionFrameRate; GenICam
+   pair: frame rate; GenICam
+
+``AcquisitionFrameRate``
+  - type: Float, ranges from 1 Hz to 25 Hz
+  - default: 25 Hz
+  - description: Frame rate of the camera
+    (:ref:`FPS <expl-fps>`:latex:`, Section \ref{stereo_camera:sect-cam-params}`).
+
+.. index::
+   pair: ExposureAuto; GenICam
+
+``ExposureAuto``
+  - type: Enumeration, one of ``Continuous``, ``Out1High``, ``AdaptiveOut1``, ``HDR`` or ``Off``
+  - default: ``Continuous``
+  - description: Combines ``exp_control`` (:ref:`exposure control <expl-exp-control>`:latex:`, Section \ref{stereo_camera:expl-exp-control}`)
+    and ``exp_auto_mode`` (:ref:`auto exposure mode <expl-exp-auto-mode>`:latex:`, Section \ref{stereo_camera:expl-exp-auto-mode}`).
+    ``Off`` maps to `Manual` :ref:`exposure control <expl-exp-control>`.
+    ``Continuous``, ``Out1High`` or ``AdaptiveOut1`` enable `Auto` :ref:`exposure control <expl-exp-control>`
+    with the respective :ref:`auto exposure mode <expl-exp-auto-mode>` where ``Continuous`` maps to the `Normal` ``exp_auto_mode``.
+    ``HDR`` enables high-dynamic-range exposure control.
+
+.. index::
+   pair: ExposureTime; GenICam
+
+``ExposureTime``
+  - type: Float, ranges from 66 µs to 18000 µs
+  - default: 5000 µs
+  - description: The cameras' exposure time in microseconds for the manual exposure mode
+    (:ref:`Exposure <expl-exp-value>`:latex:`, Section \ref{stereo_camera:expl-exp-value}`).
+
+Category: AnalogControl
++++++++++++++++++++++++
+
+``GainSelector`` (read-only)
+  - type: Enumeration, is always ``All``
+  - default: ``All``
+  - description: The |rc_xxx| currently supports only one overall gain setting.
+
+.. index::
+   pair: Gain; GenICam
+
+``Gain``
+  - type: Float, ranges from 0 dB to 18 dB
+  - default: 0 dB
+  - description: The cameras' gain value in decibel that is used in manual exposure mode
+    (:ref:`Gain <expl-gain-value>`:latex:`, Section \ref{stereo_camera:expl-gain-value}`).
+
+.. index::
+   pair: BalanceWhiteAuto; GenICam
+
+``BalanceWhiteAuto`` (color cameras only)
+  - type: Enumeration, one of ``Continuous`` or ``Off``
+  - default: ``Continuous``
+  - description: Can be set to ``Off`` for manual white balancing mode or to ``Continuous``
+    for auto white balancing. This feature is only available on color cameras
+    (:ref:`wb_auto <expl-wb-auto>`:latex:`, Section \ref{stereo_camera:expl-wb-auto}`).
+
+.. index::
+   pair: BalanceRatioSelector; GenICam
+
+``BalanceRatioSelector`` (color cameras only)
+  - type: Enumeration, one of ``Red`` or ``Blue``
+  - default: ``Red``
+  - description: Selects ratio to be modified by ``BalanceRatio``. ``Red`` means red to green
+    ratio and ``Blue`` means blue to green ratio. This feature is only available on color cameras.
+
+.. index::
+   pair: BalanceRatio; GenICam
+
+``BalanceRatio`` (color cameras only)
+  - type: Float, ranges from 0.125 to 8
+  - default: 1.2 if ``Red`` and 2.4 if ``Blue`` is selected in ``BalanceRatioSelector``
+  - description: Weighting of red or blue to green color channel. This feature is only available
+    on color cameras
+    (:ref:`wb_ratio <expl-wb-ratio>`:latex:`, Section \ref{stereo_camera:expl-wb-ratio}`).
+
+.. _sect-genicam-iocontrol:
+
+Category: DigitalIOControl
+++++++++++++++++++++++++++
+
+.. index::
+   pair: LineSelector; GenICam
+
+``LineSelector``
+  - type: Enumeration, one of ``Out1``, ``Out2``, ``In1`` or ``In2``
+  - default: ``Out1``
+  - description: Selects the input or output line for getting the current status or setting
+    the source.
+
+.. index::
+   pair: LineStatus; GenICam
+
+``LineStatus`` (read-only)
+  - type: Boolean
+  - description: Current status of the line selected by ``LineSelector``.
+
+.. index::
+   pair: LineStatusAll; GenICam
+
+``LineStatusAll`` (read-only)
+  - type: Integer
+  - description: Current status of GPIO inputs and outputs represented in the lowest four bits.
+
+  .. table:: Meaning of bits of ``LineStatusAll`` field.
+
+    +------+------+------+-------+-------+
+    | Bit  |  4   |  3   |   2   |   1   |
+    +======+======+======+=======+=======+
+    | GPIO | In 2 | In 1 | Out 2 | Out 1 |
+    +------+------+------+-------+-------+
+
+.. index::
+   pair: LineSource; GenICam
+
+``LineSource``
+  - type: Enumeration, one of ``ExposureActive``, ``ExposureAlternateActive``, ``Low`` or ``High``
+  - default: ``Low``
+  - description: Mode for output line selected by ``LineSelector`` as described in the IOControl
+    module (:ref:`out1_mode and out2_mode<sect-iocontrol-params>`:latex:`,
+    Section \ref{iocontrol:sect-iocontrol-params}`). See also parameter
+    ``AcquisitionAlternateFilter`` for filtering images in ``ExposureAlternateActive`` mode.
+
+Category: TransportLayerControl / PtpControl
+++++++++++++++++++++++++++++++++++++++++++++
+
+.. index::
+   pair: PtpEnable; GenICam
+   pair: PTP; synchronization
+   pair: time; synchronization
+
+``PtpEnable``
+  - type: Boolean
+  - default: ``false``
+  - description: Switches PTP synchronization on and off.
+
+Category: Scan3dControl
++++++++++++++++++++++++
+
+.. index::
+   pair: Scan3dDistanceUnit; GenICam
+
+``Scan3dDistanceUnit`` (read-only)
+  - type: Enumeration, is always ``Pixel``
+  - description: Unit for the disparity measurements, which is always ``Pixel``.
+
+.. index::
+   pair: Scan3dOutputMode; GenICam
+
+``Scan3dOutputMode`` (read-only)
+  - type: Enumeration, is always ``DisparityC``
+  - description: Mode for the depth measurements, which is always ``DisparityC``.
+
+.. index::
+   pair: Scan3dFocalLength; GenICam
+
+``Scan3dFocalLength`` (read-only)
+  - type: Float
+  - description: Focal length in pixel of image stream selected by ``ComponentSelector``. In case of
+    the component ``Disparity``, ``Confidence`` and ``Error``, the value also depends on the
+    resolution that is implicitly selected by ``DepthQuality``.
+
+.. index::
+   pair: Scan3dBaseline; GenICam
+
+``Scan3dBaseline`` (read-only)
+  - type: Float
+  - description: Baseline of the stereo camera in meters.
+
+.. index::
+   pair: Scan3dPrinciplePointU; GenICam
+
+``Scan3dPrinciplePointU`` (read-only)
+  - type: Float
+  - description: Horizontal location of the principle point in pixel of image stream selected by
+    ``ComponentSelector``. In case of the component ``Disparity``, ``Confidence`` and ``Error``,
+    the value also depends on the resolution that is implicitly selected by ``DepthQuality``.
+
+.. index::
+   pair: Scan3dPrinciplePointV; GenICam
+
+``Scan3dPrinciplePointV`` (read-only)
+  - type: Float
+  - description: Vertical location of the principle point in pixel of image stream selected by
+    ``ComponentSelector``. In case of the component ``Disparity``, ``Confidence`` and ``Error``,
+    the value also depends on the resolution that is implicitly selected by ``DepthQuality``.
+
+.. index::
+   pair: Scan3dCoordinateScale; GenICam
+
+``Scan3dCoordinateScale`` (read-only)
+  - type: Float
+  - description: The scale factor that has to be multiplied with the disparity values in the disparity
+    image stream to get the actual disparity measurements. This value is always 0.0625.
+
+.. index::
+   pair: Scan3dCoordinateOffset; GenICam
+
+``Scan3dCoordinateOffset`` (read-only)
+  - type: Float
+  - description: The offset that has to be added to the disparity values in the disparity
+    image stream to get the actual disparity measurements. For the |rc_xxx|, this value
+    is always 0 and can therefore be disregarded.
+
+.. index::
+   pair: Scan3dInvalidDataFlag; GenICam
+
+``Scan3dInvalidDataFlag`` (read-only)
+  - type: Boolean
+  - description: Is always ``true``, which means that invalid data in the
+    disparity image is marked by a specific value defined by the
+    ``Scan3dInvalidDataValue`` parameter.
+
+.. index::
+   pair: Scan3dInvalidDataValue; GenICam
+
+``Scan3dInvalidDataValue`` (read-only)
+  - type: Float
+  - description: Is the value which stands for invalid disparity. This value is always 0, which means that
+    disparity values of 0 correspond to invalid measurements. To distinguish between invalid disparity measurements and
+    disparity measurements of 0 for objects which are infinitely far away, the |rc_xxx| sets the disparity value for the latter
+    to the smallest possible disparity value of 0.0625. This still corresponds to an object distance of several hundred meters.
+
+Category: ChunkDataControl
+++++++++++++++++++++++++++
+
+.. index::
+   pair: Chunk data; GenICam
+
+``ChunkModeActive``
+  - type: Boolean
+  - default: False
+  - description: Enables chunk data that is delivered with every image.
+
+.. _sect-custom-genicam-params:
+
+Custom GenICam features of the |rc_xxx|
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Category: DeviceControl
++++++++++++++++++++++++
+
+.. index::
+   pair: system ready; GenICam
+
+``RcSystemReady`` (read-only)
+  - type: Boolean
+  - description: Returns whether the device's boot process has completed and all modules are running.
+
+.. index::
+   pair: disable parameter lock; GenICam
+
+``RcParamLockDisable``
+  - type: Boolean
+  - default: False
+  - description: If set to true, the camera and depth image parameters are not locked when a GigE Vision
+    client is connected to the device. Please note that depending on the connected GigE Vision client,
+    parameter changes by other applications (e.g. the |webgui|) might not be noticed by the GigE Vision client,
+    which could lead to unwanted results.
+
+Category: AcquisitionControl
+++++++++++++++++++++++++++++
+
+.. index::
+   pair: AcquisitionAlternateFilter; GenICam
+
+``AcquisitionAlternateFilter``
+  - type: Enumeration, one of ``Off``, ``OnlyHigh`` or ``OnlyLow``
+  - default: ``Off``
+  - description: If this parameter is set to ``OnlyHigh`` (or ``OnlyLow``) and the ``LineSource``
+    is set to ``ExposureAlternateActive`` for any output, then only camera images are delivered
+    that are captured while the output is high, i.e. a potentially connected projector is on (or
+    low, i.e. a potentially connected projector is off). This parameter is a simple means for only
+    getting images without projected pattern. The minimal time difference between camera and
+    disparity images will be about 40 ms in this case
+    (see :ref:`IOControl<sect-iocontrol-params>`:latex:`, Section \ref{iocontrol:sect-iocontrol-params}`).
+
+.. index::
+   pair: AcquisitionMultiPartMode; GenICam
+
+``AcquisitionMultiPartMode``
+  - type: Enumeration, one of ``SingleComponent`` or ``SynchronizedComponents``
+  - default: ``SingleComponent``
+  - description: Only effective in MultiPart mode. If this parameter is set to ``SingleComponent``
+    the images are sent immediately as a single component per frame/buffer when they become available.
+    This is the same behavior as when MultiPart is not supported by the client.
+    If set to ``SynchronizedComponents`` all enabled components are time synchronized on the |rc_xxx|
+    and only sent (in one frame/buffer) when they are all available for that timestamp.
+
+.. index::
+   pair: ExposureTimeAutoMax; GenICam
+
+``ExposureTimeAutoMax``
+  - type: Float, ranges from 66 µs to 18000 µs
+  - default: 18000 µs
+  - description: Maximal exposure time in auto exposure mode
+    (:ref:`Max Exposure <expl-exp-max>`:latex:`, Section \ref{stereo_camera:expl-exp-max}`).
+
+.. index::
+   pair: ExposureRegionOffsetX; GenICam
+
+``ExposureRegionOffsetX``
+  - type: Integer in the range of 0 to the maximum image width
+  - default: 0
+  - description: Horizontal offset of :ref:`exposure region<expl-exp-region>`:latex:`\:(Section \ref{stereo_camera:expl-exp-region})` in pixel.
+
+.. index::
+   pair: ExposureRegionOffsetY; GenICam
+
+``ExposureRegionOffsetY``
+  - type: Integer in the range of 0 to the maximum image height
+  - default: 0
+  - description: Vertical offset of :ref:`exposure region<expl-exp-region>`:latex:`\:(Section \ref{stereo_camera:expl-exp-region})` in pixel.
+
+.. index::
+   pair: ExposureRegionWidth; GenICam
+
+``ExposureRegionWidth``
+  - type: Integer in the range of 0 to the maximum image width
+  - default: 0
+  - description: Width of :ref:`exposure region<expl-exp-region>`:latex:`\:(Section \ref{stereo_camera:expl-exp-region})` in pixel.
+
+.. index::
+   pair: ExposureRegionHeight; GenICam
+
+``ExposureRegionHeight``
+  - type: Integer in the range of 0 to the maximum image height
+  - default: 0
+  - description: Height of :ref:`exposure region<expl-exp-region>`:latex:`\:(Section \ref{stereo_camera:expl-exp-region})` in pixel.
+
+.. index::
+   pair: RcExposureAutoAverageMax; GenICam
+
+``RcExposureAutoAverageMax``
+  - type: Float in the range of 0 to 1
+  - default: 0.75
+  - description: Maximum brightness for the :ref:`auto exposure function<exp-auto-max-min-average>`:latex:`\:(Section \ref{stereo_camera:exp-auto-max-min-average})`
+    as value between 0 (dark) and 1 (bright).
+
+.. index::
+   pair: RcExposureAutoAverageMin; GenICam
+
+``RcExposureAutoAverageMin``
+  - type: Float in the range of 0 to 1
+  - default: 0.25
+  - description: Minimum brightness for the :ref:`auto exposure function<exp-auto-max-min-average>`:latex:`\:(Section \ref{stereo_camera:exp-auto-max-min-average})`
+    as value between 0 (dark) and 1 (bright).
+
+Category: Scan3dControl
++++++++++++++++++++++++
+
+.. index::
+   pair: focal length factor; GenICam
+   pair: FocalLengthFactor; GenICam
+
+``FocalLengthFactor`` (read-only)
+  - type: Float
+  - description: The focal length scaled to an image width of 1 pixel. To get the focal length in pixels for a
+    certain image, this value must be multiplied by the width of the received image. See also parameter
+    ``Scan3dFocalLength``.
+
+.. index::
+   pair: Baseline; GenICam
+
+``Baseline`` (read-only)
+  - type: Float
+  - description: This parameter is deprecated. The parameter ``Scan3dBaseline`` should be used instead.
+
+Category: DepthControl
+++++++++++++++++++++++
+
+.. index::
+   pair: DepthAcquisitionMode; GenICam
+
+``DepthAcquisitionMode``
+  - type: Enumeration, one of ``SingleFrame``, ``SingleFrameOut1`` or ``Continuous``
+  - default: ``Continuous``
+  - description: In single frame mode, stereo matching is performed upon each
+    call of ``DepthAcquisitionTrigger``. The ``SingleFrameOut1`` mode can be
+    used to control an external projector. It sets the line source of ``Out1`` to
+    ``ExposureAlternateActive`` upon each trigger and resets it to ``Low`` as soon
+    as the images for stereo matching are grabbed. In continuous mode,
+    stereo matching is performed continuously.
+
+.. index::
+   pair: DepthAcquisitionTrigger; GenICam
+
+``DepthAcquisitionTrigger``
+  - type: Command
+  - description: This command triggers stereo matching of the next available
+    stereo image pair, if ``DepthAcquisitionMode`` is set to ``SingleFrame`` or ``SingleFrameOut1``.
+
+.. index::
+   pair: quality; GenICam
+   pair: DepthQuality; GenICam
+
+``DepthQuality``
+  - type: Enumeration, one of ``Low``, ``Medium``, ``High``, or ``Full`` **(only with StereoPlus license)**
+  - default: ``High``
+  - description: Quality of disparity images. Lower quality results in disparity
+    images with lower resolution
+    (:ref:`Quality <expl-depth-quality>`:latex:`, Section \ref{stereo_matching:expl-depth-quality}`).
+
+.. index::
+   pair: double_shot; GenICam
+   pair: DepthDoubleShot; GenICam
+
+``DepthDoubleShot``
+  - type: Boolean
+  - default: ``False``
+  - description: ``True`` for improving the stereo matching result of a scene recorded with a projector by filling holes with depth information computed from images without projector pattern.
+    (:ref:`Double-Shot <expl-depth-double-shot>`:latex:`, Section \ref{stereo_matching:expl-depth-double-shot}`).
+
+.. index::
+   pair: static_scene; GenICam
+   pair: DepthStaticScene; GenICam
+
+``DepthStaticScene``
+  - type: Boolean
+  - default: ``False``
+  - description: ``True`` for averaging 8 consecutive camera images for improving the stereo matching result.
+    (:ref:`Static <expl-depth-static>`:latex:`, Section \ref{stereo_matching:expl-depth-static}`).
+
+.. index::
+   pair: smooth; GenICam
+   pair: DepthSmooth; GenICam
+
+``DepthSmooth``  (read-only if StereoPlus license is not available)
+  - type: Boolean
+  - default: ``False``
+  - description: ``True`` for advanced smoothing of disparity values.
+    (:ref:`Smoothing <expl-depth-smooth>`:latex:`, Section \ref{stereo_matching:expl-depth-smooth}`).
+
+.. index::
+   pair: fill-in; GenICam
+   pair: DepthFill; GenICam
+
+``DepthFill``
+  - type: Integer, ranges from 0 pixel to 4 pixels
+  - default: 3 pixels
+  - description: Value in pixels for
+    :ref:`Fill-In <expl-depth-fill>`:latex:`\:(Section \ref{stereo_matching:expl-depth-fill})`.
+
+.. index::
+   pair: segmentation; GenICam
+   pair: DepthSeg; GenICam
+
+``DepthSeg``
+  - type: Integer, ranges from 0 pixel to 4000 pixels
+  - default: 200 pixels
+  - description: Value in pixels for
+    :ref:`Segmentation <expl-depth-seg>`:latex:`\:(Section \ref{stereo_matching:expl-depth-seg})`.
+
+.. index::
+   pair: minimum confidence; GenICam
+   pair: DepthMinConf; GenICam
+
+``DepthMinConf``
+  - type: Float, ranges from 0.0 to 1.0
+  - default: 0.0
+  - description: Value for :ref:`Minimum Confidence <expl-depth-min-conf>`
+    filtering\ :latex:`\:(Section \ref{stereo_matching:expl-depth-min-conf})`.
+
+.. index::
+   pair: minimum distance; GenICam
+   pair: DepthMinDepth; GenICam
+
+``DepthMinDepth``
+  - type: Float, ranges from 0.1 m to 100.0 m
+  - default: 0.1 m
+  - description: Value in meters for :ref:`Minimum Distance <expl-depth-min-depth>`
+    filtering\ :latex:`\:(Section \ref{stereo_matching:expl-depth-min-depth})`.
+
+.. index::
+   pair: maximum distance; GenICam
+   pair: DepthMaxDepth; GenICam
+
+``DepthMaxDepth``
+  - type: Float, ranges from 0.1m to 100.0 m
+  - default: 100.0 m
+  - description: Value in meters for :ref:`Maximum Distance <expl-depth-max-depth>`
+    filtering\ :latex:`\:(Section \ref{stereo_matching:expl-depth-max-depth})`.
+
+.. index::
+   pair: maximum depth error; GenICam
+   pair: DepthMaxDepthErr; GenICam
+
+``DepthMaxDepthErr``
+  - type: Float, ranges from 0.01 m to 100.0 m
+  - default: 100.0 m
+  - description: Value in meters for :ref:`Maximum Depth Error <expl-depth-max-depth-err>`
+    filtering\ :latex:`\:(Section \ref{stereo_matching:expl-depth-max-depth-err})`.
+
+.. _sect-chunk-data:
+
+Chunk data
+^^^^^^^^^^
+
+The |rc_xxx| supports chunk parameters that are transmitted with every
+image. Chunk parameters all have the prefix ``Chunk``. Their meaning equals
+their non-chunk counterparts, except that they belong to the corresponding
+image, e.g. ``Scan3dFocalLength`` depends on ``ComponentSelector`` and
+``DepthQuality`` as both can change the image resolution. The parameter
+``ChunkScan3dFocalLength`` that is delivered with an image fits to the
+resolution of the corresponding image.
+
+Particularly useful chunk parameters are:
+
+- ``ChunkComponentSelector`` selects for which component to extract the chunk
+  data in MultiPart mode.
+
+- ``ChunkComponentID`` and ``ChunkComponentIDValue`` provide the relation of
+  the image to its component (e.g. camera image or disparity image) without
+  guessing from the image format or size.
+
+- ``ChunkLineStatusAll`` provides the status of all GPIOs at the time of image
+  acquisition. See ``LineStatusAll`` above for a description of bits.
+
+- ``ChunkScan3d...`` parameters are useful for 3D reconstruction as described
+  in Section :ref:`sect-image-stream-conversions`:latex:`\:(Section \ref{gigevision:sect-image-stream-conversions})`.
+
+- ``ChunkPartIndex`` provides the index of the image part in this MultiPart
+  block for the selected component (``ChunkComponentSelector``).
+
+- ``ChunkRcOut1Reduction`` gives a ratio of how much the brightness of the images with GPIO Out1 LOW is
+  lower than the brightness of the images with GPIO Out1 HIGH. For example, a value of 0.2 means that the images with
+  GPIO Out1 LOW have 20% less brightness than the images with GPIO Out1 HIGH. This value is only available if
+  ``exp_auto_mode`` of the stereo camera is set to ``AdaptiveOut1`` or ``Out1High`` (:ref:`auto exposure mode <expl-exp-auto-mode>`:latex:`, Section \ref{stereo_camera:expl-exp-auto-mode}`).
+
+Chunk data is enabled by setting the GenICam parameter ``ChunkModeActive`` to
+``True``.
+
+.. _sect-provided-image-streams:
+
+Provided image streams
+^^^^^^^^^^^^^^^^^^^^^^
+
+The |rc_xxx| provides the following five different image streams via the GenICam interface:
+
+.. index::
+   pair: Intensity; GenICam image stream
+   pair: IntensityCombined; GenICam image stream
+   pair: Disparity; GenICam image stream
+   pair: Error; GenICam image stream
+   pair: Confidence; GenICam image stream
+   pair: PixelFormat; GenICam
+
+.. tabularcolumns:: |p{30mm}|p{40mm}|p{30mm}|p{40mm}|
+
++-----------------------+----------------------------------------+---------------------------------------------------------------------+
+| Component name        | PixelFormat                            | Description                                                         |
++=======================+========================================+=====================================================================+
+| ``Intensity``         | | ``Mono8`` (monochrome cameras)       | Left rectified camera image                                         |
+|                       | | ``YCbCr411_8`` (color cameras)       |                                                                     |
++-----------------------+----------------------------------------+---------------------------------------------------------------------+
+| ``IntensityCombined`` | | ``Mono8`` (monochrome cameras)       | Left rectified camera image stacked on right rectified camera image |
+|                       | | ``YCbCr411_8`` (color cameras)       |                                                                     |
++-----------------------+----------------------------------------+---------------------------------------------------------------------+
+| ``Disparity``         | ``Coord3D_C16``                        | Disparity image in desired resolution, i.e., ``DepthQuality`` of    |
+|                       |                                        | ``Full``, ``High``, ``Medium`` or ``Low``                           |
+|                       |                                        |                                                                     |
+|                       |                                        |                                                                     |
++-----------------------+----------------------------------------+---------------------------------------------------------------------+
+| ``Confidence``        | ``Confidence8``                        | Confidence image                                                    |
++-----------------------+----------------------------------------+---------------------------------------------------------------------+
+| ``Error``             | ``Error8`` (custom: 0x81080001)        | Disparity error image                                               |
++-----------------------+----------------------------------------+---------------------------------------------------------------------+
+
+.. index::
+   pair: timestamp; image
+   pair: timestamp; GenICam
+
+Each image comes with a buffer timestamp and the *PixelFormat* given in the above table. This PixelFormat
+should be used to distinguish between the different image types. Images belonging to the same acquisition
+timestamp can be found by comparing the GenICam buffer timestamps.
+
+.. _sect-image-stream-conversions:
+
+Image stream conversions
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+   pair: conversions; GenICam image stream
+
+The disparity image contains 16 bit unsigned integer values. These values must be multiplied by the scale value
+given in the GenICam feature *Scan3dCoordinateScale* to get the disparity values :math:`d` in pixels. To
+compute the 3D object coordinates from the disparity values, the focal length and the baseline as well as the
+principle point are required.
+These parameters are transmitted as GenICam features *Scan3dFocalLength*, *Scan3dBaseline*,
+*Scan3dPrincipalPointU* and *Scan3dPrincipalPointV*. The focal length and principal point depend on the image
+resolution of the selected component.
+Knowing these values, the pixel coordinates and the disparities can be transformed into 3D
+object coordinates in the camera coordinate frame
+using the equations described in :ref:`sect-point-clouds`:latex:`\:(Section \ref{stereo_matching:sect-point-clouds})`.
+
+.. only:: rc_visard or rc_visard_ng
+
+   .. note:: The |rc_xxx|'s camera coordinate frame is defined as shown in
+             :ref:`sensor coordinate frame<sect-coordinate-frames>`:latex:`\:(Section \ref{hardware_spec:sect-coordinate-frames})`.
+
+Assuming that :math:`d16_{ik}` is the 16 bit disparity value at column :math:`i` and row :math:`k`
+of a disparity image, the float disparity in pixels :math:`d_{ik}` is given by
+
+.. math::
+
+  d_{ik}=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale}
+
+The 3D reconstruction in meters can be written with the GenICam parameters as:
+
+.. math::
+
+  P_x&=\left(i+0.5-\mathrm{Scan3dPrincipalPointU}\right) \frac{\mathrm{Scan3dBaseline}}{d_{ik}},\\
+  P_y&=\left(k+0.5-\mathrm{Scan3dPrincipalPointV}\right) \frac{\mathrm{Scan3dBaseline}}{d_{ik}},\\
+  P_z&=\mathrm{Scan3dFocalLength} \frac{\mathrm{Scan3dBaseline}}{d_{ik}}.
+
+The confidence image contains 8 bit unsigned integer values. These values have to be divided by 255 to
+get the confidence as value between 0 an 1.
+
+The error image contains 8 bit unsigned integer values. The error :math:`e_{ik}` must be multiplied
+by the scale value given in the GenICam feature *Scan3dCoordinateScale* to get the disparity-error
+values :math:`d_{eps}` in pixels. According to the description in
+:ref:`sect-confidence-error`:latex:`\:(Section \ref{stereo_matching:sect-confidence-error})`, the
+depth error :math:`z_{eps}` in meters can be computed with GenICam parameters as
+
+.. math::
+
+  d_{ik}&=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale},\\
+  z_{eps}&=\frac{e_{ik} \cdot \mathrm{Scan3dCoordinateScale} \cdot \mathrm{Scan3dFocalLength}
+                \cdot \mathrm{Scan3dBaseline}}
+               {(d_{ik})^2}.
+
+.. note:: It is preferable to enable chunk data with the parameter *ChunkModeActive* and to use
+          the chunk parameters *ChunkScan3dCoordinateScale*, *ChunkScan3dFocalLength*,
+          *ChunkScan3dBaseline*, *ChunkScan3dPrincipalPointU* and *ChunkScan3dPrincipalPointV*
+          that are delivered with every image, because their values already fit to the image
+          resolution of the corresponding image.
+
+For more information about disparity, error, and confidence images, please refer to
+:ref:`sect-stereo-matching`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`.

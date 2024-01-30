@@ -1,0 +1,51 @@
+Überblick
+
+Der 3D-Sensor
+
+rc_visard
+
+ ist eine  Stereokamera, die über eine integrierte Recheneinheit
+verfügt und der Schutzklasse IP 54 angehört.
+
+Der
+
+rc_visard NG
+
+ stellt Echtzeit-Kamerabilder und Tiefenbilder bereit, die zur
+Berechnung von 3D-Punktwolken verwendet werden können. Zudem erstellt
+er Konfidenz- und Fehlerbilder, mit denen sich die Qualität der
+Bilderfassung messen lässt. Dank der standardisierten GenICam-
+Schnittstelle ist er mit allen großen Bildverarbeitungsbibliotheken
+kompatibel und bietet darüber hinaus eine intuitive, web-basierte
+Bedienoberfläche an.
+
+Mit optional erhältlichen Softwaremodulen bietet der
+
+rc_visard NG
+
+ Standardlösungen für Anwendungen in der Objekterkennung oder für
+robotische Pick-and-Place-Applikationen.
+
+Dank der intuitiven Kalibrierung, Konfiguration und Bedienung macht
+der
+
+rc_visard NG
+
+ 3D-Wahrnehmung für jedermann möglich.
+
+
+Werden im vorliegenden Handbuch die Begriffe "Sensor" und "
+
+rc_visard NG
+
+" verwendet, so beziehen sich diese auf den von Roboception
+angebotenen
+
+rc_visard NG
+
+.
+
+Bemerkung: Das vorliegende Handbuch nutzt das metrische System und
+  verwendet vorrangig die Maßeinheiten Meter und Millimeter. Sofern
+  nicht anders angegeben, sind Abmessungen in technischen Zeichnungen
+  in Millimetern angegeben.

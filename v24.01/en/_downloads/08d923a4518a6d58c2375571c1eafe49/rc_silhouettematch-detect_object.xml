@@ -1,0 +1,96 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="64"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_silhouettematch" Type="STRING"/>
+      <ELEMENT Tag="req/service/detect_object" Type="STRING"/>
+      <ELEMENT Tag="req/args/collision_detection/@gripper_id" Type="STRING"/>
+      <ELEMENT Tag="req/args/collision_detection/pre_grasp_offset/@x" Type="REAL"/>
+      <ELEMENT Tag="req/args/collision_detection/pre_grasp_offset/@y" Type="REAL"/>
+      <ELEMENT Tag="req/args/collision_detection/pre_grasp_offset/@z" Type="REAL"/>
+      <ELEMENT Tag="req/args/load_carrier_id" Type="STRING"/>
+      <ELEMENT Tag="req/args/object_plane_detection" Type="BOOL"/>
+      <ELEMENT Tag="req/args/object_to_detect/@object_id" Type="STRING"/>
+      <ELEMENT Tag="req/args/object_to_detect/@region_of_interest_2d_id" Type="STRING"/>
+      <ELEMENT Tag="req/args/offset" Type="REAL"/>
+      <ELEMENT Tag="req/args/pose_frame" Type="STRING"/>
+      <ELEMENT Tag="req/args/robot_pose/@X" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@A" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@B" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@C" Type="REAL"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/grasps/le/collision_checked" Type="BOOL"/>
+      <ELEMENT Tag="res/grasps/le/gripper_id" Type="STRING"/>
+      <ELEMENT Tag="res/grasps/le/id" Type="STRING"/>
+      <ELEMENT Tag="res/grasps/le/instance_uuid" Type="STRING"/>
+      <ELEMENT Tag="res/grasps/le/pose/@X" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@A" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@B" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@C" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose_frame" Type="STRING"/>
+      <ELEMENT Tag="res/grasps/le/priority" Type="INT"/>
+      <ELEMENT Tag="res/grasps/le/timestamp/@sec" Type="INT"/>
+      <ELEMENT Tag="res/grasps/le/timestamp/@nsec" Type="INT"/>
+      <ELEMENT Tag="res/grasps/le/uuid" Type="STRING"/>
+      <ELEMENT Tag="res/instances/le/grasp_uuids/le" Type="STRING"/>
+      <ELEMENT Tag="res/instances/le/id" Type="STRING"/>
+      <ELEMENT Tag="res/instances/le/object_id" Type="STRING"/>
+      <ELEMENT Tag="res/instances/le/pose/@X" Type="REAL"/>
+      <ELEMENT Tag="res/instances/le/pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="res/instances/le/pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="res/instances/le/pose/@A" Type="REAL"/>
+      <ELEMENT Tag="res/instances/le/pose/@B" Type="REAL"/>
+      <ELEMENT Tag="res/instances/le/pose/@C" Type="REAL"/>
+      <ELEMENT Tag="res/instances/le/pose_frame" Type="STRING"/>
+      <ELEMENT Tag="res/instances/le/timestamp/@sec" Type="INT"/>
+      <ELEMENT Tag="res/instances/le/timestamp/@nsec" Type="INT"/>
+      <ELEMENT Tag="res/instances/le/uuid" Type="STRING"/>
+      <ELEMENT Tag="res/load_carriers/le/height_open_side" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/id" Type="STRING"/>
+      <ELEMENT Tag="res/load_carriers/le/inner_dimensions/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/inner_dimensions/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/inner_dimensions/@z" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/outer_dimensions/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/outer_dimensions/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/outer_dimensions/@z" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overfilled" Type="BOOL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@X" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@A" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@B" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@C" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose_frame" Type="STRING"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_ledge/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_ledge/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_step_height" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_thickness/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_thickness/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/type" Type="STRING"/>
+      <ELEMENT Tag="res/object_id" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/timestamp/@sec" Type="INT"/>
+      <ELEMENT Tag="res/timestamp/@nsec" Type="INT"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

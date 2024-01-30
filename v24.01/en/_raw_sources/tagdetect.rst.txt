@@ -1,0 +1,986 @@
+.. include:: global_rst.glb
+
+.. _sect-tag-detection:
+
+TagDetect
+=========
+
+.. index:: ! tag detection
+  single: detection; tag
+
+Introduction
+------------
+
+The TagDetect modules are optional on-board modules of the |rc_xxx| and require
+separate :ref:`licenses<sect-updating-license>`
+:latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased. The licenses
+are included in every |rc_xxx| purchased after 01.07.2020.
+
+The TagDetect modules run on board the |rc_xxx| and allow the detection of 2D matrix codes and tags.
+Currently, there are TagDetect modules for `QR codes` and `AprilTags`.
+The modules, furthermore, compute the position and orientation of each tag
+in the 3D camera coordinate system, making it simple to manipulate a tag
+with a robot or to localize the camera with respect to a tag.
+
+.. only:: rc_cube and (roboception or schunk or basler)
+
+   .. note:: These modules are not available in ``blaze`` camera pipelines.
+
+.. only:: rc_cube
+
+   .. note::
+
+      These modules are pipeline specific. Changes to their settings or parameters only affect
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+
+Tag detection is made up of three steps:
+
+1. Tag reading on the 2D image pair (see :ref:`sect-tag-reading`:latex:`, Section \ref{tagdetect:sect-tag-reading}`).
+2. Estimation of the pose of each tag (see :ref:`sect-tag-pose-estimation`:latex:`, Section \ref{tagdetect:sect-tag-pose-estimation}`).
+3. Re-identification of previously seen tags (see :ref:`sect-tag-re-identification`:latex:`, Section \ref{tagdetect:sect-tag-re-identification}`).
+
+In the following, the two supported tag types are described, followed
+by a comparison.
+
+QR code
+^^^^^^^
+
+.. index:: ! QR code
+
+.. figure:: images/example_qr_code.png
+   :width: 200 px
+   :align: center
+
+   Sample QR code
+
+QR codes are two-dimensional matrix codes that contain arbitrary user-defined data.
+There is wide support for decoding of QR codes on commodity hardware
+such as smartphones.
+Also, many online and offline tools are available for the generation of such codes.
+
+The "pixels" of a QR code are called `modules`.
+Appearance and resolution of QR codes change with the amount
+of data they contain.
+While the special patterns in the three corners are always 7 modules
+wide, the number of modules between them increases the
+more data is stored.
+The lowest-resolution QR code is of size 21x21 modules and can contain
+up to 152 bits.
+
+Even though many QR code generation tools support generation of
+specially designed QR codes (e.g., containing a logo, having round
+corners, or having dots as modules), a reliable detection of these tags by
+the |rc_xxx|'s TagDetect module is not guaranteed.
+The same holds for QR codes which contain characters that are not part
+of regular ASCII.
+
+.. _sect-apriltag:
+
+AprilTag
+^^^^^^^^
+
+.. index:: ! AprilTag
+  single: tag detection; families
+
+.. _fig-april-tag-example:
+.. figure:: images/apriltag_dim_vis.png
+   :width: 100%
+   :align: center
+
+   A 16h5 tag (left), a 36h11 tag (center) and a 41h12 tag (right).
+   AprilTags consist of a mandatory white (a) and black (b) border and
+   a variable amount of data bits (c).
+
+AprilTags are similar to QR codes.
+However, they are specifically designed for robust identification at
+large distances.
+As for QR codes, we will call the tag pixels `modules`.
+:numref:`fig-april-tag-example` shows how AprilTags are structured.
+They have a mandatory white and black border, each one module
+wide. The tag families 16h5, 25h9, 36h10 and 36h11 are surrounded by
+this border and carry a variable amount of data modules in the center.
+For tag family 41h12, the black and white border is shifted towards
+the inside and the data modules are in the center and also at the border of the tags.
+Other than QR codes, AprilTags do not contain any user-defined information but
+are identified by a predefined *family* and *ID*.
+The tags in
+:numref:`fig-april-tag-example`
+for example are of family 16h5, 36h11 and 41h12 have id 0, 11 and 0, respectively.
+All supported families are shown in
+:numref:`tab-tag-families`.
+
+.. tabularcolumns:: |l|l|l|
+
+.. _tab-tag-families:
+
+.. table:: AprilTag families
+
+  ====== ================= ===========
+  Family Number of tag IDs Recommended
+  ====== ================= ===========
+  16h5   30                \-
+  25h9   35                o
+  36h10  2320              o
+  36h11  587               \+
+  41h12  2115              \+
+  ====== ================= ===========
+
+For each family, the number before the "h" states the number of data
+modules contained in the tag:
+While a 16h5 tag contains 16 (4x4) data modules
+((c) in :numref:`fig-april-tag-example`),
+a 36h11 tag contains 36 (6x6) modules and a 41h12 tag contains 41 (3x3 inner + 4x8 outer) modules.
+The number behind the "h" refers to the Hamming distance between two tags of
+the same family.
+The higher, the more robust is the detection, but the fewer individual tag
+IDs are available for the same number of data modules (see
+:numref:`tab-tag-families`).
+
+The advantage of fewer modules (as for 16h5 compared to 36h11) is
+the lower resolution of the tag.
+Hence, each tag module is larger and the tag therefore can be detected
+from a larger distance.
+This, however, comes at a price:
+Firstly, fewer data modules lead to fewer individual tag IDs.
+Secondly, and more importantly, detection robustness is significantly
+reduced due to a higher false positive rate; i.e, tags are mixed up
+or nonexistent tags are detected in random image texture or noise.
+The 41h12 family has its border shifted towards the inside, which gives
+it more data modules at a lower number of total modules compared to the
+36h11 family.
+
+For these reasons we recommend using the 41h12 and 36h11 families and highly
+discourage the use of the 16h5 family.
+The latter family should only be used if a large detection distance
+really is necessary for an application.
+However, the maximum detection distance increases only by approximately 25%
+when using a 16h5 tag instead of a 36h11 tag.
+
+Pre-generated AprilTags can be downloaded at the
+AprilTag project website (https://april.eecs.umich.edu/software/apriltag.html).
+There, each family consists of multiple PNGs containing single
+tags.
+Each pixel in the PNGs corresponds to one AprilTag module.
+When printing the tags of the families 36h11, 36h10, 25h9 and 16h5 special care must be taken to also include the
+white border around the tag that is contained in the PNG (see (a) in :numref:`fig-april-tag-example`).
+Moreover, all tags should be scaled to the desired printing size
+without any interpolation, so that the sharp edges are preserved.
+
+Comparison
+^^^^^^^^^^
+
+Both QR codes and AprilTags have their up and down sides.
+While QR codes allow arbitrary user-defined data to be stored,
+AprilTags have a pre-defined and limited set of tags.
+On the other hand, AprilTags have a lower resolution and can therefore
+be detected at larger distances.
+Moreover, the continuous white to black border in AprilTags allow for
+more precise pose estimation.
+
+.. Note::
+
+   If user-defined data is not required, AprilTags should be preferred over QR codes.
+
+.. _sect-tag-reading:
+
+Tag reading
+-----------
+
+The first step in the tag detection pipeline is reading the tags on the
+2D image pair.
+This step takes most of the processing time and its precision is crucial
+for the precision of the resulting tag pose.
+To control the speed of this step, the ``quality`` parameter
+can be set by the user.
+It results in a downscaling of the image pair before reading the tags.
+``High`` yields the largest maximum detection distance and highest
+precision, but also the highest processing time.
+``Low`` results in the smallest maximum detection distance and
+lowest precision, but processing requires less than half of the time.
+``Medium`` lies in between.
+Please note that this quality parameter has no relation to the quality
+parameter of
+:ref:`sect-stereo-matching`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`.
+
+.. _fig-tag-sizes:
+.. figure:: images/tag_sizes_vis.png
+   :width: 100%
+   :align: center
+
+   Visualization of module size :math:`s`, size of a tag in
+   modules :math:`r`, and size of a tag in meters :math:`t`
+   for AprilTags (left and center) and QR codes (right)
+
+The maximum detection distance :math:`z` at quality ``High`` can be
+approximated by using the following formulae,
+
+.. math::
+  z = \frac{f s}{p},
+
+.. math::
+  s = \frac{t}{r},
+
+where :math:`f` is the
+:ref:`focal length<sect-stereo-camera-rectification>`:latex:`\:(Section \ref{stereo_camera:sect-stereo-camera-rectification})`
+in pixels and :math:`s` is the size
+of a module in meters.
+:math:`s` can easily be calculated by the latter formula, where :math:`t`
+is the size of the tag in meters and :math:`r` is the width of the
+code in modules (for AprilTags without the white border).
+:numref:`fig-tag-sizes` visualizes these variables.
+:math:`p` denotes the number of image pixels per module required
+for detection.
+It is different for QR codes and AprilTags.
+Moreover, it varies with the tag's angle to the camera and illumination.
+Approximate values for robust detection are:
+
+* AprilTag: :math:`p=5` pixels/module
+* QR code: :math:`p=6` pixels/module
+
+The following tables give sample maximum distances for
+different situations, assuming a focal length of
+1075 pixels and the parameter ``quality`` to be set to ``High``.
+
+.. tabularcolumns:: |l|l|l|l|
+
+.. _tab-tag-max-dist-april:
+
+.. table:: Maximum detection distance examples for AprilTags with a width
+           of :math:`t=4` cm
+
+  =================== ================= ================
+  AprilTag family     Tag width         Maximum distance
+  =================== ================= ================
+  36h11 (recommended) 8 modules         1.1 m
+  16h5                6 modules         1.4 m
+  41h12 (recommended) 5 modules         1.7 m
+  =================== ================= ================
+
+.. tabularcolumns:: |l|l|l|l|
+
+.. _tab-tag-max-dist-qr:
+
+.. table:: Maximum detection distance examples for QR codes with a width
+           of :math:`t=8` cm
+
+  ================= ================
+  Tag width         Maximum distance
+  ================= ================
+  29 modules        0.49 m
+  21 modules        0.70 m
+  ================= ================
+
+.. _sect-tag-pose-estimation:
+
+Pose estimation
+---------------
+
+.. index::
+  single: tag detection; pose estimation
+  pair: AprilTag; pose estimation
+  pair: QR code; pose estimation
+
+For each detected tag, the pose of this tag in the camera coordinate
+frame is estimated.
+A requirement for pose estimation is that a tag is fully visible in
+the left and right camera image.
+The coordinate frame of the tag is aligned as shown below.
+
+.. _fig-tag-coord-frames:
+.. figure:: images/tag_coord_frames.png
+   :width: 100%
+   :align: center
+
+   Coordinate frames of AprilTags (left and center) and QR codes (right)
+
+The z-axis is pointing "into" the tag.
+Please note that for AprilTags, although having the white border included
+in their definition, the coordinate system's origin is placed exactly at the
+transition from the white to the black border.
+Since AprilTags do not have an obvious orientation, the origin is
+defined as the upper left corner in the orientation they are pre-generated in.
+
+During pose estimation, the tag's size is also estimated, while
+assuming the tag to be square.
+For QR codes, the size covers the full tag.
+For AprilTags, the size covers only the part inside the border defined by the
+transition from the black to the white border modules,
+hence ignoring the outermost white border for the tag families 16h5, 25h9, 36h10 and 36h11.
+
+The user can also specify the approximate size (:math:`\pm 10\%`) of tags with
+a specific ID.
+All tags not matching this size constraint are automatically filtered out.
+This information is further used to resolve ambiguities in pose estimation
+that may arise if multiple tags with the same ID are visible in the left
+and right image and these tags are aligned in parallel to the image rows.
+
+
+.. Note::
+
+   For best pose estimation results one should make sure to accurately print
+   the tag and to attach it to a rigid and as planar as possible surface.
+   Any distortion of the tag or bump in the surface will degrade the
+   estimated pose.
+
+.. Note::
+
+   It is highly recommended to set the approximate size of a tag.
+   Otherwise, if multiple tags with the same ID are visible in the left or right
+   image, pose estimation may compute a wrong pose if these tags have the
+   same orientation and are approximately aligned in parallel to the image
+   rows.
+   However, even if the approximate size is not given, the TagDetect modules
+   try to detect such situations and filter out affected tags.
+
+Below tables give approximate precisions of the estimated poses of AprilTags.
+We distinguish between lateral precision (i.e., in x and y direction) and
+precision in z direction.
+It is assumed that ``quality`` is set to ``High``, that the camera's
+viewing direction is parallel to the tag's normal and that the images are well exposed
+and do not suffer from motion blur.
+The size of a tag does not have a significant effect on the lateral or z
+precision; however, in general, larger tags improve precision.
+With respect to precision of the orientation especially around the x and y
+axes, larger tags clearly outperform smaller ones.
+
+.. only:: rc_visard or rc_cube
+
+   .. tabularcolumns:: |l|l|l|l|l|
+
+   .. _tab-tag-precision-april:
+
+   .. table:: Approximate position precision for AprilTag detections with ``High`` quality in an ideal scenario for different base lines
+
+      ======== ======================== ================== ========================= ===================
+      Distance |rc_visard| 65 - lateral |rc_visard| 65 - z |rc_visard| 160 - lateral |rc_visard| 160 - z
+      ======== ======================== ================== ========================= ===================
+      0.5 m    0.05 mm                   0.5 mm             0.05 mm                   0.3 mm
+      1.0 m    0.15 mm                   1.8 mm             0.15 mm                   1.4 mm
+      2.0 m    1.5 mm                    14.5 mm            0.5 mm                    3.7 mm
+      ======== ======================== ================== ========================= ===================
+
+.. only:: rc_visard_ng
+
+   .. tabularcolumns:: |l|l|l|l|l|
+
+   .. _tab-tag-precision-april:
+
+   .. table:: Approximate position precision for AprilTag detections with ``High`` quality in an ideal scenario
+
+      ======== ========================= ===================
+      Distance |rc_xxx| 160 - lateral    |rc_xxx| 160 - z
+      ======== ========================= ===================
+      0.5 m    0.05 mm                   0.3 mm
+      1.0 m    0.15 mm                   1.4 mm
+      2.0 m    0.5 mm                    3.7 mm
+      ======== ========================= ===================
+
+
+.. tabularcolumns:: |l|l|l|l|l|
+
+.. _tab-tag-precision-rotation-april:
+
+.. table:: Approximate orientation precision for AprilTag detections with ``High`` quality in an ideal scenario for different tag sizes
+
+   ======== ======================== ==================
+   Distance 60 x 60 mm               120 x 120 mm
+   ======== ======================== ==================
+   0.5 m    0.2°                      --
+   1.0 m    0.8°                     0.3°
+   2.0 m    2.0°                     0.8°
+   3.0 m     --                      1.8°
+   ======== ======================== ==================
+
+.. .. tabularcolumns:: |l|l|l|l|l|
+
+.. .. _tab-tag-precision-qr:
+
+.. .. table:: Approximate pose precision for QR codes
+
+..   ======== ======================== ================== ========================= ===================
+..   Distance |rc_visard| 65 - lateral |rc_visard| 65 - z |rc_visard| 160 - lateral |rc_visard| 160 - z
+..   ======== ======================== ================== ========================= ===================
+..   0.3 m    0.6 mm                   2.0 mm             0.6 mm                    1.3 mm
+..   1.0 m    2.6 mm                   15 mm              2.6 mm                    7.9 mm
+..   ======== ======================== ================== ========================= ===================
+
+.. _sect-tag-re-identification:
+
+Tag re-identification
+---------------------
+
+.. index::
+  single: tag detection; re-identification
+  pair: AprilTag; re-identification
+  pair: QR code; re-identification
+
+Each tag has an ID; for AprilTags it is the *family* plus *tag ID*, for
+QR codes it is the contained data.
+However, these IDs are not unique, since the same tag may appear multiple times
+in a scene.
+
+For distinction of these tags, the TagDetect modules also assign
+each detected tag a unique identifier.
+To help the user identifying an identical tag over multiple detections,
+tag detection tries to re-identify tags;
+if successful, a tag is assigned the same unique identifier again.
+
+.. only:: rc_visard
+
+    Tag re-identification compares the positions of the
+    corners of the tags in a static coordinate frame to find identical tags.
+    Tags are assumed identical if they did not or only slightly move in
+    that static coordinate frame.
+    For that static coordinate frame to be available, :ref:`dynamic-state estimation<sect-dynamics>`:latex:`\:(Section \ref{dynamics:sect-dynamics})`
+    must be switched on.
+    If it is not, the sensor is assumed to be static; tag re-identification
+    will then not work across sensor movements.
+
+.. only:: rc_cube or rc_visard_ng
+
+    Tag re-identification compares the positions of the
+    corners of the tags in the camera coordinate frame to find identical tags.
+    Tags are assumed identical if they did not or only slightly move in
+    that frame.
+
+By setting the ``max_corner_distance``
+threshold, the user can specify how much a tag is allowed move in the static
+coordinate frame between two detections to be considered identical.
+This parameter defines the maximum distance between the corners of
+two tags, which is shown in
+:numref:`fig-tag-re-identification`.
+The Euclidean distances of all four corresponding tag corners are computed in 3D.
+If none of these distances exceeds the threshold, the tags are
+considered identical.
+
+.. _fig-tag-re-identification:
+.. figure:: images/tag-re-identification.png
+   :width: 70%
+   :align: center
+
+   Simplified visualization of tag re-identification.
+   Euclidean distances between associated tag corners in 3D are compared
+   (red arrows).
+
+After a number of tag detection runs, previously detected tag instances
+will be discarded if they are not detected in the meantime.
+This can be configured by the parameter ``forget_after_n_detections``.
+
+.. _sect-tag-hand-eye-calib:
+
+Hand-eye calibration
+--------------------
+
+In case the camera has been calibrated to a robot, the TagDetect module
+can automatically provide poses in the robot coordinate frame.
+For the TagDetect node's :ref:`sect-tag-services`:latex:`\:(Section \ref{tagdetect:sect-tag-services})`, the frame of the
+output poses can be controlled with the ``pose_frame`` argument.
+
+Two different ``pose_frame`` values can be chosen:
+
+1. **Camera frame** (``camera``).
+   All poses provided by the module are in the camera frame.
+
+2. **External frame** (``external``).
+   All poses provided by the module are in the external frame,
+   configured by the user during the hand-eye calibration process.
+   The module relies on the on-board
+   :doc:`Hand-eye calibration module<handeye_calibration>`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`
+   to retrieve the sensor mounting (static or robot mounted) and
+   the hand-eye transformation.
+   If the sensor mounting is static, no further information is needed.
+   If the sensor is robot-mounted, the ``robot_pose`` is required
+   to transform poses to and from the ``external`` frame.
+
+All ``pose_frame`` values that are not ``camera`` or ``external`` are rejected.
+
+.. _sect-tag-parameters:
+
+Parameters
+----------
+
+There are two separate modules available for tag detection,
+one for detecting AprilTags and one for QR codes, named
+``rc_april_tag_detect`` and ``rc_qr_code_detect``, respectively.
+Apart from the module names they share the same interface definition.
+
+In addition to the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`, the TagDetect modules provide pages
+on the |webgui| :cubeonly:`in the desired pipeline` under
+:menuselection:`Modules --> AprilTag` and :menuselection:`Modules --> QR Code`,
+on which they can be tried out and configured manually.
+
+In the following, the parameters are listed based on the
+example of ``rc_qr_code_detect``. They are the same for
+``rc_april_tag_detect``.
+
+.. include:: _gen/nodes/params/rc_qr_code_detect.txt
+
+Via the |restapi|, these parameters can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/<rc_qr_code_detect|rc_april_tag_detect>/parameters/parameters?<parameter-name>=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_qr_code_detect|rc_april_tag_detect>/parameters?<parameter-name>=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/parameters?<parameter-name>=<value>
+
+.. _sect-tag-status-values:
+
+Status values
+-------------
+
+The TagDetect modules reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_qr_code_detect`` and ``rc_april_tag_detect`` module's status values
+	:header:  Name, Description
+
+	"``data_acquisition_time``","Time in seconds required to acquire image pair"
+	"``last_timestamp_processed``","The timestamp of the last processed image pair"
+	"``processing_time``","Processing time of the last detection in seconds"
+	"``state``","The current state of the node"
+
+The reported ``state`` can take one of the following values.
+
+.. tabularcolumns:: |l|l|
+.. _tab-rc-tag-detection-states:
+.. csv-table:: Possible states of the TagDetect modules
+	:header:  State name, Description
+
+	"IDLE", "The module is idle."
+	"RUNNING", "The module is running and ready for tag detection."
+	"FATAL", "A fatal error has occurred."
+
+.. _sect-tag-services:
+
+Services
+--------
+
+.. index::
+   pair: tag detection; services
+   pair: AprilTag; services
+   pair: QR code; services
+
+The TagDetect modules implement a state machine for starting and stopping.
+The actual tag detection can be triggered via ``detect``.
+
+The user can explore and call the ``rc_qr_code_detect`` and ``rc_april_tag_detect`` modules' services,
+e.g. for development and testing, using the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |rc_xxx|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+.. _expl-tag-srv-detect:
+
+``detect``
+^^^^^^^^^^
+
+  Triggers a tag detection.
+
+   .. toggle-header::
+      :header: **Details**
+
+      Depending on the ``use_cached_images`` parameter, the module will use
+      the latest received image pair (if set to true) or wait for a new pair
+      that is captured after the service call was triggered (if set to false,
+      this is the default).
+      Even if set to true, tag detection will never use one image pair twice.
+
+      It is recommended to call ``detect`` in state ``RUNNING`` only.
+      It is also possible to be called in state ``IDLE``, resulting in an
+      auto-start and stop of the module.
+      This, however, has some drawbacks:
+      First, the call will take considerably longer;
+      second, tag re-identification will not work.
+      It is therefore highly recommended to manually start the module
+      before calling ``detect``.
+
+      Tags might be omitted from the ``detect`` response due to several
+      reasons, e.g., if a tag is visible in only one of the cameras or if
+      pose estimation did not succeed.
+      These filtered-out tags are noted in the log, which can be accessed as
+      described in
+      :ref:`sect-downloading-log-files`:latex:`\:(Section \ref{maintenance:sect-downloading-log-files})`.
+
+      A visualization of the latest detection is shown on the |webgui| tabs
+      of the TagDetect modules. Please note that this visualization
+      will only be shown after calling the detection service at least once.
+      On the |webgui|, one can also manually try the detection by clicking the
+      :guilabel:`Detect` button.
+
+      Due to changes in system time on the |rc_xxx| there might occur jumps
+      of timestamps, forward as well as backward (see :ref:`sect-time-sync`:latex:`, Section \ref{time_sync:sect-time-sync}`).
+      Forward jumps do not have an effect on the TagDetect module.
+      Backward jumps, however, invalidate already received images.
+      Therefore, in case a backwards time jump is detected, an error of
+      value -102 will be issued on the next ``detect`` call, also to inform
+      the user that the timestamps included in the response will jump back.
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/detect
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/detect
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/detect
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Optional arguments:
+
+               ``tags`` is the list of tag IDs that the TagDetect module should detect.
+               For QR codes, the ID is the contained data.
+               For AprilTags, it is `"<family>_<id>"`, so, e.g., for a tag of
+               family 36h11 and ID 5, it is `"36h11_5"`.
+               Naturally, the AprilTag module can only be triggered for AprilTags, and
+               the QR code module only for QR codes.
+
+               The ``tags`` list can also be left empty.
+               In that case, all detected tags will be returned.
+               This feature should be used only during development and debugging
+               of an application.
+               Whenever possible, the concrete tag IDs should be listed, on the one
+               hand avoiding some false positives, on the other hand speeding up tag
+               detection by filtering tags not of interest.
+
+               For AprilTags, the user can not only specify concrete tags but also
+               a complete family by setting the ID to "<family>", so, e.g., "36h11".
+               All tags of this family will then be detected. It is further possible
+               to specify multiple complete tag families or a combination of
+               concrete tags and complete tag families; for instance, triggering for
+               "36h11", "25h9_3", and "36h10" at the same time.
+
+               In addition to the ID, the approximate size (:math:`\pm 10\%`) of a tag
+               can be set with the ``size`` parameter.
+               As described in
+               :ref:`sect-tag-pose-estimation`:latex:`\:(Section \ref{tagdetect:sect-tag-pose-estimation})`,
+               this information helps to resolve ambiguities in pose estimation that may
+               arise in certain situations.
+
+               ``pose_frame`` controls whether the poses of the detected tags are
+               returned in the camera or external frame,
+               as detailed in
+               :ref:`sect-tag-hand-eye-calib`:latex:`\:(Section \ref{tagdetect:sect-tag-hand-eye-calib})`.
+               The default is ``camera``.
+
+               .. include:: _gen/nodes/services/rc_qr_code_detect_detect_request.txt
+
+         .. tab:: **Response**
+
+            ``timestamp`` is set to the timestamp of the image pair the tag
+            detection ran on.
+
+            ``tags`` contains all detected tags.
+
+            ``id`` is the ID of the tag, similar to ``id`` in the request.
+
+            ``instance_id`` is the random unique identifier of the tag
+            assigned by tag re-identification.
+
+            ``pose`` contains ``position`` and ``orientation``.
+            The orientation is in quaternion format.
+
+            ``pose_frame`` is set to the coordinate frame above pose refers to.
+            It will either be "camera" or "external".
+
+            ``size`` will be set to the estimated tag size in meters; for AprilTags,
+            the white border is not included.
+
+            ``return_code`` holds possible warnings or error codes.
+
+            .. include:: _gen/nodes/services/rc_qr_code_detect_detect_response.txt
+
+.. _expl-tag-srv-start:
+
+``start``
+^^^^^^^^^
+
+   Starts the module by transitioning from ``IDLE`` to ``RUNNING``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      When running, the module receives images from the stereo camera and is
+      ready to perform tag detections.
+      To save computing resources, the
+      module should only be running when necessary.
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/start
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/start
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/start
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_qr_code_detect_start_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_qr_code_detect_start_response.txt
+
+.. _expl-tag-srv-stop:
+
+``stop``
+^^^^^^^^
+
+  Stops the module by transitioning to ``IDLE``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This transition can be performed from state ``RUNNING`` and ``FATAL``.
+      All tag re-identification information is cleared during stopping.
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/stop
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/stop
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/stop
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_qr_code_detect_stop_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_qr_code_detect_stop_response.txt
+
+.. _expl-tag-srv-restart:
+
+``restart``
+^^^^^^^^^^^
+
+  Restarts the module.
+
+   .. toggle-header::
+      :header: **Details**
+
+      If in ``RUNNING`` or ``FATAL``, the module will be stopped and then started.
+      If in ``IDLE``, the module will be started.
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/restart
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/restart
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/restart
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_qr_code_detect_restart_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_qr_code_detect_restart_response.txt
+
+.. only:: rc_cube
+
+
+   ``trigger_dump``
+   ^^^^^^^^^^^^^^^^
+      Triggers dumping of the detection that corresponds to the given timestamp,
+      or the latest detection, if no timestamp is given. The dumps are saved to the
+      connected USB drive.
+
+      .. toggle-header::
+         :header: **Details**
+
+         This service can be called as follows.
+
+         .. tabs::
+
+            .. tab:: **API version 2**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/trigger_dump
+
+            .. tab:: **API version 1 (deprecated)**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/trigger_dump
+
+         .. tabs::
+
+            .. tab:: **Request**
+
+               .. include:: _gen/nodes/services/rc_april_tag_detect_trigger_dump_request.txt
+
+            .. tab:: **Response**
+
+               .. include:: _gen/nodes/services/rc_april_tag_detect_trigger_dump_response.txt
+
+.. _expl-tag-srv-reset-params:
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Resets all parameters of the module to its default values,
+   as listed in above table.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/reset_defaults
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_qr_code_detect_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_qr_code_detect_reset_defaults_response.txt
+
+
+.. _sect-tag-return-codes:
+
+Return codes
+------------
+
+.. index::
+   pair: AprilTag; return codes
+   pair: QR Code; return codes
+
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common return codes:
+
+   ==== ===========
+   Code Description
+   ==== ===========
+   0    Success
+   -1   An invalid argument was provided
+   -4   A timeout occurred while waiting for the image pair
+   -9   The license is not valid
+   -11  Sensor not connected, not supported or not ready
+   -101 Internal error during tag detection
+   -102 There was a backwards jump of system time
+   -103 Internal error during tag pose estimation
+   -200 A fatal internal error occurred
+   200  Multiple warnings occurred; see list in ``message``
+   201  The module was not in state ``RUNNING``
+   ==== ===========

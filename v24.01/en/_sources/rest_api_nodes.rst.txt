@@ -1,0 +1,1005 @@
+Nodes, parameters, and services
+
+Nodes represent the
+
+rc_visard NG
+
+'s
+
+software modules
+
+ , each bundling a certain algorithmic functionality. All available
+global REST-API database nodes can be listed with their service calls
+and parameters using
+
+   curl -X GET http://<host>/api/v2/nodes
+
+Information about a specific node (e.g., "rc_load_carrier_db") can be
+retrieved using
+
+   curl -X GET http://<host>/api/v2/nodes/rc_load_carrier_db
+
+All available 3D camera,  detection and configuration REST-API nodes
+can be listed with their service calls and parameters using
+
+   curl -X GET http://<host>/api/v2/pipelines/0/nodes
+
+Information about a specific node (e.g., "rc_camera") can be retrieved
+using
+
+   curl -X GET http://<host>/api/v2/pipelines/0/nodes/rc_camera
+
+Status:
+   During run-time, each node offers information about its current
+   status. This includes not only the current
+
+   processing status
+
+    of the module (e.g., "running" or "stale"), but most nodes also
+   offer run-time statistics or read-only parameters, so-called
+
+   status values
+
+   . As an example, the "rc_camera" values can be retrieved using
+
+      curl -X GET http://<host>/api/v2/pipelines/0/nodes/rc_camera/status
+
+   Note: The returned
+
+     status values
+
+      are specific to individual nodes and are documented in the
+     respective
+
+     software module
+
+      .
+
+   Note: The
+
+     status values
+
+      are only reported when the respective node is in the "running"
+     state.
+
+Parameters:
+   Most nodes expose parameters via the
+
+   rc_visard NG
+
+   's REST-API to allow their run-time behaviors to be changed
+   according to application context or requirements. The REST-API
+   permits to read and write a parameter's value, but also provides
+   further information such as minimum, maximum, and default values.
+
+   As an example, the "rc_stereomatching" parameters can be retrieved
+   using
+
+      curl -X GET http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters
+
+   Its "quality" parameter could be set to "Full" using
+
+      curl -X PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters?quality=Full
+
+   or equivalently
+
+      curl -X PUT --header 'Content-Type: application/json' -d '{ "value": "Full" }' http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/quality
+
+   Note: Run-time parameters are specific to individual nodes and
+     are documented in the respective
+
+     software module
+
+      .
+
+   Note: Most of the parameters that nodes offer via the REST-API
+     can be explored and tested via the
+
+     rc_visard NG
+
+     's user-friendly
+
+     Web GUI
+
+      .
+
+   Note: Some parameters exposed via the
+
+     rc_visard NG
+
+     's REST-API are also available from the
+
+     GigE Vision 2.0/GenICam image interface
+
+      . Please note that setting those parameters via the REST-API or
+     Web GUI is prohibited if a GenICam client is connected.
+
+   In addition, each node that offers run-time parameters also
+   features a service to restore the default values for all of its
+   parameters.
+
+Services:
+   Some nodes also offer services that can be called via REST-API,
+   e.g., to restore parameters as discussed above, or to start and
+   stop nodes. As an example, the
+
+   services of the hand-eye calibration module
+
+     could be listed using
+
+      curl -X GET http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services
+
+   A node's service is called by issuing a "PUT" request for the
+   respective resource and providing the service-specific arguments
+   (see the ""args"" field of the
+
+   Service data model
+
+   ). As an example, the stereo matching module can be triggered to do
+   an acquisition by:
+
+      curl -X PUT --header 'Content-Type: application/json' -d '{ "args": {} }' http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/services/acquisition_trigger
+
+   Note: The services and corresponding argument data models are
+     specific to individual nodes and are documented in the respective
+
+     software module
+
+      .
+
+The following list includes all REST-API requests regarding the global
+database nodes' status, parameters, and services calls:
+
+GET /nodes
+
+   Get list of all available global nodes.
+
+   Template request
+
+      GET /api/v2/nodes HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "name": "rc_roi_db",
+          "parameters": [],
+          "services": [
+            "set_region_of_interest",
+            "get_regions_of_interest",
+            "delete_regions_of_interest",
+            "set_region_of_interest_2d",
+            "get_regions_of_interest_2d",
+            "delete_regions_of_interest_2d"
+          ],
+          "status": "running"
+        },
+        {
+          "name": "rc_load_carrier_db",
+          "parameters": [],
+          "services": [
+            "set_load_carrier",
+            "get_load_carriers",
+            "delete_load_carriers"
+          ],
+          "status": "running"
+        },
+        {
+          "name": "rc_gripper_db",
+          "parameters": [],
+          "services": [
+            "set_gripper",
+            "get_grippers",
+            "delete_grippers"
+          ],
+          "status": "running"
+        }
+      ]
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns array of NodeInfo)
+
+   Referenced Data Models:
+      NodeInfo\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      nodeinfo})
+
+GET /nodes/{node}
+
+   Get info on a single global node.
+
+   Template request
+
+      GET /api/v2/nodes/<node> HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "name": "rc_roi_db",
+        "parameters": [],
+        "services": [
+          "set_region_of_interest",
+          "get_regions_of_interest",
+          "delete_regions_of_interest",
+          "set_region_of_interest_2d",
+          "get_regions_of_interest_2d",
+          "delete_regions_of_interest_2d"
+        ],
+        "status": "running"
+      }
+
+   Parameters:
+      node (string) -- name of the node (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns NodeInfo)
+
+      404 Not Found -- node not found
+
+   Referenced Data Models:
+      NodeInfo\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      nodeinfo})
+
+GET /nodes/{node}/services
+
+   Get descriptions of all services a global node offers.
+
+   Template request
+
+      GET /api/v2/nodes/<node>/services HTTP/1.1
+
+   Template response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "args": {},
+          "description": "string",
+          "name": "string",
+          "response": {}
+        }
+      ]
+
+   Parameters:
+      node (string) -- name of the node (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns array of Service)
+
+      404 Not Found -- node not found
+
+   Referenced Data Models:
+      Service\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      service})
+
+GET /nodes/{node}/services/{service}
+
+   Get description of a global node's specific service.
+
+   Template request
+
+      GET /api/v2/nodes/<node>/services/<service> HTTP/1.1
+
+   Template response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "args": {},
+        "description": "string",
+        "name": "string",
+        "response": {}
+      }
+
+   Parameters:
+      node (string) -- name of the node (required)
+
+      service (string) -- name of the service (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns Service)
+
+      404 Not Found -- node or service not found
+
+   Referenced Data Models:
+      Service\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      service})
+
+PUT /nodes/{node}/services/{service}
+
+   Call a service of a node. The required args and resulting response
+   depend on the specific node and service.
+
+   Template request
+
+      PUT /api/v2/nodes/<node>/services/<service> HTTP/1.1
+      Accept: application/json application/ubjson
+
+      {}
+
+   Template response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "args": {},
+        "description": "string",
+        "name": "string",
+        "response": {}
+      }
+
+   Parameters:
+      node (string) -- name of the node (required)
+
+      service (string) -- name of the service (required)
+
+   Request JSON Object:
+      service args (object) -- example args (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- Service call completed (returns Service)
+
+      403 Forbidden -- Service call forbidden, e.g. because there is
+      no valid license for this module.
+
+      404 Not Found -- node or service not found
+
+   Referenced Data Models:
+      Service\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      service})
+
+GET /nodes/{node}/status
+
+   Get status of a global node.
+
+   Template request
+
+      GET /api/v2/nodes/<node>/status HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "status": "running",
+        "timestamp": 1503075030.2335997,
+        "values": []
+      }
+
+   Parameters:
+      node (string) -- name of the node (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns NodeStatus)
+
+      404 Not Found -- node not found
+
+   Referenced Data Models:
+      NodeStatus\:(Section \ref{rest_api_datamodel:sect-rest-
+      datamodel-nodestatus})
+
+The following list includes all REST-API requests regarding the 3D
+camera, detection and configuration nodes' status, parameters, and
+services calls:
+
+GET /pipelines/{pipeline}/nodes
+
+   Get list of all available nodes.
+
+   Template request
+
+      GET /api/v2/pipelines/<pipeline>/nodes HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "name": "rc_camera",
+          "parameters": [
+            "fps",
+            "exp_auto",
+            "exp_value",
+            "exp_max"
+          ],
+          "services": [
+            "reset_defaults"
+          ],
+          "status": "running"
+        },
+        {
+          "name": "rc_hand_eye_calibration",
+          "parameters": [
+            "grid_width",
+            "grid_height",
+            "robot_mounted"
+          ],
+          "services": [
+            "reset_defaults",
+            "set_pose",
+            "reset",
+            "save",
+            "calibrate",
+            "get_calibration"
+          ],
+          "status": "idle"
+        },
+        {
+          "name": "rc_stereomatching",
+          "parameters": [
+            "quality",
+            "seg",
+            "fill",
+            "minconf",
+            "mindepth",
+            "maxdepth",
+            "maxdeptherr"
+          ],
+          "services": [
+            "reset_defaults"
+          ],
+          "status": "running"
+        }
+      ]
+
+   Parameters:
+      pipeline (string) -- name of the pipeline (one of 0) (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns array of NodeInfo)
+
+   Referenced Data Models:
+      NodeInfo\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      nodeinfo})
+
+GET /pipelines/{pipeline}/nodes/{node}
+
+   Get info on a single node.
+
+   Template request
+
+      GET /api/v2/pipelines/<pipeline>/nodes/<node> HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "name": "rc_camera",
+        "parameters": [
+          "fps",
+          "exp_auto",
+          "exp_value",
+          "exp_max"
+        ],
+        "services": [
+          "reset_defaults"
+        ],
+        "status": "running"
+      }
+
+   Parameters:
+      pipeline (string) -- name of the pipeline (one of 0) (required)
+
+      node (string) -- name of the node (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns NodeInfo)
+
+      404 Not Found -- node not found
+
+   Referenced Data Models:
+      NodeInfo\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      nodeinfo})
+
+GET /pipelines/{pipeline}/nodes/{node}/parameters
+
+   Get parameters of a node.
+
+   Template request
+
+      GET /api/v2/pipelines/<pipeline>/nodes/<node>/parameters?name=<name> HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "default": 25,
+          "description": "Frames per second in Hz",
+          "max": 25,
+          "min": 1,
+          "name": "fps",
+          "type": "float64",
+          "value": 25
+        },
+        {
+          "default": true,
+          "description": "Switching between auto and manual exposure",
+          "max": true,
+          "min": false,
+          "name": "exp_auto",
+          "type": "bool",
+          "value": true
+        },
+        {
+          "default": 0.007,
+          "description": "Maximum exposure time in s if exp_auto is true",
+          "max": 0.018,
+          "min": 6.6e-05,
+          "name": "exp_max",
+          "type": "float64",
+          "value": 0.007
+        }
+      ]
+
+   Parameters:
+      pipeline (string) -- name of the pipeline (one of 0) (required)
+
+      node (string) -- name of the node (required)
+
+   Query Parameters:
+      name (string) -- limit result to parameters with name (optional)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns array of Parameter)
+
+      404 Not Found -- node not found
+
+   Referenced Data Models:
+      Parameter\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      parameter})
+
+PUT /pipelines/{pipeline}/nodes/{node}/parameters
+
+   Update multiple parameters.
+
+   Template request
+
+      PUT /api/v2/pipelines/<pipeline>/nodes/<node>/parameters HTTP/1.1
+      Accept: application/json application/ubjson
+
+      [
+        {
+          "name": "string",
+          "value": {}
+        }
+      ]
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "default": 25,
+          "description": "Frames per second in Hz",
+          "max": 25,
+          "min": 1,
+          "name": "fps",
+          "type": "float64",
+          "value": 10
+        },
+        {
+          "default": true,
+          "description": "Switching between auto and manual exposure",
+          "max": true,
+          "min": false,
+          "name": "exp_auto",
+          "type": "bool",
+          "value": false
+        },
+        {
+          "default": 0.005,
+          "description": "Manual exposure time in s if exp_auto is false",
+          "max": 0.018,
+          "min": 6.6e-05,
+          "name": "exp_value",
+          "type": "float64",
+          "value": 0.005
+        }
+      ]
+
+   Parameters:
+      pipeline (string) -- name of the pipeline (one of 0) (required)
+
+      node (string) -- name of the node (required)
+
+   Request JSON Array of Objects:
+      parameters (ParameterNameValue) -- array of parameters
+      (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns array of Parameter)
+
+      400 Bad Request -- invalid parameter value
+
+      403 Forbidden -- Parameter update forbidden, e.g. because they
+      are locked by a running GigE Vision application or there is no
+      valid license for this module.
+
+      404 Not Found -- node not found
+
+   Referenced Data Models:
+      ParameterNameValue\:(Section \ref{rest_api_datamodel:sect-rest-
+      datamodel-parameternamevalue})
+
+      Parameter\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      parameter})
+
+GET /pipelines/{pipeline}/nodes/{node}/parameters/{param}
+
+   Get a specific parameter of a node.
+
+   Template request
+
+      GET /api/v2/pipelines/<pipeline>/nodes/<node>/parameters/<param> HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "default": 25,
+        "description": "Frames per second in Hertz",
+        "max": 25,
+        "min": 1,
+        "name": "fps",
+        "type": "float64",
+        "value": 10
+      }
+
+   Parameters:
+      pipeline (string) -- name of the pipeline (one of 0) (required)
+
+      node (string) -- name of the node (required)
+
+      param (string) -- name of the parameter (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns Parameter)
+
+      404 Not Found -- node or parameter not found
+
+   Referenced Data Models:
+      Parameter\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      parameter})
+
+PUT /pipelines/{pipeline}/nodes/{node}/parameters/{param}
+
+   Update a specific parameter of a node.
+
+   Template request
+
+      PUT /api/v2/pipelines/<pipeline>/nodes/<node>/parameters/<param> HTTP/1.1
+      Accept: application/json application/ubjson
+
+      {
+        "value": {}
+      }
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "default": 25,
+        "description": "Frames per second in Hertz",
+        "max": 25,
+        "min": 1,
+        "name": "fps",
+        "type": "float64",
+        "value": 10
+      }
+
+   Parameters:
+      pipeline (string) -- name of the pipeline (one of 0) (required)
+
+      node (string) -- name of the node (required)
+
+      param (string) -- name of the parameter (required)
+
+   Request JSON Object:
+      parameter (ParameterValue) -- parameter to be updated as JSON
+      object (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns Parameter)
+
+      400 Bad Request -- invalid parameter value
+
+      403 Forbidden -- Parameter update forbidden, e.g. because they
+      are locked by a running GigE Vision application or there is no
+      valid license for this module.
+
+      404 Not Found -- node or parameter not found
+
+   Referenced Data Models:
+      ParameterValue\:(Section \ref{rest_api_datamodel:sect-rest-
+      datamodel-parametervalue})
+
+      Parameter\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      parameter})
+
+GET /pipelines/{pipeline}/nodes/{node}/services
+
+   Get descriptions of all services a node offers.
+
+   Template request
+
+      GET /api/v2/pipelines/<pipeline>/nodes/<node>/services HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "args": {},
+          "description": "Restarts the module.",
+          "name": "restart",
+          "response": {
+            "accepted": "bool",
+            "current_state": "string"
+          }
+        },
+        {
+          "args": {},
+          "description": "Starts the module.",
+          "name": "start",
+          "response": {
+            "accepted": "bool",
+            "current_state": "string"
+          }
+        },
+        {
+          "args": {},
+          "description": "Stops the module.",
+          "name": "stop",
+          "response": {
+            "accepted": "bool",
+            "current_state": "string"
+          }
+        }
+      ]
+
+   Parameters:
+      pipeline (string) -- name of the pipeline (one of 0) (required)
+
+      node (string) -- name of the node (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns array of Service)
+
+      404 Not Found -- node not found
+
+   Referenced Data Models:
+      Service\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      service})
+
+GET /pipelines/{pipeline}/nodes/{node}/services/{service}
+
+   Get description of a node's specific service.
+
+   Template request
+
+      GET /api/v2/pipelines/<pipeline>/nodes/<node>/services/<service> HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "args": {
+          "pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "slot": "int32"
+        },
+        "description": "Save a pose (grid or gripper) for later calibration.",
+        "name": "set_pose",
+        "response": {
+          "message": "string",
+          "status": "int32",
+          "success": "bool"
+        }
+      }
+
+   Parameters:
+      pipeline (string) -- name of the pipeline (one of 0) (required)
+
+      node (string) -- name of the node (required)
+
+      service (string) -- name of the service (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns Service)
+
+      404 Not Found -- node or service not found
+
+   Referenced Data Models:
+      Service\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      service})
+
+PUT /pipelines/{pipeline}/nodes/{node}/services/{service}
+
+   Call a service of a node. The required args and resulting response
+   depend on the specific node and service.
+
+   Template request
+
+      PUT /api/v2/pipelines/<pipeline>/nodes/<node>/services/<service> HTTP/1.1
+      Accept: application/json application/ubjson
+
+      {}
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "name": "set_pose",
+        "response": {
+          "message": "Grid detected, pose stored.",
+          "status": 1,
+          "success": true
+        }
+      }
+
+   Parameters:
+      pipeline (string) -- name of the pipeline (one of 0) (required)
+
+      node (string) -- name of the node (required)
+
+      service (string) -- name of the service (required)
+
+   Request JSON Object:
+      service args (object) -- example args (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- Service call completed (returns Service)
+
+      403 Forbidden -- Service call forbidden, e.g. because there is
+      no valid license for this module.
+
+      404 Not Found -- node or service not found
+
+   Referenced Data Models:
+      Service\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      service})
+
+GET /pipelines/{pipeline}/nodes/{node}/status
+
+   Get status of a node.
+
+   Template request
+
+      GET /api/v2/pipelines/<pipeline>/nodes/<node>/status HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "status": "running",
+        "timestamp": 1503075030.2335997,
+        "values": {
+          "baseline": "0.0650542",
+          "color": "0",
+          "exp": "0.00426667",
+          "focal": "0.844893",
+          "fps": "25.1352",
+          "gain": "12.0412",
+          "height": "960",
+          "temp_left": "39.6",
+          "temp_right": "38.2",
+          "time": "0.00406513",
+          "width": "1280"
+        }
+      }
+
+   Parameters:
+      pipeline (string) -- name of the pipeline (one of 0) (required)
+
+      node (string) -- name of the node (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns NodeStatus)
+
+      404 Not Found -- node not found
+
+   Referenced Data Models:
+      NodeStatus\:(Section \ref{rest_api_datamodel:sect-rest-
+      datamodel-nodestatus})

@@ -1,0 +1,111 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="1"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_camera" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/exp_auto/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/exp_auto_average_max/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/exp_auto_average_min/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/exp_auto_mode/@value" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/exp_control/@value" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/exp_height/@value" Type="INT"/>
+      <ELEMENT Tag="req/parameters/exp_max/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/exp_offset_x/@value" Type="INT"/>
+      <ELEMENT Tag="req/parameters/exp_offset_y/@value" Type="INT"/>
+      <ELEMENT Tag="req/parameters/exp_value/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/exp_width/@value" Type="INT"/>
+      <ELEMENT Tag="req/parameters/fps/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/gain_value/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/gamma/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/wb_auto/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/wb_ratio_blue/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/wb_ratio_red/@value" Type="REAL"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/parameters/exp_auto/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/exp_auto/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/exp_auto/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/exp_auto/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/exp_auto_average_max/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_auto_average_max/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_auto_average_max/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_auto_average_max/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_auto_average_min/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_auto_average_min/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_auto_average_min/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_auto_average_min/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_auto_mode/@value" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/exp_auto_mode/@default" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/exp_auto_mode/@min" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/exp_auto_mode/@max" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/exp_control/@value" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/exp_control/@default" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/exp_control/@min" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/exp_control/@max" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/exp_height/@value" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_height/@default" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_height/@min" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_height/@max" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_max/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_max/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_max/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_max/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_offset_x/@value" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_offset_x/@default" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_offset_x/@min" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_offset_x/@max" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_offset_y/@value" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_offset_y/@default" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_offset_y/@min" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_offset_y/@max" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_value/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_value/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_value/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_value/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_width/@value" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_width/@default" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_width/@min" Type="INT"/>
+      <ELEMENT Tag="res/parameters/exp_width/@max" Type="INT"/>
+      <ELEMENT Tag="res/parameters/fps/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/fps/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/fps/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/fps/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/gain_value/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/gain_value/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/gain_value/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/gain_value/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/gamma/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/gamma/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/gamma/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/gamma/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/wb_auto/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/wb_auto/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/wb_auto/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/wb_auto/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/wb_ratio_blue/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/wb_ratio_blue/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/wb_ratio_blue/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/wb_ratio_blue/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/wb_ratio_red/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/wb_ratio_red/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/wb_ratio_red/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/wb_ratio_red/@max" Type="REAL"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

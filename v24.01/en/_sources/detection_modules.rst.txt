@@ -1,0 +1,32 @@
+Detection modules
+
+The
+
+rc_visard NG
+
+ offers software modules for different detection applications:
+
+LoadCarrier (rc_load_carrier, Section \ref{loadcarrier:sect-
+loadcarrier})  allows detecting load carriers and their filling
+levels.
+
+TagDetect (rc_april_tag_detect and rc_qr_code_detect, Section
+\ref{tagdetect:sect-tag-detection})  allows the detection of AprilTags
+and QR codes, as well as the estimation of their poses.
+
+ItemPick and BoxPick (rc_itempick and rc_boxpick, Section
+\ref{itempick:sect-itempick})  provides an out-of-the-box perception
+solution for robotic pick-and-place applications of unknown objects or
+boxes.
+
+SilhouetteMatch (rc_silhouettematch, Section \ref{silhouettematch
+:sect-silhouettematch})  provides an object detection solution for
+objects placed on a plane or stacked planar objects.
+
+These modules are optional and can be activated by purchasing a
+separate
+
+license
+
+.
+
