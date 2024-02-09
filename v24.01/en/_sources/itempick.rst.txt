@@ -1826,19 +1826,20 @@ internal timeout occurred, e.g. during box detection if the given
 dimension range is too large  -4  Data acquisition took longer than
 allowed  -8  The template has been deleted during detection.  -10  New
 element could not be added as the maximum storage capacity of load
-carriers or regions of interest has been exceeded  -11  Sensor not
-connected, not supported or not ready  -200  Fatal internal error
--301  More than one item model of type UNKNOWN provided to the
+carriers, regions of interest or template has been exceeded  -11
+Sensor not connected, not supported or not ready  -200  Fatal internal
+error  -301  More than one item model of type UNKNOWN provided to the
 compute_grasps service  10  The maximum storage capacity of load
-carriers or regions of interest has been reached  11  An existent
-persistent model was overwritten by the call to set_load_carrier or
-set_region_of_interest  100  The requested load carriers were not
-detected in the scene  101  No valid surfaces or grasps were found in
-the scene  102  The detected load carrier is empty  103  All computed
-grasps are in collision with the load carrier  112  Rejected
-detections of one or more clusters, because min_cluster_coverage was
-not reached.  300  A valid robot_pose was provided as argument but it
-is not required  999  Additional hints for application development
+carriers, regions of interest or templates has been reached  11  An
+existent persistent model was overwritten by the call to
+set_load_carrier or set_region_of_interest  100  The requested load
+carriers were not detected in the scene  101  No valid surfaces or
+grasps were found in the scene  102  The detected load carrier is
+empty  103  All computed grasps are in collision with the load carrier
+112  Rejected detections of one or more clusters, because
+min_cluster_coverage was not reached.  300  A valid robot_pose was
+provided as argument but it is not required  999  Additional hints for
+application development
 
 BoxPick Template API
 

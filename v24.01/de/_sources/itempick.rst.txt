@@ -1928,15 +1928,15 @@ Boxerkennung, wenn der Bereich der angegebenen Abmessungen zu groß
 ist.  -4  Die maximal erlaubte Zeitspanne für die interne Akquise der
 Bilddaten wurde überschritten.  -8  Das Template wurde während der
 Detektion gelöscht.  -10  Das neue Element konnte nicht hinzugefügt
-werden, da die maximal speicherbare Anzahl an Load Carriern oder ROIs
-überschritten wurde.  -11  Sensor nicht verbunden, nicht unterstützt
-oder nicht bereit  -200  Ein schwerwiegender interner Fehler ist
-aufgetreten.  -301  Für die Anfrage zur Greifpunktberechnung
-compute_grasps wurden mehrere Objektmodelle (item_models) vom Typ
-UNKNOWN übergeben.  10  Die maximal speicherbare Anzahl an Load
-Carriern oder ROIs wurde erreicht.  11  Mit dem Aufruf von
-set_load_carrier oder set_region_of_interest wurde ein bereits
-existierendes Objekt mit derselben id überschrieben.  100  Die
+werden, da die maximal speicherbare Anzahl an Load Carriern, ROIs oder
+Templates überschritten wurde.  -11  Sensor nicht verbunden, nicht
+unterstützt oder nicht bereit  -200  Ein schwerwiegender interner
+Fehler ist aufgetreten.  -301  Für die Anfrage zur
+Greifpunktberechnung compute_grasps wurden mehrere Objektmodelle
+(item_models) vom Typ UNKNOWN übergeben.  10  Die maximal speicherbare
+Anzahl an Load Carriern, ROIs oder Templates wurde erreicht.  11  Mit
+dem Aufruf von set_load_carrier oder set_region_of_interest wurde ein
+bereits existierendes Objekt mit derselben id überschrieben.  100  Die
 angefragten Load Carrier wurden in der Szene nicht gefunden.  101  Es
 wurden keine gültigen Greifflächen in der Szene gefunden.  102  Der
 detektierte Load Carrier ist leer.  103  Alle berechneten Greifpunkte

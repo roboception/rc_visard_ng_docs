@@ -2,6 +2,9 @@
 body, h1, h2, h3, h4, h5, h6, a, ul, li, p, span {
   font-family: "Open Sans", Helvetica, sans-serif; }
 
+.reference {
+  white-space: pre; }
+
 .menuselection {
   font-weight: 600; }
 
