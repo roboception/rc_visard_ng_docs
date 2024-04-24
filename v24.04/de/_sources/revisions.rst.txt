@@ -1,0 +1,93 @@
+-[ Revisionen ]-
+
+Dieses Produkt kann bei Bedarf jederzeit ohne Vorankündigung geändert
+werden, um es zu verbessern, zu optimieren oder an eine überarbeitete
+Spezifikation anzupassen. Werden solche Änderungen vorgenommen, wird
+auch das vorliegende Handbuch überarbeitet. Beachten Sie die
+angegebene Versionsnummer.
+
+
+DOKUMENTATIONSVERSION
+
+  24.04.1  24.04.2024
+
+Gültig für
+
+rc_visard NG
+
+ Firmware 24.04.x
+
+    
+   HERSTELLER
+
+    
+   Roboception GmbH
+
+
+   Kaflerstraße 2
+   81241 München
+   Deutschland
+    
+   KUNDENSUPPORT
+
+   :  
+   support@roboception.de
+
+    | +49 89 889 50 79-0 (09:00-17:00 CET)
+
+
+Betriebsanleitung bitte vollständig lesen und produktnah aufbewahren.
+
+
+COPYRIGHT
+
+
+Das vorliegende Handbuch und das darin beschriebene Produkt sind durch
+Urheberrechte geschützt. Sofern das deutsche Urheber- und
+Leistungsschutzrecht nichts anderes vorschreibt, darf der Inhalt
+dieses Handbuchs nur mit dem vorherigen Einverständnis von Roboception
+bzw. des Inhabers des Schutzrechts verwendet und verbreitet werden.
+Das vorliegende Handbuch und das darin beschriebene Produkt dürfen
+ohne das vorherige Einverständnis von Roboception weder für Verkaufs-
+noch für andere Zwecke weder teilweise noch vollständig vervielfältigt
+werden.
+
+Die in diesem Dokument bereitgestellten Informationen sind nach bestem
+Wissen und Gewissen zusammengestellt worden. Roboception haftet jedoch
+nicht für deren Verwendung.
+
+Wurden nach Redaktionsschluss noch Änderungen am Produkt vorgenommen,
+kann es vorkommen, dass das Produkt vom Handbuch abweicht. Die im
+vorliegenden Dokument enthaltenen Informationen können sich ohne
+Vorankündigung ändern.
+
+Einführung
+
+-[ Hinweise im Handbuch ]-
+
+Um Schäden an der Ausrüstung zu vermeiden und die Sicherheit der
+Benutzer zu gewährleisten, enthält das vorliegende Handbuch
+Sicherheitshinweise, die mit dem Symbol
+
+Warnung
+
+ gekennzeichnet werden. Zusätzliche Informationen sind als
+
+Bemerkung
+
+ gekennzeichnet.
+
+Warnung: Die mit
+
+  Warnung
+
+   gekennzeichneten Sicherheitshinweise geben Verfahren und Maßnahmen
+  an, die befolgt bzw. ergriffen werden müssen, um Verletzungsgefahren
+  für Bediener/Benutzer oder Schäden am Gerät zu vermeiden. Beziehen
+  sich die angegebenen Sicherheitshinweise auf Softwaremodule, dann
+  weisen diese auf Verfahren hin, die befolgt werden müssen, um
+  Störungen oder ein Fehlverhalten der Software zu vermeiden.
+
+Bemerkung: Bemerkungen werden in diesem Handbuch eingesetzt, um
+  zusätzliche relevante Informationen zu vermitteln.
+

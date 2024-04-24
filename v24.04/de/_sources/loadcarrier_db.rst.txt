@@ -1,0 +1,490 @@
+LoadCarrierDB
+
+Einleitung
+
+Das LoadCarrierDB Modul (Load Carrier Datenbank Modul) ermöglicht die
+globale Definition von Load Carriern (Behältern), die dann in vielen
+Detektionsmodulen genutzt werden können. Die definierten Load Carrier
+Modelle sind in allen Modulen auf dem
+
+rc_visard NG
+
+ verfügbar, die Load Carrier unterstützen.
+
+Das LoadCarrierDB Modul ist ein Basismodul, welches auf jedem
+
+rc_visard NG
+
+ verfügbar ist.
+
+Spezifikationen des LoadCarrierDB Moduls      Unterstützte Load
+Carrier Typen  4-seitig oder 3-seitig  Mögliche Rand-Arten
+durchgängig, abgestuft oder vorspringend  Min. Load Carrier
+Abmessungen  0.1 m x 0.1 m x 0.05 m  Max. Load Carrier Abmessungen  2
+m x 2 m x 2 m  Max. Anzahl von Load Carriern  50  Load Carrier
+verfügbar in  ItemPick und BoxPick\:(Section \ref{itempick:sect-
+itempick}) und SilhouetteMatch\:(Section \ref{silhouettematch:sect-
+silhouettematch})  Mögliche Posen-Arten  keine Pose,
+Orientierungsprior, exakte Pose  Mögliche Referenzkoordinatensysteme
+camera, external
+
+Load Carrier Definition
+
+Ein sogenannter Load Carrier ist ein Behälter mit vier Wänden, einem
+Boden und einem rechteckigen Rand, der Objekte enthalten kann. Er kann
+genutzt werden, um das Volumen, in dem nach Objekten oder Greifpunkten
+gesucht wird, zu begrenzen.
+
+Seine Geometrie ist durch die inneren und äußeren Abmessungen
+("inner_dimensions" und "outer_dimensions") definiert. Die maximalen
+"outer_dimensions" betragen 2.0 m in allen Dimensionen.
+
+Der Ursprung des Load Carrier Koordinatensystems liegt im Zentrum des
+durch die
+
+Außenmaße
+
+ definierten Quaders. Dabei ist die z-Achse senkrecht zum Boden des
+Load Carriers und zeigt aus dem Load Carrier heraus (siehe
+
+Abb. 50
+
+).
+
+
+Bemerkung: Die Innen- und Außenmaße eines Load Carriers sind
+  typischerweise in den Angaben des jeweiligen Herstellers
+  spezifiziert, und können im Produktblatt oder auf der Produktseite
+  nachgeschlagen werden.
+
+Das Innenvolumen eines Load Carriers ist durch seine Innenmaße
+definiert, aber enthält zusätzlich einen Bereich von 10 cm oberhalb
+des Load Carriers, damit Objekte, die aus dem Load Carrier
+herausragen, auch für die Detektion oder Greifpunktberechnung
+berücksichtigt werden. Weiterhin wird vom Innenvolumen in jeder
+Richtung ein zusätzlicher Sicherheitsabstand "crop_distance"
+abgezogen, welcher als Laufzeitparameter im LoadCarrier Modul
+konfiguriert werden kann (siehe
+
+Parameter
+
+).
+
+Abb. 51
+
+ zeigt das Innenvolumen eines Load Carriers. Nur Punkte, die sich
+innerhalb dieses Volumens  befinden, werden für Detektionen
+berücksichtigt.
+
+
+Da die Erkennung von Load Carriern  auf der Erkennung des Load Carrier
+Rands basiert, muss die Geometrie des Randes angegeben werden, wenn
+sie nicht aus der Differenz zwischen Außen- und Innenmaßen bestimmt
+werden kann. Dazu kann die Randstärke "rim_thickness" explizit gesetzt
+werden. Die Randstärke gibt die Breite des äußeren Rands in x- und
+y-Richtung an. Wenn eine Randstärke gesetzt ist, kann optional auch
+die Randstufenhöhe "rim_step_height" angegeben werden. Die
+Randstufenhöhe gibt die Höhe der Stufe zwischen dem äußeren und dem
+inneren Teil des Load Carrier Rands an. Wenn die Stufenhöhe angegeben
+wird, wird sie auch bei der Kollisionsprüfung berücksichtigt (siehe
+
+CollisionCheck
+
+). Beispiele abgestufter Load Carrier sind in
+
+Abb. 52
+
+ A, B  gezeigt. Zusätzlich zur Randstärke und Randstufenhöhe kann der
+Randvorsprung "rim_ledge"  angegeben werden, um Load Carrier zu
+definieren, deren innerer Rand in den Load Carrier Innenraum
+hineinragt, wie zum Beispiel bei Gitterboxen. Der Randvorsprung
+"rim_ledge" gibt die Randstärke des inneren Teils des Randes in die x-
+und y-Richtung an. Ein Beispiel eines Load Carriers mit vorspringendem
+Rand ist in
+
+Abb. 52
+
+ C gezeigt.
+
+
+Die unterschiedlichen Randtypen können für gewöhnliche 4-seitige und
+3-seitige Load Carrier angewendet werden. Für einen 3-seitigen Load
+Carrier muss das Feld "type" auf "THREE_SIDED" gesetzt werden. Wenn
+der Typ "STANDARD" oder leer ist, wird ein 4-seitiger Load Carrier
+angenommen. Ein 3-seitiger Load Carrier hat eine Seite, die niedriger
+ist als die anderen drei Seiten. Die Höhe dieser niedrigeren offenen
+Seite "height_open_side" wird vom äußeren Boden des Load Carriers
+gemessen. Die offene Seite liegt an der negativen y-Achse des Load
+Carrier Koordinatensystems. Beispiele der zwei unterschiedlichen Load
+Carrier Typen sind in
+
+Abb. 53
+
+ zu sehen. Die Höhe der offenen Seite wird nur während der
+Kollisionsprüfung berücksichtigt und ist nicht notwendig für die
+Erkennung des Load Carriers.
+
+
+Für einen Load Carrier kann eine Pose bestehend aus "position" und
+"orientation" als Quaternion in einem Referenzkoordinatensystem
+angegeben werden. Basierend auf dem Posentyp "pose_type" wird diese
+Pose entweder als Vorgabe für die Load Carrier Orientierung
+("pose_type" ist "ORIENTATION_PRIOR" oder leer) oder als exakte Pose
+("pose_type" ist "EXACT_POSE") verwendet.
+
+Falls die angegebene Pose als Vorgabe (Prior) für die Orientierung
+dient, wird garantiert, dass die zurückgelieferte Pose des erkannten
+Load Carriers die minimale Rotation bezogen auf den gesetzten Prior
+hat. Dieser Posentyp ist nützlich für die Erkennung von geneigten Load
+Carriern, oder um Mehrdeutigkeiten in der x- und y-Richtung
+aufzulösen, die durch die Symmetrie des Load Carriers verursacht
+werden.
+
+Falls der Posentyp auf "EXACT_POSE" gesetzt ist, wird keine Load
+Carrier Erkennung auf den Szenendaten durchgeführt, sondern die
+angegebene Pose wird so verwendet, als wäre der Load Carrier in dieser
+Pose in der Szene erkannt worden. Dieser Posentyp ist nützlich, wenn
+Load Carrier ihre Position nicht verändern und/oder schwer zu erkennen
+sind (z.B. weil ihr Rand zu schmal ist oder das Material zu stark
+reflektiert).
+
+Der
+
+rc_visard NG
+
+ erlaubt das Speichern von bis zu 50 verschiedenen Load Carriern, von
+denen jeder mit einer "id" versehen ist. Die für eine spezifische
+Anwendung relevanten Load Carrier können mithilfe der
+
+rc_visard NG
+
+ Web GUI oder der
+
+REST-API-Schnittstelle
+
+ konfiguriert werden.
+
+Bemerkung: Die konfigurierten Load Carrier sind persistent auf dem
+
+  rc_visard NG
+
+   gespeichert und auch nach Firmware-Updates und -Wiederherstellungen
+  verfügbar.
+
+Load Carrier Abteile
+
+Bei einigen Detektionsmodulen kann ein Load Carrier Abteil
+("load_carrier_compartment") angegeben werden, um das Volumen für die
+Erkennung zu begrenzen, zum Beispiel in
+
+ItemPick's compute_grasps Service
+
+. Ein Load Carrier Abteil ist eine Box, deren Pose "pose" als
+Transformation vom Load Carrier Koordinatensystem in das
+Abteilkoordinatensystem, welches im Zentrum der durch das Abteil
+definierten Box liegt, angegeben wird (siehe
+
+Abb. 54
+
+). Das Load Carrier Abteil ist nicht Teil der Load Carrier Definition
+im LoadCarrierDB Modul, sondern muss für jeden Detektionsaufruf
+separat definiert werden.
+
+
+Als Volumen für die Detektion wird der Durchschnitt des Abteil-
+Volumens und des Load Carrier Innenraums verwendet. Wenn dieser
+Durchschnitt ebenfalls den Bereich von 10 cm oberhalb des Load
+Carriers enthalten soll, muss die Höhe der Box, die das Abteil
+definiert, entsprechend vergrößert werden.
+
+Wechselwirkung mit anderen Modulen
+
+Die folgenden, intern auf dem
+
+rc_visard NG
+
+ laufenden Module liefern Daten für das LoadCarrierDB Modul oder haben
+Einfluss auf die Datenverarbeitung.
+
+Hand-Auge-Kalibrierung
+
+Falls die Kamera zu einem Roboter kalibriert wurde, kann die exakte
+Pose oder der Orientierungsprior im Roboterkoordinatensystem angegeben
+werden, indem das Argument "pose_frame" auf "external" gesetzt wird.
+
+Zwei verschiedene Werte für "pose_frame" können gewählt werden:
+
+Kamera-Koordinatensystem (camera): Die Load Carrier Pose oder der
+Orientierungsprior sind im Kamera-Koordinatensystem angegeben und es
+ist kein zusätzliches Wissen über die Lage der Kamera in seiner
+Umgebung notwendig. Das bedeutet insbesondere, dass sich ROIs oder
+Load Carrier, welche in diesem Koordinatensystem angegeben sind, mit
+der Kamera bewegen. Es liegt daher in der Verantwortung des Anwenders,
+in solchen Fällen die entsprechenden Posen der Situation entsprechend
+zu aktualisieren (beispielsweise für den Anwendungsfall einer
+robotergeführten Kamera).
+
+Benutzerdefiniertes externes Koordinatensystem (external): Die Load
+Carrier Pose oder der Orientierungsprior sind im sogenannten externen
+Koordinatensystem angegeben, welches vom Nutzer während der Hand-Auge-
+Kalibrierung gewählt wurde. In diesem Fall bezieht das Modul alle
+notwendigen Informationen über die Kameramontage und die kalibrierte
+Hand-Auge-Transformation automatisch vom Modul Hand-Auge-
+Kalibrierung\:(Abschnitt \ref{handeye_calibration:sect-handeye-
+calibration}).
+
+Bemerkung: Wenn keine Hand-Auge-Kalibrierung durchgeführt wurde bzw.
+  zur Verfügung steht, muss als Referenzkoordinatensystem "pose_frame"
+  immer "camera" angegeben werden.
+
+Zulässige Werte zur Angabe des Referenzkoordinatensystems sind
+"camera" und "external". Andere Werte werden als ungültig
+zurückgewiesen.
+
+Services
+
+Das LoadCarrierDB Modul wird in der REST-API als "rc_load_carrier_db"
+bezeichnet und in der
+
+Web GUI
+
+ unter Datenbank ‣ Load Carrier dargestellt. Die angebotenen Services
+des LoadCarrierDB Moduls können mithilfe der
+
+REST-API-Schnittstelle
+
+ oder der Web GUI ausprobiert und getestet werden.
+
+Das LoadCarrierDB Modul stellt folgende Services zur Verfügung.
+
+set_load_carrier
+
+   speichert einen Load Carrier auf dem
+
+   rc_visard NG
+
+   . Alle Load Carrier sind dauerhaft gespeichert, auch über Firmware-
+   Updates und -Wiederherstellungen hinweg.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v2/nodes/rc_load_carrier_db/services/set_load_carrier
+
+   Request
+
+   Die Definition des Typs "load_carrier" wird in
+
+   Load Carrier Definition
+
+    beschrieben.
+
+   Das Feld "type" ist optional und akzeptiert "STANDARD" und
+   "THREE_SIDED".
+
+   Das Feld "pose_type" ist optional und akzeptiert "NO_POSE",
+   "EXACT_POSE" und "ORIENTATION_PRIOR".
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "load_carrier": {
+            "height_open_side": "float64",
+            "id": "string",
+            "inner_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "outer_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "pose_type": "string",
+            "rim_ledge": {
+              "x": "float64",
+              "y": "float64"
+            },
+            "rim_step_height": "float64",
+            "rim_thickness": {
+              "x": "float64",
+              "y": "float64"
+            },
+            "type": "string"
+          }
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_load_carrier",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_load_carriers
+
+   gibt die mit "load_carrier_ids" spezifizierten, gespeicherten Load
+   Carrier zurück. Wenn keine "load_carrier_ids" angegeben werden,
+   werden alle gespeicherten Load Carrier zurückgeliefert.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v2/nodes/rc_load_carrier_db/services/get_load_carriers
+
+   Request
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "load_carrier_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_load_carriers",
+        "response": {
+          "load_carriers": [
+            {
+              "height_open_side": "float64",
+              "id": "string",
+              "inner_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "outer_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "pose_type": "string",
+              "rim_ledge": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "rim_step_height": "float64",
+              "rim_thickness": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_load_carriers
+
+   löscht die mit "load_carrier_ids" spezifizierten, gespeicherten
+   Load Carrier. Alle zu löschenden Load Carrier müssen explizit in
+   "load_carrier_ids" angegeben werden.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v2/nodes/rc_load_carrier_db/services/delete_load_carriers
+
+   Request
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "load_carrier_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "delete_load_carriers",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Rückgabecodes
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von "0" quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte
+zutreffend wären, wird der kleinste zurückgegeben, und die
+entsprechenden Textnachrichten werden in "return_code.message"
+akkumuliert.
+
+Die folgende Tabelle listet die möglichen Rückgabecodes auf:
+
+Rückgabecodes der Services des LoadCarrierDB Moduls      Code
+Beschreibung  0  Erfolgreich  -1  Ungültige(s) Argument(e)  -10  Das
+neue Element konnte nicht hinzugefügt werden, da die maximal
+speicherbare Anzahl an Load Carriern überschritten wurde.  10  Die
+maximal speicherbare Anzahl an Load Carriern wurde erreicht.  11  Mit
+dem Aufruf von set_load_carrier wurde ein bereits existierendes Objekt
+mit derselben id überschrieben.

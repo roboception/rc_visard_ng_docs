@@ -1,0 +1,29 @@
+Applicable standards
+
+Interfaces
+
+The
+
+rc_visard NG
+
+ supports the following interface standards:
+
+genicamlogo
+
+The Generic Interface for Cameras standard is the basis for plug &
+play handling of cameras and devices.
+
+gigelogo
+
+GigE Vision® is an interface standard for transmitting high-speed
+video and related control data over Ethernet networks.
+
+Approvals
+
+   The
+
+   rc_visard NG
+
+    has received the following approvals:
+
+      EC Declaration of Conformity

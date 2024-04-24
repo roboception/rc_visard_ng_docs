@@ -1,0 +1,55 @@
+.. include:: global_rst.glb
+
+.. _sect-concepts-stereo:
+
+Stereo vision
+-------------
+
+.. index::
+   single: stereo matching
+   single: SGM
+   single: disparity
+   single: disparity image
+
+In *stereo vision*, 3D information about a scene can be extracted by comparing two images taken from different
+viewpoints. The main idea behind using a camera pair for measuring depth is the fact that object points appear at different
+positions in the two camera images depending on their distance from the camera pair. Very distant object points
+appear at approximately the same position in both images, whereas very close object points occupy different positions
+in the left and right camera image. The object points' displacement in the two images is called *disparity*. The
+larger the disparity, the closer the object is to the camera. The principle is illustrated in :numref:`fig-stereo_vision`.
+
+.. _fig-stereo_vision:
+.. figure:: images/stereo_sketch_v2.*
+   :width: 70 %
+   :align: center
+
+   Sketch of the stereo-vision principle: The more distant object (black) exhibits a smaller disparity :math:`d_2`
+   than that of the close object (gray), :math:`d_1`.
+
+Stereo vision is a form of passive sensing, meaning that it emits neither light nor other signals to measure distances, but
+uses only light that the environment emits or reflects. Thus, the |company| products utilizing this sensing principle
+can work indoors and outdoors and multiple devices can work together without interferences.
+
+To compute the 3D information, the
+stereo matching algorithm must be able to find corresponding object points in the left and right camera images.
+For this, the algorithm requires texture, meaning changes in image intensity values due to
+patterns or the objects' surface structure, in the images. Stereo matching is not possible for completely untextured regions,
+such as a flat white wall without any visible surface structure. The stereo matching method used 
+by the |rc_xxx| is |sgm|, which provides the best trade-off between runtime and accuracy, even for fine structures.
+
+The following software modules are required to compute 3D information:
+
+- :ref:`sect-stereo-camera`: This module is responsible for capturing synchronized image pairs and transforming them
+  into images approaching those taken by an ideal camera (rectification).
+- :ref:`sect-stereo-matching`: This module computes disparities for the rectified stereo image pair
+  using |sgm-short|\ :latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`.
+
+.. only:: rc_visard or rc_visard_ng
+
+    For stereo matching, the position and orientation of the left and right cameras relative to each other has to be known with
+    very high accuracy. This is achieved by calibration. The |rc_xxx|'s cameras are pre-calibrated during production.
+    However, if the |rc_xxx| has been decalibrated, during transport for example, then the user has
+    to recalibrate the stereo camera:
+
+    -  :ref:`sect-camera-calibration`: This module enables the user to recalibrate the |rc_xxx|'s stereo camera\ :latex:`\:(Section \ref{camera_calibration:sect-camera-calibration})`.
+

@@ -1,0 +1,30 @@
+Schnittstellen, Zulassungen und Normen
+
+Schnittstellen
+
+Der
+
+rc_visard NG
+
+ unterstützt folgende Standardinterfaces:
+
+genicamlogo
+
+Der generische Schnittstellenstandard für Kameras ist die Grundlage
+für die Plug-&-Play-Handhabung von Kameras und Geräten.
+
+gigelogo
+
+GigE Vision® ist ein Interfacestandard für die Übermittlung von
+Hochgeschwindigkeitsvideo- und zugehörigen Steuerdaten über Ethernet-
+Netzwerke.
+
+Zulassungen
+
+   Der
+
+   rc_visard NG
+
+    hat folgende Zulassungen erhalten:
+
+      EG-Konformitätserklärung

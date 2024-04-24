@@ -1,0 +1,136 @@
+Zubehör
+
+Anschlussset
+
+Roboception bietet ein optional erhältliches Anschlussset an, um
+Kunden bei der Einrichtung des
+
+rc_visard NG
+
+ zu unterstützen. Bei dauerhafter Installation muss der Kunde ein
+geeignetes Netzteil bereitstellen. Das Anschlussset besteht aus
+folgenden Elementen:
+
+Netzwerkkabel mit gerader M12-Buchse und geradem RJ45-Stecker, Länge:
+2 m, 5 m oder 10 m
+
+Netzteilkabel mit gerader M12-Buchse und DC-Stecker, Länge: 30 cm
+
+24 V, 30 W Steckernetzteil, oder 24 V, 60 W Tischnetzteil
+
+Für den Anschluss des
+
+rc_visard NG
+
+ an ein Wohn- oder Bürogebäudenetz sind Netzteile erforderlich, die
+den Emissionsstandards nach EN 55011 Klasse B entsprechen. Das im
+Anschlussset enthaltene Netzteil E2CFS (30 W, 24 V) der EGSTON System
+Electronics Eggenburg GmbH (
+
+http://www.egston.com
+
+) ist entsprechend zertifiziert. Es erfüllt jedoch nicht die
+Anforderungen in Bezug auf Störaussendungen in Industriebereichen (EN
+61000-6-2).
+
+
+Verkabelung
+
+Kabel sind standardmäßig nicht im Lieferumfang des
+
+rc_visard NG
+
+ enthalten. Es ist Aufgabe des Kunden, geeignete Kabel zu erwerben. In
+den folgenden Abschnitten wird ein Überblick über die empfohlenen
+Artikel gegeben.
+
+Ethernet-Anschluss
+
+Der
+
+rc_visard NG
+
+ besitzt eine achtpolige M12-Buchse mit A-Kodierung für den Ethernet-
+Anschluss. Verschiedene Kabellösungen können direkt von Drittanbietern
+bezogen werden.
+
+CAT5-Kabel (1 Gbps) für die M12/RJ45-Verbindung
+
+Gerader M12-Stecker/Gerader RJ45-Stecker; Kabellänge: 10 m; Phoenix
+Contact; NBC-MS/10,0-94B/R4AC SCO; Art.-Nr.: 1407417
+
+Gerader M12-Stecker/Gerader RJ45-Stecker; Kabellänge: 10 m; MURR
+Elektronik; Art.-Nr.: 7700-48521-S4W1000
+
+Gewinkelter M12-Stecker/Gerader RJ45-Stecker; Kabellänge: 10 m; MURR
+Elektronik; Art.-Nr.: 7700-48551-S4W1000
+
+Stromanschluss
+
+Für den Stromanschluss und die GPIO-Konnektivität ist ein achtpoliger
+M12-Stecker mit A-Kodierung vorgesehen. Verschiedene Kabellösungen
+können direkt von Drittanbietern bezogen werden. Eine Auswahl an
+M12-Kabeln mit offenem Ende ist unten angegeben. Der Kunde muss die
+Strom- und GPIO-Anschlüsse gemäß der unter
+
+Verkabelung
+
+ angegebenen Steckerbelegung vorsehen. Das Gehäuse des
+
+rc_visard NG
+
+ muss geerdet werden.
+
+Sensor-/Aktor-Kabel mit M12-Buchse und einseitig offenem Ende
+
+Gerade M12-Buchse/Freies Leitungsende, geschirmt; Kabellänge: 10 m;
+Phoenix Contact; SAC-8P-10,0-PUR/M12FS SH; Art.Nr.: 1522891
+
+Gewinkelte M12-Buchse/Freies Leitungsende, geschirmt; Kabellänge: 10
+m; Phoenix Contact; SAC-8P-10,0-PUR/M12FR SH; Art.Nr.: 1522943
+
+Sensor-/Aktor-Kabel mit M12-Buchse für die Feldmontage
+
+Phoenix Contact; SACC-M12FS-8CON-PG9-M; Art.Nr.:1513347
+
+TE Connectivity T4110011081-000 (Metallgehäuse)
+
+TE Connectivity T4110001081-000 (Kunststoffgehäuse)
+
+Netzteile
+
+Der
+
+rc_visard NG
+
+ ist als EN-55011 Klasse B Gerät klassifiziert, und für kommerzielle,
+industrielle und geschäftliche Einsatzbereiche vorgesehen. Um den
+Sensor an ein Gebäudenetz anschließen zu können, wird ein Netzteil
+gemäß EN 55011/55022 Klasse B benötigt.
+
+Es ist Aufgabe des Kunden, ein Netzteil zu erwerben und zu
+installieren, das den Anforderungen der EN 61000-6-2 für die
+dauerhafte Installation in einem industriellen Umfeld entspricht. Ein
+Beispiel, das sowohl der EN 61000-6-2 als auch der EN 55011/55022
+Klasse B entspricht, ist das Hutschienen-Netzteil PULS MiniLine
+ML60.241 (24 VDC; 2,5 A) der PULS GmbH (
+
+http://www.pulspower.com
+
+). Die Installation muss von einem qualifizierten Elektriker
+vorgenommen werden.
+
+Es darf immer nur ein
+
+rc_visard NG
+
+ an ein Netzteil angeschlossen werden. Die Länge der verwendeten Kabel
+darf 30 Meter nicht überschreiten.
+
+Ersatzteile
+
+Für den
+
+rc_visard NG
+
+ sind derzeit keine Ersatzteile erhältlich.

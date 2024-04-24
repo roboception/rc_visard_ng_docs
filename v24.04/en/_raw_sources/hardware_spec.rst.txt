@@ -1,0 +1,549 @@
+.. include:: global_rst.glb
+
+.. _sect-hardware-specification:
+
+Hardware specification
+======================
+
+.. NOTE:: The following hardware specifications are provided here as a general reference; differences with the product may exist.
+
+Scope of delivery
+-----------------
+
+.. only:: roboception
+
+    Standard delivery for an |rc_xxx| includes the |rc_xxx| sensor and a quickstart guide only. The full
+    manual is available in digital form and is always installed on the sensor, accessible through the
+    :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`, and available at
+    http://www.roboception.com/documentation.
+
+.. only:: matrixvision or schunk or basler
+
+    Standard delivery for an |rc_xxx| includes the |rc_xxx| sensor and a quickstart guide only. The full
+    manual is available in digital form and is always installed on the sensor, accessible through the
+    :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+.. Note:: The following items are not included in the delivery unless otherwise specified:
+
+          - Couplings, adapters, mounts
+          - Power supply unit, cabling, and fuses
+          - Network cabling
+
+          Please refer to :ref:`sect-accessories`:latex:`\:(Section \ref{accessories:sect-accessories})` for suggested third-party cable vendors.
+
+A connectivity kit can be purchased for the |rc_xxx|. It contains an M12 to RJ45 network cable,
+24 V power supply, and a DC plug to M12 power adapter. Please refer to :ref:`sect-accessories`:latex:`\:(Section \ref{accessories:sect-accessories})` for details.
+
+.. Note:: The connectivity kit is intended only for initial setup, not for permanent installation
+   in industrial environment.
+
+The following picture shows the important parts of the |rc_xxx| which are referenced later in the documentation.
+
+.. index::
+   pair: components; rc_visard
+
+.. figure:: images/rc_visard_parts.*
+   :width:  100%
+   :align: center
+
+   Parts description
+
+Technical specification
+-----------------------
+
+.. index::
+   single: specifications; rc_visard
+   single: resolution
+   single: frame rate
+
+.. only:: rc_visard
+
+   The common technical specifications for the |rc_xxx| variants are given in :numref:`tab-common-hardware-specifications`. 
+   The |rc_xxx| 160 is available with two different types of lenses: 4 mm and 6 mm focal length.
+   The |rc_xxx| 65 is only available with 4 mm lenses.
+
+   .. tabularcolumns:: |\X{5}{11}|\X{6}{11}|
+
+   .. _tab-common-hardware-specifications:
+   
+   .. table:: Common technical specifications for both |rc_xxx| baselines
+
+      +----------------------+---------------------------------------------------------------+
+      |                      | |rc_xxx| 65 / |rc_xxx| 160                                    |
+      +======================+===============================================================+
+      | Image resolution     | 1280 x 960 pixel, color or monochrome                         |
+      +----------------------+---------------------------------------------------------------+
+      | Field of view        | | 4 mm lens: Horizontal: 61°, Vertical: 48°                   |
+      |                      | | 6 mm lens: Horizontal: 43°, Vertical: 33°                   |
+      +----------------------+---------------------------------------------------------------+
+      | IR Cutoff            | 650 nm                                                        |
+      +----------------------+---------------------------------------------------------------+
+      | Depth image          | | 1280 x 960 pixel (Full) @ 1 Hz  (with StereoPlus license)   |
+      |                      | | 640 x 480 pixel (High) @ 3 Hz                               |
+      |                      | | 320 x 240 pixel (Medium) @ 15 Hz                            |
+      |                      | | 214 x 160 pixel (Low) @ 25 Hz                               |
+      +----------------------+---------------------------------------------------------------+
+      | Egomotion            | |imu-rate|, low latency                                       |
+      +----------------------+---------------------------------------------------------------+
+      | Computing unit       | Nvidia Tegra K1                                               |
+      +----------------------+---------------------------------------------------------------+
+      | Power supply         | 18 V to 30 V                                                  |
+      +----------------------+---------------------------------------------------------------+
+      | Cooling              | Passive                                                       |
+      +----------------------+---------------------------------------------------------------+
+
+   The |rc_xxx| 65 and |rc_xxx| 160 differ in their baselines, which affects depth range and resolution as well as the sensors' size and weight.
+
+   .. tabularcolumns:: |\X{5}{11}|\X{3}{11}|\X{3}{11}|
+
+   .. _tab-hardware-differences:
+
+   .. table:: Differing technical specifications for the |rc_xxx| variants
+
+      +-------------------+------------------------+------------------------+
+      |                   | |rc_xxx| 65            | |rc_xxx| 160           |
+      +===================+========================+========================+
+      | Baseline          | 65 mm                  | 160 mm                 |
+      +-------------------+------------------------+------------------------+
+      | Depth range       | 0.2 m to infinity      | 0.5 m to infinity      |
+      +-------------------+------------------------+------------------------+
+      | Size (W x H x L)  | 135 mm x 75 mm x 96 mm | 230 mm x 75 mm x 84 mm |
+      +-------------------+------------------------+------------------------+
+      | Mass              | 0.68 kg                | 0.84 kg                |
+      +-------------------+------------------------+------------------------+
+
+   The combination of baselines and lens types leads to different
+   resolutions and accuracies.
+
+   .. table:: Resolution and accuracy of the |rc_xxx| variants in millimeters with full
+      resolution stereo matching and random dot projection on non-reflective and
+      non-transparent objects.
+
+      +------------------+----------------+------------------+-------------------+--------------------+
+      |                  |  distance (mm) | |rc_xxx| 65-4    | |rc_xxx| 160-4    | |rc_xxx| 160-6     |
+      +==================+================+==================+===================+====================+
+      | lateral          | | 200          | | 0.2            | | -               | | -                |
+      | resolution       | | 500          | | 0.5            | | 0.5             | | 0.3              |
+      | (mm)             | | 1000         | | 0.9            | | 0.9             | | 0.6              |
+      |                  | | 2000         | | 1.9            | | 1.9             | | 1.3              |
+      |                  | | 3000         | | 2.8            | | 2.8             | | 1.9              |
+      +------------------+----------------+------------------+-------------------+--------------------+
+      | depth resolution | | 200          | | 0.04           | | -               | | -                |
+      | (mm)             | | 500          | | 0.2            | | 0.1             | | 0.06             |
+      |                  | | 1000         | | 0.9            | | 0.4             | | 0.3              |
+      |                  | | 2000         | | 3.6            | | 1.5             | | 1.0              |
+      |                  | | 3000         | | 8.0            | | 3.3             | | 2.2              |
+      +------------------+----------------+------------------+-------------------+--------------------+
+      | Average depth    | | 200          | | 0.2            | | -               | | -                |
+      | accuracy (mm)    | | 500          | | 0.9            | | 0.4             | | 0.3              |
+      |                  | | 1000         | | 3.6            | | 1.5             | | 1.0              |
+      |                  | | 2000         | | 14.2           | | 5.8             | | 3.9              |
+      |                  | | 3000         | | 32.1           | | 13.0            | | 8.8              |
+      +------------------+----------------+------------------+-------------------+--------------------+
+
+.. only:: rc_visard_ng
+
+   The technical specifications for the |rc_xxx| are given in :numref:`tab-common-hardware-specifications-ng`.
+   The frame rate for computing the depth image in High resolution (720 x 540 pixel) is significantly
+   higher when increasing the minimum distance to 1.2 meters.
+
+   .. tabularcolumns:: |\X{5}{11}|\X{6}{11}|
+
+   .. _tab-common-hardware-specifications-ng:
+   
+   .. table:: Technical specifications for the |rc_xxx|
+
+      +----------------------+---------------------------------------------------------------+
+      |                      | |rc_xxx| 160-6                                                |
+      +======================+===============================================================+
+      | Image resolution     | 1440 x 1080 pixel, monochrome                                 |
+      +----------------------+---------------------------------------------------------------+
+      | Field of view        | | 6 mm lens: Horizontal: 43°, Vertical: 33°                   |
+      +----------------------+---------------------------------------------------------------+
+      | IR Cutoff            | 650 nm                                                        |
+      +----------------------+---------------------------------------------------------------+
+      | Depth image          | | 1440 x 1080 pixel (Full) @ 3 Hz                             |
+      | (with Minimum        | | 720 x 540 pixel (High) @ 7 Hz                               |
+      |  Distance of 0.5 m)  | | 360 x 270 pixel (Medium) @ 25 Hz                            |
+      |                      | | 240 x 180 pixel (Low) @ 25 Hz                               |
+      +----------------------+---------------------------------------------------------------+
+      | Depth image          | | 1440 x 1080 pixel (Full) @ 3 Hz                             |
+      | (with Minimum        | | 720 x 540 pixel (High) @ 16 Hz                              |
+      |  Distance of 1.2 m)  | | 360 x 270 pixel (Medium) @ 25 Hz                            |
+      |                      | | 240 x 180 pixel (Low) @ 25 Hz                               |
+      +----------------------+---------------------------------------------------------------+
+      | Computing unit       | Orin Nano 8GB                                                 |
+      +----------------------+---------------------------------------------------------------+
+      | Power supply         | 18 V to 30 V                                                  |
+      +----------------------+---------------------------------------------------------------+
+      | Cooling              | Passive                                                       |
+      +----------------------+---------------------------------------------------------------+
+      | Baseline             | 160 mm                                                        |
+      +----------------------+---------------------------------------------------------------+
+      | Depth range          | 0.5 m to infinity                                             |
+      +----------------------+---------------------------------------------------------------+
+      | Size (W x H x L)     | 230 mm x 75 mm x 84 mm                                        |
+      +----------------------+---------------------------------------------------------------+
+      | Mass                 | 0.965 kg                                                      |
+      +----------------------+---------------------------------------------------------------+
+
+   The resolutions and accuracies at different distances are given in the following table.
+
+   .. table:: Resolution and accuracy of the |rc_xxx| in millimeters with full
+      resolution stereo matching and random dot projection on non-reflective and
+      non-transparent objects.
+
+      +------------------+----------------+------------------+
+      |                  |  distance (mm) | |rc_xxx| 160-6   |
+      +==================+================+==================+
+      | lateral          | | 500          | | 0.3            |
+      | resolution       | | 1000         | | 0.6            |
+      | (mm)             | | 2000         | | 1.1            |
+      |                  | | 3000         | | 1.7            |
+      +------------------+----------------+------------------+
+      | depth resolution | | 500          | | 0.05           |
+      | (mm)             | | 1000         | | 0.2            |
+      |                  | | 2000         | | 0.9            |
+      |                  | | 3000         | | 2.0            |
+      +------------------+----------------+------------------+
+      | Average depth    | | 500          | | 0.2            |
+      | accuracy (mm)    | | 1000         | | 0.9            |
+      |                  | | 2000         | | 3.5            |
+      |                  | | 3000         | | 7.8            |
+      +------------------+----------------+------------------+
+
+The |rc_xxx| can be equipped with on-board software modules for additional
+features. These software modules can be ordered from the |company| and require a license update.
+
+.. index::
+   single: dimensions; rc_visard
+
+.. only:: rc_visard
+
+   .. figure:: images/rc_visard_65_general.*
+      :width:  160mm
+      :align: center
+
+      Overall dimensions of the |rc_xxx| 65
+
+
+.. figure:: images/rc_visard_160_general.*
+   :width: 160mm
+   :align: center
+
+   Overall dimensions of the |rc_xxx| 160
+
+.. index::
+   single: CAD model
+
+.. only:: roboception or matrixvision
+
+   CAD models of the |rc_xxx| can be downloaded from http://www.roboception.com/download. The CAD models are provided as-is,
+   with no guarantee of correctness. When a material property of aluminum is assigned (density of :math:`2.76\mathrm{g\over{cm}^3}`),
+   the mass properties of the CAD model are within 5% of the actual product with respect to weight and center of mass,
+   and within 10% with respect to moment of inertia.
+
+.. only:: schunk
+
+   CAD models of the |rc_xxx| can be downloaded from http://www.schunk.com/de_de/services/downloads/cad-ecad-daten. The CAD models are provided as-is,
+   with no guarantee of correctness. When a material property of aluminum is assigned (density of :math:`2.76\mathrm{g\over{cm}^3}`),
+   the mass properties of the CAD model are within 5% of the actual product with respect to weight and center of mass,
+   and within 10% with respect to moment of inertia.
+
+
+Environmental and operating conditions
+--------------------------------------
+
+.. index::
+   single: operating conditions
+   single: temperature range
+   single: humidity
+   single: protection class
+   single: IP54
+
+The |rc_xxx| is designed for industrial applications. Always respect the storage, transport, and operating environmental
+conditions outlined in :numref:`tab-hardware-environment`.
+
+.. tabularcolumns:: |\X{5}{11}|\X{6}{11}|
+
+.. _tab-hardware-environment:
+
+.. table:: Environmental conditions
+
+  +---------------------------------------+-------------------------------------------------------+
+  |                                       | |rc_xxx|                                              |
+  +=======================================+=======================================================+
+  | Storage/Transport temperature         | -25 °C to 70 °C                                       |
+  +---------------------------------------+-------------------------------------------------------+
+  | Operating temperature                 | 0 °C to 50 °C                                         |
+  +---------------------------------------+-------------------------------------------------------+
+  | Relative humidity (non condensing)    | 20 % to 80 %                                          |
+  +---------------------------------------+-------------------------------------------------------+
+  | Vibration                             | 5 g                                                   |
+  +---------------------------------------+-------------------------------------------------------+
+  | Shock                                 | 50 g                                                  |
+  +---------------------------------------+-------------------------------------------------------+
+  | Protection class                      | IP54                                                  |
+  +---------------------------------------+-------------------------------------------------------+
+  | Others                                | * Free from corrosive liquids or gases                |
+  |                                       | * Free from explosive liquids or gases                |
+  |                                       | * Free from powerful electromagnetic interference     |
+  +---------------------------------------+-------------------------------------------------------+
+
+.. index::
+   single: cooling
+
+The |rc_xxx| is designed for an operating temperature (surrounding environment) of 0 °C to 50 °C and
+relies on convective (passive) cooling. Unobstructed airflow, especially around the cooling fins,
+needs to be ensured during use. The |rc_xxx| should only be mounted using the provided
+mechanical mounting interface, and all parts of the housing must remain uncovered. A free space of at least 10 cm extending in
+all directions from the housing, and sufficient air exchange with the environment is
+required to ensure adequate cooling. Cooling fins must be free of dirt and other contamination.
+
+.. index::
+   pair: LED; housing temperature
+
+The housing temperature depends on the processing load, sensor orientation, and surrounding
+environmental temperatures. When the sensor's exposed housing surfaces exceed 60°C, the LED at the front will turn from green to red.
+
+.. Warning:: For hand-guided applications, a heat-insulated handle should be attached to the
+   sensor to reduce the risk of burn injuries due to skin exposure to surface temperatures exceeding 60°C.
+
+
+Power-supply specifications
+---------------------------
+
+.. index:: ! power supply
+
+The |rc_xxx| needs to be supplied by a DC voltage source. The |rc_xxx|'s standard package doesn't include a  DC power supply.
+The power supply contained in the connectivity kit may be used for initial setup.
+For permanent installation, it is the customer's responsibility to provide suitable
+DC power. Each |rc_xxx| must be connected to a separate power supply. Connection to domestic
+grid power is only allowed through a power supply certified as EN55011 Class B.
+
+.. only:: rc_visard
+
+   .. tabularcolumns:: |\X{5}{11}|\X{2}{11}|\X{2}{11}|\X{2}{11}|
+
+   .. _tab-hardware-power:
+
+   .. table:: Absolute maximum ratings for power supply
+
+      +-----------------------------------+---------------+---------------+----------------------------------------------+
+      |                                   | *Min*         | *Nominal*     | *Max*                                        |
+      +===================================+===============+===============+==============================================+
+      |  Supply voltage                   | 18.0 V        | 24 V          | 30.0 V                                       |
+      +-----------------------------------+---------------+---------------+----------------------------------------------+
+      |  Max power consumption            |               |               | 25 W                                         |
+      +-----------------------------------+---------------+---------------+----------------------------------------------+
+      |  Overcurrent protection           | Supply must be fuse-protected to a maximum of 2 A                            |
+      +-----------------------------------+---------------+---------------+----------------------------------------------+
+      |  EMC compliance                   | see :ref:`sect-standards`:latex:`\:(Section \ref{standards:sect-standards})` |
+      +-----------------------------------+---------------+---------------+----------------------------------------------+
+
+.. only:: rc_visard_ng
+
+   .. tabularcolumns:: |\X{5}{11}|\X{2}{11}|\X{2}{11}|\X{2}{11}|
+
+   .. _tab-hardware-power:
+
+   .. table:: Absolute maximum ratings for power supply
+
+      +-----------------------------------+---------------+---------------+----------------------------------------------+
+      |                                   | *Min*         | *Nominal*     | *Max*                                        |
+      +===================================+===============+===============+==============================================+
+      |  Supply voltage                   | 18.0 V        | 24 V          | 30.0 V                                       |
+      +-----------------------------------+---------------+---------------+----------------------------------------------+
+      |  Max power consumption            |               |               | 25 W                                         |
+      +-----------------------------------+---------------+---------------+----------------------------------------------+
+      |  Overcurrent protection           | Supply must be fuse-protected to a maximum of 2 A                            |
+      +-----------------------------------+---------------+---------------+----------------------------------------------+
+
+.. Warning:: Exceeding maximum power rating values may lead to damage of the |rc_xxx|, power
+   supply, and connected equipment.
+
+.. Warning:: A separate power supply must power each |rc_xxx|.
+
+.. Warning:: Connection to domestic grid power is allowed through a power supply certified
+   as EN55011 Class B only.
+
+.. _sect-wiring:
+
+Wiring
+------
+
+.. index:: cables
+
+Cables are not provided with the |rc_xxx| standard package. It is the customer's responsibility
+to obtain the proper cabling. :ref:`sect-accessories`:latex:`\:(Section \ref{accessories:sect-accessories})` provides an overview of suggested components.
+
+.. Warning:: Proper cable management is mandatory. Cabling must always be secured to the |rc_xxx|
+   mount with a strain-relief clamp so that no forces due to cable movements are exerted on the |rc_xxx|'s
+   M12 connectors. Enough slack needs to be provided to allow for full range of movement of the |rc_xxx|
+   without straining the cable. The cable's minimum bend radius needs to be observed.
+
+The |rc_xxx| provides an industrial 8-pin A-coded M12 socket connector for Ethernet
+connectivity and an 8-pin A-coded M12 plug connector for power and GPIO connectivity.
+Both connectors are located at the back. :visardonly:`Their locations (distance from center lines) are
+identical for both baseline variants.` The location of both connectors on the
+|rc_xxx| is shown in :numref:`fig-electrical-connections`.
+
+.. _fig-electrical-connections:
+.. figure:: images/rc_visard_connect.*
+   :width: 100%
+   :align: center
+
+   Locations of the electrical connections for the |rc_xxx|, with Ethernet on top and power on the bottom
+
+Connectors are rotated so that standard 90° angled connectors will exit horizontally, away from the camera (away from the cooling fins).
+
+.. index::
+   pair: pin assignments; Ethernet
+
+.. _fig-pin-assignments:
+.. figure:: images/rc_visard_pinout.*
+   :width: 100%
+   :align: center
+   
+   Pin positions for power and Ethernet connector
+
+Pin assignments for the Ethernet connector are given in :numref:`fig-ethernet-pin-assignments`.
+
+.. _fig-ethernet-pin-assignments:
+.. figure:: images/ethernet_cable.*
+   :width: 100%
+   :align: center
+
+   Pin assignments for M12 to Ethernet cabling
+
+.. index::
+   pair: pin assignments; power
+   pair: pin assignments; GPIO
+
+Pin assignments for the power connector are given in :numref:`tab-power-pin-assignments`.
+
+
+.. tabularcolumns:: |p{20mm}|p{40mm}|
+
+.. _tab-power-pin-assignments:
+
+.. table:: Pin assignments for the power connector
+
+  +---------+-----------------------------+
+  | **Pin** | *Assignment*                |
+  +=========+=============================+
+  | 1       | GPIO In 2                   |
+  +---------+-----------------------------+
+  | 2       | Power                       |
+  +---------+-----------------------------+
+  | 3       | GPIO In 1                   |
+  +---------+-----------------------------+
+  | 4       | GPIO Gnd                    |
+  +---------+-----------------------------+
+  | 5       | GPIO Vcc                    |
+  +---------+-----------------------------+
+  | 6       | GPIO Out 1 (image exposure) |
+  +---------+-----------------------------+
+  | 7       | Gnd                         |
+  +---------+-----------------------------+
+  | 8       | GPIO Out 2                  |
+  +---------+-----------------------------+
+
+
+GPIOs are decoupled by photocoupler. *GPIO Out 1* by default provides an exposure sync signal with
+a logic high level for the duration of the image exposure. All GPIOs can be controlled via the
+IOControl module (:ref:`sect-iocontrol`:latex:`, Section \ref{iocontrol:sect-iocontrol}`).
+Pins of unsused GPIOs should be left floating.
+
+.. Warning:: It is especially important that during the boot phase *GPIO In 1*
+   is left floating or remains low. The |rc_xxx| will not boot if the pin is high during boot time.
+
+GPIO circuitry and specifications are shown in :numref:`fig-gpio`. The maximum rated voltage for
+*GPIO In* and *GPIO Vcc* is 30 V.
+
+.. _fig-gpio:
+.. figure:: images/rc_visard_gpio.*
+   :width: 160mm
+   :align: center
+
+   GPIO circuitry and specifications -- do not connect signals higher than 30 V
+
+.. Warning:: Do not connect signals with voltages higher than 30 V to the |rc_xxx|.
+
+.. _sect-mechanical:
+
+Mechanical interface
+--------------------
+
+.. index::
+   single: mounting
+   single: tripod
+
+.. only:: rc_visard
+
+   The |rc_xxx| 65 and |rc_xxx| 160 offer identical mounting-point setups at the bottom.
+
+.. only:: rc_visard_ng
+
+   The |rc_xxx| offers a mounting-point at the bottom.
+
+
+.. figure:: images/rc_visard_mounting.*
+   :width: 160mm
+   :align: center
+
+   Mounting-point for connecting the |rc_xxx| to robots or other mountings
+
+
+For troubleshooting and static applications, the sensor may be mounted using the standardized tripod
+thread (UNC 1/4"-20) indicated at the coordinate-frame origin. For dynamic applications such
+as mounting on a robotic arm, the sensor must be mounted with three M4 (metric standard) 8.8 machine
+screws tightened to 2.5 Nm and secured with a medium-strength threadlocking adhesive such
+as Loctite 243. Maximum thread depth is 6 mm. The two 4 mm diameter holes may be used for positioning
+pins (ISO 2338 4 m6) to ensure precise repositioning of the sensor.
+
+.. Warning:: For dynamic applications, the |rc_xxx| must be mounted with three M4 8.8 machine screws
+   tightened to 2.5 Nm torque and secured with threadlocking adhesive. Do not use high-strength bolts.
+   The engaged thread depth must be at least 5 mm.
+
+.. _sect-coordinate-frames:
+
+Coordinate frames
+-----------------
+
+.. index::
+   single: coordinate frames; mounting
+
+The |rc_xxx|'s coordinate-frame origin is defined as the exit pupil of the left camera lens. This frame is 
+called sensor coordinate frame or camera coordinate frame. An approximate location for the |rc_xxx| is shown in the next image.
+
+The mounting-point frame for the |rc_xxx| is defined to be at the bottom, centered in the tripod thread, 
+with orientation identical to that of the sensor's coordinate frame.
+
+.. only:: rc_visard
+   
+   :numref:`fig-rc-visard-65` and :numref:`fig-rc-visard-160` show approximate offsets.
+
+   .. _fig-rc-visard-65:
+   .. figure:: images/rc_visard_frames.*
+      :width: 160mm
+      :align: center
+
+      Approximate location of sensor/camera coordinate frame (inside left lens) and mounting-point frame (at tripod thread) for the |rc_xxx| 65
+
+.. only:: rc_visard_ng
+   
+   :numref:`fig-rc-visard-160` shows approximate offsets.
+
+.. _fig-rc-visard-160:
+.. figure:: images/rc_visard160_frames.*
+    :width: 160mm
+    :align: center
+
+    Approximate locations of sensor/camera coordinate frame (inside left lens) and mounting-point frame (at tripod thread) for the |rc_xxx| 160
+
+.. Note:: The correct offset between the sensor/camera frame and a robot
+      coordinate frame can be calibrated through the :doc:`hand-eye-calibration
+      procedure<handeye_calibration>`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`.
+
+

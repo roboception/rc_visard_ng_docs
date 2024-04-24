@@ -1,0 +1,1335 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>GigE Vision 2.0/GenICam-Schnittstelle &mdash; rc_visard NG 24.04.1
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/contentui.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard NG 24.04.1
+ Dokumentation" href="index.html"/>
+        <link rel="up" title="Schnittstellen" href="interfaces.html"/>
+        <link rel="next" title="REST-API-Schnittstelle" href="rest_api.html"/>
+        <link rel="prev" title="Web GUI" href="webgui.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard NG
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                24.04
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="disposal.html">Informationen zur Entsorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Aufspüren von <em>rc_visard NG</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host-Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werksseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Messprinzipien</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereovision</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="camera_modules.html">3D-Kamera-Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html">Kamera</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#rectification">Rektifizierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#viewing-and-downloading-images">Anzeigen und Herunterladen von Bildern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html">Stereo-Matching</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#viewing-and-downloading-images-and-point-clouds">Anzeigen und Herunterladen von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="detection_modules.html">Detektionsmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">LoadCarrier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Erkennung von Load Carriern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Füllstandserkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-reading">Tagerkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag-Wiedererkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html">ItemPick und BoxPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detection-of-items-boxpick">Erkennung von Rechtecken (BoxPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#boxpick-template-api">BoxPick Template API“</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration_modules.html">Konfigurationsmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Kameramontage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking">Kollisionsprüfung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html">IOControl und Projektor-Kontrolle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database_modules.html">Datenbankmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier_db.html">LoadCarrierDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-definition">Load Carrier Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-compartments">Load Carrier Abteile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">RoiDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gripper_db.html">GripperDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#setting-a-gripper">Erstellen eines Greifers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#cad-element-api">CAD-Greiferelement API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Web GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#accessing-the-web-gui">Zugriff auf die Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#exploring-the-web-gui">Kennenlernen der Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#web-gui-access-control">Web GUI Zugriffskontrolle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-camera-images">Herunterladen von Kamerabildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Herunterladen von Tiefenbildern und Punktwolken</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#category-devicecontrol">Kategorie: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_userspace.html">UserSpace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#example-applications">Beispielanwendungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Fehlerbehebung</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC Bilddatenschnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC Servicedefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Beispielclient</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#setting-time-manually">Manuelles Setzen der Zeit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userspace.html">UserSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configuration">Konfiguration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#network-access-to-userspace-applications">Netzwerkzugriff auf die UserSpace Anwendungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#restrictions">Einschränkungen</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Backup der Einstellungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard NG</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#pose-formats">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_rt.html">Rotationsmatrix und Translationsvektor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-rotation-matrix-to-quaternion">Umrechnung von Rotationsmatrizen in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-quaternion-to-rotation-matrix">Umrechnung von Quaternionen in Rotationsmatrizen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_abb.html">ABB Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fanuc.html">FANUC XYZ-WPR Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-fanuc-wpr-to-quaternion">Umrechnung von FANUC-WPR in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-quaternion-to-fanuc-wpr">Umrechnung von Quaternionen in FANUC-WPR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_franka_emika.html">Franka Emika Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-transformation-matrix-to-quaternion">Umrechnung von Transformation in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-rotation-xyz-to-quaternion">Umrechnung von Rotation-XYZ in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-and-translation-to-transformation">Umrechnung von Quaternion und Translation in Transformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-to-rotation-xyz">Umrechnung von Quaternion in Rotation-XYZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#pose-representation-in-racecom-messages-and-state-machines">Posenrepräsentation in RaceCom Messages und Statemachines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fruitcore_horst.html">Fruitcore HORST Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kawasaki.html">Kawasaki XYZ-OAT Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-kawasaki-oat-to-quaternion">Umrechnung von Kawasaki-OAT in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-quaternion-to-kawasaki-oat">Umrechnung von Quaternionen in Kawasaki-OAT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kuka.html">KUKA XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-kuka-abc-to-quaternion">Umrechnung von KUKA-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-quaternion-to-kuka-abc">Umrechnung von Quaternionen in KUKA-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_mitsubishi.html">Mitsubishi XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-mitsubishi-abc-to-quaternion">Umrechnung von Mitsubishi-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-quaternion-to-mitsubishi-abc">Umrechnung von Quaternionen in Mitsubishi-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_ur.html">Universal Robots Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-angle-axis-format-to-quaternion">Umrechnung vom Angle-Axis Format in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-quaternion-to-angle-axis-format">Umrechnung von Quaternionen ins Angle-Axis Format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_yaskawa.html">Yaskawa Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-yaskawa-rx-ry-rz-to-quaternion">Umrechnung von Yaskawa Rx, Ry, Rz in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-quaternion-to-yaskawa-rx-ry-rz">Umrechnung von Quaternionen in Yaskawa Rx, Ry, Rz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard NG</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">rc_visard NG</a> &gt;</li>
+        
+          <li><a href="interfaces.html">Schnittstellen</a> &gt;</li>
+        
+      <li>GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="gige-vision-2-0-genicam-image-interface">
+<span id="sect-genicam"></span><h1>GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle<a class="headerlink" href="#gige-vision-2-0-genicam-image-interface" title="Link zu dieser Überschrift">¶</a></h1>
+<p id="index-0">Gigabit Ethernet for Machine Vision (oder kurz „GigE Vision®“) ist ein industrieller Standard für Kameraschnittstellen, der auf UDP/IP basiert (siehe <a class="reference external" href="http://www.gigevision.com">http://www.gigevision.com</a>). Der <em>rc_visard NG</em> nutzt den GigE Vision®-Standard der Version&nbsp;2.0 und ist damit mit allen GigE Vision®-2.0-Standard-konformen Frameworks und Bibliotheken kompatibel.</p>
+<p>GigE Vision® verwendet GenICam (<em>Generic Interface for Cameras</em>), um die Eigenschaften der Kamera bzw. des Geräts zu beschreiben. Für nähere Informationen zu dieser generischen Programmierschnittstelle für Kameras siehe <a class="reference external" href="http://www.genicam.org/">http://www.genicam.org/</a>.</p>
+<p>Über diese Schnittstelle stellt der <em>rc_visard NG</em> folgende Funktionen zur Verfügung:</p>
+<ul class="simple">
+<li>Discovery-Mechanismus,</li>
+<li>IP-Konfiguration,</li>
+<li>Konfiguration kamerabezogener Parameter,</li>
+<li>Bildaufnahme und</li>
+<li>Zeitsynchronisierung über das im Standard IEEE&nbsp;1588-2008 definierte <cite>Precision Time Protocol</cite> (PTPv2).</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Der <em>rc_visard NG</em> unterstützt Jumbo-Frames mit einer Größe bis 9000&nbsp;Byte. Für höchste Leistung wird empfohlen, die maximale Übertragungseinheit (MTU) des GigE-Vision-Clients auf 9000 zu stellen.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Über seine Homepage stellt Roboception Tools und eine C++-Programmierschnittstelle mit Beispielen zum Discovery-Mechanismus, zur Konfiguration und zum Bild-Streaming über die GigE Vision/GenICam-Schnittstelle zur Verfügung (<a class="reference external" href="http://www.roboception.com/download">http://www.roboception.com/download</a>).</p>
+</div>
+<div class="section" id="gige-vision-ports">
+<span id="sect-gev-ports"></span><h2>GigE Vision Ports<a class="headerlink" href="#gige-vision-ports" title="Link zu dieser Überschrift">¶</a></h2>
+<p>GigE Vision ist ein UDP basiertes Protokoll. Auf dem <em>rc_visard NG</em> sind die UDP Ports statisch und bekannt:</p>
+<ul class="simple">
+<li>UDP Port 3956: GigE Vision Control Protocol (GVCP). Zum Auffinden, steuern und konfigurieren des Geräts.</li>
+<li>UDP Port 50010: Stream channel source port. Nutzt das GigE Vision Stream Protocol (GVSP) zum transferieren der Bilder.</li>
+</ul>
+</div>
+<div class="section" id="important-genicam-parameters">
+<span id="sect-genicam-params"></span><h2>Wichtige Parameter der GenICam-Schnittstelle<a class="headerlink" href="#important-genicam-parameters" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Die folgende Liste enthält einen Überblick über relevante GenICam-Parameter des <em>rc_visard NG</em>, die über die GenICam-Schnittstelle abgerufen und/oder geändert werden können. Neben den Standardparametern, die in der <cite>Standard Feature Naming Convention</cite> (SFNC, siehe <a class="reference external" href="http://www.emva.org/standards-technology/genicam/genicam-downloads/">http://www.emva.org/standards-technology/genicam/genicam-downloads/</a>) definiert werden, bietet der <em>rc_visard NG</em> zudem eigene Parameter, die sich auf spezielle Eigenschaften der Module <a class="reference internal" href="stereo_camera.html#sect-stereo-camera"><span class="std std-ref">Kamera</span></a> und <a class="reference internal" href="stereo_matching.html#sect-stereo-matching"><span class="std std-ref">Stereo-Matching</span></a> beziehen.</p>
+</div>
+<div class="section" id="important-standard-genicam-features">
+<h2>Wichtige Standardparameter der GenICam-Schnittstelle<a class="headerlink" href="#important-standard-genicam-features" title="Link zu dieser Überschrift">¶</a></h2>
+<div class="section" id="category-imageformatcontrol">
+<h3>Kategorie: ImageFormatControl<a class="headerlink" href="#category-imageformatcontrol" title="Link zu dieser Überschrift">¶</a></h3>
+<dl class="docutils" id="index-1">
+<dt><code class="docutils literal notranslate"><span class="pre">ComponentSelector</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, mögliche Werte: <code class="docutils literal notranslate"><span class="pre">Intensity</span></code>, <code class="docutils literal notranslate"><span class="pre">IntensityCombined</span></code>, <code class="docutils literal notranslate"><span class="pre">Disparity</span></code>, <code class="docutils literal notranslate"><span class="pre">Confidence</span></code> oder <code class="docutils literal notranslate"><span class="pre">Error</span></code></li>
+<li>Voreinstellung: -</li>
+<li>Beschreibung: Erlaubt dem Benutzer, einen der fünf Bild-Streams zur Konfiguration auszuwählen (siehe <a class="reference internal" href="#sect-provided-image-streams"><span class="std std-ref">Verfügbare Bild-Streams</span></a>).</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-2">
+<dt><code class="docutils literal notranslate"><span class="pre">ComponentIDValue</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Integer</li>
+<li>Beschreibung: ID des vom <code class="docutils literal notranslate"><span class="pre">ComponentSelector</span></code> ausgewählten Bild-Streams.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-3">
+<dt><code class="docutils literal notranslate"><span class="pre">ComponentEnable</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Boolean</li>
+<li>Voreinstellung: -</li>
+<li>Beschreibung: Ist der Parameter auf <code class="docutils literal notranslate"><span class="pre">true</span></code> gesetzt, aktiviert er den im <code class="docutils literal notranslate"><span class="pre">ComponentSelector</span></code> ausgewählten Bild-Stream. Anderenfalls deaktiviert er diesen Stream. Über <code class="docutils literal notranslate"><span class="pre">ComponentSelector</span></code> und <code class="docutils literal notranslate"><span class="pre">ComponentEnable</span></code> lassen sich einzelne Bild-Streams ein- und ausschalten.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-4">
+<dt><code class="docutils literal notranslate"><span class="pre">Width</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Integer</li>
+<li>Beschreibung: Bildbreite des vom <code class="docutils literal notranslate"><span class="pre">ComponentSelector</span></code> ausgewählten Bild-Streams in Pixeln.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-5">
+<dt><code class="docutils literal notranslate"><span class="pre">Height</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Integer</li>
+<li>Beschreibung: Bildhöhe des vom <code class="docutils literal notranslate"><span class="pre">ComponentSelector</span></code> ausgewählten Bild-Streams in Pixeln.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-6">
+<dt><code class="docutils literal notranslate"><span class="pre">WidthMax</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Integer</li>
+<li>Beschreibung: Maximale Breite eines Bildes.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-7">
+<dt><code class="docutils literal notranslate"><span class="pre">HeightMax</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Integer</li>
+<li>Beschreibung: Maximale Höhe eines Bildes im Stream. Der Wert beträgt  aufgrund der gestapelten Bilder der linken und rechten Kamera im <code class="docutils literal notranslate"><span class="pre">IntensityCombined</span></code>-Stream immer 1920&nbsp;Pixel (siehe <a class="reference internal" href="#sect-provided-image-streams"><span class="std std-ref">Verfügbare Bild-Streams</span></a>).</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-8">
+<dt><code class="docutils literal notranslate"><span class="pre">PixelFormat</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, mögliche Werte: <code class="docutils literal notranslate"><span class="pre">Mono8</span></code> oder <code class="docutils literal notranslate"><span class="pre">YCbCr411_8</span></code> (nur bei Farbkameras), <code class="docutils literal notranslate"><span class="pre">Coord3D_C16</span></code>, <code class="docutils literal notranslate"><span class="pre">Confidence8</span></code> und <code class="docutils literal notranslate"><span class="pre">Error8</span></code></li>
+<li>Beschreibung: Pixelformat der selektierten Komponente. Die Aufzählung erlaubt nur aus Pixelformaten auszuwählen, die für die ausgewählte Komponente möglich sind. Bei einer Farbkamera kann man bei den Komponenten <code class="docutils literal notranslate"><span class="pre">Intensity</span></code> und <code class="docutils literal notranslate"><span class="pre">IntensityCombined</span></code> zwischen den Pixelformaten <code class="docutils literal notranslate"><span class="pre">Mono8</span></code> oder <code class="docutils literal notranslate"><span class="pre">YCbCr411_8</span></code> wählen.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="category-acquisitioncontrol">
+<h3>Kategorie: AcquisitionControl<a class="headerlink" href="#category-acquisitioncontrol" title="Link zu dieser Überschrift">¶</a></h3>
+<dl class="docutils" id="index-9">
+<dt><code class="docutils literal notranslate"><span class="pre">AcquisitionFrameRate</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Float, Wertebereich: 1–25&nbsp;Hz</li>
+<li>Voreinstellung: 25&nbsp;Hz</li>
+<li>Beschreibung: Bildwiederholrate der Kamera (<a class="reference internal" href="stereo_camera.html#expl-fps"><span class="std std-ref">FPS</span></a>).</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-10">
+<dt><code class="docutils literal notranslate"><span class="pre">ExposureAuto</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, mögliche Werte: <code class="docutils literal notranslate"><span class="pre">Continuous</span></code>, <code class="docutils literal notranslate"><span class="pre">Out1High</span></code>, <code class="docutils literal notranslate"><span class="pre">AdaptiveOut1</span></code>, <code class="docutils literal notranslate"><span class="pre">HDR</span></code> oder <code class="docutils literal notranslate"><span class="pre">Off</span></code></li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">Continuous</span></code></li>
+<li>Beschreibung: Kombiniert <code class="docutils literal notranslate"><span class="pre">exp_control</span></code> (<a class="reference internal" href="stereo_camera.html#expl-exp-control"><span class="std std-ref">Belichtungsregelung</span></a>) und <code class="docutils literal notranslate"><span class="pre">exp_auto_mode</span></code> (<a class="reference internal" href="stereo_camera.html#expl-exp-auto-mode"><span class="std std-ref">Belichtungszeitautomatik Modus</span></a>). <code class="docutils literal notranslate"><span class="pre">Off</span></code> entspricht <cite>Manual</cite> <a class="reference internal" href="stereo_camera.html#expl-exp-control"><span class="std std-ref">Belichtungsregelung</span></a>. <code class="docutils literal notranslate"><span class="pre">Continuous</span></code>, <code class="docutils literal notranslate"><span class="pre">Out1High</span></code> oder <code class="docutils literal notranslate"><span class="pre">AdaptiveOut1</span></code> aktivieren <cite>Auto</cite> <a class="reference internal" href="stereo_camera.html#expl-exp-control"><span class="std std-ref">Belichtungsregelung</span></a> mit dem entsprechenden <a class="reference internal" href="stereo_camera.html#expl-exp-auto-mode"><span class="std std-ref">Belichtungszeitautomatik Modus</span></a> wobei <code class="docutils literal notranslate"><span class="pre">Continuous</span></code> dem <cite>Normal</cite> <code class="docutils literal notranslate"><span class="pre">exp_auto_mode</span></code> entspricht. <code class="docutils literal notranslate"><span class="pre">HDR</span></code> aktiviert die HDR Belichtungsregelung.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-11">
+<dt><code class="docutils literal notranslate"><span class="pre">ExposureTime</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Float, Wertebereich: 66–18000&nbsp;µs</li>
+<li>Voreinstellung: 5000&nbsp;µs</li>
+<li>Beschreibung: Belichtungszeit der Kameras für den manuellen Belichtungsmodus, ausgedrückt in Mikrosekunden (<a class="reference internal" href="stereo_camera.html#expl-exp-value"><span class="std std-ref">Belichtungszeit</span></a>).</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="category-analogcontrol">
+<h3>Kategorie: AnalogControl<a class="headerlink" href="#category-analogcontrol" title="Link zu dieser Überschrift">¶</a></h3>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">GainSelector</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, Wert: ist immer <code class="docutils literal notranslate"><span class="pre">All</span></code></li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">All</span></code></li>
+<li>Beschreibung: Der <em>rc_visard NG</em> unterstützt aktuell nur einen globalen Verstärkungsfaktor.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-12">
+<dt><code class="docutils literal notranslate"><span class="pre">Gain</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Float, Wertebereich: 0–18 dB</li>
+<li>Voreinstellung: 0 dB</li>
+<li>Beschreibung: Verstärkungsfaktor der Kameras für den manuellen Belichtungsmodus, ausgedrückt in Dezibel (<a class="reference internal" href="stereo_camera.html#expl-gain-value"><span class="std std-ref">Verstärkungsfaktor</span></a>).</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-13">
+<dt><code class="docutils literal notranslate"><span class="pre">BalanceWhiteAuto</span></code> (nur für Farbkameras)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, mögliche Werte: <code class="docutils literal notranslate"><span class="pre">Continuous</span></code> oder <code class="docutils literal notranslate"><span class="pre">Off</span></code></li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">Continuous</span></code></li>
+<li>Beschreibung: Lässt sich für den manuellen Weißabgleich auf <code class="docutils literal notranslate"><span class="pre">Off</span></code> bzw. für den automatischen Weißabgleich auf <code class="docutils literal notranslate"><span class="pre">Continuous</span></code> setzen. Dieser Parameter ist nur für Farbkameras verfügbar (<a class="reference internal" href="stereo_camera.html#expl-wb-auto"><span class="std std-ref">Weißabgleich</span></a>).</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-14">
+<dt><code class="docutils literal notranslate"><span class="pre">BalanceRatioSelector</span></code> (nur für Farbkameras)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, mögliche Werte: <code class="docutils literal notranslate"><span class="pre">Red</span></code> oder <code class="docutils literal notranslate"><span class="pre">Blue</span></code></li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">Red</span></code></li>
+<li>Beschreibung: Auswahl des Verhältnisses welches mit <code class="docutils literal notranslate"><span class="pre">BalanceRatio</span></code> einstellbar ist. <code class="docutils literal notranslate"><span class="pre">Red</span></code> bedeutet Verhältnis von Rot zu Grün, und <code class="docutils literal notranslate"><span class="pre">Blue</span></code> bedeutet Verhältnis von Blau zu Grün. Diese Einstellung ist nur für Farbkameras verfügbar.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-15">
+<dt><code class="docutils literal notranslate"><span class="pre">BalanceRatio</span></code> (nur für Farbkameras)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Float, Wertebereich: 0.125 – 8</li>
+<li>Voreinstellung: 1.2 wenn <code class="docutils literal notranslate"><span class="pre">Red</span></code> und 2.4 wenn <code class="docutils literal notranslate"><span class="pre">Blue</span></code> im <code class="docutils literal notranslate"><span class="pre">BalanceRatioSelector</span></code> eingestellt sind</li>
+<li>Beschreibung: Gewichtung vom roten oder blauen zum grünen Farbkanal. Diese Einstellung ist nur für Farbkameras verfügbar (<a class="reference internal" href="stereo_camera.html#expl-wb-ratio"><span class="std std-ref">wb_ratio</span></a>).</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="category-digitaliocontrol">
+<span id="sect-genicam-iocontrol"></span><h3>Kategorie: DigitalIOControl<a class="headerlink" href="#category-digitaliocontrol" title="Link zu dieser Überschrift">¶</a></h3>
+<dl class="docutils" id="index-16">
+<dt><code class="docutils literal notranslate"><span class="pre">LineSelector</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, mögliche Werte: <code class="docutils literal notranslate"><span class="pre">Out1</span></code>, <code class="docutils literal notranslate"><span class="pre">Out2</span></code>, <code class="docutils literal notranslate"><span class="pre">In1</span></code> oder <code class="docutils literal notranslate"><span class="pre">In2</span></code></li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">Out1</span></code></li>
+<li>Beschreibung: Wählt den Ein- oder Ausgang, um den aktuellen Zustand abzufragen oder die Betriebsart zu setzen.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-17">
+<dt><code class="docutils literal notranslate"><span class="pre">LineStatus</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Boolean</li>
+<li>Beschreibung: Aktueller Zustand des mit <code class="docutils literal notranslate"><span class="pre">LineSelector</span></code> ausgewählten Ein- oder Ausgangs.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-18">
+<dt><code class="docutils literal notranslate"><span class="pre">LineStatusAll</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first simple">
+<li>Typ: Integer</li>
+<li>Beschreibung: Aktueller Zustand der Ein- und Ausgänge, welche in den unteren vier Bits angegeben werden.</li>
+</ul>
+<table border="1" class="last docutils" id="bedeutung-der-bits-des-linestatusall-parameters">
+<caption><span class="caption-number">Tab. 53 </span><span class="caption-text">Bedeutung der Bits des <code class="docutils literal notranslate"><span class="pre">LineStatusAll</span></code> Parameters.</span><a class="headerlink" href="#bedeutung-der-bits-des-linestatusall-parameters" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="19%" />
+<col width="19%" />
+<col width="19%" />
+<col width="22%" />
+<col width="22%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Bit</th>
+<th class="head">4</th>
+<th class="head">3</th>
+<th class="head">2</th>
+<th class="head">1</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>GPIO</td>
+<td>Eingang 2</td>
+<td>Eingang 1</td>
+<td>Ausgang 2</td>
+<td>Ausgang 1</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<dl class="docutils" id="index-19">
+<dt><code class="docutils literal notranslate"><span class="pre">LineSource</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, mögliche Werte: <code class="docutils literal notranslate"><span class="pre">ExposureActive</span></code>, <code class="docutils literal notranslate"><span class="pre">ExposureAlternateActive</span></code>, <code class="docutils literal notranslate"><span class="pre">Low</span></code> oder <code class="docutils literal notranslate"><span class="pre">High</span></code></li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">Low</span></code></li>
+<li>Beschreibung: Betriebszustand des mit <code class="docutils literal notranslate"><span class="pre">LineSelector</span></code> gewählten Ausgangs, wie im Abschnitt zum IOControl Modul beschrieben (<a class="reference internal" href="iocontrol.html#sect-iocontrol-params"><span class="std std-ref">out1_mode und out2_mode</span></a>). Siehe auch den Parameter <code class="docutils literal notranslate"><span class="pre">AcquisitionAlternateFilter</span></code> zum Filtern von Bildern im Betriebszustand <code class="docutils literal notranslate"><span class="pre">ExposureAlternateActive</span></code>.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="category-transportlayercontrol-ptpcontrol">
+<h3>Kategorie: TransportLayerControl / PtpControl<a class="headerlink" href="#category-transportlayercontrol-ptpcontrol" title="Link zu dieser Überschrift">¶</a></h3>
+<dl class="docutils" id="index-20">
+<dt><code class="docutils literal notranslate"><span class="pre">PtpEnable</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Boolean</li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">false</span></code></li>
+<li>Beschreibung: Schaltet die PTP-Synchronisierung ein und aus.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="category-scan3dcontrol">
+<h3>Kategorie: Scan3dControl<a class="headerlink" href="#category-scan3dcontrol" title="Link zu dieser Überschrift">¶</a></h3>
+<dl class="docutils" id="index-21">
+<dt><code class="docutils literal notranslate"><span class="pre">Scan3dDistanceUnit</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, Wert: ist immer <code class="docutils literal notranslate"><span class="pre">Pixel</span></code></li>
+<li>Beschreibung: Einheit für die Disparitätsmessungen, ist immer <code class="docutils literal notranslate"><span class="pre">Pixel</span></code>.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-22">
+<dt><code class="docutils literal notranslate"><span class="pre">Scan3dOutputMode</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, Wert: ist immer <code class="docutils literal notranslate"><span class="pre">DisparityC</span></code></li>
+<li>Beschreibung: Modus für die Tiefenmessungen, ist immer <code class="docutils literal notranslate"><span class="pre">DisparityC</span></code>.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-23">
+<dt><code class="docutils literal notranslate"><span class="pre">Scan3dFocalLength</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Float</li>
+<li>Beschreibung: Brennweite des mit <code class="docutils literal notranslate"><span class="pre">ComponentSelector</span></code> ausgewählten Bild-Streams in Pixeln. Im Fall der Komponenten <code class="docutils literal notranslate"><span class="pre">Disparity</span></code>, <code class="docutils literal notranslate"><span class="pre">Confidence</span></code> und <code class="docutils literal notranslate"><span class="pre">Error</span></code> hängt der Wert auch von der Auflösung ab, die implizit über <code class="docutils literal notranslate"><span class="pre">DepthQuality</span></code> eingestellt wurde.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-24">
+<dt><code class="docutils literal notranslate"><span class="pre">Scan3dBaseline</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Float</li>
+<li>Beschreibung: Basisabstand der Stereokamera in Metern.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-25">
+<dt><code class="docutils literal notranslate"><span class="pre">Scan3dPrinciplePointU</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Float</li>
+<li>Beschreibung: Horizontale Position des Bildhauptpunktes des mit <code class="docutils literal notranslate"><span class="pre">ComponentSelector</span></code> ausgewählten Bild-Streams. Im Fall der Komponenten <code class="docutils literal notranslate"><span class="pre">Disparity</span></code>, <code class="docutils literal notranslate"><span class="pre">Confidence</span></code> und <code class="docutils literal notranslate"><span class="pre">Error</span></code> hängt der Wert auch von der Auflösung ab, die implizit über <code class="docutils literal notranslate"><span class="pre">DepthQuality</span></code> eingestellt wurde.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-26">
+<dt><code class="docutils literal notranslate"><span class="pre">Scan3dPrinciplePointV</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Float</li>
+<li>Beschreibung: Vertikale Position des Bildhauptpunktes des mit <code class="docutils literal notranslate"><span class="pre">ComponentSelector</span></code> ausgewählten Bild-Streams. Im Fall der Komponenten <code class="docutils literal notranslate"><span class="pre">Disparity</span></code>, <code class="docutils literal notranslate"><span class="pre">Confidence</span></code> und <code class="docutils literal notranslate"><span class="pre">Error</span></code> hängt der Wert auch von der Auflösung ab, die implizit über <code class="docutils literal notranslate"><span class="pre">DepthQuality</span></code> eingestellt wurde.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-27">
+<dt><code class="docutils literal notranslate"><span class="pre">Scan3dCoordinateScale</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Float</li>
+<li>Beschreibung: Der Skalierungsfaktor, der mit den Disparitätswerten im Disparitätsbild-Stream zu multiplizieren ist, um die tatsächlichen Disparitätswerte zu erhalten. Der Wert beträgt immer 0,0625.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-28">
+<dt><code class="docutils literal notranslate"><span class="pre">Scan3dCoordinateOffset</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Float</li>
+<li>Beschreibung: Der Versatz, der zu den Disparitätswerten im Disparitätsbild-Stream addiert werden muss, um die tatsächlichen Disparitätswerte zu erhalten. Für den <em>rc_visard NG</em> beträgt der Wert immer 0 und kann daher ignoriert werden.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-29">
+<dt><code class="docutils literal notranslate"><span class="pre">Scan3dInvalidDataFlag</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Boolean</li>
+<li>Beschreibung: Ist immer <code class="docutils literal notranslate"><span class="pre">true</span></code>, was bedeutet, dass ungültige Daten im Disparitätsbild mit einem spezifischen Wert markiert werden, der durch den Parameter <code class="docutils literal notranslate"><span class="pre">Scan3dInvalidDataValue</span></code> definiert wird.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-30">
+<dt><code class="docutils literal notranslate"><span class="pre">Scan3dInvalidDataValue</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Float</li>
+<li>Beschreibung: Ist der Wert, der für ungültige Disparität steht. Der Wert ist immer 0, was bedeutet, dass Disparitätswerte von 0 immer ungültigen Messungen entsprechen. Um zwischen ungültigen Disparitätsmessungen und Messungen, bei denen die Disparität aufgrund der unendlich weit entfernten Objekte 0 beträgt, unterscheiden zu können, wird der Disparitätswert für den letztgenannten Fall auf 0,0625 gesetzt. Dies entspricht noch immer einer Objektentfernung von mehreren hundert Metern.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="category-chunkdatacontrol">
+<h3>Kategorie: ChunkDataControl<a class="headerlink" href="#category-chunkdatacontrol" title="Link zu dieser Überschrift">¶</a></h3>
+<dl class="docutils" id="index-31">
+<dt><code class="docutils literal notranslate"><span class="pre">ChunkModeActive</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Boolean</li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">false</span></code></li>
+<li>Beschreibung: Schaltet Chunk-Daten an, die mit jedem Bild mitgeliefert werden.</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="custom-genicam-features-of-the-rc-xxx">
+<span id="sect-custom-genicam-params"></span><h2>Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em><a class="headerlink" href="#custom-genicam-features-of-the-rc-xxx" title="Link zu dieser Überschrift">¶</a></h2>
+<div class="section" id="category-devicecontrol">
+<h3>Kategorie: DeviceControl<a class="headerlink" href="#category-devicecontrol" title="Link zu dieser Überschrift">¶</a></h3>
+<dl class="docutils" id="index-32">
+<dt><code class="docutils literal notranslate"><span class="pre">RcSystemReady</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Boolean</li>
+<li>Beschreibung: Gibt an, ob der Bootprozess des Geräts abgeschlossen ist und alle Modules laufen.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-33">
+<dt><code class="docutils literal notranslate"><span class="pre">RcParamLockDisable</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Boolean</li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">false</span></code></li>
+<li>Beschreibung: Wenn dieser Wert auf true gesetzt ist, werden die Kamera- und Tiefenbildparameter nicht gesperrt, wenn ein GigE Vision Client mit dem Gerät verbunden wird. Es ist zu beachten, dass – abhängig vom verbundenen GigE Vision Client – Parameteränderungen durch andere Anwendungen (z.B. die Web GUI) möglicherweise nicht durch den GigE Vision Client bemerkt werden, was zu ungewolltem Verhalten führen kann.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="id1">
+<h3>Kategorie: AcquisitionControl<a class="headerlink" href="#id1" title="Link zu dieser Überschrift">¶</a></h3>
+<dl class="docutils" id="index-34">
+<dt><code class="docutils literal notranslate"><span class="pre">AcquisitionAlternateFilter</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, mögliche Werte: <code class="docutils literal notranslate"><span class="pre">Off</span></code>, <code class="docutils literal notranslate"><span class="pre">OnlyHigh</span></code> oder <code class="docutils literal notranslate"><span class="pre">OnlyLow</span></code></li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">Off</span></code></li>
+<li>Beschreibung: Falls dieser Parameter auf <code class="docutils literal notranslate"><span class="pre">OnlyHigh</span></code> (oder entsprechend <code class="docutils literal notranslate"><span class="pre">OnlyLow</span></code>) und die <code class="docutils literal notranslate"><span class="pre">LineSource</span></code> für mindestens einen Ausgang auf <code class="docutils literal notranslate"><span class="pre">ExposureAlternateActive</span></code> eingestellt wird, dann werden nur die Kamerabilder übertragen, welche aufgenommen wurden, während der konfigurierte Ausgang an war, d.h. ein potentiell angeschlossener Projektor war an (oder bei <code class="docutils literal notranslate"><span class="pre">OnlyLow</span></code> entsprechend aus). Dieser Parameter ist ein einfaches Mittel um nur Bilder ohne ein projiziertes Muster zu bekommen. Der minimale Zeitunterschied zwischen einem Kamera- und einem Disparitätsbild ist in diesem Fall etwa 40 ms (siehe <a class="reference internal" href="iocontrol.html#sect-iocontrol-params"><span class="std std-ref">IOControl</span></a>).</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-35">
+<dt><code class="docutils literal notranslate"><span class="pre">AcquisitionMultiPartMode</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, mögliche Werte: <code class="docutils literal notranslate"><span class="pre">SingleComponent</span></code> oder <code class="docutils literal notranslate"><span class="pre">SynchronizedComponents</span></code></li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">SingleComponent</span></code></li>
+<li>Beschreibung: Nur wirksam im MultiPart-Modus. Ist dieser Parameter auf <code class="docutils literal notranslate"><span class="pre">SingleComponent</span></code> gesetzt, werden die Bilder jeweils sofort als einzelne Komponente pro Frame/Puffer geschickt, sobald sie verfügbar sind. Dies entspricht dem Verhalten von Clients, die MultiPart nicht unterstützen. Ist dieser Parameter auf <code class="docutils literal notranslate"><span class="pre">SynchronizedComponents</span></code> gesetzt, werden die aktivierten Komponenten auf dem <em>rc_visard NG</em> zeitlich synchronisiert und in einem gemeinsamen Frame/Puffer versendet – allerdings nur, falls alle für diesen Zeitpunkt verfügbar sind.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-36">
+<dt><code class="docutils literal notranslate"><span class="pre">ExposureTimeAutoMax</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Float, Wertebereich: 66–18000&nbsp;µs</li>
+<li>Voreinstellung: 18000&nbsp;µs</li>
+<li>Beschreibung: Maximale Belichtungszeit im automatischen Belichtungsmodus (<a class="reference internal" href="stereo_camera.html#expl-exp-max"><span class="std std-ref">Maximale Belichtungszeit</span></a>).</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-37">
+<dt><code class="docutils literal notranslate"><span class="pre">ExposureRegionOffsetX</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Integer, Wertebereich: 0 bis maximale Bildbreite</li>
+<li>Voreinstellung: 0</li>
+<li>Beschreibung: Horizontaler Offset des <a class="reference internal" href="stereo_camera.html#expl-exp-region"><span class="std std-ref">Bereichs für die Belichtungszeitregelung</span></a> in Pixeln.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-38">
+<dt><code class="docutils literal notranslate"><span class="pre">ExposureRegionOffsetY</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Integer, Wertebereich: 0 bis maximale Bildhöhe</li>
+<li>Voreinstellung: 0</li>
+<li>Beschreibung: Vertikaler Offset des <a class="reference internal" href="stereo_camera.html#expl-exp-region"><span class="std std-ref">Bereichs für die Belichtungszeitregelung</span></a> in Pixeln.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-39">
+<dt><code class="docutils literal notranslate"><span class="pre">ExposureRegionWidth</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Integer, Wertebereich: 0 bis maximale Bildbreite</li>
+<li>Voreinstellung: 0</li>
+<li>Beschreibung: Breite des <a class="reference internal" href="stereo_camera.html#expl-exp-region"><span class="std std-ref">Bereichs für die Belichtungszeitregelung</span></a> in Pixeln.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-40">
+<dt><code class="docutils literal notranslate"><span class="pre">ExposureRegionHeight</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Integer, Wertebereich: 0 bis maximale Bildhöhe</li>
+<li>Voreinstellung: 0</li>
+<li>Beschreibung: Höhe des <a class="reference internal" href="stereo_camera.html#expl-exp-region"><span class="std std-ref">Bereichs für die Belichtungszeitregelung</span></a> in Pixeln.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-41">
+<dt><code class="docutils literal notranslate"><span class="pre">RcExposureAutoAverageMax</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Float, Wertebereich 0-1</li>
+<li>Voreinstellung: 0.75</li>
+<li>Beschreibung: Maximale Helligkeit der <a class="reference internal" href="stereo_camera.html#exp-auto-max-min-average"><span class="std std-ref">automatischen Belichtungszeitsteuerung</span></a> als Wert zwischen 0 (dunkel) und 1 (hell).</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-42">
+<dt><code class="docutils literal notranslate"><span class="pre">RcExposureAutoAverageMin</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Float, Wertebereich 0-1</li>
+<li>Voreinstellung: 0.25</li>
+<li>Beschreibung: Minimale Helligkeit der <a class="reference internal" href="stereo_camera.html#exp-auto-max-min-average"><span class="std std-ref">automatischen Belichtungszeitsteuerung</span></a> als Wert zwischen 0 (dunkel) und 1 (hell).</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="id2">
+<h3>Kategorie: Scan3dControl<a class="headerlink" href="#id2" title="Link zu dieser Überschrift">¶</a></h3>
+<dl class="docutils" id="index-43">
+<dt><code class="docutils literal notranslate"><span class="pre">FocalLengthFactor</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Float</li>
+<li>Beschreibung: Brennweite skaliert auf eine Bildbreite von einem Pixel. Um die Brennweite für ein bestimmtes Bild in Pixeln zu ermitteln, muss dieser Wert mit der Breite des empfangenen Bilds multipliziert werden. Siehe auch den Parameter <code class="docutils literal notranslate"><span class="pre">Scan3dFocalLength</span></code>.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-44">
+<dt><code class="docutils literal notranslate"><span class="pre">Baseline</span></code> (schreibgeschützt)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Float</li>
+<li>Beschreibung: Dieser Parameter ist überholt. Der Parameter <code class="docutils literal notranslate"><span class="pre">Scan3dBaseline</span></code> sollte stattdessen benutzt werden.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="category-depthcontrol">
+<h3>Kategorie: DepthControl<a class="headerlink" href="#category-depthcontrol" title="Link zu dieser Überschrift">¶</a></h3>
+<dl class="docutils" id="index-45">
+<dt><code class="docutils literal notranslate"><span class="pre">DepthAcquisitionMode</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, mögliche Werte: <code class="docutils literal notranslate"><span class="pre">SingleFrame</span></code>, <code class="docutils literal notranslate"><span class="pre">SingleFrameOut1</span></code> oder <code class="docutils literal notranslate"><span class="pre">Continuous</span></code></li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">Continuous</span></code></li>
+<li>Beschreibung: Im Modus <code class="docutils literal notranslate"><span class="pre">SingleFrame</span></code> wird das Stereo-Matching mit jedem Aufruf von <code class="docutils literal notranslate"><span class="pre">DepthAcquisitionTrigger</span></code> durchgeführt. Der Modus <code class="docutils literal notranslate"><span class="pre">SingleFrameOut1</span></code> kann zum Kontrollieren eines externen Projektors genutzt werden. Dabei wird bei jedem Trigger <code class="docutils literal notranslate"><span class="pre">Out1</span></code> auf <code class="docutils literal notranslate"><span class="pre">ExposureAlternateActive</span></code> und nach dem Empfangen der Stereobilder auf <code class="docutils literal notranslate"><span class="pre">Low</span></code> gesetzt. Im Modus <code class="docutils literal notranslate"><span class="pre">Continuous</span></code> wird das Stereo-Matching kontinuierlich durchgeführt.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-46">
+<dt><code class="docutils literal notranslate"><span class="pre">DepthAcquisitionTrigger</span></code></dt>
+<dd><ul class="first last simple">
+<li>type: Command</li>
+<li>Beschreibung: Dieses Kommando triggert das Stereo-Matching auf den nächsten verfügbaren Stereobildern, falls <code class="docutils literal notranslate"><span class="pre">DepthAcquisitionMode</span></code> auf <code class="docutils literal notranslate"><span class="pre">SingleFrame</span></code> oder <code class="docutils literal notranslate"><span class="pre">SingleFrameOut1</span></code> eingestellt ist.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-47">
+<dt><code class="docutils literal notranslate"><span class="pre">DepthQuality</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Aufzählung, mögliche Werte: <code class="docutils literal notranslate"><span class="pre">Low</span></code>, <code class="docutils literal notranslate"><span class="pre">Medium</span></code>, <code class="docutils literal notranslate"><span class="pre">High</span></code> oder <code class="docutils literal notranslate"><span class="pre">Full</span></code> <strong>(nur mit StereoPlus-Lizenz)</strong></li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">High</span></code></li>
+<li>Beschreibung: Qualität der Disparitätsbilder. Eine geringere <code class="docutils literal notranslate"><span class="pre">DepthQuality</span></code> führt zu Disparitätsbildern mit einer geringeren Auflösung (<a class="reference internal" href="stereo_matching.html#expl-depth-quality"><span class="std std-ref">Qualität</span></a>).</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-48">
+<dt><code class="docutils literal notranslate"><span class="pre">DepthDoubleShot</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Boolean</li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">false</span></code></li>
+<li>Beschreibung: <code class="docutils literal notranslate"><span class="pre">True</span></code> zum Verbessern des Stereo-Matching-Resultats bei Szenen mit Projektor. Löcher im Tiefenbild werden gefüllt mit Tiefendaten aus dem Stereo Matching des Bildpaars ohne Projektormuster (<a class="reference internal" href="stereo_matching.html#expl-depth-double-shot"><span class="std std-ref">Double-Shot</span></a>).</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-49">
+<dt><code class="docutils literal notranslate"><span class="pre">DepthStaticScene</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Boolean</li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">false</span></code></li>
+<li>Beschreibung: <code class="docutils literal notranslate"><span class="pre">True</span></code> zum Mitteln über acht aufeinanderfolgende Kamerabilder zur Verbesserung des Stereo-Matching-Resultats (<a class="reference internal" href="stereo_matching.html#expl-depth-static"><span class="std std-ref">Statisch</span></a>).</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-50">
+<dt><code class="docutils literal notranslate"><span class="pre">DepthSmooth</span></code>  (schreibgeschützt ohne StereoPlus-Lizenz)</dt>
+<dd><ul class="first last simple">
+<li>Typ: Boolean</li>
+<li>Voreinstellung: <code class="docutils literal notranslate"><span class="pre">false</span></code></li>
+<li>Beschreibung: <code class="docutils literal notranslate"><span class="pre">True</span></code> um Disparitätswerte zu glätten (<a class="reference internal" href="stereo_matching.html#expl-depth-smooth"><span class="std std-ref">Glättung</span></a>).</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-51">
+<dt><code class="docutils literal notranslate"><span class="pre">DepthFill</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Integer, Wertebereich: 0–4&nbsp;Pixel</li>
+<li>Voreinstellung: 3&nbsp;Pixel</li>
+<li>Beschreibung: Wert in Pixeln für <a class="reference internal" href="stereo_matching.html#expl-depth-fill"><span class="std std-ref">Füllen</span></a>.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-52">
+<dt><code class="docutils literal notranslate"><span class="pre">DepthSeg</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Integer, Wertebereich: 0–4000&nbsp;Pixel</li>
+<li>Voreinstellung: 200&nbsp;Pixel</li>
+<li>Beschreibung: Wert in Pixeln für <a class="reference internal" href="stereo_matching.html#expl-depth-seg"><span class="std std-ref">Segmentierung</span></a>.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-53">
+<dt><code class="docutils literal notranslate"><span class="pre">DepthMinConf</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Float, Wertebereich: 0.0–1.0</li>
+<li>Voreinstellung: 0.0</li>
+<li>Beschreibung: Wert für die <a class="reference internal" href="stereo_matching.html#expl-depth-min-conf"><span class="std std-ref">Minimale Konfidenz</span></a>-Filterung.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-54">
+<dt><code class="docutils literal notranslate"><span class="pre">DepthMinDepth</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Float, Wertebereich: 0.1–100.0&nbsp;m</li>
+<li>Voreinstellung: 0.1&nbsp;m</li>
+<li>Beschreibung: Wert in Metern für die <a class="reference internal" href="stereo_matching.html#expl-depth-min-depth"><span class="std std-ref">Minimale Abstands</span></a>-Filterung.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-55">
+<dt><code class="docutils literal notranslate"><span class="pre">DepthMaxDepth</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Float, Wertebereich: 0.1–100.0&nbsp;m</li>
+<li>Voreinstellung: 100.0 m</li>
+<li>Beschreibung: Wert in Metern für die <a class="reference internal" href="stereo_matching.html#expl-depth-max-depth"><span class="std std-ref">Maximale Abstands</span></a>-Filterung.</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="index-56">
+<dt><code class="docutils literal notranslate"><span class="pre">DepthMaxDepthErr</span></code></dt>
+<dd><ul class="first last simple">
+<li>Typ: Float, Wertebereich: 0.01–100.0&nbsp;m</li>
+<li>Voreinstellung: 100.0 m</li>
+<li>Beschreibung: Wert in Metern für die <a class="reference internal" href="stereo_matching.html#expl-depth-max-depth-err"><span class="std std-ref">Maximale Fehler</span></a>-Filterung.</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="chunk-data">
+<span id="sect-chunk-data"></span><h2>Chunk-Daten<a class="headerlink" href="#chunk-data" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Der <em>rc_visard NG</em> unterstützt Chunk-Parameter, die mit jedem Bild mitgeschickt werden. Chunk-Parameter haben alle den Präfix <code class="docutils literal notranslate"><span class="pre">Chunk</span></code>. Ihre Bedeutung entspricht den gleichlautenden Nicht-Chunk-Parametern. Sie passen jedoch immer zu dem zugehörigen Bild. Zum Beispiel hängt <code class="docutils literal notranslate"><span class="pre">Scan3dFocalLength</span></code> von <code class="docutils literal notranslate"><span class="pre">ComponentSelector</span></code> und <code class="docutils literal notranslate"><span class="pre">DepthQuality</span></code> ab, da die Bildauflösung von beiden Parametern abhängt. Der Parameter <code class="docutils literal notranslate"><span class="pre">ChunkScan3dFocalLength</span></code>, welcher zu einem Bild geliefert wird, passt hingegen zu der Auflösung dieses Bildes.</p>
+<p>Nützliche Chunk-Parameter:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ChunkComponentSelector</span></code> selektiert, für welche Komponente Chunk-Daten aus dem MultiPart-Puffer gelesen werden.</li>
+<li><code class="docutils literal notranslate"><span class="pre">ChunkComponentID</span></code> und <code class="docutils literal notranslate"><span class="pre">ChunkComponentIDValue</span></code> dienen der eindeutigen Zuordnung des Bildes zu seiner Komponente (z.B. Kamerabild oder Disparitätsbild), ohne dies vom Bildformat oder der Bildgröße ableiten zu müssen.</li>
+<li><code class="docutils literal notranslate"><span class="pre">ChunkLineStatusAll</span></code> bietet den Status der Ein- und Ausgänge zum Zeitpunkt der Bildaufnahme. Siehe <code class="docutils literal notranslate"><span class="pre">LineStatusAll</span></code> für eine Beschreibung der Bits.</li>
+<li><code class="docutils literal notranslate"><span class="pre">ChunkScan3d...</span></code> sind nützlich zur 3D-Rekonstruktion wie im Abschnitt <a class="reference internal" href="#sect-image-stream-conversions"><span class="std std-ref">Umwandlung von Bild-Streams</span></a> beschrieben.</li>
+<li><code class="docutils literal notranslate"><span class="pre">ChunkPartIndex</span></code> gibt  den Index des Bild-Parts im MultiPart-Block für die ausgewählte Komponente (<code class="docutils literal notranslate"><span class="pre">ChunkComponentSelector</span></code>) zurück.</li>
+<li><code class="docutils literal notranslate"><span class="pre">ChunkRcOut1Reduction</span></code> gibt den Anteil der Bildhelligkeit an, um den Bilder mit GPIO Ausgang 1 (Out1) LOW  dunkler sind als Bilder mit Out1 HIGH. Ein Wert von beispielsweise 0.2 bedeutet, dass die Bilder mit GPIO Out1 LOW 20% weniger Helligkeit haben als Bilder mit GPIO Out1 HIGH. Dieser Wert ist nur verfügbar, wenn <code class="docutils literal notranslate"><span class="pre">exp_auto_mode</span></code> der Stereokamera auf <code class="docutils literal notranslate"><span class="pre">AdaptiveOut1</span></code> oder <code class="docutils literal notranslate"><span class="pre">Out1High</span></code> gesetzt ist (<a class="reference internal" href="stereo_camera.html#expl-exp-auto-mode"><span class="std std-ref">auto exposure mode</span></a>).</li>
+</ul>
+<p>Chunk-Daten werden durch das Setzen des GenICam-Parameters <code class="docutils literal notranslate"><span class="pre">ChunkModeActive</span></code> auf <code class="docutils literal notranslate"><span class="pre">True</span></code> eingeschaltet.</p>
+</div>
+<div class="section" id="provided-image-streams">
+<span id="sect-provided-image-streams"></span><h2>Verfügbare Bild-Streams<a class="headerlink" href="#provided-image-streams" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Der <em>rc_visard NG</em> stellt über die GenICam-Schnittstelle die folgenden fünf Bild-Streams zur Verfügung:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="30%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name der Komponente</th>
+<th class="head">PixelFormat</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Intensity</span></code></td>
+<td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Mono8</span></code> (monochrome Kameras)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">YCbCr411_8</span></code> (Farbkameras)</div>
+</div>
+</td>
+<td>Rektifiziertes Bild der linken Kamera</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">IntensityCombined</span></code></td>
+<td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Mono8</span></code> (monochrome Kameras)</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">YCbCr411_8</span></code> (Farbkameras)</div>
+</div>
+</td>
+<td>Rektifiziertes Bild der linken Kamera, gestapelt auf das rektifizierte Bild der rechten Kamera</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Disparity</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">Coord3D_C16</span></code></td>
+<td>Disparitätsbild in gewünschter Auflösung, d.h. <code class="docutils literal notranslate"><span class="pre">DepthQuality</span></code> in <code class="docutils literal notranslate"><span class="pre">Full</span></code>, <code class="docutils literal notranslate"><span class="pre">High</span></code>, <code class="docutils literal notranslate"><span class="pre">Medium</span></code> oder <code class="docutils literal notranslate"><span class="pre">Low</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">Confidence</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">Confidence8</span></code></td>
+<td>Konfidenzbild</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Error</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">Error8</span></code> (Sonderformat: 0x81080001)</td>
+<td>Fehlerbild</td>
+</tr>
+</tbody>
+</table>
+<p id="index-58">Jedes Bild wird mit einem Zeitstempel und dem in der Tabelle angegebenen <em>PixelFormat</em> ausgegeben. Dieses <em>PixelFormat</em> sollte verwendet werden, um zwischen den verschiedenen Bildtypen zu unterscheiden. Bilder, die den gleichen Aufnahmezeitpunkt haben, können durch Vergleich der GenICam-Zeitstempel einander zugeordnet werden.</p>
+</div>
+<div class="section" id="image-stream-conversions">
+<span id="sect-image-stream-conversions"></span><h2>Umwandlung von Bild-Streams<a class="headerlink" href="#image-stream-conversions" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-59">Das Disparitätsbild enthält vorzeichenlose 16-Bit-Ganzzahlwerte. Diese Werte müssen mit dem im GenICam-Parameter <em>Scan3dCoordinateScale</em> angegebenen Skalierungsfaktor multipliziert werden, um die Disparitätswerte <span class="math notranslate nohighlight">\(d\)</span> in Pixeln zu ermitteln. Um die 3D-Objektkoordinaten aus den Disparitätswerten berechnen zu können, werden die Brennweite, der Basisabstand und der Bildhauptpunkt benötigt. Diese Parameter werden als GenICam-Parameter <em>Scan3dFocalLength</em>, <em>Scan3dBaseline</em>, <em>Scan3dPrincipalPointU</em> und <em>Scan3dPrincipalPointV</em> zur Verfügung gestellt. Die Brennweite und der Bildhauptpunkt hängen von der Bildauflösung der mit dem <em>ComponentSelector</em> selektierten Komponente ab. Sind diese Werte bekannt, können die Pixel-Koordinaten und die Disparitätswerte mithilfe der im Abschnitt <a class="reference internal" href="stereo_matching.html#sect-point-clouds"><span class="std std-ref">Berechnung von Tiefenbildern und Punktwolken</span></a> angegebenen Gleichungen in 3D-Objektkoordination im Kamera-Koordinatensystem umgerechnet werden.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Das Kamera-Koordinatensystem des <em>rc_visard NG</em> ist in <a class="reference internal" href="hardware_spec.html#sect-coordinate-frames"><span class="std std-ref">Sensor-Koordinatensystem</span></a> definiert.</p>
+</div>
+<p>Unter der Annahme, dass es sich bei <span class="math notranslate nohighlight">\(d_{ik}\)</span> um den 16-Bit-Disparitätswert in der Spalte <span class="math notranslate nohighlight">\(i\)</span> und Zeile <span class="math notranslate nohighlight">\(k\)</span> eines Disparitätsbildes handelt, ist der Fließkomma-Disparitätswert in Pixeln <span class="math notranslate nohighlight">\(d_{ik}\)</span> gegeben durch</p>
+<div class="math notranslate nohighlight">
+\[d_{ik}=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale}\]</div>
+<p>Die 3D-Rekonstruktion (in Metern) kann wie folgt mit den GenICam-Parametern durchgeführt werden:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}P_x&amp;=\left(i+0.5-\mathrm{Scan3dPrincipalPointU}\right) \frac{\mathrm{Scan3dBaseline}}{d_{ik}},\\
+P_y&amp;=\left(k+0.5-\mathrm{Scan3dPrincipalPointV}\right) \frac{\mathrm{Scan3dBaseline}}{d_{ik}},\\
+P_z&amp;=\mathrm{Scan3dFocalLength} \frac{\mathrm{Scan3dBaseline}}{d_{ik}}.\end{split}\]</div>
+<p>Das Konfidenzbild umfasst vorzeichenlose 8-Bit-Ganzzahlwerte. Diese Werte müssen durch 255 geteilt werden, um die zwischen 0 und 1 liegenden Konfidenzwerte zu berechnen.</p>
+<p>Das Fehlerbild umfasst vorzeichenlose 8-Bit-Ganzzahlwerte. Der Fehler <span class="math notranslate nohighlight">\(e_{ik}\)</span> muss mit dem im GenICam-Parameter <em>Scan3dCoordinateScale</em> angegebenen Skalierungsfaktor multipliziert werden, um die Disparitätsfehlerwerte <span class="math notranslate nohighlight">\(d_{eps}\)</span> in Pixeln zu ermitteln. Der Beschreibung in <a class="reference internal" href="stereo_matching.html#sect-confidence-error"><span class="std std-ref">Konfidenz- und Fehlerbilder</span></a> zufolge lässt sich der Tiefenfehler <span class="math notranslate nohighlight">\(z_{eps}\)</span> (in Metern) mit den GenICam-Parametern wie folgt berechnen:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}d_{ik}&amp;=d16_{ik} \cdot \mathrm{Scan3dCoordinateScale},\\
+z_{eps}&amp;=\frac{e_{ik} \cdot \mathrm{Scan3dCoordinateScale} \cdot \mathrm{Scan3dFocalLength}
+              \cdot \mathrm{Scan3dBaseline}}
+             {(d_{ik})^2}.\end{split}\]</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Chunk-Daten sollten nach Möglichkeit mit dem Parameter <em>ChunkModeActive</em> angeschaltet und die zum Bild zugehörigen Parameter <em>ChunkScan3dCoordinateScale</em>, <em>ChunkScan3dFocalLength</em>, <em>ChunkScan3dBaseline</em>, <em>ChunkScan3dPrincipalPointU</em> und <em>ChunkScan3dPrincipalPointV</em> genutzt werden, denn deren Werte passen zu der Auflösung des zugehörigen Bildes.</p>
+</div>
+<p>Für nähere Informationen zu Disparitäts-, Fehler- und Konfidenzbildern siehe <a class="reference internal" href="stereo_matching.html#sect-stereo-matching"><span class="std std-ref">Stereo-Matching</span></a>.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rest_api.html" class="btn btn-neutral float-right" title="REST-API-Schnittstelle" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="webgui.html" class="btn btn-neutral" title="Web GUI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../en/gigevision.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/gigevision.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v23.10/index.html">v23.10</a></dd>
+          
+            <dd><a href="../../v24.01/index.html">v24.01</a></dd>
+          
+            <dd><a href="../../v24.04/index.html">v24.04</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'24.04.1',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="_static/contentui.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

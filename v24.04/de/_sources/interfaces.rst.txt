@@ -1,0 +1,32 @@
+Schnittstellen
+
+Es stehen die folgenden Schnittstellen zur Konfiguration und
+Datenübertragung des
+
+rc_visard NG
+
+ zur Verfügung:
+
+Web GUI\:(Abschnitt \ref{webgui:sect-web-gui})  Leicht zu bedienendes
+grafisches Interface zum Konfigurieren und Kalibrieren des rc_visard
+NG, zum Anzeigen von Livebildern, Aufrufen von Services, Visualisieren
+von Ergebnissen, usw.
+
+GigE Vision 2.0/GenICam-Schnittstelle\:(Abschnitt \ref{gigevision
+:sect-genicam})  Konfiguration bild- und kamerabezogener
+Einstellungen.
+
+REST-API-Schnittstelle\:(Abschnitt \ref{rest_api:sect-rest-api})
+Programmierschnittstelle zur Konfiguration des rc_visard NG, zur
+Abfrage von Statusinformationen, zum Anfordern von Datenströmen, usw.
+
+Ethernet KRL Schnittstelle (EKI)\:(Abschnitt \ref{eki:sect-eki})  API
+zum Konfigurieren des rc_visard NG und Ausführen von Service-Anfrage
+von KUKA KSS Robotern aus.
+
+gRPC Bilddatenschnittstelle\:(Abschnitt \ref{grpc:sect-grpc})
+Synchronisierte Bilddaten per gRPC.
+
+Zeitsynchronisation\:(Abschnitt \ref{time_sync:sect-time-sync})
+Zeitsynchronisation zwischen dem rc_visard NG und dem Anwendungs-PC.
+

@@ -1,0 +1,892 @@
+Stereo matching
+
+The stereo matching module is a base module which is available on
+every
+
+rc_visard NG
+
+ and uses the rectified stereo-image pair to compute disparity, error,
+and confidence images. It also offers a service to measure depth in a
+specified image region (see
+
+Services
+
+).
+
+To compute full resolution disparity, error and confidence images, an
+additional StereoPlus
+
+license
+
+  is required. This license is included in every
+
+rc_visard NG
+
+ purchased after 31.01.2019.
+
+Computing disparity images
+
+After rectification, an object point is guaranteed to be projected
+onto the same pixel row in both left and right image. That point's
+pixel column in the right image is always lower than or equal to the
+same point's pixel column in the left image. The term disparity
+signifies the difference between the pixel columns in the right and
+left images and expresses the depth or distance of the object point
+from the camera. The disparity image stores the disparity values of
+all pixels in the left camera image.
+
+The larger the disparity, the closer the object point. A disparity of
+0 means that the projections of the object point are in the same image
+column and the object point is at infinite distance. Often, there are
+pixels for which disparity cannot be determined. This is the case for
+occlusions that appear on the left sides of objects, because these
+areas are not seen from the right camera. Furthermore, disparity
+cannot be determined for textureless areas. Pixels for which the
+disparity cannot be determined are marked as invalid with the special
+disparity value of 0. To distinguish between invalid disparity
+measurements and disparity measurements of 0 for objects that are
+infinitely far away, the disparity value for the latter is set to the
+smallest possible disparity value above 0.
+
+To compute disparity values, the stereo matching algorithm has to find
+corresponding object points in the left and right camera images. These
+are points that represent the same object point in the scene. For
+stereo matching, the
+
+rc_visard NG
+
+ uses
+
+SGM
+
+ (
+
+Semi-Global Matching
+
+), which offers quick run times and great accuracy, especially at
+object borders, fine structures, and in weakly textured areas.
+
+A key requirement for any stereo matching method is the presence of
+texture in the image, i.e., image-intensity changes due to patterns or
+surface structure within the scene. In completely untextured regions
+such as a flat white wall without any structure, disparity values can
+either not be computed or the results are erroneous or have low
+confidence (see
+
+Confidence and error images
+
+). The texture in the scene should not be an artificial, repetitive
+pattern, since those structures may lead to ambiguities and hence to
+wrong disparity measurements.
+
+When working with poorly textured objects or in untextured
+environments, a static artificial texture can be projected onto the
+scene using an external pattern projector. This pattern should be
+random-like and not contain repetitive structures. The
+
+rc_visard NG
+
+ provides the IOControl module (see
+
+IO and Projector Control
+
+) as optional software module which can control a pattern projector
+connected to the sensor.
+
+Computing depth images and point clouds
+
+The following equations show how to compute an object point's actual
+3D coordinates P_x, P_y, P_z in the camera coordinate frame from the
+disparity image's pixel coordinates p_{x}, p_{y} and the disparity
+value d in pixels:
+
+   P_x&=\frac{p_x \cdot t}{d}\\ P_y&=\frac{p_y \cdot t}{d}\\
+   P_z&=\frac{f \cdot t}{d},
+
+where f is the focal length after rectification in pixels and t is the
+stereo baseline in meters, which was determined during calibration.
+These values are also transferred over the GenICam interface (see
+
+Custom GenICam features of the rc_visard NG
+
+).
+
+Note: The
+
+  rc_visard NG
+
+  's camera coordinate frame is defined as shown in
+
+  Coordinate frames
+
+  .
+
+Note: The
+
+  rc_visard NG
+
+   reports a focal length factor via its various interfaces. It
+  relates to the image width for supporting different image
+  resolutions. The focal length f in pixels can be easily obtained by
+  multiplying the focal length factor by the image width in pixels.
+
+Please note that equations
+
+(1)
+
+ assume that the coordinate frame is centered in the principal point
+that is typically in the center of the image, and p_{x}, p_{y} refer
+to the middle of the pixel, i.e. by adding 0.5 to the integer pixel
+coordinates. The following figure shows the definition of the image
+coordinate frame.
+
+
+The same equations, but with the corresponding GenICam parameters are
+given in
+
+Image stream conversions
+
+.
+
+The set of all object points computed from the disparity image gives
+the point cloud, which can be used for 3D modeling applications. The
+disparity image is converted into a depth image by replacing the
+disparity value in each pixel with the value of P_z.
+
+Note: Roboception provides software and examples for receiving
+  disparity images from the
+
+  rc_visard NG
+
+   via GigE Vision and computing depth images and point clouds. See
+
+  http://www.roboception.com/download
+
+  .
+
+Confidence and error images
+
+For each disparity image, additionally an error image and a confidence
+image are provided, which give uncertainty measures for each disparity
+value. These images have the same resolution and the same frame rate
+as the disparity image. The error image contains the disparity error
+d_{eps} in pixels corresponding to the disparity value at the same
+image coordinates in the disparity image. The confidence image
+contains the corresponding confidence value c between 0 and 1. The
+confidence is defined as the probability of the true disparity value
+being within the interval of three times the error around the measured
+disparity d, i.e., [d-3d_{eps}, d+3d_{eps}]. Thus, the disparity image
+with error and confidence values can be used in applications requiring
+probabilistic inference. The confidence and error values corresponding
+to an invalid disparity measurement will be 0.
+
+The disparity error d_{eps} (in pixels) can be converted to a depth
+error z_{eps} (in meters) using the focal length f (in pixels), the
+baseline t (in meters), and the disparity value d (in pixels) of the
+same pixel in the disparity image:
+
+   z_{eps}=\frac{d_{eps}\cdot f\cdot t}{d^2}.
+
+Combining equations
+
+(1)
+
+ and
+
+(2)
+
+ allows the depth error to be related to the depth:
+
+   z_{eps}=\frac{d_{eps}\cdot{P_z}^2}{f\cdot t}.
+
+With the focal lengths and baselines of the different camera models
+and the typical combined calibration and stereo matching error d_{eps}
+of 0.25 pixels, the depth accuracy can be visualized as shown below.
+
+
+Viewing and downloading images and point clouds
+
+The
+
+rc_visard NG
+
+ provides time-stamped disparity, error, and confidence images over
+the GenICam interface (see
+
+Provided image streams
+
+). Live streams of the images are provided with reduced quality on the
+
+Depth Image
+
+ page  of the
+
+Web GUI
+
+.
+
+The Web GUI also provides the possibility to download a snapshot of
+the current scene containing the depth, error and confidence images,
+as well as a point cloud in ply format as described in
+
+Downloading depth images and point clouds
+
+.
+
+Parameters
+
+The stereo matching module is called "rc_stereomatching" in the REST-
+API and it is represented by the
+
+Depth Image
+
+ page  in the
+
+Web GUI
+
+. The user can change the stereo matching parameters there, or use the
+REST-API (
+
+REST-API interface
+
+) or GigE Vision (
+
+GigE Vision 2.0/GenICam image interface
+
+).
+
+Parameter overview
+
+This module offers the following run-time parameters:
+
+The rc_stereomatching module's run-time parameters              Name
+Type  Min  Max  Default  Description  acquisition_mode  string  -  -
+Continuous  Acquisition mode: [Continuous, SingleFrame,
+SingleFrameOut1]  double_shot  bool  false  true  false  Combination
+of disparity images from two subsequent stereo image pairs
+exposure_adapt_timeout  float64  0.0  2.0  0.0  Maximum time in
+seconds to wait after triggering in SingleFrame modes until auto
+exposure has finished adjustments  fill  int32  0  4  3  Disparity
+tolerance for hole filling in pixels  maxdepth  float64  0.1  100.0
+100.0  Maximum depth in meters  maxdeptherr  float64  0.01  100.0
+100.0  Maximum depth error in meters  minconf  float64  0.5  1.0  0.5
+Minimum confidence  mindepth  float64  0.1  100.0  0.1  Minimum depth
+in meters  quality  string  -  -  High  Quality: [Low, Medium, High,
+Full]. Full requires 'stereo_plus' license.  seg  int32  0  4000  200
+Minimum size of valid disparity segments in pixels  smooth  bool
+false  true  true  Smoothing of disparity image (requires
+'stereo_plus' license)  static_scene  bool  false  true  false
+Accumulation of images in static scenes to reduce noise
+
+Description of run-time parameters
+
+Each run-time parameter is represented by a row on the Web GUI's
+
+Depth Image
+
+ page. The name in the Web GUI is given in brackets behind the
+parameter name and the parameters are listed in the order they appear
+in the Web GUI:
+
+
+acquisition_mode (Acquisition Mode)
+
+      The acquisition mode can be set to "Continuous", "SingleFrame" (
+
+      Single
+
+      ) or "SingleFrameOut1" (
+
+      Single + Out1
+
+      ). The first one is the default, which performs stereo matching
+      continuously according to the user defined frame rate and the
+      available computation resources. The two other modes perform
+      stereo matching upon each click of the Acquire button. The
+      *Single + Out1* mode additionally controls an external projector
+      that is connected to GPIO Out1 (
+
+      IO and Projector Control
+
+      ). In this mode, "out1_mode" of the IOControl module is
+      automatically set to "ExposureAlternateActive" upon each trigger
+      call and reset to "Low" after receiving images for stereo
+      matching.
+
+      Note: The "Single + Out1" mode can only change the "out1_mode"
+        if the IOControl license is available on the
+
+        rc_visard NG
+
+        .
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?acquisition_mode=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?acquisition_mode=<value>
+
+exposure_adapt_timeout (Exposure Adaptation Timeout)
+
+      The exposure adaptation timeout gives the maximum time in
+      seconds that the system will wait after triggering an image
+      acquisition until auto exposure has found the optimal exposure
+      time. This timeout is only used in "SingleFrame" (
+
+      Single
+
+      ) or "SingleFrameOut1" (
+
+      Single + Out1
+
+      ) acquisition mode with auto exposure active. This value should
+      be increased in applications with changing lighting conditions,
+      when images are under- oder overexposed and the resulting
+      disparity images are too sparse. In these cases multiple images
+      are acquired until the auto-exposure mode has adjusted or the
+      timeout is reached, and only then the actual image acquisition
+      is triggered.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?exposure_adapt_timeout=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?exposure_adapt_timeout=<value>
+
+quality (Quality)
+
+      Disparity images can be computed in different resolutions:
+      "Full" (full image resolution), "High" (half of the full image
+      resolution), "Medium" (quarter of the full image resolution) and
+      "Low" (sixth of the full image resolution). Full resolution
+      matching ("Full") is only possible with a valid StereoPlus
+      license. The lower the resolution, the higher the frame rate of
+      the disparity image. Please note that the frame rate of the
+      disparity, confidence, and error images will always be less than
+      or equal to the camera frame rate. In case the projector is in
+      "ExposureAlternateActive" mode, the frame rate of the images can
+      be at most half of the camera frame rate.
+
+      A 25 Hz frame rate can be achieved only at medium and low
+      resolution.
+
+      If full resolution is selected, the depth range is internally
+      limited due to limited on-board memory resources. It is
+      recommended to adjust "mindepth" and "maxdepth" to the depth
+      range that is required by the application.
+
+      Depth image resolutions depending on the chosen quality
+      Quality  Full  High  Medium  Low  Resolution (pixel)  1440 x
+      1080  720 x 540  360 x 270  240 x 180
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?quality=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?quality=<value>
+
+double_shot (Double-Shot)
+
+   Enabling this option will lead to denser disparity images, but will
+   increase processing time.
+
+   For scenes recorded with a projector in "Single + Out1" acquisition
+   mode, or in continuous acquisition mode with the projector in
+   "ExposureAlternateActive" mode, holes caused by reflections of the
+   projector are filled with depth information computed from the
+   images without projector pattern. In this case, the "double_shot"
+   parameter must only be enabled if the scene does not change during
+   the acquisition of the images.
+
+   For all other scenes, holes are filled with depth information
+   computed from a downscaled version of the same image.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?double_shot=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?double_shot=<value>
+
+static_scene (Static)
+
+   This option averages 8 consecutive camera images before matching.
+   This reduces noise, which improves the stereo matching result.
+   However, the latency increases significantly. The timestamp of the
+   first image is taken as timestamp of the disparity image. This
+   option only affects matching in full or high quality. It must only
+   be enabled if the scene does not change during the acquisition of
+   the 8 images.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?static_scene=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?static_scene=<value>
+
+mindepth (Minimum Distance)
+
+   The minimum distance is the smallest distance from the camera at
+   which measurements should be possible. Larger values implicitly
+   reduce the disparity range, which also reduces the computation
+   time. The minimum distance is given in meters.
+
+   Depending on the capabilities of the sensor, the actual minimum
+   distance can be higher than the user setting. The actual minimum
+   distance will be reported in the status values.
+
+   In "quality" mode "Full", the actual minimum distance can also be
+   higher than the user-defined minimum distance due to memory
+   limitations. In this case, lowering the maximum distance helps to
+   reduce the actual minimum distance.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?mindepth=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?mindepth=<value>
+
+maxdepth (Maximum Distance)
+
+   The maximum distance is the largest distance from the camera at
+   which measurements should be possible. Pixels with larger distance
+   values are set to invalid in the disparity image. Setting this
+   value to its maximum permits values up to infinity. The maximum
+   distance is given in meters.
+
+   In "quality" mode "Full", the actual minimum distance can be higher
+   than the user-defined minimum distance due to memory limitations.
+   In this case, lowering the maximum distance helps to reduce the
+   actual minimum distance.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?maxdepth=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?maxdepth=<value>
+
+smooth (Smoothing)
+
+   This option activates advanced smoothing of disparity values. It is
+   only available with a valid StereoPlus license.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?smooth=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?smooth=<value>
+
+fill (Fill-in)
+
+   This option is used to fill holes in the disparity image by
+   interpolation. The fill-in value is the maximum allowed disparity
+   step on the border of the hole. Larger fill-in values can decrease
+   the number of holes, but the interpolated values can have larger
+   errors. At most 5% of pixels are interpolated. Interpolation of
+   small holes is preferred over interpolation of larger holes. The
+   confidence for the interpolated pixels is set to a low value of
+   0.5. A fill-in value of 0 switches hole filling off.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?fill=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?fill=<value>
+
+seg (Segmentation)
+
+   The segmentation parameter is used to set the minimum number of
+   pixels that a connected disparity region in the disparity image
+   must fill. Isolated regions that are smaller are set to invalid in
+   the disparity image. The value is related to the high quality
+   disparity image with half resolution and does not have to be scaled
+   when a different quality is chosen. Segmentation is useful for
+   removing erroneous disparities. However, larger values may also
+   remove real objects.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?seg=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?seg=<value>
+
+minconf (Minimum Confidence)
+
+   The minimum confidence can be set to filter potentially false
+   disparity measurements. All pixels with less confidence than the
+   chosen value are set to invalid in the disparity image.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?minconf=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?minconf=<value>
+
+maxdeptherr (Maximum Depth Error)
+
+   The maximum depth error is used to filter measurements that are too
+   inaccurate. All pixels with a larger depth error than the chosen
+   value are set to invalid in the disparity image. The maximum depth
+   error is given in meters. The depth error generally grows
+   quadratically with an object's distance from the camera (see
+
+   Confidence and error images
+
+   ).
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?maxdeptherr=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?maxdeptherr=<value>
+
+The same parameters are also available over the GenICam interface with
+slightly different names and partly with different data types (see
+
+GigE Vision 2.0/GenICam image interface
+
+).
+
+Status values
+
+This module reports the following status values:
+
+The rc_stereomatching module's status values      Name  Description
+fps  Actual frame rate of the disparity, error, and confidence images.
+This value is shown in the Web GUI below the image preview as FPS
+(Hz).  latency  Time in seconds between image acquisition and
+publishing of disparity image  width  Current width of the disparity,
+error, and confidence images in pixels  height  Current height of the
+disparity, error, and confidence images in pixels  mindepth  Actual
+minimum working distance in meters  maxdepth  Actual maximum working
+distance in meters  time_matching  Time in seconds for performing
+stereo matching using SGM on the GPU  time_postprocessing  Time in
+seconds for postprocessing the matching result on the CPU
+reduced_depth_range  Indicates whether the depth range is reduced due
+to computation resources
+
+Services
+
+The stereo matching module offers the following services.
+
+acquisition_trigger
+
+   Signals the module to perform stereo matching of the next available
+   images, if the parameter "acquisition_mode" is set to "SingleFrame"
+   or "SingleFrameOut1".
+
+   Details
+
+   An error is returned if the "acquisition_mode" is set to
+   "Continuous".
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/services/acquisition_trigger
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/services/acquisition_trigger
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   Possible return codes are shown below.
+
+   Possible return codes of the acquisition_trigger service call.
+   Code  Description  0  Success  -8  Triggering is only possible in
+   SingleFrame acquisition mode  101  Trigger is ignored, because
+   there is a trigger call pending  102  Trigger is ignored, because
+   there are no subscribers
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "acquisition_trigger",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+measure_depth
+
+   Computes the average, minimum and maximum depth in a given region
+   of interest, which can optionally be subdivided into cells.
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/services/measure_depth
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/services/measure_depth
+
+   Request
+
+   Optional arguments:
+
+      "region_of_interest_2d_id" is the ID of the 2D region of
+      interest (see
+
+      RoiDB
+
+      ) that will be used for the depth measurements.
+
+      "region_of_interest_2d" is an alternative on-the-fly definition
+      of the region of interest for the depth measurements. This
+      region of interest will be ignored if a
+      "region_of_interest_2d_id" is given. The region of interest is
+      always defined on the camera image with full resolution, where
+      "offset_x" and "offset_y" are the pixel coordinates of the upper
+      left corner of the rectangular region of interest, and "width"
+      and "height" are the width and height of it in pixels. Default
+      is a region of interest covering the whole image.
+
+      "cell_count" is the number of cells in x and y direction into
+      which the region of interest is divided. If not given, a cell
+      count of 0, 0 is assumed and only the overall values will be
+      computed. The total cell count computed as product of the x and
+      y values must not exceed 100.
+
+      "data_acquisition_mode": if set to "CAPTURE_NEW" (default), a
+      new image dataset will be used for the measurement. If set to
+      "USE_LAST", the previous dataset will be used for the
+      measurement.
+
+      "pose_frame" controls whether the coordinates of the depth
+      measurement are returned in the "camera" or "external" frame, if
+      a hand-eye calibration is available (see
+
+      Hand-eye calibration
+
+      ). The default is "camera".
+
+   Potentially required arguments:
+
+      "robot_pose" is the pose of the robot at the time of the depth
+      measurement. It is required when the external pose frame is used
+      and the camera is robot mounted.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "cell_count": {
+            "x": "uint32",
+            "y": "uint32"
+          },
+          "data_acquisition_mode": "string",
+          "pose_frame": "string",
+          "region_of_interest_2d": {
+            "height": "uint32",
+            "offset_x": "uint32",
+            "offset_y": "uint32",
+            "width": "uint32"
+          },
+          "region_of_interest_2d_id": "string",
+          "robot_pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          }
+        }
+      }
+
+   Response
+
+   return_code values of the measure_depth service call      value
+   Description  0  measurement successful  -1  an invalid argument was
+   given
+
+   "cells" contains the depth measurements of all requested cells. The
+   cells are always ordered from left to right and top to bottom in
+   image coordinates.
+
+   "overall" contains the depth measurements of the full region of
+   interest.
+
+   "coverage" is a number between 0 and 1 which reflects the fraction
+   of valid depth measurements inside the respective cell. A coverage
+   of 0 means that the cell is invalid.
+
+   "min_z" and "max_z" return the 3D coordinate of the point in the
+   cell with the minimum and maximum depth value, respectively. The
+   depth value is the z coordinate in the camera coordinate system.
+
+   For "mean_z", the x and y coordinates define the point in the
+   middle of the cell and the z coordinate is determined by the
+   average of all depth value measurements in the cell.
+
+   "region_of_interest_2d" returns the definition of the requested
+   region of interest for the depth measurement.
+
+   If "pose_frame" is "external", then the x, y and z coordinates are
+   returned in the robot coordinate system.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "measure_depth",
+        "response": {
+          "cell_count": {
+            "x": "uint32",
+            "y": "uint32"
+          },
+          "cells": [
+            {
+              "coverage": "float64",
+              "max_z": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "mean_z": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "min_z": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            }
+          ],
+          "overall": {
+            "coverage": "float64",
+            "max_z": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "mean_z": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "min_z": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "pose_frame": "string",
+          "region_of_interest_2d": {
+            "height": "uint32",
+            "offset_x": "uint32",
+            "offset_y": "uint32",
+            "width": "uint32"
+          },
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          },
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          }
+        }
+      }
+
+reset_defaults
+
+   Restores and applies the default values for this module's
+   parameters ("factory reset").
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/services/reset_defaults
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_stereomatching/services/reset_defaults
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

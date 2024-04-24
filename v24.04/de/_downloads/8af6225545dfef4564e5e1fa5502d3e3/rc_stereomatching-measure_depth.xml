@@ -1,0 +1,71 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="32"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_stereomatching" Type="STRING"/>
+      <ELEMENT Tag="req/service/measure_depth" Type="STRING"/>
+      <ELEMENT Tag="req/args/cell_count/@x" Type="INT"/>
+      <ELEMENT Tag="req/args/cell_count/@y" Type="INT"/>
+      <ELEMENT Tag="req/args/data_acquisition_mode" Type="STRING"/>
+      <ELEMENT Tag="req/args/pose_frame" Type="STRING"/>
+      <ELEMENT Tag="req/args/region_of_interest_2d/@height" Type="INT"/>
+      <ELEMENT Tag="req/args/region_of_interest_2d/@offset_x" Type="INT"/>
+      <ELEMENT Tag="req/args/region_of_interest_2d/@offset_y" Type="INT"/>
+      <ELEMENT Tag="req/args/region_of_interest_2d/@width" Type="INT"/>
+      <ELEMENT Tag="req/args/region_of_interest_2d_id" Type="STRING"/>
+      <ELEMENT Tag="req/args/robot_pose/@X" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@A" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@B" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@C" Type="REAL"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/cell_count/@x" Type="INT"/>
+      <ELEMENT Tag="res/cell_count/@y" Type="INT"/>
+      <ELEMENT Tag="res/cells/le/coverage" Type="REAL"/>
+      <ELEMENT Tag="res/cells/le/max_z/@x" Type="REAL"/>
+      <ELEMENT Tag="res/cells/le/max_z/@y" Type="REAL"/>
+      <ELEMENT Tag="res/cells/le/max_z/@z" Type="REAL"/>
+      <ELEMENT Tag="res/cells/le/mean_z/@x" Type="REAL"/>
+      <ELEMENT Tag="res/cells/le/mean_z/@y" Type="REAL"/>
+      <ELEMENT Tag="res/cells/le/mean_z/@z" Type="REAL"/>
+      <ELEMENT Tag="res/cells/le/min_z/@x" Type="REAL"/>
+      <ELEMENT Tag="res/cells/le/min_z/@y" Type="REAL"/>
+      <ELEMENT Tag="res/cells/le/min_z/@z" Type="REAL"/>
+      <ELEMENT Tag="res/overall/@coverage" Type="REAL"/>
+      <ELEMENT Tag="res/overall/max_z/@x" Type="REAL"/>
+      <ELEMENT Tag="res/overall/max_z/@y" Type="REAL"/>
+      <ELEMENT Tag="res/overall/max_z/@z" Type="REAL"/>
+      <ELEMENT Tag="res/overall/mean_z/@x" Type="REAL"/>
+      <ELEMENT Tag="res/overall/mean_z/@y" Type="REAL"/>
+      <ELEMENT Tag="res/overall/mean_z/@z" Type="REAL"/>
+      <ELEMENT Tag="res/overall/min_z/@x" Type="REAL"/>
+      <ELEMENT Tag="res/overall/min_z/@y" Type="REAL"/>
+      <ELEMENT Tag="res/overall/min_z/@z" Type="REAL"/>
+      <ELEMENT Tag="res/pose_frame" Type="STRING"/>
+      <ELEMENT Tag="res/region_of_interest_2d/@height" Type="INT"/>
+      <ELEMENT Tag="res/region_of_interest_2d/@offset_x" Type="INT"/>
+      <ELEMENT Tag="res/region_of_interest_2d/@offset_y" Type="INT"/>
+      <ELEMENT Tag="res/region_of_interest_2d/@width" Type="INT"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/timestamp/@sec" Type="INT"/>
+      <ELEMENT Tag="res/timestamp/@nsec" Type="INT"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>
