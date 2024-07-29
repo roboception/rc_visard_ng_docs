@@ -1,0 +1,48 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="32"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_silhouettematch" Type="STRING"/>
+      <ELEMENT Tag="req/service/get_grasps" Type="STRING"/>
+      <ELEMENT Tag="req/args/grasp_ids/le" Type="STRING"/>
+      <ELEMENT Tag="req/args/template_ids/le" Type="STRING"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/grasps/le/gripper_id" Type="STRING"/>
+      <ELEMENT Tag="res/grasps/le/id" Type="STRING"/>
+      <ELEMENT Tag="res/grasps/le/pose/@X" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@A" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@B" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@C" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/priority" Type="INT"/>
+      <ELEMENT Tag="res/grasps/le/replication/@max_x_deg" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/replication/@min_x_deg" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/replication/@step_x_deg" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/replication/origin/@X" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/replication/origin/@Y" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/replication/origin/@Z" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/replication/origin/@A" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/replication/origin/@B" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/replication/origin/@C" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/template_id" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

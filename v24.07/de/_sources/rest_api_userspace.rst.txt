@@ -1,0 +1,78 @@
+UserSpace
+
+UserSpace Informationen einschließlich laufender Apps und ihre
+veröffentlichten Ports können über den userspace Endpunkt abgefragt
+werden. Eine App kann vom Typ ("type") "container" oder "compose"
+(Compose-Stack mit potenziell mehreren Containern) sein.
+
+GET /userspace
+
+   Abruf der UserSpace Informationen.
+
+   Musteranfrage
+
+      GET /api/v2/userspace HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "apps": [
+          {
+            "containers": [
+              {
+                "host_ports": [
+                  {
+                    "port": 8888,
+                    "protocol": "http"
+                  }
+                ],
+                "name": "hello_rc_visard_ng",
+                "status": "running"
+              }
+            ],
+            "name": "hello_rc_visard_ng",
+            "type": "container"
+          },
+          {
+            "containers": [
+              {
+                "host_ports": [
+                  {
+                    "port": 8080,
+                    "protocol": "http"
+                  }
+                ],
+                "name": "grafana",
+                "status": "running"
+              },
+              {
+                "host_ports": [
+                  {
+                    "port": 9090,
+                    "protocol": "http"
+                  }
+                ],
+                "name": "prometheus",
+                "status": "running"
+              }
+            ],
+            "name": "rc_visard_monitoring",
+            "type": "compose"
+          }
+        ],
+        "available": true,
+        "enabled": true
+      }
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabewert: UserSpace)
+
+   Referenzierte Datenmodelle:
+      UserSpace\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-userspace})

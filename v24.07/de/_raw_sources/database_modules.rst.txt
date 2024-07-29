@@ -1,0 +1,36 @@
+.. include:: global_rst.glb
+
+.. _sect-database-modules:
+
+Database modules
+================
+
+The |rc_xxx| provides several database modules which enable the user to configure 
+global data which is used in many detection modules, such as load carriers and regions of interest.
+Via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` the database modules are 
+only available in API version 2.
+
+The database modules are:
+
+- :doc:`loadcarrier_db` (``rc_load_carrier_db``:latex:`, Section \ref{loadcarrier_db:sect-loadcarrier-db}`)
+   allows setting, retrieving and deleting load carriers.
+
+- :doc:`roi` (``rc_roi_db``:latex:`\:, Section \ref{roi:sect-roi})`
+   allows setting, retrieving and deleting 2D and 3D regions of interest.
+
+- :doc:`gripper_db` (``rc_gripper_db``:latex:`, Section \ref{gripper_db:sect-gripper-db}`)
+   allows setting, retrieving and deleting grippers for collision checking.
+
+.. only:: rc_cube
+
+   These modules are global on the |rc_cube|, which means that they run outside the camera pipelines.
+   Changes to their settings or parameters affect all pipelines running on the |rc_cube|.
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+   
+   loadcarrier_db
+   roi
+   gripper_db
+   

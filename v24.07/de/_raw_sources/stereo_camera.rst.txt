@@ -1,0 +1,893 @@
+
+.. include:: global_rst.glb
+
+.. _sect-stereo-camera:
+
+Camera
+======
+
+The camera module is a base module which is available on every |rc_xxx| and
+is responsible for image acquisition and rectification. It provides various
+parameters, e.g. to control exposure and frame rate.
+
+.. _sect-stereo-camera-rectification:
+
+Rectification
+-------------
+
+.. index::
+   single: rectification
+   single: camera model
+   single: stereo camera
+   single: calibration; rectification
+   single: focal length
+   single: baseline
+   single: disparity
+
+To simplify image processing, the camera module rectifies all camera images
+based on the camera calibration. This means that lens distortion is removed and
+the principal point is located exactly in the middle of the image.
+
+The model of a rectified camera is described with just one value, which is the focal length.
+The |rc_xxx| reports a focal length factor via its various interfaces. It
+relates to the image width for supporting different image resolutions. The
+focal length :math:`f` in pixels can be easily obtained by multiplying the
+focal length factor by the image width in pixels.
+
+In case of a stereo camera, rectification also aligns images such that an
+object point is always projected onto the same image row in both images.
+The cameras' optical axes become exactly parallel.
+
+.. This means that points at infinite distance are projected onto the same image column in both images.
+.. The closer an object point is, the larger is the difference between its image
+.. columns in the right and left images. This difference is called disparity.
+
+.. only:: rc_cube and (roboception or schunk or basler)
+
+   .. note:: If a |blaze| sensor is used instead of a stereo camera, only
+             one camera image is provided. However, the image is rectified,
+             i.e. lens distortion is removed and the principal point is in the
+             image center.
+
+.. _sect-cam-accessing-images:
+
+Viewing and downloading images
+------------------------------
+
+.. index::
+   pair: images; download
+
+The |rc_xxx| provides the time-stamped, rectified images
+over the GenICam interface (see :ref:`sect-provided-image-streams`:latex:`,
+Section \ref{gigevision:sect-provided-image-streams}`). Live streams of the images are provided
+with reduced quality in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+The |webgui| also provides the possibility to download a snapshot of the current scene as a .tar.gz file
+as described in :ref:`sect-webgui-camera-snapshot`:latex:`\:(Section \ref{webgui:sect-webgui-camera-snapshot})`.
+
+
+.. _sect-cam-params:
+
+Parameters
+----------
+
+.. index::
+   pair: parameters; camera
+   single: gain factor
+   single: exposure time
+   pair: camera; Web GUI
+
+The camera software module is called ``rc_camera`` and is represented by the
+*Camera* page :cubeonly:`in the desired pipeline` in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+The user can change the camera parameters there, or directly via the |rest-api|
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`) or GigE Vision
+(:ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+
+.. Note:: Camera parameters cannot be changed via the |webgui| or |rest-api| if |rc_xxx|
+   is used via GigE Vision.
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. only:: rc_cube
+
+   .. note:: The minimum, maximum and default values in the parameter table
+             below show the values of the |rc_visard|. The values will be
+             different for other sensors.
+
+.. only:: rc_cube or rc_visard
+
+   .. include:: _gen/nodes/params/rc_camera.txt
+
+.. only:: rc_visard_ng
+
+   .. include:: _gen/nodes/params/rc_camera_ng.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. figure:: images/webgui_camera.png
+    :width: 100 %
+    :align: center
+
+    The |webgui|'s *Camera* page
+
+
+.. only:: rc_visard_ng
+
+   .. _expl-acquisition_mode:
+
+   .. index::
+      pair: parameters; camera
+      pair: camera; acquisition mode
+
+   ``acquisition_mode`` (*Acquisition Mode*)
+   '''''''''''''''''''''''''''''''''''''''''
+      This values determines the camera acquisition mode. In ``Continuous`` mode, the camera will 
+      acquire images at the specified frame rate ``fps``. In ``Trigger`` mode, images are only 
+      acquired when the camera receives a trigger signal.
+
+      Via the |restapi|, this parameter can be set as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?acquisition_mode=<value>
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_camera/parameters?acquisition_mode=<value>
+
+   .. _expl-trigger_source:
+
+   .. index::
+      pair: camera; trigger source
+
+   ``trigger_source`` (*Trigger Source*)
+   '''''''''''''''''''''''''''''''''''''
+      This value is only used when ``acquisition_mode`` is set to ``Trigger`` and determines the 
+      source for the trigger. In ``Software`` mode a trigger can be sent via the ``rc_camera/acquisition_trigger`` service.
+      When the ``acquisition_mode`` for the depth images is set to ``SingleFrame`` or ``SingleFrameOut1`` 
+      (see :ref:`sect-disp-image-parameters`:latex:`, Section \ref{stereo_matching:sect-disp-image-parameters}`), 
+      the camera software trigger is sent automatically whenever a depth image
+      acquisition is triggered.
+      The modes ``In1`` and ``In2`` are hardware trigger modes.
+      An image is acquired whenever a signal on the chosen input is received.
+
+      Via the |restapi|, this parameter can be set as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?trigger_source=<value>
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_camera/parameters?trigger_source=<value>
+               
+   .. _expl-trigger_activation:
+
+   .. index::
+      pair: camera; trigger activation
+
+   ``trigger_activation`` (*Trigger Activation*)
+   '''''''''''''''''''''''''''''''''''''''''''''
+      This value is only used when ``acquisition_mode`` is set to ``Trigger`` and ``trigger_source`` is set to 
+      ``In1`` or ``In2``. It determines the signal edge that should be used to trigger an acquisition. Possible
+      values are ``RisingEdge``, ``FallingEdge`` or ``AnyEdge``.
+
+      Via the |restapi|, this parameter can be set as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?trigger_activation=<value>
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_camera/parameters?trigger_activation=<value>
+
+.. _expl-fps:
+
+.. index::
+   pair: camera; frame rate
+   see: fps; frame rate
+
+``fps`` (*FPS*)
+'''''''''''''''
+   This value is the cameras' frame rate (fps, frames per second),
+   which determines the upper frequency at which depth images
+   can be computed. This is also the frequency at which the |rc_xxx|
+   delivers images via GigE Vision. Reducing this frequency also
+   reduces the network bandwidth required to transmit the images.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?fps=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?fps=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?fps=<value>
+
+   .. only:: rc_visard
+
+      The camera always runs with |cam-rate|
+      to ensure proper working of internal modules such as visual 
+      odometry that need a constant frame rate.
+      The user frame rate setting is implemented by excluding frames
+      for stereo matching and transmission via GigE Vision to reduce
+      bandwidth as shown in figure :numref:`fig-fps`.
+
+   .. only:: rc_visard_ng
+
+      The camera always runs with |cam-rate| when in ``Continuous`` acquisition 
+      mode to ensure proper working of internal modules such as visual 
+      odometry that need a constant frame rate.
+      The user frame rate setting is implemented by excluding frames
+      for stereo matching and transmission via GigE Vision to reduce
+      bandwidth as shown in figure :numref:`fig-fps`.
+
+      .. _fig-fps:
+      .. figure:: images/fps.*
+         :width: 100 %
+         :align: center
+
+         Images are internally always captured with |cam-rate|. The ``fps`` parameter
+         determines how many of them are sent as camera images via GigE Vision.
+
+.. _expl-gamma:
+
+.. index::
+   pair: camera; gamma
+
+``gamma`` (*Gamma*)
+'''''''''''''''''''
+   The gamma value determines the mapping of perceived light to the brightness of a pixel.
+   A gamma value of 1 corresponds to a linear relationship. Lower gamma values let dark image
+   parts appear brighter. A value around 0.5 corresponds to human vision.
+
+   .. only:: rc_cube and (roboception or schunk or basler)
+
+      Not available for blaze sensor.
+
+   .. only:: rc_cube
+
+      .. note:: For a pipeline of type ``rc_visard`` this value can only be changed
+                when the connected |rc_visard| has at least firmware version
+                22.07. Otherwise the gamma value will always be 1.0.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?gamma=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gamma=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?gamma=<value>
+
+.. _expl-exp-control:
+
+.. index::
+   single: exposure; auto
+   single: exposure; manual
+   single: exposure; HDR
+   single: manual exposure
+   single: auto exposure
+
+``exp_control`` (Exposure *Auto*, *HDR* or *Manual*)
+''''''''''''''''''''''''''''''''''''''''''''''''''''
+   The exposure control mode can be set to `Auto`, `HDR` or `Manual`.
+   This replaces the deprecated `exp_auto` parameter.
+
+   `Auto`: This is the default mode in which the exposure time and gain
+   factor is chosen automatically to correctly expose the image.
+   The last automatically determined exposure and gain values are set into
+   ``exp_value`` and ``gain_value`` when switching auto-exposure off.
+
+   `HDR`: The HDR mode computes high-dynamic-range images by combining images
+   with different exposure times to avoid under-exposed and over-exposed areas.
+   This decreases the frame rate and is only suitable for static scenes.
+
+   `Manual`: In the manual exposure mode the exposure time and gain are kept
+   fixed independent of the resulting image brightness.
+
+   .. only:: rc_cube
+
+      .. note:: For a pipeline of type ``rc_visard`` the `HDR` mode is only available
+                when the connected |rc_visard| has at least firmware version 23.01.
+
+   .. only:: rc_cube and (roboception or schunk or basler)
+
+      Not available for blaze sensor.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?exp_control=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_control=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_control=<value>
+
+.. _expl-exp-auto:
+
+.. index::
+   single: exposure; auto
+   single: exposure; manual
+   single: manual exposure
+   single: auto exposure
+
+``exp_auto`` (deprecated)
+'''''''''''''''''''''''''
+   **This parameter is deprecated and will be removed in a future release.**
+   Please use `exp_control`.
+
+   This value can be set to `true` for auto-exposure mode,
+   or to `false` for manual exposure mode. In manual exposure mode, the
+   chosen exposure time is kept, even if the images are overexposed or
+   underexposed. In auto-exposure mode, the exposure time and gain factor
+   is chosen automatically to correctly expose the image. The last
+   automatically determined exposure and gain values are set into
+   ``exp_value`` and ``gain_value`` when switching auto-exposure off.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?exp_auto=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_auto=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_auto=<value>
+
+.. _expl-exp-auto-mode:
+
+.. index::
+   pair: exposure; auto
+   single: auto exposure mode
+   pair: auto exposure mode; AdaptiveOut1
+   pair: auto exposure mode; Out1High
+   pair: auto exposure mode; Normal
+
+``exp_auto_mode`` (*Auto Exposure Mode*)
+''''''''''''''''''''''''''''''''''''''''
+   The auto exposure mode can be set to `Normal`, `Out1High` or `AdaptiveOut1`. These modes are
+   relevant when the |rc_xxx| is used with an external light source or projector connected
+   to the |rc_visard|'s or |rc_viscore|'s GPIO Out1,
+   which can be controlled by the IOControl module
+   (:ref:`sect-iocontrol`:latex:`, Section \ref{iocontrol:sect-iocontrol}`).
+
+   `Normal`: All images are considered for exposure control, except if the IOControl mode
+   for GPIO Out1 is `ExposureAlternateActive`: then only images where GPIO Out1 is HIGH will be
+   considered, since these images may be brighter in case GPIO Out1 is used to trigger an external light source.
+
+   `Out1High`: This exposure mode adapts the exposure time using only images with GPIO Out1 HIGH. Images where GPIO Out1 is LOW are not
+   considered at all, which means, that the exposure time does not change when only images with Out1 LOW are acquired.
+   This mode is recommended for using the ``acquisition_mode`` ``SingleFrameOut1`` in the stereo matching module as described in
+   :ref:`Stereo Matching Parameters<sect-disp-image-parameters>`:latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`
+   and having an external projector connected to GPIO Out1, when changes in the brightness of the scene should only be considered when Out1 is HIGH.
+   This is the case, for example, when a bright part of the robot moves through the field of view of the camera just before a detection is triggered,
+   which should not affect the exposure time.
+
+   `AdaptiveOut1`: This exposure mode uses all camera images and tracks the exposure difference between images
+   with GPIO Out1 LOW and HIGH. While the IOControl mode for GPIO Out1 is LOW, the images are under-exposed by this exposure
+   difference to avoid over-exposure for when GPIO Out1 triggers an external projector. The resulting exposure difference
+   is given as *Out1 Reduction* below the live images. This mode is recommended for using the ``acquisition_mode``
+   ``SingleFrameOut1`` in the stereo matching module as described in
+   :ref:`Stereo Matching Parameters<sect-disp-image-parameters>`:latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`
+   and having an external projector connected to GPIO Out1, when changes in the brightness of the scene should be considered at all times.
+   This is the case, for example, in applications where the external lighting changes.
+
+   .. only:: rc_cube and (roboception or schunk or basler)
+
+      Not available for blaze sensor.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?exp_auto_mode=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_auto_mode=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_auto_mode=<value>
+
+.. _expl-exp-max:
+
+.. index::
+   single: auto exposure
+   pair: maximum; exposure time
+   single: gain factor
+   single: motion blur
+   single: image noise
+
+``exp_max`` (*Max Exposure*)
+''''''''''''''''''''''''''''
+   This value is the maximal exposure time in auto-exposure
+   mode in seconds. The actual
+   exposure time is adjusted automatically so that the images are exposed
+   correctly. If the maximum exposure time is reached, but the images are still
+   underexposed, the |rc_xxx| stepwise increases the gain to increase the
+   images' brightness. Limiting the exposure time is useful for avoiding
+   or reducing motion blur during fast movements. However, higher gain
+   introduces noise into the image. The best trade-off depends on the application.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?exp_max=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_max=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_max=<value>
+
+.. _exp-auto-max-min-average:
+
+``exp_auto_average_max`` (*Max Brightness*) and ``exp_auto_average_min`` (*Min Brightness*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+   The auto-exposure tries to set the exposure time and gain factor such that the
+   average intensity (i.e. brightness) in the image or exposure region is between a
+   maximum and a minimum. The maximum brightness will be used if there is no saturation, e.g.
+   no over-exposure due to bright surfaces or reflections. In case of saturation,
+   the exposure time and gain factor are reduced, but only down to the minimum
+   brightness.
+
+   The maximum brightness has precedence over the minimum brightness parameter.
+   If the minimum brightness is larger than the maximum brightness, the auto-exposure
+   always tries to make the average intensity equal to the maximum brightness.
+
+   The current brightness is always shown in the status bar below the images.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?<exp_auto_average_max|exp_auto_average_min>=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_auto_average_max|exp_auto_average_min>=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_auto_average_max|exp_auto_average_min>=<value>
+
+.. _expl-exp-region:
+
+.. index::
+   single: exposure region
+
+``exp_offset_x``, ``exp_offset_y``, ``exp_width``, ``exp_height`` (*Exposure Region*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+   These values define a rectangular region in the left rectified image for
+   limiting the area used for computing the auto exposure. The exposure time and
+   gain factor of both images are chosen to optimally expose the defined region.
+   This can lead to over- or underexposure of image parts outside the defined
+   region. If either the width or height is 0, then the whole left and right
+   images are considered by the auto exposure function. This is the default.
+
+   The region is visualized in the |webgui| by a rectangle in the left
+   rectified image. It can be defined using the sliders or by selecting
+   it in the image after pressing the button ``Select Region in Image``.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+.. _expl-exp-value:
+
+.. index::
+   single: exposure time
+   single: manual exposure
+
+``exp_value`` (*Exposure*)
+''''''''''''''''''''''''''
+    This value is the exposure time in manual exposure mode in seconds. This exposure time is kept constant
+    even if the images are underexposed.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?exp_value=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_value=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_value=<value>
+
+.. _expl-gain-value:
+
+.. index::
+   single: gain factor
+
+``gain_value`` (*Gain*)
+'''''''''''''''''''''''
+   This value is the gain factor in decibel that can be set in manual exposure mode. Higher gain factors
+   reduce the required exposure time but introduce noise.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?gain_value=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gain_value=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?gain_value=<value>
+
+.. _expl-wb-auto:
+
+.. index::
+   single: white balance
+
+``wb_auto`` (*White Balance Auto* or *Manual*)
+''''''''''''''''''''''''''''''''''''''''''''''
+   This value can be set to `true` for automatic white balancing or `false` for manually
+   setting the ratio between the colors using ``wb_ratio_red`` and
+   ``wb_ratio_blue``. The last automatically determined ratios are set into
+   ``wb_ratio_red`` and ``wb_ratio_blue`` when switching automatic white balancing off.
+   White balancing is without function for monochrome
+   cameras and will not be displayed in the |webgui| in this case.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?wb_auto=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?wb_auto=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?wb_auto=<value>
+
+.. _expl-wb-ratio:
+
+.. index::
+   single: white balance
+
+``wb_ratio_blue`` and ``wb_ratio_red`` (*Blue | Green* and *Red | Green*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+   These values are used to set blue to green and red to green ratios
+   for manual white balance. White balancing is without function for monochrome
+   cameras and will not be displayed in the |webgui| in this case.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+These parameters are also available over the GenICam interface with slightly different names and partly with different units
+or data types (see :ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+
+
+Status values
+-------------
+
+This module reports the following status values:
+
+.. only:: rc_cube
+
+   .. tabularcolumns:: |l|L|
+   .. csv-table:: The ``rc_camera`` module's status values
+      :header:  Name, Description
+
+      "``baseline``","Stereo baseline :math:`t` in meters"
+      "``brightness``",":mvexclude:`Not available for blaze sensor.` Current brightness of the image as value between 0 and 1"
+      "``color``","0 for monochrome cameras, 1 for color cameras"
+      "``exp``","Current exposure time in seconds. This value is shown below the image preview in the |webgui| as *Exposure (ms)*."
+      "``focal``","Focal length factor normalized to an image width of 1"
+      "``fps``","Current frame rate of the camera images in Hertz. This value is shown in the |webgui| below the image preview as *FPS (Hz)*."
+      "``gain``","Current gain factor in decibel. This value is shown in the |webgui| below the image preview as *Gain (dB)*."
+      "``gamma``","Current gamma value."
+      "``height``","Height of the camera image in pixels. This value is shown in the |webgui| below the image preview as the second part of *Resolution (px)*."
+      "``out1_reduction``",":mvexclude:`Not available for blaze sensor.` Fraction of reduction (0.0 - 1.0) of brightness for images with GPIO Out1=LOW in exp_auto_mode=AdaptiveOut1 or exp_auto_mode=Out1High. This value is shown in the |webgui| below the image preview as *Out1 Reduction (%)*."
+      "``params_override_active``","1 if parameters are temporarily overwritten by a running calibration process"
+      "``test``","0 for live images and 1 for test images"
+      "``width``","Width of the camera image in pixels. This value is shown in the |webgui| below the image preview as the first part of *Resolution (px)*."
+
+.. only:: rc_visard or rc_visard_ng
+
+   .. tabularcolumns:: |l|L|
+   .. csv-table:: The ``rc_camera`` module's status values
+      :header:  Name, Description
+
+      "``baseline``","Stereo baseline :math:`t` in meters"
+      "``brightness``",":mvexclude:`Not available for blaze sensor.` Current brightness of the image as value between 0 and 1"
+      "``color``","0 for monochrome cameras, 1 for color cameras"
+      "``exp``","Current exposure time in seconds. This value is shown below the image preview in the |webgui| as *Exposure (ms)*."
+      "``focal``","Focal length factor normalized to an image width of 1"
+      "``fps``","Current frame rate of the camera images in Hertz. This value is shown in the |webgui| below the image preview as *FPS (Hz)*."
+      "``gain``","Current gain factor in decibel. This value is shown in the |webgui| below the image preview as *Gain (dB)*."
+      "``gamma``","Current gamma value."
+      "``height``","Height of the camera image in pixels. This value is shown in the |webgui| below the image preview as the second part of *Resolution (px)*."
+      "``out1_reduction``",":mvexclude:`Not available for blaze sensor.` Fraction of reduction (0.0 - 1.0) of brightness for images with GPIO Out1=LOW in exp_auto_mode=AdaptiveOut1 or exp_auto_mode=Out1High. This value is shown in the |webgui| below the image preview as *Out1 Reduction (%)*."
+      "``params_override_active``","1 if parameters are temporarily overwritten by a calibration process"
+      "``temp_left``","Temperature of the left camera sensor in degrees Celsius"
+      "``temp_right``","Temperature of the right camera sensor in degrees Celsius"
+      "``test``","0 for live images and 1 for test images"
+      "``time``","Processing time for image grabbing in seconds"
+      "``width``","Width of the camera image in pixels. This value is shown in the |webgui| below the image preview as the first part of *Resolution (px)*."
+
+.. _sect-cam-services:
+
+Services
+--------
+
+.. index::
+   pair: parameters; services
+
+The camera module offers the following services.
+
+.. only:: rc_visard_ng
+
+   ``acquisition_trigger``
+   ^^^^^^^^^^^^^^^^^^^^^^^
+
+      Triggers an image acquisition when ``acquisition_mode`` is set to ``Trigger`` and ``trigger_source`` is set to ``Software``.
+
+      .. toggle-header::
+         :header: **Details**
+
+         This service can be called as follows.
+
+         .. tabs::
+
+            .. tab:: **API version 2**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/acquisition_trigger
+
+            .. tab:: **API version 1 (deprecated)**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v1/nodes/rc_camera/services/acquisition_trigger
+
+         .. tabs::
+
+            .. tab:: **Request**
+
+               .. include:: _gen/nodes/services/rc_camera_acquisition_trigger_request.txt
+
+            .. tab:: **Response**
+
+               .. include:: _gen/nodes/services/rc_camera_acquisition_trigger_response.txt
+
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/reset_defaults
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_camera/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_camera_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_camera_reset_defaults_response.txt

@@ -1,0 +1,51 @@
+.. include:: global_rst.glb
+
+.. _sect-detection-modules:
+
+Detection & Measure modules
+===========================
+
+The |rc_xxx| offers software modules for different detection and measuring applications:
+
+- :doc:`measure` (``rc_measure``:latex:`, Section \ref{measure:sect-measure}`)
+   provides measure functionalities, such as depth measurements.
+
+- :doc:`loadcarrier` (``rc_load_carrier``:latex:`, Section \ref{loadcarrier:sect-loadcarrier}`)
+   allows detecting load carriers and their filling levels.
+
+- :doc:`tagdetect` (``rc_april_tag_detect`` and ``rc_qr_code_detect``:latex:`, Section \ref{tagdetect:sect-tag-detection}`)
+   allows the detection of AprilTags and QR codes, as well as the estimation of their poses.
+
+- :doc:`itempick` (``rc_itempick`` and ``rc_boxpick``:latex:`, Section \ref{itempick:sect-itempick}`)
+   provide an out-of-the-box perception solution for robotic pick-and-place
+   applications of unknown objects or boxes.
+
+- :doc:`silhouettematch` (``rc_silhouettematch``:latex:`, Section \ref{silhouettematch:sect-silhouettematch}`)
+   provides an object detection solution for objects placed on a plane or stacked planar objects.
+
+.. only:: rc_cube
+
+   - :doc:`cadmatch` (``rc_cadmatch``:latex:`, Section \ref{cadmatch:sect-cadmatch}`)
+      provides an object detection solution for 3D objects.
+
+.. only:: rc_cube
+
+   These modules are pipeline specific, which means that they run inside each
+   camera pipeline. Changes to their settings or parameters
+   only affect the corresponding pipeline and have no influence on the other
+   camera pipelines running on the |rc_cube|.
+
+These modules are optional and can be activated by
+purchasing a separate
+:ref:`license<sect-updating-license>`:latex:`\:(Section \ref{maintenance:sect-updating-license})`.
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+
+   measure
+   loadcarrier
+   tagdetect
+   itempick
+   silhouettematch
+   :rc_cube_only:cadmatch

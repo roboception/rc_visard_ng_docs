@@ -1,0 +1,78 @@
+Stereovision
+
+Bei der
+
+Stereovision
+
+ werden 3D-Informationen gewonnen, indem zwei aus verschiedenen
+Blickwinkeln aufgenommene Bilder miteinander verglichen werden. Das
+zugrunde liegende Prinzip ist darin begründet, dass Objektpunkte je
+nach Abstand vom Kamerapaar an unterschiedlichen Stellen in beiden
+Kameras erscheinen. Während sehr weit entfernte Objektpunkte in beiden
+Kamerabildern etwa an der gleichen Position erscheinen, liegen sehr
+nahe Objektpunkte an unterschiedlichen Stellen im linken und rechten
+Kamerabild. Dieser Versatz der Objektpunkte in beiden Kamerabildern
+wird auch „Disparität“ genannt. Je größer die Disparität, desto näher
+ist das Objekt der Kamera. Das Prinzip der Stereovision wird in
+
+Abb. 14
+
+ genauer dargestellt.
+
+
+Stereovision beruht auf passiver Wahrnehmung. Dies bedeutet, dass
+keine Licht- oder sonstigen Signale zur Distanzmessung ausgesandt
+werden, sondern nur das von der Umgebung ausgehende oder reflektierte
+Licht genutzt wird. Dadurch können die Roboception-Sensoren sowohl im
+Innen- als auch im Außenbereich eingesetzt werden. Zudem können
+problemlos mehrere Sensoren störungsfrei zusammen auf engem Raum
+betrieben werden.
+
+Um die 3D-Informationen berechnen zu können, muss der Stereo-Matching-
+Algorithmus die zusammengehörenden Objektpunkte im linken und rechten
+Kamerabild finden. Hierfür bedient er sich der Bildtextur, d.h. der
+durch Muster oder Oberflächenstrukturen der Objekte verursachten
+Schwankungen in der Bildintensität. Das Stereo-Matching-Verfahren kann
+bei Oberflächen ohne jede Textur, wie z.B. bei glatten, weißen Wänden,
+keine Werte liefern. Das Stereo-Matching-Verfahren, das der
+
+rc_visard NG
+
+ verwendet, ist
+
+SGM
+
+ (
+
+Semi-Global Matching
+
+),  welches selbst bei feineren Strukturen den bestmöglichen
+Kompromiss aus Laufzeit und Genauigkeit bietet.
+
+Für die Berechnung der 3D-Informationen werden folgende Softwaremodule
+benötigt:
+
+Kamera: Dieses Modul dient dazu, synchronisierte Bildpaare aufzunehmen
+und diese in Bilder umzuwandeln, die weitestgehend den Aufnahmen einer
+idealen Kamera entsprechen (Rektifizierung).
+
+Stereo-Matching: Dieses Modul errechnet mithilfe des Stereo-Matching-
+Verfahrens SGM die Disparitäten der rektifizierten Stereo-
+Bildpaare\:(Abschnitt \ref{stereo_matching:sect-stereo-matching}).
+
+Für das Stereo-Matching-Verfahren müssen die Positionen der linken und
+rechten Kamera sowie ihre Ausrichtung zueinander genau bekannt sein.
+Dies wird durch Kalibrierung erreicht. Die Kameras des
+
+rc_visard NG
+
+ werden bereits im Werk vorkalibriert. Hat sich der
+
+rc_visard NG
+
+ jedoch, beispielsweise während des Transports, dekalibriert, muss die
+Stereokamera neu kalibriert werden.
+
+Kamerakalibrierung: Mit diesem Modul kann der Benutzer die
+Stereokamera des rc_visard NG neu kalibrieren\:(Abschnitt
+\ref{camera_calibration:sect-camera-calibration}).

@@ -1,0 +1,1047 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Hardware-Spezifikation &mdash; rc_visard NG 24.07.1
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/contentui.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard NG 24.07.1
+ Dokumentation" href="index.html"/>
+        <link rel="next" title="Installation" href="installation.html"/>
+        <link rel="prev" title="Sicherheit" href="safety.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard NG
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                24.07
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="disposal.html">Informationen zur Entsorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Aufspüren von <em>rc_visard NG</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host-Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werksseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Messprinzipien</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereovision</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="camera_modules.html">3D-Kamera-Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html">Kamera</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#rectification">Rektifizierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#viewing-and-downloading-images">Anzeigen und Herunterladen von Bildern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html">Stereo-Matching</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#viewing-and-downloading-images-and-point-clouds">Anzeigen und Herunterladen von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="detection_modules.html">Detektions- und Messmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="measure.html">Measure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#measuring-depth">Tiefe messen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">LoadCarrier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Erkennung von Load Carriern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Füllstandserkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-reading">Tagerkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag-Wiedererkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html">ItemPick und BoxPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#detection-of-items-boxpick">Erkennung von Rechtecken (BoxPick)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#boxpick-template-api">BoxPick Template API“</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration_modules.html">Konfigurationsmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Kameramontage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking">Kollisionsprüfung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html">IOControl und Projektor-Kontrolle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database_modules.html">Datenbankmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier_db.html">LoadCarrierDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-definition">Load Carrier Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-compartments">Load Carrier Abteile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">RoiDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gripper_db.html">GripperDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#setting-a-gripper">Erstellen eines Greifers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#cad-element-api">CAD-Greiferelement API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Web GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#accessing-the-web-gui">Zugriff auf die Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#exploring-the-web-gui">Kennenlernen der Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#web-gui-access-control">Web GUI Zugriffskontrolle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-camera-images">Herunterladen von Kamerabildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Herunterladen von Tiefenbildern und Punktwolken</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_userspace.html">UserSpace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#example-applications">Beispielanwendungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Fehlerbehebung</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC Bilddatenschnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC Servicedefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Beispielclient</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#setting-time-manually">Manuelles Setzen der Zeit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userspace.html">UserSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configuration">Konfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="userspace.html#configure-userspace-via-the-webgui">Konfiguration des UserSpace über die Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#view-running-applications">Anzeige laufender Apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#network-access-to-userspace-applications">Netzwerkzugriff auf die UserSpace Anwendungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#restrictions">Einschränkungen</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Backup der Einstellungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard NG</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#pose-formats">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_rt.html">Rotationsmatrix und Translationsvektor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-rotation-matrix-to-quaternion">Umrechnung von Rotationsmatrizen in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-quaternion-to-rotation-matrix">Umrechnung von Quaternionen in Rotationsmatrizen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_abb.html">ABB Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fanuc.html">FANUC XYZ-WPR Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-fanuc-wpr-to-quaternion">Umrechnung von FANUC-WPR in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-quaternion-to-fanuc-wpr">Umrechnung von Quaternionen in FANUC-WPR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_franka_emika.html">Franka Emika Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-transformation-matrix-to-quaternion">Umrechnung von Transformation in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-rotation-xyz-to-quaternion">Umrechnung von Rotation-XYZ in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-and-translation-to-transformation">Umrechnung von Quaternion und Translation in Transformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-to-rotation-xyz">Umrechnung von Quaternion in Rotation-XYZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#pose-representation-in-racecom-messages-and-state-machines">Posenrepräsentation in RaceCom Messages und Statemachines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fruitcore_horst.html">Fruitcore HORST Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kawasaki.html">Kawasaki XYZ-OAT Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-kawasaki-oat-to-quaternion">Umrechnung von Kawasaki-OAT in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-quaternion-to-kawasaki-oat">Umrechnung von Quaternionen in Kawasaki-OAT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kuka.html">KUKA XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-kuka-abc-to-quaternion">Umrechnung von KUKA-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-quaternion-to-kuka-abc">Umrechnung von Quaternionen in KUKA-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_mitsubishi.html">Mitsubishi XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-mitsubishi-abc-to-quaternion">Umrechnung von Mitsubishi-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-quaternion-to-mitsubishi-abc">Umrechnung von Quaternionen in Mitsubishi-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_ur.html">Universal Robots Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-angle-axis-format-to-quaternion">Umrechnung vom Angle-Axis Format in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-quaternion-to-angle-axis-format">Umrechnung von Quaternionen ins Angle-Axis Format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_yaskawa.html">Yaskawa Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-yaskawa-rx-ry-rz-to-quaternion">Umrechnung von Yaskawa Rx, Ry, Rz in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-quaternion-to-yaskawa-rx-ry-rz">Umrechnung von Quaternionen in Yaskawa Rx, Ry, Rz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard NG</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">rc_visard NG</a> &gt;</li>
+        
+      <li>Hardware-Spezifikation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hardware-specification">
+<span id="sect-hardware-specification"></span><h1>Hardware-Spezifikation<a class="headerlink" href="#hardware-specification" title="Link zu dieser Überschrift">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die folgenden Hardware-Spezifikationen sind als allgemeine Richtlinie angegeben. Das Produkt kann hiervon abweichen.</p>
+</div>
+<div class="section" id="scope-of-delivery">
+<h2>Lieferumfang<a class="headerlink" href="#scope-of-delivery" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Der Lieferumfang eines <em>rc_visard NG</em> umfasst üblicherweise lediglich den <em>rc_visard NG</em>-Sensor und die Kurzanleitung. Das Handbuch liegt in digitaler Form vor, ist im Sensor hinterlegt und lässt sich zudem über die <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> oder über die Roboception-Homepage <a class="reference external" href="http://www.roboception.com/documentation">http://www.roboception.com/documentation</a> aufrufen.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p>Folgende Elemente sind, sofern nicht anders angegeben, NICHT im Lieferumfang enthalten:</p>
+<ul class="simple">
+<li>Kupplungen, Adapter, Halterungen,</li>
+<li>Netzteil, Kabel und Sicherungen,</li>
+<li>Netzwerkkabel.</li>
+</ul>
+<p class="last">In Abschnitt <a class="reference internal" href="accessories.html#sect-accessories"><span class="std std-ref">Zubehör</span></a> ist angegeben, welche Kabelanbieter empfohlen werden.</p>
+</div>
+<p>Für den <em>rc_visard NG</em> ist ein Anschlussset verfügbar. Dieses Set umfasst das M12/RJ45-Netzwerkkabel, ein 24-V-Netzteil und einen DC/M12-Adapter. Für nähere Informationen siehe <a class="reference internal" href="accessories.html#sect-accessories"><span class="std std-ref">Zubehör</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Das Anschlussset ist lediglich für die Ersteinrichtung, nicht jedoch für die dauerhafte Installation im industriellen Umfeld gedacht.</p>
+</div>
+<p>Das folgende Bild zeigt die wichtigsten Bauteile des <em>rc_visard NG</em>, auf die in diesem Handbuch Bezug genommen wird.</p>
+<div class="figure align-center" id="id1">
+<span id="index-0"></span><a class="reference internal image-reference" href="_images/rc_visard_parts_ng_de.png"><img alt="_images/rc_visard_parts_ng_de.png" src="_images/rc_visard_parts_ng_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 2 </span><span class="caption-text">Beschreibung der Bauteile</span></p>
+</div>
+</div>
+<div class="section" id="technical-specification">
+<h2>Technische Spezifikation<a class="headerlink" href="#technical-specification" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-1">Die technischen Spezifikationen für den <em>rc_visard NG</em> sind in <a class="reference internal" href="#tab-common-hardware-specifications-ng"><span class="std std-numref">Tab. 1</span></a> angegeben. Die Framerate für die Berechnung des Tiefenbilds in hoher Auflösung (High: 720 x 540 Pixel) ist signifikant höher, wenn der Minimale Abstand auf 1.2 Meter verringert werden kann.</p>
+<span id="tab-common-hardware-specifications-ng"></span><table border="1" class="docutils" id="technische-spezifikation-fur-den-rc-xxx">
+<caption><span class="caption-number">Tab. 1 </span><span class="caption-text">Technische Spezifikation für den <em>rc_visard NG</em></span><a class="headerlink" href="#technische-spezifikation-fur-den-rc-xxx" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head"><em>rc_visard NG</em> 160-6</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Bildauflösung</td>
+<td>1440&nbsp;x&nbsp;1080 Pixel, monochrom</td>
+</tr>
+<tr class="row-odd"><td>Sichtfeld</td>
+<td><div class="first last line-block">
+<div class="line">6 mm Objektiv: Horizontal: 43°, Vertikal: 33°</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td>IR Filter</td>
+<td>650&nbsp;nm</td>
+</tr>
+<tr class="row-odd"><td><p class="first">Tiefenbild (mit Minimalem</p>
+<blockquote class="last">
+<div>Abstand von 0.5 m)</div></blockquote>
+</td>
+<td><div class="first last line-block">
+<div class="line">1440&nbsp;x&nbsp;1080 Pixel (Full) bei 3&nbsp;Hz</div>
+<div class="line">720&nbsp;x&nbsp;540 Pixel (High) bei 7&nbsp;Hz</div>
+<div class="line">360&nbsp;x&nbsp;270 Pixel (Medium) bei 25&nbsp;Hz</div>
+<div class="line">240&nbsp;x&nbsp;180 Pixel (Low) bei 25&nbsp;Hz</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first">Tiefenbild (mit Minimalem</p>
+<blockquote class="last">
+<div>Abstand von 1.2 m)</div></blockquote>
+</td>
+<td><div class="first last line-block">
+<div class="line">1440&nbsp;x&nbsp;1080 Pixel (Full) bei 3&nbsp;Hz</div>
+<div class="line">720&nbsp;x&nbsp;540 Pixel (High) bei 16&nbsp;Hz</div>
+<div class="line">360&nbsp;x&nbsp;270 Pixel (Medium) bei 25&nbsp;Hz</div>
+<div class="line">240&nbsp;x&nbsp;180 Pixel (Low) bei 25&nbsp;Hz</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>GPU/CPU</td>
+<td>Orin Nano 8GB</td>
+</tr>
+<tr class="row-even"><td>Stromversorgung</td>
+<td>18–30&nbsp;V</td>
+</tr>
+<tr class="row-odd"><td>Kühlung</td>
+<td>Passiv</td>
+</tr>
+<tr class="row-even"><td>Basisabstand</td>
+<td>160 mm</td>
+</tr>
+<tr class="row-odd"><td>Tiefenmessbereich</td>
+<td>0,5&nbsp;m bis unendlich</td>
+</tr>
+<tr class="row-even"><td>Abmessungen (B&nbsp;x&nbsp;H&nbsp;x&nbsp;L)</td>
+<td>230&nbsp;mm&nbsp;x&nbsp;75&nbsp;mm&nbsp;x&nbsp;84&nbsp;mm</td>
+</tr>
+<tr class="row-odd"><td>Gewicht</td>
+<td>0,965&nbsp;kg</td>
+</tr>
+</tbody>
+</table>
+<p>Die folgende Tabelle zeigt die Auflösungen und Genauigkeiten bei verschiedenen Abständen.</p>
+<table border="1" class="docutils" id="auflosung-und-genauigkeit-des-rc-xxx-in-millimetern-mit-stereo-matching-in-voller-auflosung-und-random-dot-projektion-auf-nicht-reflektierenden-und-nicht-transparenten-objekten">
+<caption><span class="caption-number">Tab. 2 </span><span class="caption-text">Auflösung und Genauigkeit des <em>rc_visard NG</em> in Millimetern, mit Stereo-Matching in voller Auflösung und Random-Dot-Projektion auf nicht-reflektierenden und nicht-transparenten Objekten.</span><a class="headerlink" href="#auflosung-und-genauigkeit-des-rc-xxx-in-millimetern-mit-stereo-matching-in-voller-auflosung-und-random-dot-projektion-auf-nicht-reflektierenden-und-nicht-transparenten-objekten" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="35%" />
+<col width="31%" />
+<col width="35%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">Abstand (mm)</th>
+<th class="head"><em>rc_visard NG</em> 160-6</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>laterale Auflösung (mm)</td>
+<td><div class="first last line-block">
+<div class="line">500</div>
+<div class="line">1000</div>
+<div class="line">2000</div>
+<div class="line">3000</div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">0.3</div>
+<div class="line">0.6</div>
+<div class="line">1.1</div>
+<div class="line">1.7</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>Tiefenauflösung (mm)</td>
+<td><div class="first last line-block">
+<div class="line">500</div>
+<div class="line">1000</div>
+<div class="line">2000</div>
+<div class="line">3000</div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">0.05</div>
+<div class="line">0.2</div>
+<div class="line">0.9</div>
+<div class="line">2.0</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td>Mittlere Tiefengenauigkeit (mm)</td>
+<td><div class="first last line-block">
+<div class="line">500</div>
+<div class="line">1000</div>
+<div class="line">2000</div>
+<div class="line">3000</div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line">0.2</div>
+<div class="line">0.9</div>
+<div class="line">3.5</div>
+<div class="line">7.8</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Der <em>rc_visard NG</em> kann für zusätzliche Funktionalitäten mit On-Board-Softwaremodulen ausgestattet werden. Diese Softwaremodule können bei Roboception bestellt werden und benötigen ein Lizenz-Update.</p>
+<div class="figure align-center" id="id2">
+<span id="index-2"></span><a class="reference internal image-reference" href="_images/rc_visard_160_general.png"><img alt="_images/rc_visard_160_general.png" src="_images/rc_visard_160_general.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Abb. 3 </span><span class="caption-text">Abmessungen des <em>rc_visard NG</em> 160</span></p>
+</div>
+<p id="index-3">CAD-Modelle des <em>rc_visard NG</em> können von der Roboception-Homepage heruntergeladen werden: <a class="reference external" href="http://www.roboception.com/download">http://www.roboception.com/download</a>. Die CAD-Modelle werden nach bestem Wissen und Gewissen, aber ohne Garantie für die Richtigkeit bereitgestellt. Wird als Materialeigenschaft Aluminium zugewiesen (Dichte: <span class="math notranslate nohighlight">\(2.76\mathrm{g\over{cm}^3}\)</span>), weicht das CAD-Modell in Bezug auf Gewicht und Massenschwerpunkt nicht mehr als fünf Prozent und in Bezug auf das Trägheitsmoment nicht mehr als zehn Prozent vom Produkt ab.</p>
+</div>
+<div class="section" id="environmental-and-operating-conditions">
+<h2>Umwelt- und Betriebsbedingungen<a class="headerlink" href="#environmental-and-operating-conditions" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-4">Der <em>rc_visard NG</em> ist für industrielle Anwendungen konzipiert worden. Die in <a class="reference internal" href="#tab-hardware-environment"><span class="std std-numref">Tab. 3</span></a> angegebenen Umweltbedingungen für die Lagerung, den Transport und den Betrieb sind ausnahmslos einzuhalten.</p>
+<span id="tab-hardware-environment"></span><table border="1" class="docutils" id="umweltbedingungen">
+<caption><span class="caption-number">Tab. 3 </span><span class="caption-text">Umweltbedingungen</span><a class="headerlink" href="#umweltbedingungen" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head"><em>rc_visard NG</em></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Lager-/Transporttemperatur</td>
+<td>-25–70&nbsp;°C</td>
+</tr>
+<tr class="row-odd"><td>Betriebstemperatur</td>
+<td>0–50&nbsp;°C</td>
+</tr>
+<tr class="row-even"><td>Relative Feuchte (nicht kondensierend)</td>
+<td>20–80&nbsp;%</td>
+</tr>
+<tr class="row-odd"><td>Schwingungen</td>
+<td>5&nbsp;g</td>
+</tr>
+<tr class="row-even"><td>Erschütterungen</td>
+<td>50 g</td>
+</tr>
+<tr class="row-odd"><td>Schutzklasse</td>
+<td>IP&nbsp;54</td>
+</tr>
+<tr class="row-even"><td>Sonstiges</td>
+<td><ul class="first last simple">
+<li>Von korrosiven Flüssigkeiten oder Gasen fernhalten.</li>
+<li>Von explosiven Flüssigkeiten oder Gasen fernhalten.</li>
+<li>Von starken elektromagnetischen Störungen fernhalten.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p id="index-5">Der <em>rc_visard NG</em> ist für den Betrieb bei einer Umgebungstemperatur zwischen 0 und 50&nbsp;°C ausgelegt und arbeitet mit konvektiver (passiver) Kühlung. Während der Verwendung muss, insbesondere im Bereich der Kühlrippen, ein ungehinderter Luftstrom sichergestellt sein. Der <em>rc_visard NG</em> sollte nur mithilfe der vorgesehenen mechanischen Montageschnittstelle montiert werden. Kein Teil des Gehäuses darf während des Betriebs abgedeckt werden. Das Gehäuse muss in alle Richtungen mindestens zehn Zentimeter Abstand zu angrenzenden Elementen haben und es ist ein ausreichender Luftaustausch mit der Umgebung nötig, um eine angemessene Kühlung sicherzustellen. Die Kühlrippen müssen frei von Schmutz und anderen Verunreinigungen gehalten werden.</p>
+<p id="index-6">Die Gehäusetemperatur richtet sich nach der Verarbeitungslast, der Sensororientierung und der Umgebungstemperatur. Erreichen die frei liegenden Gehäuseflächen des Sensors eine Temperatur von mehr als 60&nbsp;°C, wechselt die LED von Grün auf Rot.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Für handgeführte Anwendungen sollte ein wärmeisolierter Griff am Sensor angebracht werden. So wird das bei Kontakt mit der 60&nbsp;°C heißen Oberfläche bestehende Risiko für Brandverletzungen reduziert.</p>
+</div>
+</div>
+<div class="section" id="power-supply-specifications">
+<h2>Spezifikationen für die Stromversorgung<a class="headerlink" href="#power-supply-specifications" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-7">Der <em>rc_visard NG</em> muss an eine Gleichspannungsquelle angeschlossen werden. Der Lieferumfang des <em>rc_visard NG</em> umfasst standardmäßig kein Netzteil. Das im Anschlussset enthaltene Netzteil kann für die Ersteinrichtung verwendet werden. Der Kunde ist dafür verantwortlich, bei einer dauerhaften Installation für eine geeignete Gleichspannungsquelle zu sorgen. Jeder <em>rc_visard NG</em> muss an eine eigene Stromquelle angeschlossen werden. Der Anschluss an ein Gebäudenetz darf nur über ein Netzteil erfolgen, das gemäß EN55011 Klasse&nbsp;B zertifiziert ist.</p>
+<span id="tab-hardware-power"></span><table border="1" class="docutils" id="grenzwerte-fur-die-stromversorgung">
+<caption><span class="caption-number">Tab. 4 </span><span class="caption-text">Grenzwerte für die Stromversorgung</span><a class="headerlink" href="#grenzwerte-fur-die-stromversorgung" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="32%" />
+<col width="14%" />
+<col width="14%" />
+<col width="41%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head"><em>Minimum</em></th>
+<th class="head"><em>Bemessungswert</em></th>
+<th class="head"><em>Maximum</em></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Versorgungsspannung</td>
+<td>18&nbsp;V</td>
+<td>24&nbsp;V</td>
+<td>30&nbsp;V</td>
+</tr>
+<tr class="row-odd"><td>Max. Leistungsaufnahme</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>25&nbsp;W</td>
+</tr>
+<tr class="row-even"><td>Überstromschutz</td>
+<td colspan="3">Schutz der Stromversorgung mit einer 2-A-Sicherung</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Die Überschreitung der maximalen Bemessungswerte kann zu Schäden am <em>rc_visard NG</em>, am Netzteil und an angeschlossener Ausrüstung führen.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Jeder <em>rc_visard NG</em> muss von einem eigenen Netzteil versorgt werden.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Der Anschluss an das Gebäudenetz darf nur über Netzteile erfolgen, die gemäß EN&nbsp;55011 als Gerät der Klasse&nbsp;B zertifiziert sind.</p>
+</div>
+</div>
+<div class="section" id="wiring">
+<span id="sect-wiring"></span><h2>Verkabelung<a class="headerlink" href="#wiring" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-8">Die Kabel sind nicht im Standardlieferumfang des <em>rc_visard NG</em> enthalten. Es obliegt dem Kunden, geeignete Kabel zu beschaffen. In <a class="reference internal" href="accessories.html#sect-accessories"><span class="std std-ref">Zubehör</span></a> ist eine Übersicht über die empfohlenen Komponenten enthalten.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Die Richtlinien zum Kabelmanagement sind zwingend einzuhalten. Kabel sind immer mit einer Zugentlastung an der Halterung des <em>rc_visard NG</em> zu befestigen, sodass durch Kabelbewegungen keine Kräfte auf die M12-Anschlüsse des <em>rc_visard NG</em> wirken. Die verwendeten Kabel müssen lang genug sein, damit sich der <em>rc_visard NG</em> voll bewegen kann, ohne dass das Kabel zu stark belastet wird. Der minimale Biegeradius des Kabels muss beachtet werden.</p>
+</div>
+<p>Der <em>rc_visard NG</em> besitzt eine industrielle, achtpolige M12-Buchse (A-kodiert) für die Ethernet-Verbindung und einen achtpoligen M12-Stecker (A-kodiert) für den Stromanschluss und die GPIO-Konnektivität. Beide Anschlüsse befinden sich an der Rückwand des Geräts.  Die Lage der beiden Anschlüsse am <em>rc_visard NG</em> wird in <a class="reference internal" href="#fig-electrical-connections"><span class="std std-numref">Abb. 4</span></a> dargestellt.</p>
+<div class="figure align-center" id="id3">
+<span id="fig-electrical-connections"></span><a class="reference internal image-reference" href="_images/rc_visard_connect_ng_de.png"><img alt="_images/rc_visard_connect_ng_de.png" src="_images/rc_visard_connect_ng_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 4 </span><span class="caption-text">Lage der elektrischen Anschlüsse des <em>rc_visard NG</em> für die Ethernetverbindung (oben) und die Stromversorgung (unten)</span></p>
+</div>
+<p>Die Anschlüsse sind so gedreht, dass die üblicherweise 90° abgewinkelten Stecker horizontal abgehen und von der Kamera (und den Kühlrippen) wegzeigen.</p>
+<div class="figure align-center" id="id4">
+<span id="fig-pin-assignments"></span><span id="index-9"></span><a class="reference internal image-reference" href="_images/rc_visard_pinout_ng_de.png"><img alt="_images/rc_visard_pinout_ng_de.png" src="_images/rc_visard_pinout_ng_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 5 </span><span class="caption-text">Steckerbelegung für den Strom- und Ethernetanschluss</span></p>
+</div>
+<p>Die Steckerbelegung für den Ethernetanschluss ist in <a class="reference internal" href="#fig-ethernet-pin-assignments"><span class="std std-numref">Abb. 6</span></a> angegeben.</p>
+<div class="figure align-center" id="id5">
+<span id="fig-ethernet-pin-assignments"></span><a class="reference internal image-reference" href="_images/ethernet_cable.png"><img alt="_images/ethernet_cable.png" src="_images/ethernet_cable.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 6 </span><span class="caption-text">Steckerbelegung für die M12/Ethernet-Verkabelung</span></p>
+</div>
+<p id="index-10">Die Steckerbelegung für den Stromanschluss ist in <a class="reference internal" href="#tab-power-pin-assignments"><span class="std std-numref">Tab. 5</span></a> angegeben.</p>
+<span id="tab-power-pin-assignments"></span><table border="1" class="docutils" id="steckerbelegung-fur-den-stromanschluss">
+<caption><span class="caption-number">Tab. 5 </span><span class="caption-text">Steckerbelegung für den Stromanschluss</span><a class="headerlink" href="#steckerbelegung-fur-den-stromanschluss" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Pos.</strong></th>
+<th class="head"><em>Belegung</em></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>GPIO Eingang&nbsp;2</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Stromzufuhr</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>GPIO Eingang&nbsp;1</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>GPIO Masse</td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>GPIO Vcc</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>GPIO Ausgang&nbsp;1 (Bildbelichtung)</td>
+</tr>
+<tr class="row-even"><td>7</td>
+<td>Masse</td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td>GPIO Ausgang&nbsp;2</td>
+</tr>
+</tbody>
+</table>
+<p>Die GPIO-Signale werden über Optokoppler entkoppelt. <em>GPIO Ausgang 1</em> bietet standardmäßig ein Signal zur Belichtungssynchronisierung und hat für die Dauer der Belichtung einen logischen HIGH-Pegel. Alle GPIOs können über das IOControl-Modul kontrolliert werden (<a class="reference internal" href="iocontrol.html#sect-iocontrol"><span class="std std-ref">IOControl und Projektor-Kontrolle</span></a>). Pins von unbenutzten GPIOs sollten ungeerdet bleiben.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Es ist besonders wichtig, dass <em>GPIO Eingang&nbsp;1</em> während des Boot-Vorgangs ungeerdet oder auf LOW gesetzt ist. Der <em>rc_visard NG</em> fährt nicht hoch, wenn der Pin während des Boot-Vorgangs auf HIGH gesetzt ist.</p>
+</div>
+<p>Das GPIO-Schaltschema und die zugehörigen Spezifikationen sind in <a class="reference internal" href="#fig-gpio"><span class="std std-numref">Abb. 7</span></a> angegeben. Die maximale Spannung für <em>GPIO Eingang</em> und <em>GPIO Vcc</em> beträgt 30&nbsp;V.</p>
+<div class="figure align-center" id="id6">
+<span id="fig-gpio"></span><a class="reference internal image-reference" href="_images/rc_visard_gpio.png"><img alt="_images/rc_visard_gpio.png" src="_images/rc_visard_gpio.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Abb. 7 </span><span class="caption-text">GPIO-Schaltschema und zugehörige Spezifikationen: Keine Signale über 30&nbsp;V anschließen!</span></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Schließen Sie keine Signale mit Spannungen über 30&nbsp;V an den <em>rc_visard NG</em> an.</p>
+</div>
+</div>
+<div class="section" id="mechanical-interface">
+<span id="sect-mechanical"></span><h2>Mechanische Schnittstelle<a class="headerlink" href="#mechanical-interface" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-11">Der <em>rc_visard NG</em> verfügt an der Unterseite über eine Montageschnittstelle.</p>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="_images/rc_visard_mounting_ng_de.png"><img alt="_images/rc_visard_mounting_ng_de.png" src="_images/rc_visard_mounting_ng_de.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Abb. 8 </span><span class="caption-text">Montagepunkt für den Anschluss des <em>rc_visard NG</em> an Roboter oder andere Vorrichtungen</span></p>
+</div>
+<p>Zur Fehlerbehebung sowie zu Konfigurationszwecken kann der Sensor über die am Koordinatenursprung angegebene, genormte Stativaufnahme (Gewinde: 1/4&nbsp;Zoll&nbsp;x&nbsp;20) montiert werden. Für dynamische Anwendungen, wie für die Montage an einem Roboterarm, muss der Sensor mit drei M4-8.8-Maschinenschrauben befestigt werden, die mit einem Drehmoment von 2,5&nbsp;Nm anzuziehen und mit einer mittelfesten Gewindesicherung, wie Loctite 243, zu sichern sind. Die maximale Einschraubtiefe beträgt 6&nbsp;mm. Die beiden Löcher mit einem Durchmesser von 4&nbsp;mm können für Positionsstifte (ISO 2338 4 m6) verwendet werden, damit der Sensor präzise positioniert wird.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Für dynamische Anwendungen muss der <em>rc_visard NG</em> mit drei M4-8.8-Maschinenschrauben befestigt werden, die mit einem Drehmoment von 2,5&nbsp;Nm anzuziehen und mit einer mittelfesten Gewindesicherung zu sichern sind. Es dürfen keine hochfesten Schrauben verwendet werden. Die  Einschraubtiefe muss wenigstens 5&nbsp;mm betragen.</p>
+</div>
+</div>
+<div class="section" id="coordinate-frames">
+<span id="sect-coordinate-frames"></span><h2>Koordinatensysteme<a class="headerlink" href="#coordinate-frames" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-12">Der Ursprung des <em>rc_visard NG</em>-Koordinatensystems liegt in der Austrittspupille der linken Kameralinse. Dieses System wird auch als Sensor- oder Kamerakoordinatensystem bezeichnet. Die ungefähre Lage für den <em>rc_visard NG</em> wird auf dem nächsten Bild gezeigt.</p>
+<p>Das Montagepunkt-Koordinatensystem für den <em>rc_visard NG</em> sitzt an der Unterseite, zentriert auf dem Gewinde, wobei die Ausrichtung der des Sensor-Koordinatensystems entspricht.</p>
+<p><a class="reference internal" href="#fig-rc-visard-160"><span class="std std-numref">Abb. 9</span></a> zeigt den ungefähren Versatz.</p>
+<div class="figure align-center" id="id8">
+<span id="fig-rc-visard-160"></span><a class="reference internal image-reference" href="_images/rc_visard160_frames.png"><img alt="_images/rc_visard160_frames.png" src="_images/rc_visard160_frames.png" style="width: 160mm;" /></a>
+<p class="caption"><span class="caption-number">Abb. 9 </span><span class="caption-text">Ungefähre Position des Sensor-/Kamerakoordinatensystems (in der linken Kameralinse) und des Montagepunkt-Koordinatensystems (am Stativgewinde) für den <em>rc_visard NG</em> 160</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Der korrekte Versatz zwischen dem Sensor-/Kamerakoordinatensystem und einem Roboterkoordinatensystem kann über die <a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-Auge Kalibrierung</span></a> bestimmt werden.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="safety.html" class="btn btn-neutral" title="Sicherheit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../en/hardware_spec.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/hardware_spec.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v23.10/index.html">v23.10</a></dd>
+          
+            <dd><a href="../../v24.01/index.html">v24.01</a></dd>
+          
+            <dd><a href="../../v24.04/index.html">v24.04</a></dd>
+          
+            <dd><a href="../../v24.07/index.html">v24.07</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'24.07.1',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="_static/contentui.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+Time synchronization
+
+The
+
+rc_visard NG
+
+ provides timestamps with all images and messages. To compare these
+with the time on the application host, the time needs to be properly
+synchronized.
+
+   This can be done either via the Network Time Protocol (NTP), which
+   is the default, or the Precision Time Protocol (PTP).
+
+The current system time as well as time synchronization status can be
+queried via
+
+REST-API
+
+ and seen on the
+
+Web GUI
+
+'s
+
+System
+
+ page.
+
+Note: Depending on the reachability of NTP servers or PTP masters it
+  might take up to several minutes until the time is synchronized.
+
+NTP
+
+The Network Time Protocol (NTP) is a TCP/IP protocol for synchronizing
+time over a network. A client periodically requests the current time
+from a server, and uses it to set and correct its own clock.
+
+By default the
+
+rc_visard NG
+
+ tries to reach NTP servers from the NTP Pool Project, which will work
+if the
+
+rc_visard NG
+
+ has access to the internet.
+
+If the
+
+rc_visard NG
+
+ is configured for
+
+DHCP
+
+ (which is the default setting), it will also request NTP servers from
+the DHCP server and try to use those.
+
+Additionally, the user can specify up to three NTP servers manually
+using the REST-API's
+
+/system/ntp
+
+ endpoint. A more convenient way is setting the NTP servers on the
+
+Web GUI
+
+'s
+
+System Time
+
+ page.
+
+PTP
+
+The Precision Time Protocol (PTP, also known as IEEE1588) is a
+protocol which offers more precise and robust clock synchronization
+than with NTP.
+
+The
+
+rc_visard
+
+ can be configured to act as a PTP slave via the standard
+
+GigE Vision 2.0/GenICam interface
+
+ using the "GevIEEE1588" parameter.
+
+At least one PTP master providing time has to be running in the
+network. On Linux the respective command for starting a PTP master on
+ethernet port "eth0" is, e.g., "sudo ptpd --masteronly --foreground -i
+eth0".
+
+While the
+
+rc_visard
+
+ is synchronized with a PTP master (
+
+rc_visard
+
+ in PTP status SLAVE), the NTP synchronization is paused.
+
+Setting time manually
+
+The
+
+rc_visard NG
+
+ allows to set the current date and time manually using the REST-API's
+
+/system/time
+
+ endpoint, if no time synchronization is active (see
+
+System and logs
+
+). A more convenient way is setting the system time on the
+
+Web GUI
+
+'s
+
+System Time
+
+ page.

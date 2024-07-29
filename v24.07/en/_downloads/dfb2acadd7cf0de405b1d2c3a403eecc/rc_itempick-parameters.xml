@@ -1,0 +1,56 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="1"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_itempick" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/cluster_max_curvature/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/cluster_max_dimension/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/clustering_discontinuity_factor/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/clustering_max_surface_rmse/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/clustering_patch_size/@value" Type="INT"/>
+      <ELEMENT Tag="req/parameters/max_grasps/@value" Type="INT"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/parameters/cluster_max_curvature/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/cluster_max_curvature/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/cluster_max_curvature/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/cluster_max_curvature/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/cluster_max_dimension/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/cluster_max_dimension/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/cluster_max_dimension/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/cluster_max_dimension/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_discontinuity_factor/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_discontinuity_factor/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_discontinuity_factor/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_discontinuity_factor/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_max_surface_rmse/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_max_surface_rmse/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_max_surface_rmse/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_max_surface_rmse/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_patch_size/@value" Type="INT"/>
+      <ELEMENT Tag="res/parameters/clustering_patch_size/@default" Type="INT"/>
+      <ELEMENT Tag="res/parameters/clustering_patch_size/@min" Type="INT"/>
+      <ELEMENT Tag="res/parameters/clustering_patch_size/@max" Type="INT"/>
+      <ELEMENT Tag="res/parameters/max_grasps/@value" Type="INT"/>
+      <ELEMENT Tag="res/parameters/max_grasps/@default" Type="INT"/>
+      <ELEMENT Tag="res/parameters/max_grasps/@min" Type="INT"/>
+      <ELEMENT Tag="res/parameters/max_grasps/@max" Type="INT"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

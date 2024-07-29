@@ -1,0 +1,36 @@
+Detektions- und Messmodule
+
+Der
+
+rc_visard NG
+
+ bietet Softwaremodule für unterschiedliche Detektions- und
+Messanwendungen:
+
+Measure (rc_measure, Abschnitt \ref{measure:sect-measure})  ermöglicht
+die Messung von Tiefenwerten
+
+LoadCarrier (rc_load_carrier, Abschnitt \ref{loadcarrier:sect-
+loadcarrier})  ermöglicht die Erkennung von Load Carriern (Behältern)
+und ihres Füllstands.
+
+TagDetect (rc_april_tag_detect und rc_qr_code_detect, Abschnitt
+\ref{tagdetect:sect-tag-detection})  ermöglicht die Erkennung von
+AprilTags und QR-Codes sowie die Schätzung von deren Pose.
+
+ItemPick und BoxPick (rc_itempick und rc_boxpick, Abschnitt
+\ref{itempick:sect-itempick})  bietet eine Standardlösung für
+robotische Pick-and-Place-Anwendungen für unbekannte Objekte oder
+Boxen.
+
+SilhouetteMatch (rc_silhouettematch, Abschnitt \ref{silhouettematch
+:sect-silhouettematch})  bietet eine Objekterkennungslösung für
+Objekte, die sich auf einer Ebene befinden, oder gestapelte planare
+Objekt.
+
+Diese Module sind optional und können durch Kauf einer separaten
+
+Lizenz
+
+ aktiviert werden.
+

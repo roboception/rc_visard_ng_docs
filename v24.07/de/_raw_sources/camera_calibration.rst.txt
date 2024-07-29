@@ -1,0 +1,349 @@
+
+.. include:: global_rst.glb
+
+.. _sect-camera-calibration:
+
+Camera calibration
+==================
+
+.. index::
+   pair: camera; calibration
+
+.. only:: rc_visard or rc_visard_ng
+
+   The camera calibration module is a base module which is available on every |rc_xxx|.
+
+.. only:: rc_cube
+
+   The camera calibration module is a base module which is available on every |rc_cube|, but
+   cannot be used in camera pipelines of type ``rc_visard``.
+
+.. only:: rc_cube
+
+   .. note::
+   
+      This module is pipeline specific. Changes to its settings or parameters only affect
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+
+To use the camera as measuring instrument, camera parameters such as focal length,
+lens distortion, and the relationship of the cameras to each other must be exactly known. The
+parameters are determined by calibration and used for image rectification
+(see :ref:`sect-stereo-camera-rectification`:latex:`, Section \ref{stereo_camera:sect-stereo-camera-rectification}`),
+which is the basis for all other image processing modules.
+
+.. only:: rc_visard or rc_visard_ng
+
+   The |rc_xxx| is calibrated at
+   production time. Nevertheless, checking calibration and recalibration might be necessary
+   if the |rc_xxx| was exposed to strong mechanical impact. 
+   
+The camera calibration module is responsible for checking calibration and calibrating.
+
+.. only:: rc_visard or rc_visard_ng
+
+   Self-calibration
+   ----------------
+   
+   .. index::
+      single: self-calibration
+   
+   The camera calibration module automatically runs in self-calibration mode at a low
+   frequency in the background. In this mode, the |rc_xxx| observes the alignment of image
+   rows of both rectified images. A mechanical impact, such as one caused by dropping the |rc_xxx|,
+   might result in a misalignment. If a significant misalignment is detected, then it is
+   automatically corrected. After each reboot and after each correction, the current self-calibration
+   offset is reported in the camera module's log file
+   (see :ref:`sect-downloading-log-files`:latex:`, Section \ref{maintenance:sect-downloading-log-files}`)
+   as:
+
+      *"rc_stereocalib: Current self-calibration offset is 0.00, update counter is 0"*
+
+   The update counter is incremented after each automatic correction. It is reset to 0 after manual
+   recalibration of the |rc_xxx|.
+
+   Under normal conditions, such as the absence of mechanical impact on the |rc_xxx|, self-calibration should never
+   occur. Self-calibration allows the |rc_xxx| to work normally even after misalignment is detected, since it
+   is automatically corrected. Nevertheless, recalibrating the camera manually is recommended
+   if the update counter is not 0.
+
+Calibration process
+-------------------
+
+Manual calibration can be done through the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+:cubeonly:`in the desired pipeline` under :menuselection:`Configuration --> Camera Calibration`.
+This page provides a wizard to guide the user through the calibration process.
+
+.. only:: rc_visard or rc_visard_ng
+
+   .. Note:: Camera calibration is normally unnecessary for the |rc_xxx| since it is calibrated at
+      production time. Therefore, calibration is only required after strong mechanical impacts,
+      such as occur when dropping the |rc_xxx|.
+
+During calibration, the calibration grid must be detected in different poses.
+When holding the calibration grid, make sure that all black squares 
+of the grid are completely visible and not occluded in both camera images. A green check mark overlays each correctly 
+detected square. The correct detection of the grid is only possible if all of the black 
+squares are detected. Some of the squares not being detected, or being detected only briefly might indicate bad 
+lighting conditions, or a damaged grid. Squares in overexposed parts of the calibration grid are highlighted in red.
+In this case, the lighting conditions or exposure setting must be adjusted.
+A thick green border around the calibration grid indicates that
+it was detected correctly in both camera images.
+
+Calibration settings
+^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+   single: calibration grid
+
+The quality of camera calibration heavily depends on the quality of the calibration grid.
+Calibration grids can be obtained from |company|.
+
+.. figure:: images/webgui_camera_calibration_1.png
+   :width: 100 %
+   :align: center
+
+   Calibration settings
+
+In the first step, the calibration grid must be specified. The *Next* button proceeds to the next step.
+
+.. only:: rc_cube
+
+   Adjust focus
+   ^^^^^^^^^^^^
+
+   In this step, the focus of the cameras can be adjusted. For this, the grid must be held
+   such that it is simultaneously visible in both cameras. After the grid is detected, the green bars at the right image borders
+   indicate the blur of the image. Adjust the focus of each camera so that the bar in each image
+   is minimal.
+
+   .. Note:: While calibrating an |rc_viscore|, the camera exposure settings are temporarily changed
+      to values that allow for easier calibration. The exposure settings can still be changed and
+      will be reset when the calibration is done or cancelled.
+
+   .. only:: roboception or basler or schunk
+
+      For calibrating the Basler *blaze* sensor, the color camera should be focussed to close distance so that the calibration
+      grid can be detected when it almost fills the image. The camera can be refocussed to working
+      distance after calibration if necessary.
+
+      Furthermore, the exposure time of the blaze Time-of-Flight camera should be reduced to a minimum. 
+      Otherwise, the calibration grid cannot be detected due to over exposure. 
+
+   .. figure:: images/webgui_camera_calibration_2.png
+      :width: 100 %
+      :align: center
+
+      Adjust the focus of each camera
+
+Verify calibration
+^^^^^^^^^^^^^^^^^^
+
+In the next step, the current calibration can be verified. To perform
+the verification, the grid must be held such that it is simultaneously visible in both cameras.
+When the grid is detected, the calibration error is automatically computed and the result is
+displayed on the screen.
+
+.. figure:: images/webgui_camera_calibration_3.png
+   :width: 100 %
+   :align: center
+
+   Verification of calibration
+
+.. Note:: To compute a meaningful calibration error, the grid should be held as close as possible
+   to the cameras. If the grid only covers a small section of the camera images, the calibration
+   error will always be less than when the grid covers the full image. For this reason, the minimal 
+   and maximal calibration error during verification are shown in addition to the calibration error
+   at the current grid position.
+
+The typical calibration error is below 0.2 pixels. If the error is in this range,
+then the calibration procedure can be skipped. If the calibration error is greater, the
+calibration procedure should be performed to guarantee full sensor performance. The button
+*Next* starts the procedure.
+
+.. Warning:: A large error during verification can be due to miscalibrated cameras, an inaccurate
+   calibration grid, or wrong grid width or height. In case you use a custom calibration grid,
+   please make sure that the grid is accurate and
+   the entered grid width and height are correct. Otherwise, manual calibration will actually
+   decalibrate the cameras!
+
+Calibrate
+^^^^^^^^^
+
+The camera's exposure time should be set appropriately before starting the calibration.
+To achieve good calibration results, the images should be well-exposed and motion blur should
+be avoided. Thus, the maximum auto-exposure time should be as short as possible, but still allow a good exposure. 
+The current exposure time is displayed below the camera images as shown
+in :numref:`fig-webgui-calibration-stereo`.
+
+Full calibration consists of calibrating each camera individually (monocalibration) and then performing a stereo
+calibration to determine the relationship between them. In most cases,
+the intrinsic calibration of each camera does not get corrupted. For this reason, monocalibration is  
+skipped by default during a recalibration, but can be performed by clicking :guilabel:`Perform Monocalibration`
+in the *Calibrate* tab. This should only be done if the result of the stereo calibration is
+not satisfactory. 
+
+.. only:: rc_cube and (roboception or basler or schunk)
+
+   When a Basler |blaze| sensor is connected to the |rc_cube| for the first time, it is uncalibrated and needs to 
+   be fully calibrated. In this case, monocalibration is offered automatically and cannot be skipped to ensure
+   a complete calibration of the sensor. After saving the calibration, it will persistently reside on the |rc_cube| 
+   and automatically be used whenever the |blaze| sensor is connected to the |rc_cube| again, regardless of the port or pipeline.
+
+.. _sect-stereo-calibration:
+
+Stereo calibration
+^^^^^^^^^^^^^^^^^^
+
+.. index::
+   pair: camera calibration; stereo calibration
+
+During stereo calibration, both cameras are calibrated to each other to find their
+relative rotation and translation.
+
+The camera images can also be displayed mirrored to simplify the correct positioning of the calibration grid.
+
+First, the grid should be held as close as possible to the camera and very still. It must be fully visible
+in both images and the cameras should look perpendicularly onto the grid. If the grid is
+not perpendicular to the line of sight of the cameras, this will be indicated by small
+green arrows pointing to the expected positions of the grid corners (see
+:numref:`fig-webgui-calibration-tilted`). 
+
+.. _fig-webgui-calibration-tilted:
+.. figure:: images/webgui_camera_calibration_stereo_tilt.png
+   :width: 80 %
+   :align: center
+
+   Arrows indicating that the grid is not perpendicular to the camera's line of sight during stereo calibration
+
+The grid must be kept very still for detection. If motion blur occurs, the grid will not be detected.
+All grid cells that are drawn onto the image have to be covered
+by the calibration grid. This is visualized by filling the covered cells in green (see
+:numref:`fig-webgui-calibration-stereo`).
+
+.. only:: rc_visard or rc_visard_ng
+
+   For the |rc_xxx| all cells can be covered at once by holding the grid close enough.
+
+.. only:: rc_cube
+
+   Depending on the camera, the grid has to be held at different positions until all grid cells
+   have been covered and filled in green.
+
+.. _fig-webgui-calibration-stereo:
+.. figure:: images/webgui_camera_calibration_4.png
+   :width: 100 %
+   :align: center
+
+   Stereo calibration: Hold the grid as close as possible to fill all visualized cells
+
+.. Note:: If the check marks on the calibration grid all vanish, then either the camera does not
+   look perpendicularly onto the grid, or the grid is too far away from the camera.
+
+Once all grid cells are covered, they disappear and a single far cell is visualized.
+Now, the grid should be held as far as possible from the cameras, so that the small cell 
+is covered. Arrows will indicate if the grid is still too close to the camera. 
+When the grid is successfully detected at the far pose, the cell is filled
+in green and the result can be computed (see :numref:`fig-webgui-calibration-far`).
+
+.. _fig-webgui-calibration-far:
+.. figure:: images/webgui_camera_calibration_stereo_far.png
+   :width: 80 %
+   :align: center
+
+   Holding the grid far away during stereo calibration
+
+If stereo calibration yields an unsatisfactory calibration error, then calibration should be
+repeated with monocalibration (see next Section :ref:`sect-monocalibration`).
+
+
+.. _sect-monocalibration:
+
+Monocalibration
+^^^^^^^^^^^^^^^
+
+.. index::
+   pair: camera calibration; monocalibration
+
+Monocalibration is the intrinsic calibration of each camera individually. Since the intrinsic calibration
+normally does not get corrupted, the monocalibration should only be performed if the result of stereo 
+calibration is not satisfactory.
+
+Click :guilabel:`Perform Monocalibration` in the *Calibrate* tab to start monocalibration.
+
+For monocalibration, the grid has to be held in certain poses. The arrows from the grid
+corners to the green areas indicate that all grid corners should be placed inside the
+green areas. The green areas are called sensitive areas. The *Size of Sensitive Area*
+slider can control their size to ease calibration.
+However, please be aware that increasing their size too much may result in slightly
+lower calibration accuracy.
+
+Holding the grid upside down is a common mistake made during calibration. Spotting this in
+this case is easy because the green lines from the grid corners into the green areas will
+cross each other as shown in :numref:`fig-webgui-calibration-wrong`.
+
+.. _fig-webgui-calibration-wrong:
+.. figure:: images/webgui_camera_calibration_wrong.png
+   :width: 60 %
+   :align: center
+
+   Wrongly holding the grid upside down leads to crossed green lines.
+
+.. Note:: Calibration might appear cumbersome as it involves holding the grid in certain
+   predefined poses. However, these poses are required to ensure an unbiased, high-quality calibration
+   result.
+
+The monocalibration process involves five poses for each camera as shown in :numref:`fig-poses-monocalibration`.
+
+.. _fig-poses-monocalibration:
+.. figure:: images/calib-views.png
+   :width: 100 %
+   :align: center
+
+   Poses required for monocamera calibration
+
+After the corners or sides of the grid are placed on top of the sensitive areas, the process
+automatically shows the next pose required. When the process is finished for the left camera,
+the same procedure is repeated for the right one.
+
+Continue with the guidelines given in the previous Section :ref:`sect-stereo-calibration`.
+
+Storing the calibration result
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Clicking the :guilabel:`Compute Calibration` button finishes the process and displays the final result.
+The indicated result is the mean reprojection error of all calibration points. It is given in
+pixels and typically has a value below 0.2.
+
+Pressing :guilabel:`Save Calibration` applies the calibration and saves it to the device.
+
+.. Note:: The given result is the minimum error left after calibration. The real error
+   is definitely not less than this, but could in theory be larger. This is true for every
+   camera-calibration algorithm and the reason why we enforce holding the grid in very specific
+   poses. Doing so ensures that the real calibration error cannot significantly
+   exceed the reported error.
+
+.. Warning:: If a hand-eye calibration was stored on the |rc_xxx| before camera calibration,
+   the hand-eye calibration values could have become invalid. Please repeat the hand-eye
+   calibration procedure.
+
+Parameters
+----------
+
+.. index::
+   pair: camera calibration; parameters
+
+The module is called ``rc_stereocalib`` in the |rest-api|.
+
+.. Note:: The camera calibration module's available parameters and status values are
+          for internal use only and may change in the future without further notice. Calibration should
+          only be performed through the |webgui| as described above.
+
+Services
+--------
+
+.. index::
+   pair: camera calibration; services
+
+.. Note:: The camera calibration module's available service calls are for internal
+          use only and may change in the future without further notice. Calibration should only be
+          performed through the |webgui| as described above.

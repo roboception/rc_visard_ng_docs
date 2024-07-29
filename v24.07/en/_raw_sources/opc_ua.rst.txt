@@ -1,0 +1,19 @@
+.. include:: global_rst.glb
+
+.. _sect-opc-ua:
+
+OPC UA interface
+================
+
+.. index::
+   single: OPC UA
+
+The |rc_xxx| also offers an optional OPC UA interface.
+The OPC UA server can be activated via license update.
+
+The OPC UA server uses the ``DataTypeDefinition`` attribute (available in OPC UA version 1.04) for custom datatypes and also uses methods and variable length arrays.
+Please check if your OPC UA client supports this.
+
+.. only:: roboception
+
+    Please contact support@roboception.de if you are interested in using the OPC UA server.

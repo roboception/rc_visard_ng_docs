@@ -1,0 +1,946 @@
+
+.. include:: global_rst.glb
+
+.. _sect-loadcarrier:
+
+LoadCarrier
+===========
+
+.. index:: ! LoadCarrier
+   single: load carrier detection
+   pair: BoxPick; load carrier
+   pair: ItemPick; load carrier
+   pair: SilhouetteMatch; load carrier
+
+.. only:: rc_cube
+
+   .. index::
+      single: CADMatch; load carrier
+
+Introduction
+------------
+
+The LoadCarrier module allows the detection of load carriers, which is usually the first step
+when objects or grasp points inside a bin should be found. The models of the load carriers
+to be detected have to be defined in the :doc:`loadcarrier_db`:latex:`\:(Section
+\ref{loadcarrier_db:sect-loadcarrier-db})` module.
+
+The LoadCarrier module is an optional on-board module of the |rc_xxx| and is licensed with
+any of the modules |pick_modules| or |match_modules|. Otherwise it requires a
+separate LoadCarrier
+:ref:`license<sect-updating-license>`:latex:`\:(Section \ref{maintenance:sect-updating-license})`
+to be purchased.
+
+.. only:: rc_cube
+
+   .. note::
+
+      This module is pipeline specific. Changes to its settings or parameters only affect
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+
+.. _sect-loadcarrier-detect-lc:
+
+Detection of load carriers
+--------------------------
+
+.. index::
+   pair: load carrier; detection
+
+The load carrier detection algorithm detects load carriers that match a specific load carrier 
+model, which must be defined in the :doc:`loadcarrier_db`:latex:`\:(Section \ref{loadcarrier_db:sect-loadcarrier-db})` module.
+The load carrier model is referenced by its ID, which is passed to the load carrier detection.
+The detection of a load carrier is based on the detection of its
+rectangular rim. For this, it uses lines detected in the left camera image and the
+depth values of the load carrier rim. Thus, the rim should form a contrast to the
+background and the disparity image must be dense on the rim.
+
+If multiple load carriers of the specified load carrier ID are visible in the scene, 
+all of them will be detected and returned by the load carrier detection.
+
+By default, when ``assume_gravity_aligned`` is true and gravity 
+measurements are available, the algorithm searches for load carriers whose rim planes 
+are perpendicular to the measured gravity vector. To detect tilted load carriers, 
+``assume_gravity_aligned`` must be set to false or the load carrier's approximate 
+orientation must be specified as ``pose`` and the  ``pose_type`` should be set to 
+``ORIENTATION_PRIOR``.
+
+Load carriers can be detected at a distance of up to 3 meters from the camera.
+
+When a 3D region of interest (see :ref:`sect-roi`:latex:`, Section \ref{roi:sect-roi}`)
+is used to limit the volume in which load carriers should be detected,
+only the load carriers' rims must be fully included in the region of interest.
+
+The detection algorithm returns the poses of the load carriers' origins
+(see :ref:`sect-loadcarrier-definition`:latex:`, Section \ref{loadcarrier_db:sect-loadcarrier-definition}`)
+in the desired pose frame.
+
+The detection functionality also determines if the detected load carriers are ``overfilled``,
+which means, that objects protrude from the plane defined by the load carrier's outer part of the rim.
+
+.. _fig-loadcarrier-load-carrier-models:
+.. figure:: images/itempick_load_carrier_reference_rim_sidebyside.*
+   :width: 100%
+   :align: center
+
+   Load carrier models and reference frames
+
+
+.. Because of the symmetry of the load carrier model, there is an ambiguity
+.. in the definition of the x axis sense.
+.. :numref:`fig-loadcarrier-load-carrier-orientation` visualizes how the sense of
+.. the load carrier x axis is defined for rectangular load carriers.
+..
+.. .. _fig-loadcarrier-load-carrier-orientation:
+.. .. figure:: images/itempick_load_carrier_orientation.png
+..    :width: 600 px
+..    :align: center
+..
+..    Disambiguation of the coordinate system for a rectangular load carrier.
+..    All load carrier are viewed from the left eye of the |rc_visard|.
+..    The dashed line represents the orientation where the x axis flips
+..    (-45 degrees on the image plane).
+
+.. _sect-loadcarrier-detect-filling-level:
+
+Detection of filling level
+--------------------------
+
+.. index::
+   pair: BoxPick; filling level
+   pair: ItemPick; filling level
+   pair: SilhouetteMatch; filling level
+   pair: LoadCarrier; filling level
+
+.. only:: rc_cube
+
+   .. index::
+      single: CADMatch; filling level
+
+The LoadCarrier module offers the ``detect_filling_level``
+service to compute the filling level of all detected load carriers.
+
+The load carriers are subdivided into a configurable number of cells in a 2D grid.
+The maximum number of cells is 10x10.
+For each cell, the following values are reported:
+
+- ``level_in_percent``: minimum, maximum and mean cell filling level in percent
+  from the load carrier floor.
+  These values can be larger than 100% if the cell is overfilled.
+- ``level_free_in_meters``: minimum, maximum and mean cell free level in meters
+  from the load carrier rim. These values can be negative if the cell is overfilled.
+- ``cell_size``: dimensions of the 2D cell in meters.
+- ``cell_position``: position of the cell center in meters
+  (either in ``camera`` or ``external`` frame, see :ref:`sect-loadcarrier-hand-eye-dep`:latex:`, Section \ref{loadcarrier:sect-loadcarrier-hand-eye-dep}`).
+  The z-coordinate is on the level of the load carrier rim.
+- ``coverage``: represents the proportion of valid pixels in this cell.
+  It varies between 0 and 1 with steps of 0.1.
+  A low coverage indicates that the cell contains several missing data
+  (i.e. only a few points were actually measured in this cell).
+
+These values are also calculated for the whole load carrier itself.
+If no cell subdivision is specified, only the overall filling level is computed.
+
+.. _fig-loadcarrier-lc-filling-level:
+.. figure:: images/itempick_lc_filling_level.png
+   :width: 100%
+   :align: center
+
+   Visualizations of the load carrier filling level: overall filling level without
+   grid (left), 4x3 grid (center), 8x8 grid (right).
+   The load carrier content is shown in a green gradient from white
+   (on the load carrier floor) to dark green.
+   The overfilled regions are visualized in red. Numbers indicate cell IDs.
+
+.. _sect-loadcarrier-dependencies:
+
+Interaction with other modules
+------------------------------
+
+Internally, the LoadCarrier module depends on, and interacts with other on-board
+modules as listed below.
+
+.. Note::
+  All changes and configuration updates to these modules will affect
+  the performance of the LoadCarrier module.
+
+.. For each load carrier detection, the LoadCarrier module
+.. acquires datasets of synchronized images and estimates the gravity vector.
+.. The data acquisition step normally takes between 500 ms and 600 ms
+.. with "High" depth image quality.
+
+.. _sect-loadcarrier-stereo-camera-matching:
+
+Stereo camera and Stereo matching
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The LoadCarrier module makes internally use of the following data:
+
+- Rectified images from the :doc:`stereo_camera` module
+  (``rc_camera``:latex:`, Section \ref{stereo_camera:sect-stereo-camera}`);
+
+- Disparity, error, and confidence images from the :doc:`stereo_matching` module
+  (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`).
+
+All processed images are guaranteed to be captured after the module trigger time.
+
+.. _sect-loadcarrier-iocontrol-dep:
+
+IO and Projector Control
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+In case the |rc_xxx| is used in conjunction with an external random dot
+projector and the :doc:`iocontrol` module (``rc_iocontrol``:latex:`,
+Section \ref{iocontrol:sect-iocontrol}`), it is recommended to connect
+the projector to GPIO Out 1 and set the stereo-camera module's
+acquisition mode to ``SingleFrameOut1`` (see :ref:`Stereo matching
+parameters<sect-disp-image-parameters>`:latex:`, Section
+\ref{stereo_matching:sect-disp-image-parameters}`), so that on each
+image acquisition trigger an image with and without projector pattern is
+acquired.
+
+Alternatively, the output mode for the GPIO output in use should be set
+to ``ExposureAlternateActive`` (see :ref:`sect-iocontrol-params`:latex:`,
+Section \ref{iocontrol:sect-iocontrol-params}`).
+
+In either case,
+the *Auto Exposure Mode* ``exp_auto_mode`` should be set to ``AdaptiveOut1`` to optimize the exposure
+of both images (see :ref:`Stereo camera parameters<sect-cam-params>`:latex:`, Section \ref{stereo_camera:sect-cam-params}`).
+
+No additional changes are required to use the LoadCarrier module
+in combination with a random dot projector.
+
+.. _sect-loadcarrier-hand-eye-dep:
+
+Hand-eye calibration
+^^^^^^^^^^^^^^^^^^^^
+
+In case the camera has been calibrated to a robot, the LoadCarrier module
+can automatically provide poses in the robot coordinate frame.
+For the LoadCarrier node's :ref:`sect-loadcarrier-services`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-services})`, the frame of the
+output poses can be controlled with the ``pose_frame`` argument.
+
+Two different ``pose_frame`` values can be chosen:
+
+1. **Camera frame** (``camera``).
+   All poses provided by the module are in the camera frame,
+   and no prior knowledge about the pose of the camera in the environment is required.
+   This means that the configured load carriers move with the camera.
+   It is the user's responsibility to update the configured poses
+   if the camera frame moves (e.g. with a robot-mounted camera).
+
+2. **External frame** (``external``).
+   All poses provided by the module are in the external frame,
+   configured by the user during the hand-eye calibration process.
+   The module relies on the on-board
+   :doc:`Hand-eye calibration module<handeye_calibration>`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`
+   to retrieve the sensor mounting (static or robot mounted) and
+   the hand-eye transformation.
+   If the mounting is static, no further information is needed.
+   If the sensor is robot-mounted, the ``robot_pose`` is required
+   to transform poses to and from the ``external`` frame.
+
+.. Note::
+   If no hand-eye calibration is available, all ``pose_frame`` values should be set to ``camera``.
+
+All ``pose_frame`` values that are not ``camera`` or ``external`` are rejected.
+
+.. _sect-loadcarrier-parameters:
+
+Parameters
+----------
+
+.. index::
+   single: LoadCarrier; parameters
+
+The LoadCarrier module is called ``rc_load_carrier``
+in the |rest-api| and is represented in the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+:cubeonly:`in the desired pipeline` under
+:menuselection:`Modules --> LoadCarrier`.
+The user can explore and configure the LoadCarrier
+module's run-time parameters, e.g. for development and testing, using the
+|webgui| or the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. only:: rc_cube
+
+   .. note:: The default values in the parameter table
+               below show the values of the |rc_visard|. The values can be
+               different for other sensors.
+
+.. include:: _gen/nodes/params/rc_load_carrier.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the *LoadCarrier Settings* section
+of the |webgui|'s *LoadCarrier* page under *Modules*.
+The name in the |webgui| is given in brackets behind the parameter name and the parameters are
+listed in the order they appear in the |webgui|. The parameters are prefixed with ``load_carrier_``
+when they are used outside the ``rc_load_carrier`` module from another detection module
+using the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+.. _expl-loadcarrier-assume-gravity-aligned:
+
+``assume_gravity_aligned`` (*Assume Gravity Aligned*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
+   If this parameter is set to true, then only load carriers without tilt will be detected. This can speed up the detection.
+   If this parameter is set to false, tilted load carriers will also be detected.
+
+   This parameter is ignored for load carriers with an orientation prior.
+
+.. only:: rc_cube
+
+   .. Note::
+      Gravity alignment is only available for pipelines of type ``rc_visard``.
+      The gravity vector is estimated from linear acceleration readings from the on-board IMU.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/parameters?assume_gravity_aligned=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_load_carrier/parameters?assume_gravity_aligned=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_load_carrier/parameters?assume_gravity_aligned=<value>
+
+.. _expl-loadcarrier-model-tolerance:
+
+``model_tolerance`` (*Model Tolerance*)
+'''''''''''''''''''''''''''''''''''''''
+   indicates how much the estimated load carrier dimensions are allowed to differ from the load carrier model dimensions in meters.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/parameters?model_tolerance=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_load_carrier/parameters?model_tolerance=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_load_carrier/parameters?model_tolerance=<value>
+
+.. _expl-loadcarrier-crop-distance:
+
+``crop_distance`` (*Crop Distance*)
+'''''''''''''''''''''''''''''''''''
+   sets the safety margin in meters by which the load carrier's inner dimensions are
+   reduced to define the region of interest for detection (ref. :numref:`fig-loadcarrier-inside-volume`).
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/parameters?crop_distance=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_load_carrier/parameters?crop_distance=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_load_carrier/parameters?crop_distance=<value>
+
+.. _expl-loadcarrier-min-plausibility:
+
+``min_plausibility`` (*Minimum Plausibility*):
+''''''''''''''''''''''''''''''''''''''''''''''
+   The minimum plausibility defines how much of the plane around the load carrier rim must at least be free to count as valid detection.
+   Increase the minimal plausibility to reject false positive detections and decrease the value in case a clearly visible load carrier cannot be detected.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/parameters?min_plausibility=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_load_carrier/parameters?min_plausibility=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_load_carrier/parameters?min_plausibility=<value>
+
+.. _sect-loadcarrier-status-values:
+
+Status values
+-------------
+
+The LoadCarrier module reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_load_carrier`` module's status values
+	:header:  Name, Description
+
+	"``data_acquisition_time``","Time in seconds required to acquire image pair"
+	"``last_timestamp_processed``","The timestamp of the last processed image pair"
+	"``load_carrier_detection_time``","Processing time of the last detection in seconds"
+
+.. _sect-loadcarrier-services:
+
+Services
+--------
+
+.. index::
+   single: LoadCarrier; services
+
+The user can explore and call the LoadCarrier module's services,
+e.g. for development and testing, using the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |rc_xxx|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})` on the
+*LoadCarrier* page under *Modules*.
+
+The LoadCarrier module offers the following services.
+
+.. _expl-loadcarrier-srv-detect-lc:
+
+``detect_load_carriers``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers a load carrier detection as described in
+   :ref:`sect-loadcarrier-detect-lc`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-detect-lc})`.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/services/detect_load_carriers
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_load_carrier/services/detect_load_carriers
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_load_carrier/services/detect_load_carriers
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Required arguments:
+
+               ``pose_frame``: see :ref:`sect-loadcarrier-hand-eye-dep`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-hand-eye-dep})`.
+
+               ``load_carrier_ids``: IDs of the load carriers which should be detected. Currently only one ID can be specified.
+
+            Potentially required arguments:
+
+               ``robot_pose``: see :ref:`sect-loadcarrier-hand-eye-dep`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-hand-eye-dep})`.
+
+            Optional arguments:
+
+               ``region_of_interest_id``: ID of the 3D region of interest where to search for the load carriers.
+
+               ``region_of_interest_2d_id``: ID of the 2D region of interest where to search for the load carriers.
+
+               .. note:: Only one type of region of interest can be set.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_detect_load_carriers_request.txt
+
+         .. tab:: **Response**
+
+            ``load_carriers``: list of detected load carriers.
+
+            ``timestamp``: timestamp of the image set the detection ran on.
+
+            ``return_code``: holds possible warnings or error codes and messages.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_detect_load_carriers_response.txt
+
+
+.. _expl-loadcarrier-srv-detect-filling-level:
+
+``detect_filling_level``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers a load carrier filling level detection as described in
+   :ref:`sect-loadcarrier-detect-filling-level`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-detect-filling-level})`.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/services/detect_filling_level
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_load_carrier/services/detect_filling_level
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_load_carrier/services/detect_filling_level
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Required arguments:
+
+               ``pose_frame``: see :ref:`sect-loadcarrier-hand-eye-dep`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-hand-eye-dep})`.
+
+               ``load_carrier_ids``: IDs of the load carriers which should be detected. Currently only one ID can be specified.
+
+            Potentially required arguments:
+
+               ``robot_pose``: see :ref:`sect-loadcarrier-hand-eye-dep`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-hand-eye-dep})`.
+
+            Optional arguments:
+
+               ``filling_level_cell_count``: Number of cells in the filling level grid.
+
+               ``region_of_interest_id``: ID of the 3D region of interest where to search for the load carriers.
+
+               ``region_of_interest_2d_id``: ID of the 2D region of interest where to search for the load carriers.
+
+               .. note:: Only one type of region of interest can be set.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_detect_filling_level_request.txt
+
+         .. tab:: **Response**
+
+            ``load_carriers``: list of detected load carriers and their filling levels.
+
+            ``timestamp``: timestamp of the image set the detection ran on.
+
+            ``return_code``: holds possible warnings or error codes and messages.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_detect_filling_level_response.txt
+
+
+.. _expl-loadcarrier-srv-reset-defaults:
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/services/reset_defaults
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_load_carrier/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_load_carrier/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_reset_defaults_response.txt
+
+.. only:: rc_cube
+
+   .. _expl-loadcarrier-srv-trigger-dump:
+
+   ``trigger_dump``
+   ^^^^^^^^^^^^^^^^
+      Triggers dumping of the detection that corresponds to the given timestamp, 
+      or the latest detection, if no timestamp is given. The dumps are saved to the
+      connected USB drive.
+
+      .. toggle-header::
+         :header: **Details**
+
+         This service can be called as follows.
+
+         .. tabs::
+
+            .. tab:: **API version 2**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_load_carrier/services/trigger_dump
+
+            .. tab:: **API version 1 (deprecated)**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v1/nodes/rc_load_carrier/services/trigger_dump
+
+         .. tabs::
+
+            .. tab:: **Request**
+
+               .. include:: _gen/nodes/services/rc_load_carrier_trigger_dump_request.txt
+
+            .. tab:: **Response**
+
+               .. include:: _gen/nodes/services/rc_load_carrier_trigger_dump_response.txt
+
+.. _expl-loadcarrier-srv-set-lc:
+
+``set_load_carrier`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a load carrier on the |rc_xxx|.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         This service is not available in API version 2.
+         Use :ref:`expl-loadcarrier-db-srv-set-lc`:latex:`\:(Section \ref{loadcarrier_db:expl-loadcarrier-db-srv-set-lc})`
+         in ``rc_load_carrier_db`` instead.
+
+      .. tab:: **API version 1 (deprecated)**
+
+            This service can be called as follows.
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_load_carrier/services/set_load_carrier
+
+            The definitions of the request and response are the same as described in
+            :ref:`expl-loadcarrier-db-srv-set-lc`:latex:`\:(Section \ref{loadcarrier_db:expl-loadcarrier-db-srv-set-lc})`
+            in ``rc_load_carrier_db``.
+
+
+.. _expl-loadcarrier-srv-get-lc:
+
+``get_load_carriers`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured load carriers with the requested ``load_carrier_ids``.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         This service is not available in API version 2.
+         Use :ref:`expl-loadcarrier-db-srv-get-lc`:latex:`\:(Section \ref{loadcarrier_db:expl-loadcarrier-db-srv-get-lc})`
+         in ``rc_load_carrier_db`` instead.
+
+      .. tab:: **API version 1 (deprecated)**
+
+         This service can be called as follows.
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_load_carrier/services/get_load_carriers
+
+         The definitions of the request and response are the same as described in
+         :ref:`expl-loadcarrier-db-srv-get-lc`:latex:`\:(Section \ref{loadcarrier_db:expl-loadcarrier-db-srv-get-lc})`
+         in ``rc_load_carrier_db``.
+
+.. _expl-loadcarrier-srv-delete-lc:
+
+``delete_load_carriers`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured load carriers with the requested ``load_carrier_ids``.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         This service is not available in API version 2.
+         Use :ref:`expl-loadcarrier-db-srv-delete-lc`:latex:`\:(Section \ref{loadcarrier_db:expl-loadcarrier-db-srv-delete-lc})`
+         in ``rc_load_carrier_db`` instead.
+
+      .. tab:: **API version 1 (deprecated)**
+
+         This service can be called as follows.
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_load_carrier/services/delete_load_carriers
+
+         The definitions of the request and response are the same as described in
+         :ref:`expl-loadcarrier-db-srv-delete-lc`:latex:`\:(Section \ref{loadcarrier_db:expl-loadcarrier-db-srv-delete-lc})`
+         in ``rc_load_carrier_db``.
+
+.. _expl-loadcarrier-srv-set-roi:
+
+``set_region_of_interest`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a 3D region of interest on the |rc_xxx|.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         This service is not available in API version 2.
+         Use :ref:`expl-roi-srv-set-roi`:latex:`\:(Section \ref{roi:expl-roi-srv-set-roi})` in ``rc_roi_db`` instead.
+
+      .. tab:: **API version 1 (deprecated)**
+
+            This service can be called as follows.
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_load_carrier/services/set_region_of_interest
+
+            The definitions of the request and response are the same as described in
+            :ref:`expl-roi-srv-set-roi`:latex:`\:(Section \ref{roi:expl-roi-srv-set-roi})`
+            in ``rc_roi_db``.
+
+.. _expl-loadcarrier-srv-get-rois:
+
+``get_regions_of_interest`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured 3D regions of interest with the requested ``region_of_interest_ids``.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         This service is not available in API version 2.
+         Use :ref:`expl-roi-srv-get-roi`:latex:`\:(Section \ref{roi:expl-roi-srv-get-roi})` in ``rc_roi_db`` instead.
+
+      .. tab:: **API version 1 (deprecated)**
+
+            This service can be called as follows.
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_load_carrier/services/get_regions_of_interest
+
+            The definitions of the request and response are the same as described in
+            :ref:`expl-roi-srv-get-roi`:latex:`\:(Section \ref{roi:expl-roi-srv-get-roi})`
+            in ``rc_roi_db``.
+
+.. _expl-loadcarrier-srv-delete-rois:
+
+``delete_regions_of_interest`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured 3D regions of interest with the requested ``region_of_interest_ids``.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         This service is not available in API version 2.
+         Use :ref:`expl-roi-srv-delete-roi`:latex:`\:(Section \ref{roi:expl-roi-srv-delete-roi})` in ``rc_roi_db`` instead.
+
+      .. tab:: **API version 1 (deprecated)**
+
+            This service can be called as follows.
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_load_carrier/services/delete_regions_of_interest
+
+            The definitions of the request and response are the same as described in
+            :ref:`expl-roi-srv-delete-roi`:latex:`\:(Section \ref{roi:expl-roi-srv-delete-roi})`
+            in ``rc_roi_db``.
+
+.. _expl-loadcarrier-srv-set-roi-2d:
+
+``set_region_of_interest_2d`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a 2D region of interest on the |rc_xxx|.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         This service is not available in API version 2.
+         Use :ref:`expl-roi-srv-set-roi-2d`:latex:`\:(Section \ref{roi:expl-roi-srv-set-roi-2d})` in ``rc_roi_db`` instead.
+
+      .. tab:: **API version 1 (deprecated)**
+
+            This service can be called as follows.
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_load_carrier/services/set_region_of_interest_2d
+
+            The definitions of the request and response are the same as described in
+            :ref:`expl-roi-srv-set-roi-2d`:latex:`\:(Section \ref{roi:expl-roi-srv-set-roi-2d})`
+            in ``rc_roi_db``.
+
+.. _expl-loadcarrier-srv-get-rois-2d:
+
+``get_regions_of_interest_2d`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured 2D regions of interest with the requested ``region_of_interest_2d_ids``.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         This service is not available in API version 2.
+         Use :ref:`expl-roi-srv-get-roi-2d`:latex:`\:(Section \ref{roi:expl-roi-srv-get-roi-2d})` in ``rc_roi_db`` instead.
+
+      .. tab:: **API version 1 (deprecated)**
+
+            This service can be called as follows.
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_load_carrier/services/get_region_of_interest_2d
+
+            The definitions of the request and response are the same as described in
+            :ref:`expl-roi-srv-get-roi-2d`:latex:`\:(Section \ref{roi:expl-roi-srv-get-roi-2d})`
+            in ``rc_roi_db``.
+
+.. _expl-loadcarrier-srv-delete-rois-2d:
+
+``delete_regions_of_interest_2d`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured 2D regions of interest with the requested ``region_of_interest_2d_ids``.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         This service is not available in API version 2.
+         Use :ref:`expl-roi-srv-delete-roi-2d`:latex:`\:(Section \ref{roi:expl-roi-srv-delete-roi-2d})` in ``rc_roi_db`` instead.
+
+      .. tab:: **API version 1 (deprecated)**
+
+            This service can be called as follows.
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_load_carrier/services/delete_regions_of_interest_2d
+
+            The definitions of the request and response are the same as described in
+            :ref:`expl-roi-srv-delete-roi-2d`:latex:`\:(Section \ref{roi:expl-roi-srv-delete-roi-2d})`
+            in ``rc_roi_db``.
+
+.. _sect-loadcarrier-return-codes:
+
+Return codes
+------------
+
+.. index::
+   pair: LoadCarrier; return codes
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common codes:
+
+.. tabularcolumns:: |c|L|
+.. _tab-loadcarrier-return-codes:
+.. csv-table:: Return codes of the LoadCarrier module's services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+    "-4",   "Data acquisition took longer than allowed"
+    "-10",  "New element could not be added as the maximum storage capacity of load carriers has been exceeded"
+    "-11",  "Sensor not connected, not supported or not ready"
+    "-302", "More than one load carrier provided to the ``detect_load_carriers`` or ``detect_filling_level`` services, but only one is supported"
+    "3",    "The detection timeout during load carrier detection has been reached. Consider reducing the model tolerance."
+    "10",   "The maximum storage capacity of load carriers has been reached"
+    "11",   "An existent persistent model was overwritten by the call to ``set_load_carrier``"
+    "100",  "The requested load carriers were not detected in the scene"
+    "102",  "The detected load carrier has no points inside"
+    "300",  "A valid ``robot_pose`` was provided as argument but it is not required"
+

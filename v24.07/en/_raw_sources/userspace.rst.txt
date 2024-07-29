@@ -1,0 +1,179 @@
+.. include:: global_rst.glb
+.. _sect-userspace:
+
+|userspace|
+===========
+
+.. index:: !UserSpace
+   single: container
+   single: Docker
+   single: portainer
+
+The |userspace| enables users to deploy and manage containers running on the
+|rc_xxx|. Standalone containers and docker-compose stacks are supported.
+
+.. Note:: Familiarity with Docker containers is required.
+
+If available and enabled, the |userspace| can be accessed in the
+:ref:`Web GUI<sect-web-gui>`:latex:`\ (Section \ref{webgui:sect-web-gui})`
+in the menu under *UserSpace*. This page shows the running apps and containers
+with their current state and health, in case a health-check is available. Each
+container lists the published ports. If their protocol is http or https, these
+containers can be accessed directly in the |webgui|.
+
+Configuration
+-------------
+
+.. index::
+   single: UserSpace; security
+   single: UserSpace; reset
+   single: UserSpace; enable
+   single: UserSpace; disable
+   single: UserSpace; installation
+
+.. only:: rc_visard_ng
+
+   If the |userspace| is enabled for the first time, a user for the portainer UI
+   needs to be created: In the :ref:`Web GUI<sect-web-gui>`:latex:`\ (Section \ref{webgui:sect-web-gui})`
+   navigate to *UserSpace* and click on *Manage UserSpace Apps*.
+   Then, register a user account for the administrator.
+   It is required to complete this step within
+   five minutes after booting the |rc_xxx|.
+
+.. only:: rc_cube
+
+   .. Note:: The |userspace| is not enabled by default and can for security reasons only be
+      enabled/disabled or reset either via a locally connected screen, or
+      via the |webgui| by placing the Roboception UserSpace Key QR code in front of the camera
+      of pipeline 0.
+
+   Configure |userspace| via local monitor
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Please connect a monitor, keyboard, and mouse to the |rc-cube| and then boot
+   the |rc-cube|.
+
+   Enable |userspace|
+   """"""""""""""""""
+   The |userspace| can be enabled in two steps:
+
+   1. Navigate to the pane *UserSpace configuration* and click :guilabel:`enable UserSpace`.
+
+   2. If the |userspace| is enabled for the first time, a user for the portainer UI
+      needs to be created: Click on the *portainer* pane, and register a user
+      account for the administrator. It is required to complete this step within
+      five minutes after clicking :guilabel:`enable UserSpace`.
+
+   Disable |userspace|
+   """""""""""""""""""
+
+   The |userspace| can also be disabled. To disable the |userspace|, navigate to
+   the pane *UserSpace configuration* and click :guilabel:`disable UserSpace`. Disabling
+   will stop all running containers and the portainer UI, but not delete existing
+   container images and their configurations. The |userspace| can be enabled again
+   at any time.
+
+   Reset |userspace|
+   """""""""""""""""
+
+   The |userspace| can also be reset. To reset the |userspace|, navigate to the
+   pane *UserSpace configuration* click :guilabel:`Reset UserSpace` and answer the
+   security question. Resetting will delete all containers, volumes, and the
+   portainer configuration, including secrets and users.
+
+
+.. only:: rc_visard_ng
+
+   .. Note:: The |userspace| is not enabled by default and can for security reasons only be
+      enabled/disabled or reset via the |webgui| by placing the Roboception UserSpace 
+      Key QR code in front of the camera, for security reasons.
+
+
+Configure |userspace| via the |webgui|
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To configure the |userspace| via the :doc:`webgui`:latex:`\:(Section \ref{webgui:sect-web-gui})`,
+navigate to *UserSpace* and click on :guilabel:`Configure UserSpace`.
+
+Print the Roboception UserSpace Key from :download:`here<RoboceptionUserSpaceKey.pdf>` or
+https://roboception.com/roboception-userspace-key/ and place it in front of the camera :cubeonly:`of pipeline 0` so that
+it is completely visible in both, left and right camera images.
+
+Use the buttons to enable/disable or reset the |userspace|. Resetting will delete all containers, volumes, and the
+portainer configuration, including secrets and users, and cannot be undone.
+
+
+View running applications
+-------------------------
+
+|userspace| information including running apps and their published ports can be queried via
+:ref:`REST-API userspace endpoint<sect-rest-api-userspace>`:latex:`, (Section \ref{rest_api_userspace:sect-rest-api-userspace})`
+or viewed in the :ref:`Web GUI<sect-web-gui>`:latex:`\ (Section \ref{webgui:sect-web-gui})`
+in the menu under *UserSpace*.
+
+Container labels ``org.opencontainers.image.XXX`` can be used to provide additional information to the API which is also shown in the |webgui|, see
+:ref:`REST-API UserSpaceContainer definition<sect-rest-datamodel-userspacecontainer>`:latex:`, (Section \ref{rest_api_datamodel:sect-rest-datamodel-userspacecontainer})`.
+
+Network access to UserSpace applications
+----------------------------------------
+
+To access containers via network, the container ports need to be published to host ports.
+
+If a container provides a web interface via http or https, use container labels to show a button in the |webgui| to open that directly:
+
+- ``com.roboception.app.http``: all exposed TCP ports use http
+- ``com.roboception.app.https.port=1234,5678``: comma separated list with https ports
+
+.. only:: rc_cube
+
+   Examples
+   --------
+
+   .. index::
+      single: |userspace|; examples
+
+   Two examples can be found under *App Templates* inside the |userspace| pane:
+
+      - **hello_rc_cube**: Single container exposing a web page with some information about itself.
+        See also https://github.com/roboception/hello_rc_cube.
+
+      - **rc_cube_monitoring**: Compose stack with Prometheus and Grafana to monitor the |rc_cube|.
+        See also https://github.com/roboception/rc_cube_monitoring.
+
+   Clicking :guilabel:`Deploy the container/stack` under *Actions* will pull the Docker images and start the app.
+   The running app containers can then be seen under *Containers*.
+   The web page address is a combination of the |rc_cube|'s IP address and the port listed under *Published Ports*.
+
+Interfaces
+----------
+
+.. index::
+   single: UserSpace; gRPC
+   single: UserSpace; REST-API
+
+Docker containers managed in the |userspace| can use the public interfaces of
+the |rc_xxx|. In particular, Docker containers can access synchronized image
+sets via :doc:`gRPC<grpc>`:latex:`\:(Section \ref{grpc:sect-grpc})` and can
+call the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`. The
+|rc_xxx| (the host) can be accessed under the Docker bridge IP (in default
+Docker bridge network `172.17.0.1`).
+
+Restrictions
+------------
+
+.. index::
+   single: UserSpace; restrictions
+   single: UserSpace; Docker network
+   single: UserSpace; security
+
+Some restrictions for containers apply:
+
+- Containers cannot be privileged.
+- No access to the host network (a Docker bridge network is used instead).
+- Only paths inside cloned git repositories with a docker-compose stack can be mounted, all other host paths cannot be mounted.
+- Host devices cannot be accessed. This includes e.g. USB and GPU devices.
+- Well known and internally used ports on the host cannot be bound.
+  This includes ports below 1024, ports from 4200 to 4299 and the ports
+  2342, 2343, 2344, 2345, 3956, 4840, 5353, 6379,
+  7000, 7001, 7002, 7003, 9100, 9118, 9256, 9445, 9446, 11311, 22350, 22352,
+  50010, 50051, 50052, 50053 and 50054.
