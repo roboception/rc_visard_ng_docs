@@ -113,7 +113,7 @@ Description of run-time parameters
     The |webgui|'s *Camera* page
 
 
-.. only:: rc_visard_ng
+.. only:: rc_visard_ng or rc_cube
 
    .. _expl-acquisition_mode:
 
@@ -126,6 +126,12 @@ Description of run-time parameters
       This values determines the camera acquisition mode. In ``Continuous`` mode, the camera will 
       acquire images at the specified frame rate ``fps``. In ``Trigger`` mode, images are only 
       acquired when the camera receives a trigger signal.
+      
+      .. only:: rc_cube
+         
+         .. note::
+
+            This parameter only has an effect when used in a pipeline with an |rc_viscore| or |rc_visard_ng|.
 
       Via the |restapi|, this parameter can be set as follows.
 
@@ -158,6 +164,12 @@ Description of run-time parameters
       acquisition is triggered.
       The modes ``In1`` and ``In2`` are hardware trigger modes.
       An image is acquired whenever a signal on the chosen input is received.
+      
+      .. only:: rc_cube
+         
+         .. note::
+            
+            This parameter only has an effect when used in a pipeline with an |rc_viscore| or |rc_visard_ng|.
 
       Via the |restapi|, this parameter can be set as follows.
 
@@ -185,6 +197,12 @@ Description of run-time parameters
       This value is only used when ``acquisition_mode`` is set to ``Trigger`` and ``trigger_source`` is set to 
       ``In1`` or ``In2``. It determines the signal edge that should be used to trigger an acquisition. Possible
       values are ``RisingEdge``, ``FallingEdge`` or ``AnyEdge``.
+      
+      .. only:: rc_cube
+         
+         .. note::
+            
+            This parameter only has an effect when used in a pipeline with an |rc_viscore| or |rc_visard_ng|.
 
       Via the |restapi|, this parameter can be set as follows.
 

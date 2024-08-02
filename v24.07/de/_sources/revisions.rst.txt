@@ -9,7 +9,7 @@ angegebene Versionsnummer.
 
 DOKUMENTATIONSVERSION
 
-  24.07.1  29.07.2024
+  24.07.2  02.08.2024
 
 Gültig für
 
