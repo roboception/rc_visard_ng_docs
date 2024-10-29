@@ -1,0 +1,1168 @@
+Data type definitions
+
+The REST-API defines the following data models, which are used to
+access or modify
+
+the available resources
+
+  either as required attributes/parameters of the requests or as
+return types.
+
+DNS:
+   DNS settings.
+
+   An object of type DNS has the following properties:
+
+   dns_servers (array of string)
+
+   manual_dns_servers (array of string)
+
+   Template object
+
+      {
+        "dns_servers": [
+          "string",
+          "string"
+        ],
+        "manual_dns_servers": [
+          "string",
+          "string"
+        ]
+      }
+
+   DNS objects are nested in
+
+   SysInfo
+
+   , and are used in the following requests:
+
+      GET /system/dns
+
+      PUT /system/dns
+
+FirmwareInfo:
+   Information about currently active and inactive firmware images,
+   and what image is/will be booted.
+
+   An object of type FirmwareInfo has the following properties:
+
+   active_image (ImageInfo) - see description of ImageInfo
+
+   fallback_booted (boolean) - true if desired image could not be
+   booted and fallback boot to the previous image occurred
+
+   inactive_image (ImageInfo) - see description of ImageInfo
+
+   next_boot_image (string) - firmware image that will be booted next
+   time (one of active_image, inactive_image)
+
+   Template object
+
+      {
+        "active_image": {
+          "image_version": "string"
+        },
+        "fallback_booted": false,
+        "inactive_image": {
+          "image_version": "string"
+        },
+        "next_boot_image": "string"
+      }
+
+   FirmwareInfo objects are nested in
+
+   SysInfo
+
+   , and are used in the following requests:
+
+      GET /system/rollback
+
+      GET /system/update
+
+GripperElement:
+   CAD gripper element
+
+   An object of type GripperElement has the following properties:
+
+   id (string) - Unique identifier of the element
+
+   Template object
+
+      {
+        "id": "string"
+      }
+
+   GripperElement objects are used in the following requests:
+
+      GET /cad/gripper_elements
+
+      GET /cad/gripper_elements/{id}
+
+      PUT /cad/gripper_elements/{id}
+
+HostPort:
+   Port exposed on host
+
+   An object of type HostPort has the following properties:
+
+   port (integer)
+
+   protocol (string)
+
+   Template object
+
+      {
+        "port": 0,
+        "protocol": "string"
+      }
+
+   HostPort objects are nested in
+
+   UserSpaceContainer
+
+   .
+
+ImageInfo:
+   Information about specific firmware image.
+
+   An object of type ImageInfo has the following properties:
+
+   image_version (string) - image version
+
+   Template object
+
+      {
+        "image_version": "string"
+      }
+
+   ImageInfo objects are nested in
+
+   FirmwareInfo
+
+   .
+
+LicenseComponentConstraint:
+   Constraints on the module version.
+
+   An object of type LicenseComponentConstraint has the following
+   properties:
+
+   max_version (string) - optional maximum supported version
+   (exclusive)
+
+   min_version (string) - optional minimum supported version
+   (inclusive)
+
+   Template object
+
+      {
+        "max_version": "string",
+        "min_version": "string"
+      }
+
+   LicenseComponentConstraint objects are nested in
+
+   LicenseConstraints
+
+   .
+
+LicenseComponents:
+   List of the licensing status of the individual software modules.
+   The respective flag is true if the module is unlocked with the
+   currently applied software license.
+
+   An object of type LicenseComponents has the following properties:
+
+   hand_eye_calibration (boolean) - hand-eye calibration module
+
+   rectification (boolean) - image rectification module
+
+   stereo (boolean) - stereo matching module
+
+   Template object
+
+      {
+        "hand_eye_calibration": false,
+        "rectification": false,
+        "stereo": false
+      }
+
+   LicenseComponents objects are nested in
+
+   LicenseInfo
+
+   .
+
+LicenseConstraints:
+   Version constrains for modules.
+
+   An object of type LicenseConstraints has the following properties:
+
+   image_version (LicenseComponentConstraint) - see description of
+   LicenseComponentConstraint
+
+   Template object
+
+      {
+        "image_version": {
+          "max_version": "string",
+          "min_version": "string"
+        }
+      }
+
+   LicenseConstraints objects are nested in
+
+   LicenseInfo
+
+   .
+
+LicenseInfo:
+   Information about the currently applied software license on the
+   device.
+
+   An object of type LicenseInfo has the following properties:
+
+   components (LicenseComponents) - see description of
+   LicenseComponents
+
+   components_constraints (LicenseConstraints) - see description of
+   LicenseConstraints
+
+   valid (boolean) - indicates whether the license is valid or not
+
+   Template object
+
+      {
+        "components": {
+          "hand_eye_calibration": false,
+          "rectification": false,
+          "stereo": false
+        },
+        "components_constraints": {
+          "image_version": {
+            "max_version": "string",
+            "min_version": "string"
+          }
+        },
+        "valid": false
+      }
+
+   LicenseInfo objects are used in the following requests:
+
+      GET /system/license
+
+Log:
+   Content of a specific log file represented in JSON format.
+
+   An object of type Log has the following properties:
+
+   date (float) - UNIX time when log was last modified
+
+   log (array of LogEntry) - the actual log entries
+
+   name (string) - name of log file
+
+   size (integer) - size of log file in bytes
+
+   Template object
+
+      {
+        "date": 0,
+        "log": [
+          {
+            "component": "string",
+            "level": "string",
+            "message": "string",
+            "timestamp": 0
+          },
+          {
+            "component": "string",
+            "level": "string",
+            "message": "string",
+            "timestamp": 0
+          }
+        ],
+        "name": "string",
+        "size": 0
+      }
+
+   Log objects are used in the following requests:
+
+      GET /logs/{log}
+
+LogEntry:
+   Representation of a single log entry in a log file.
+
+   An object of type LogEntry has the following properties:
+
+   component (string) - module name that created this entry
+
+   level (string) - log level (one of DEBUG, INFO, WARN, ERROR, FATAL)
+
+   message (string) - actual log message
+
+   timestamp (float) - Unix time of log entry
+
+   Template object
+
+      {
+        "component": "string",
+        "level": "string",
+        "message": "string",
+        "timestamp": 0
+      }
+
+   LogEntry objects are nested in
+
+   Log
+
+   .
+
+LogInfo:
+   Information about a specific log file.
+
+   An object of type LogInfo has the following properties:
+
+   date (float) - UNIX time when log was last modified
+
+   name (string) - name of log file
+
+   size (integer) - size of log file in bytes
+
+   Template object
+
+      {
+        "date": 0,
+        "name": "string",
+        "size": 0
+      }
+
+   LogInfo objects are used in the following requests:
+
+      GET /logs
+
+ManualDNSServers:
+   List of manual DNS servers.
+
+   An object of type ManualDNSServers has the following properties:
+
+   manual_dns_servers (array of string)
+
+   Template object
+
+      {
+        "manual_dns_servers": [
+          "string",
+          "string"
+        ]
+      }
+
+   ManualDNSServers objects are used in the following requests:
+
+      PUT /system/dns
+
+ManualNTPServers:
+   List of manual NTP servers.
+
+   An object of type ManualNTPServers has the following properties:
+
+   manual_ntp_servers (array of string)
+
+   Template object
+
+      {
+        "manual_ntp_servers": [
+          "string",
+          "string"
+        ]
+      }
+
+   ManualNTPServers objects are used in the following requests:
+
+      PUT /system/ntp
+
+NTP:
+   Status of the NTP time sync.
+
+   An object of type NTP has the following properties:
+
+   enabled (boolean) - NTP is enabled
+
+   manual_ntp_servers (array of string)
+
+   offset (string) - time sync offset reported by NTP
+
+   selected_ntp_servers (array of string)
+
+   synchronized (boolean) - synchronized with NTP server
+
+   Template object
+
+      {
+        "enabled": false,
+        "manual_ntp_servers": [
+          "string",
+          "string"
+        ],
+        "offset": "string",
+        "selected_ntp_servers": [
+          "string",
+          "string"
+        ],
+        "synchronized": false
+      }
+
+   NTP objects are nested in
+
+   SysInfo
+
+   , and are used in the following requests:
+
+      GET /system/ntp
+
+      PUT /system/ntp
+
+NetworkInfo:
+   Current network configuration.
+
+   An object of type NetworkInfo has the following properties:
+
+   current_method (string) - method by which current settings were
+   applied (one of INIT, LinkLocal, DHCP, PersistentIP, TemporaryIP)
+
+   default_gateway (string) - current default gateway
+
+   ip_address (string) - current IP address
+
+   settings (NetworkSettings) - see description of NetworkSettings
+
+   subnet_mask (string) - current subnet mask
+
+   Template object
+
+      {
+        "current_method": "string",
+        "default_gateway": "string",
+        "ip_address": "string",
+        "settings": {
+          "dhcp_enabled": false,
+          "persistent_default_gateway": "string",
+          "persistent_ip_address": "string",
+          "persistent_ip_enabled": false,
+          "persistent_subnet_mask": "string"
+        },
+        "subnet_mask": "string"
+      }
+
+   NetworkInfo objects are nested in
+
+   SysInfo
+
+   , and are used in the following requests:
+
+      GET /system/network
+
+NetworkSettings:
+   Current network settings.
+
+   An object of type NetworkSettings has the following properties:
+
+   dhcp_enabled (boolean) - DHCP enabled
+
+   persistent_default_gateway (string) - Persistent default gateway
+
+   persistent_ip_address (string) - Persistent IP address
+
+   persistent_ip_enabled (boolean) - Persistent IP enabled
+
+   persistent_subnet_mask (string) - Persistent subnet mask
+
+   Template object
+
+      {
+        "dhcp_enabled": false,
+        "persistent_default_gateway": "string",
+        "persistent_ip_address": "string",
+        "persistent_ip_enabled": false,
+        "persistent_subnet_mask": "string"
+      }
+
+   NetworkSettings objects are nested in
+
+   NetworkInfo
+
+   , and are used in the following requests:
+
+      GET /system/network/settings
+
+      PUT /system/network/settings
+
+NodeInfo:
+   Description of a computational node running on device.
+
+   An object of type NodeInfo has the following properties:
+
+   name (string) - name of the node
+
+   parameters (array of string) - list of the node's run-time
+   parameters
+
+   services (array of string) - list of the services this node offers
+
+   status (string) - status of the node (one of unknown, down, idle,
+   running)
+
+   Template object
+
+      {
+        "name": "string",
+        "parameters": [
+          "string",
+          "string"
+        ],
+        "services": [
+          "string",
+          "string"
+        ],
+        "status": "string"
+      }
+
+   NodeInfo objects are used in the following requests:
+
+      GET /nodes
+
+      GET /nodes/{node}
+
+      GET /pipelines/{pipeline}/nodes
+
+      GET /pipelines/{pipeline}/nodes/{node}
+
+NodeStatus:
+   Detailed current status of the node including run-time statistics.
+
+   An object of type NodeStatus has the following properties:
+
+   status (string) - status of the node (one of unknown, down, idle,
+   running)
+
+   timestamp (float) - Unix time when values were last updated
+
+   values (object) - dictionary with current status/statistics of the
+   node
+
+   Template object
+
+      {
+        "status": "string",
+        "timestamp": 0,
+        "values": {}
+      }
+
+   NodeStatus objects are used in the following requests:
+
+      GET /nodes/{node}/status
+
+      GET /pipelines/{pipeline}/nodes/{node}/status
+
+Parameter:
+   Representation of a node's run-time parameter. The parameter's
+   'value' type (and hence the types of the 'min', 'max' and 'default'
+   fields) can be inferred from the 'type' field and might be one of
+   the built-in primitive data types.
+
+   An object of type Parameter has the following properties:
+
+   default (type not defined) - the parameter's default value
+
+   description (string) - description of the parameter
+
+   max (type not defined) - maximum value this parameter can be
+   assigned to
+
+   min (type not defined) - minimum value this parameter can be
+   assigned to
+
+   name (string) - name of the parameter
+
+   type (string) - the parameter's primitive type represented as
+   string (one of bool, int8, uint8, int16, uint16, int32, uint32,
+   int64, uint64, float32, float64, string)
+
+   value (type not defined) - the parameter's current value
+
+   Template object
+
+      {
+        "default": {},
+        "description": "string",
+        "max": {},
+        "min": {},
+        "name": "string",
+        "type": "string",
+        "value": {}
+      }
+
+   Parameter objects are used in the following requests:
+
+      GET /pipelines/{pipeline}/nodes/{node}/parameters
+
+      PUT /pipelines/{pipeline}/nodes/{node}/parameters
+
+      GET /pipelines/{pipeline}/nodes/{node}/parameters/{param}
+
+      PUT /pipelines/{pipeline}/nodes/{node}/parameters/{param}
+
+ParameterNameValue:
+   Parameter name and value. The parameter's 'value' type (and hence
+   the types of the 'min', 'max' and 'default' fields) can be inferred
+   from the 'type' field and might be one of the built-in primitive
+   data types.
+
+   An object of type ParameterNameValue has the following properties:
+
+   name (string) - name of the parameter
+
+   value (type not defined) - the parameter's current value
+
+   Template object
+
+      {
+        "name": "string",
+        "value": {}
+      }
+
+   ParameterNameValue objects are used in the following requests:
+
+      PUT /pipelines/{pipeline}/nodes/{node}/parameters
+
+ParameterValue:
+   Parameter value. The parameter's 'value' type (and hence the types
+   of the 'min', 'max' and 'default' fields) can be inferred from the
+   'type' field and might be one of the built-in primitive data types.
+
+   An object of type ParameterValue has the following properties:
+
+   value (type not defined) - the parameter's current value
+
+   Template object
+
+      {
+        "value": {}
+      }
+
+   ParameterValue objects are used in the following requests:
+
+      PUT /pipelines/{pipeline}/nodes/{node}/parameters/{param}
+
+ProxySettings:
+   HTTP proxy settings for pulling container images and git repos
+
+   An object of type ProxySettings has the following properties:
+
+   http_proxy (string) - HTTP proxy
+
+   https_proxy (string) - HTTPS proxy
+
+   Template object
+
+      {
+        "http_proxy": "string",
+        "https_proxy": "string"
+      }
+
+   ProxySettings objects are nested in
+
+   UserSpace
+
+   , and are used in the following requests:
+
+      GET /userspace/proxy
+
+      PUT /userspace/proxy
+
+PtpStatus:
+   Status of the IEEE1588 (PTP) time sync.
+
+   An object of type PtpStatus has the following properties:
+
+   master_ip (string) - IP of the master clock
+
+   offset (float) - time offset in seconds to the master
+
+   offset_dev (float) - standard deviation of time offset in seconds
+   to the master
+
+   offset_mean (float) - mean time offset in seconds to the master
+
+   state (string) - state of PTP (one of off, unknown, INITIALIZING,
+   FAULTY, DISABLED, LISTENING, PASSIVE, UNCALIBRATED, SLAVE)
+
+   Template object
+
+      {
+        "master_ip": "string",
+        "offset": 0,
+        "offset_dev": 0,
+        "offset_mean": 0,
+        "state": "string"
+      }
+
+   PtpStatus objects are nested in
+
+   SysInfo
+
+   .
+
+Service:
+   Representation of a service that a node offers.
+
+   An object of type Service has the following properties:
+
+   args (ServiceArgs) - see description of ServiceArgs
+
+   description (string) - short description of this service
+
+   name (string) - name of the service
+
+   response (ServiceResponse) - see description of ServiceResponse
+
+   Template object
+
+      {
+        "args": {},
+        "description": "string",
+        "name": "string",
+        "response": {}
+      }
+
+   Service objects are used in the following requests:
+
+      GET /nodes/{node}/services
+
+      GET /nodes/{node}/services/{service}
+
+      PUT /nodes/{node}/services/{service}
+
+      GET /pipelines/{pipeline}/nodes/{node}/services
+
+      GET /pipelines/{pipeline}/nodes/{node}/services/{service}
+
+      PUT /pipelines/{pipeline}/nodes/{node}/services/{service}
+
+ServiceArgs:
+   Arguments required to call a service with. The general
+   representation of these arguments is a (nested) dictionary. The
+   specific content of this dictionary depends on the respective node
+   and service call.
+
+   ServiceArgs objects are nested in
+
+   Service
+
+   .
+
+ServiceResponse:
+   The response returned by the service call. The general
+   representation of this response is a (nested) dictionary. The
+   specific content of this dictionary depends on the respective node
+   and service call.
+
+   ServiceResponse objects are nested in
+
+   Service
+
+   .
+
+SysInfo:
+   System information about the device.
+
+   An object of type SysInfo has the following properties:
+
+   dns (DNS) - see description of DNS
+
+   firmware (FirmwareInfo) - see description of FirmwareInfo
+
+   hostname (string) - Hostname
+
+   link_speed (integer) - Ethernet link speed in Mbps
+
+   mac (string) - MAC address
+
+   network (NetworkInfo) - see description of NetworkInfo
+
+   ntp (NTP) - see description of NTP
+
+   ptp_status (PtpStatus) - see description of PtpStatus
+
+   ready (boolean) - system is fully booted and ready
+
+   serial (string) - device serial number
+
+   time (float) - system time as Unix timestamp
+
+   ui_lock (UILock) - see description of UILock
+
+   uptime (float) - system uptime in seconds
+
+   Template object
+
+      {
+        "dns": {
+          "dns_servers": [
+            "string",
+            "string"
+          ],
+          "manual_dns_servers": [
+            "string",
+            "string"
+          ]
+        },
+        "firmware": {
+          "active_image": {
+            "image_version": "string"
+          },
+          "fallback_booted": false,
+          "inactive_image": {
+            "image_version": "string"
+          },
+          "next_boot_image": "string"
+        },
+        "hostname": "string",
+        "link_speed": 0,
+        "mac": "string",
+        "network": {
+          "current_method": "string",
+          "default_gateway": "string",
+          "ip_address": "string",
+          "settings": {
+            "dhcp_enabled": false,
+            "persistent_default_gateway": "string",
+            "persistent_ip_address": "string",
+            "persistent_ip_enabled": false,
+            "persistent_subnet_mask": "string"
+          },
+          "subnet_mask": "string"
+        },
+        "ntp": {
+          "enabled": false,
+          "manual_ntp_servers": [
+            "string",
+            "string"
+          ],
+          "offset": "string",
+          "selected_ntp_servers": [
+            "string",
+            "string"
+          ],
+          "synchronized": false
+        },
+        "ptp_status": {
+          "master_ip": "string",
+          "offset": 0,
+          "offset_dev": 0,
+          "offset_mean": 0,
+          "state": "string"
+        },
+        "ready": false,
+        "serial": "string",
+        "time": 0,
+        "ui_lock": {
+          "enabled": false
+        },
+        "uptime": 0
+      }
+
+   SysInfo objects are used in the following requests:
+
+      GET /system
+
+Template:
+   Detection template
+
+   An object of type Template has the following properties:
+
+   id (string) - Unique identifier of the template
+
+   Template object
+
+      {
+        "id": "string"
+      }
+
+   Template objects are used in the following requests:
+
+      GET /templates/rc_boxpick
+
+      GET /templates/rc_boxpick/{id}
+
+      PUT /templates/rc_boxpick/{id}
+
+      GET /templates/rc_silhouettematch
+
+      GET /templates/rc_silhouettematch/{id}
+
+      PUT /templates/rc_silhouettematch/{id}
+
+UILock:
+   UI lock status.
+
+   An object of type UILock has the following properties:
+
+   enabled (boolean)
+
+   Template object
+
+      {
+        "enabled": false
+      }
+
+   UILock objects are nested in
+
+   SysInfo
+
+   , and are used in the following requests:
+
+      GET /system/ui_lock
+
+UserSpace:
+   UserSpace information
+
+   An object of type UserSpace has the following properties:
+
+   apps (array of UserSpaceApp) - UserSpace apps
+
+   available (boolean) - UserSpace available
+
+   enabled (boolean) - UserSpace enabled
+
+   proxy (ProxySettings) - see description of ProxySettings
+
+   Template object
+
+      {
+        "apps": [
+          {
+            "containers": [
+              {
+                "description": "string",
+                "health": "string",
+                "host_ports": [
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  },
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  }
+                ],
+                "name": "string",
+                "status": "string",
+                "title": "string",
+                "url": "string",
+                "vendor": "string",
+                "version": "string"
+              },
+              {
+                "description": "string",
+                "health": "string",
+                "host_ports": [
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  },
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  }
+                ],
+                "name": "string",
+                "status": "string",
+                "title": "string",
+                "url": "string",
+                "vendor": "string",
+                "version": "string"
+              }
+            ],
+            "name": "string",
+            "type": "string"
+          },
+          {
+            "containers": [
+              {
+                "description": "string",
+                "health": "string",
+                "host_ports": [
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  },
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  }
+                ],
+                "name": "string",
+                "status": "string",
+                "title": "string",
+                "url": "string",
+                "vendor": "string",
+                "version": "string"
+              },
+              {
+                "description": "string",
+                "health": "string",
+                "host_ports": [
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  },
+                  {
+                    "port": 0,
+                    "protocol": "string"
+                  }
+                ],
+                "name": "string",
+                "status": "string",
+                "title": "string",
+                "url": "string",
+                "vendor": "string",
+                "version": "string"
+              }
+            ],
+            "name": "string",
+            "type": "string"
+          }
+        ],
+        "available": false,
+        "enabled": false,
+        "proxy": {
+          "http_proxy": "string",
+          "https_proxy": "string"
+        }
+      }
+
+   UserSpace objects are used in the following requests:
+
+      GET /userspace
+
+UserSpaceApp:
+   UserSpace app
+
+   An object of type UserSpaceApp has the following properties:
+
+   containers (array of UserSpaceContainer) - containers in this app
+
+   name (string) - name of the app
+
+   type (string) - type of the app (one of container, compose)
+
+   Template object
+
+      {
+        "containers": [
+          {
+            "description": "string",
+            "health": "string",
+            "host_ports": [
+              {
+                "port": 0,
+                "protocol": "string"
+              },
+              {
+                "port": 0,
+                "protocol": "string"
+              }
+            ],
+            "name": "string",
+            "status": "string",
+            "title": "string",
+            "url": "string",
+            "vendor": "string",
+            "version": "string"
+          },
+          {
+            "description": "string",
+            "health": "string",
+            "host_ports": [
+              {
+                "port": 0,
+                "protocol": "string"
+              },
+              {
+                "port": 0,
+                "protocol": "string"
+              }
+            ],
+            "name": "string",
+            "status": "string",
+            "title": "string",
+            "url": "string",
+            "vendor": "string",
+            "version": "string"
+          }
+        ],
+        "name": "string",
+        "type": "string"
+      }
+
+   UserSpaceApp objects are nested in
+
+   UserSpace
+
+   .
+
+UserSpaceContainer:
+   container
+
+   An object of type UserSpaceContainer has the following properties:
+
+   description (string) - value of label
+   org.opencontainers.image.description
+
+   health (string) - health of the container (if container has
+   healthcheck) (one of starting, healthy, unhealthy)
+
+   host_ports (array of HostPort) - Ports exposed on host
+
+   name (string) - name of the container
+
+   status (string) - status of the container (one of restarting,
+   running, paused, exited)
+
+   title (string) - value of label org.opencontainers.image.title
+
+   url (string) - value of label org.opencontainers.image.url
+
+   vendor (string) - value of label org.opencontainers.image.vendor
+
+   version (string) - value of label org.opencontainers.image.version
+
+   Template object
+
+      {
+        "description": "string",
+        "health": "string",
+        "host_ports": [
+          {
+            "port": 0,
+            "protocol": "string"
+          },
+          {
+            "port": 0,
+            "protocol": "string"
+          }
+        ],
+        "name": "string",
+        "status": "string",
+        "title": "string",
+        "url": "string",
+        "vendor": "string",
+        "version": "string"
+      }
+
+   UserSpaceContainer objects are nested in
+
+   UserSpaceApp
+
+   .

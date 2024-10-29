@@ -1,0 +1,172 @@
+UserSpace
+
+UserSpace Informationen einschließlich laufender Apps und ihre
+veröffentlichten Ports können über den userspace Endpunkt abgefragt
+werden. Eine App kann vom Typ ("type") "container" oder "compose"
+(Compose-Stack mit potenziell mehreren Containern) sein.
+
+GET /userspace
+
+   Abruf der UserSpace Informationen.
+
+   Musteranfrage
+
+      GET /api/v2/userspace HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "apps": [
+          {
+            "containers": [
+              {
+                "host_ports": [
+                  {
+                    "port": 8888,
+                    "protocol": "http"
+                  }
+                ],
+                "name": "hello_rc_visard_ng",
+                "status": "running"
+              }
+            ],
+            "name": "hello_rc_visard_ng",
+            "type": "container"
+          },
+          {
+            "containers": [
+              {
+                "host_ports": [
+                  {
+                    "port": 8080,
+                    "protocol": "http"
+                  }
+                ],
+                "name": "grafana",
+                "status": "running"
+              },
+              {
+                "host_ports": [
+                  {
+                    "port": 9090,
+                    "protocol": "http"
+                  }
+                ],
+                "name": "prometheus",
+                "status": "running"
+              }
+            ],
+            "name": "rc_visard_monitoring",
+            "type": "compose"
+          }
+        ],
+        "available": true,
+        "enabled": true
+      }
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabewert: UserSpace)
+
+   Referenzierte Datenmodelle:
+      UserSpace\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-userspace})
+
+PUT /userspace/configure
+
+   UserSpace konfigurieren (aktivieren, deaktivieren oder
+   zurücksetzen).
+
+   Musteranfrage
+
+      PUT /api/v2/userspace/configure?action=<action> HTTP/1.1
+      Accept: application/json application/ubjson
+
+   Anfrageparameter:
+      action (string) -- Durchzuführende Aktion (eine von enable,
+      disable, reset) (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- application/json application/ubjson
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+GET /userspace/proxy
+
+   Abruf der HTTP Proxy Einstellungen für das Pullen von Container-
+   Images und Git Repositories
+
+   Musteranfrage
+
+      GET /api/v2/userspace/proxy HTTP/1.1
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "http_proxy": "http://10.0.1.45:8080",
+        "https_proxy": "http://10.0.1.45:8080"
+      }
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabewert:
+      ProxySettings)
+
+   Referenzierte Datenmodelle:
+      ProxySettings\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-proxysettings})
+
+PUT /userspace/proxy
+
+   Setzen der HTTP Proxy Einstellungen für das Pullen von Container-
+   Images und Git Repositories
+
+   Musteranfrage
+
+      PUT /api/v2/userspace/proxy HTTP/1.1
+      Accept: application/json application/ubjson
+
+      {}
+
+   Beispielantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "http_proxy": "http://10.0.1.45:8080",
+        "https_proxy": "http://10.0.1.45:8080"
+      }
+
+   Request JSON Object:
+      http_proxy (ProxySettings) -- (optional)
+
+   Anfrage-Header:
+      Accept -- application/json application/ubjson
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabewert:
+      ProxySettings)
+
+      400 Bad Request -- ungültige/fehlende Argumente
+
+   Referenzierte Datenmodelle:
+      ProxySettings\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-proxysettings})

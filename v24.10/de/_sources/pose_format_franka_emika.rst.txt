@@ -1,0 +1,93 @@
+Franka Emika Posenformat
+
+Franka Emika Roboter nutzen eine Transformationsmatrix T um eine Pose
+zu definieren. Eine Transformationsmatrix kombiniert eine
+Rotationsmatrix R und einen Translationsvektor t=(\begin{array}{cccc}x
+& y & z\end{array})^T.
+
+   T = \left(\begin{array}{cccc}   r_{00} & r_{01} & r_{02} & x\\
+   r_{10} & r_{11} & r_{12} & y\\   r_{20} & r_{21} & r_{22} & z\\   0
+   &   0    &   0    & 1 \end{array}\right)
+
+Die Posen, die Franka Emika's "Measure Pose" App ausgibt, bestehen aus
+einer Translation x, y, z in Millimetern und einer Rotation x, y, z in
+Grad. Die Rotationsreihenfolge ist z-y'-x'' (d.h. x-y-z) und die
+Rotation wird berechnet durch r_z(z) r_y(y) r_x(x).
+
+Umrechnung von Transformation in Quaternion
+
+Die Umrechnung von einer Rotationsmatrix (mit det(R)=1) in eine
+Quaternion q=(\begin{array}{cccc}q_x & q_y & q_z & q_w\end{array})
+kann wie folgt durchgeführt werden.
+
+   q_x &= \text{sign}(r_{21}-r_{12}) \frac{1}{2}\sqrt{\text{max}(0, 1
+   + r_{00} - r_{11} - r_{22})} \\ q_y &= \text{sign}(r_{02}-r_{20})
+   \frac{1}{2}\sqrt{\text{max}(0, 1 - r_{00} + r_{11} - r_{22})} \\
+   q_z &= \text{sign}(r_{10}-r_{01}) \frac{1}{2}\sqrt{\text{max}(0, 1
+   - r_{00} - r_{11} + r_{22})} \\ q_w &=
+   \frac{1}{2}\sqrt{\text{max}(0, 1 + r_{00} + r_{11} + r_{22})}
+
+Der \text{sign} Operator gibt -1 zurück, falls sein Argument negativ
+ist. Sonst wird 1 zurück gegeben. Er wird zur Wiederherstellung das
+Vorzeichens der Wurzel benutzt. Die \text{max} Funktion stellt sicher,
+dass das Argument der Wurzel nicht negativ ist, was in der Praxis
+durch Rundungsfehler passieren kann.
+
+Umrechnung von Rotation-XYZ in Quaternion
+
+Zur Umrechnung von der Rotationswinkel x, y, z in Grad in eine
+Quaternion q=(\begin{array}{cccc}q_x & q_y & q_z & q_w\end{array})
+werden zuerst alle Winkel in das Bogenmaß umgerechnet mit
+
+   X_r = x \frac{\pi}{180} \text{,} \\ Y_r = y \frac{\pi}{180}
+   \text{,} \\ Z_r = z \frac{\pi}{180} \text{,} \\
+
+und damit die Quaternion berechnet durch
+
+   q_x = \cos{(Z_r/2)}\cos{(Y_r/2)}\sin{(X_r/2)} -
+   \sin{(Z_r/2)}\sin{(Y_r/2)}\cos{(X_r/2)} \text{,} \\ q_y =
+   \cos{(Z_r/2)}\sin{(Y_r/2)}\cos{(X_r/2)} +
+   \sin{(Z_r/2)}\cos{(Y_r/2)}\sin{(X_r/2)} \text{,} \\ q_z =
+   \sin{(Z_r/2)}\cos{(Y_r/2)}\cos{(X_r/2)} -
+   \cos{(Z_r/2)}\sin{(Y_r/2)}\sin{(X_r/2)} \text{,} \\ q_w =
+   \cos{(Z_r/2)}\cos{(Y_r/2)}\cos{(X_r/2)} +
+   \sin{(Z_r/2)}\sin{(Y_r/2)}\sin{(X_r/2)} \text{.}
+
+Umrechnung von Quaternion und Translation in Transformation
+
+Die Umrechnung von einer Quaternion q=(\begin{array}{cccc}q_x & q_y &
+q_z & q_w\end{array}) und einem Translationsvektor
+t=(\begin{array}{cccc}x & y & z\end{array})^T in eine
+Transformationsmatrix T kann wie folgt durchgeführt werden.
+
+   T = \left(\begin{array}{cccc}   1 - 2s(q_y^2+q_z^2)  & 2s(q_x q_y-
+   q_z q_w) & 2s(q_x q_z+q_y q_w) & x\\   2s(q_x q_y+q_z q_w)    & 1 -
+   2s(q_x^2+q_z^2) & 2s(q_y q_z-q_x q_w) & y\\   2s(q_x q_z-q_y q_w)
+   & 2s(q_y q_z+q_x q_w)   & 1 - 2s(q_x^2+q_y^2) & z\\   0         &
+   0     &    0                    & 1 \end{array}\right)
+
+wobei s=||q||^{-2}=\frac{1}{q_x^2+q_y^2+q_z^2+q_w^2} und s=1 wenn q
+eine Einheitsquaternion ist.
+
+Umrechnung von Quaternion in Rotation-XYZ
+
+Die Umrechnung von einer Quaternion q=(\begin{array}{cccc}q_x & q_y &
+q_z & q_w\end{array}) mit ||q||=1 in x, y, z Winkel in Grad kann wie
+folgt durchgeführt werden.
+
+   x &= \text{atan}_2{(2(q_w q_z + q_x q_y), 1 - 2(q_y^2 + q_z^2))}
+   \frac{180}{\pi}  \\ y &= \text{asin}{(2(q_w q_y - q_z q_x))}
+   \frac{180}{\pi} \\ z &= \text{atan}_2{(2(q_w q_x + q_y q_z), 1 -
+   2(q_x^2 + q_y^2))} \frac{180}{\pi}
+
+Posenrepräsentation in RaceCom Messages und Statemachines
+
+In RaceCom Messages und in Statemachines wird eine Pose normalerweise
+als eindimensionales Array aus 16 Floatwerten definiert, die in
+spaltenweiser Anordnung eine Transformationsmatrix repräsentieren. Die
+Indizes der Einträge der folgenden Matrix entsprechen den Array-
+Indizes.
+
+   T = \left(\begin{array}{cccc}   a_0 & a_4 & a_8    & a_{12}\\   a_1
+   & a_5 & a_9    & a_{13}\\   a_2 & a_6 & a_{10} & a_{14}\\   a_3 &
+   a_7 & a_{11} & a_{15} \end{array}\right)

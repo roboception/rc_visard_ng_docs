@@ -1,0 +1,558 @@
+KUKA Ethernet KRL Schnittstelle
+
+Der
+
+rc_visard NG
+
+ stellt ein Ethernet KRL Interface (EKI-Bridge) zur Verfügung, welches
+eine Kommunikation von KUKA KRL via KUKA.EthernetKRL XML mit dem
+
+rc_visard NG
+
+ erlaubt.
+
+Bemerkung: Dieses Modul ist optional und benötigt eine gesonderte
+  EKIBridge-
+
+  Lizenz
+
+  .
+
+Bemerkung: Das KUKA.EthernetKRL add-on Software-Paket Version 2.2
+  oder neuer muss auf der Robotersteuerung aktiviert sein, um dieses
+  Modul zu benutzen.
+
+Die EKI-Bridge kann benutzt werden, um programmatisch
+
+Serviceanfragen auszuführen, z.B. um individuelle Module zu starten
+und stoppen, oder um angebotene Services wie z.B. die Hand-Auge-
+Kalibrierung oder Berechnung von Greifposen zu nutzen,
+
+Laufzeitparameter abzufragen und zu ändern, z.B. der Kamera oder
+Disparitätsberechnung.
+
+Bemerkung: Eine bekannte Einschränkung der EKI Bridge ist, dass
+  Strings, die valide Zahlen darstellen, nach int/float konvertiert
+  werden. Daher sollten benutzerdefinierte Namen (wie ROI IDs, etc.)
+  immer mindestens einen Buchstaben enthalten, sodass diese als
+  Serviceargumente benutzt werden können.
+
+Konfiguration der Ethernet-Verbindung
+
+Die EKI-Bridge hört auf Port 7000 auf EKI-XML-Nachrichten und
+übersetzt diese transparent zur
+
+rc_visard NG
+
+
+REST-API v2
+
+. Die empfangenen EKI-Nachrichten werden in JSON umgewandelt und an
+die
+
+rc_visard NG
+
+ REST-API weitergeleitet. Die Antwort der REST-API wird anschließend
+zurück in EKI-XML gewandelt.
+
+Die EKI-Bridge erlaubt den Zugriff auf Laufzeitparameter und Services
+aller Module, die in
+
+Softwaremodule
+
+ beschrieben sind.
+
+Für jedes Softwaremodul, das Laufzeitparameter anbietet, gibt es eine
+XML-Konfigurationsdatei, um die Parameter abzufragen und zu setzen.
+Diese sind nach dem Schema "<node_name>-parameters.xml" benannt. Für
+jeden Service eines Softwaremoduls gibt eine eigene XML-
+Konfigurationsdatei. Diese ist nach dem Schema
+"<node_name>-<service_name>.xml" benannt.
+
+Die IP des
+
+rc_visard NG
+
+ im Netzwerk muss in der XML Datei eingetragen werden.
+
+Diese Konfigurationsdateien müssen im Verzeichnis
+"C:\KRC\ROBOTER\Config\User\Common\EthernetKRL" auf der
+Robotersteuerung abgelegt werden. Sie werden gelesen, sobald eine
+Verbindung initialisiert wird.
+
+Um z.B. eine Ethernet-Verbindung mit dem Ziel aufzubauen, um die
+"rc_stereomatching"-Parameter zu konfigurieren, ist der folgende KRL-
+Code notwendig.
+
+      DECL EKI_Status RET
+      RET = EKI_INIT("rc_stereomatching-parameters")
+      RET = EKI_Open("rc_stereomatching-parameters")
+
+      ; ----------- Desired operation -----------
+
+      RET = EKI_Close("rc_stereomatching-parameters")
+
+Bemerkung: Die EKI-Bridge terminiert automatisch die Verbindung zum
+  Client, wenn eine empfangene XML-Nachricht ungültig ist.
+
+Allgemeine XML-Struktur
+
+Für die Datenanfrage nutzt die EKI-Bridge "<req>" als Wurzelelement
+(kurz für "Request").
+
+Das Wurzelelement enthält immer die folgenden Elemente.
+
+<node>: Dieses enthält ein Unterelement, über das die EKI-Bridge das
+Ziel-Softwaremodul identifiziert. Der Modulname ist bereits in der
+XML-Konfigurationsdatei vorausgefüllt.
+
+<end_of_request>: "End-of-Request" Flag, das das Ende der Anfrage
+markiert und diese auslöst.
+
+Die generische XML-Struktur sieht wie folgt aus.
+
+      <SEND>
+        <XML>
+          <ELEMENT Tag="req/node/<node_name>" Type="STRING"/>
+          <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+        </XML>
+      </SEND>
+
+Für den Datenempfang nutzt die EKI-Bridge "<res>" als Wurzelelement
+(kurz für "Response"). Das Wurzelelement enthält immer ein
+"<return_code>" Unterelement.
+
+      <RECEIVE>
+        <XML>
+          <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+          <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+          <ELEMENT Tag="res" Set_Flag="998"/>
+        </XML>
+      </RECEIVE>
+
+Bemerkung: Standardmäßig ist in den Konfigurationsdateien 998 als
+  Flag angegeben, über welches KRL benachrichtigt wird, sobald eine
+  Antwortnachricht empfangen wurde. Falls dieser Wert bereits in
+  Benutzung ist, sollte dieser in der entsprechenden
+  Konfigurationsdatei geändert werden.
+
+Rückgabecode
+
+Das "<return_code>"-Element enthält die Attribute "value" und
+"message".
+
+Wie für alle anderen Softwaremodule gibt eine erfolgreiche Anfrage ein
+"res/return_code/@value" mit dem Wert 0 zurück. Negative Werte geben
+an, dass die Anfrage fehlgeschlagen ist. Die Fehlermeldung ist in
+"res/return_code/@message" enthalten. Positive Werte geben an, dass
+die Anfrage erfolgreich war, aber weitere Informationen in
+"res/return_code/@message" enthalten sind.
+
+Die folgenden Rückgabecodes können von der EKI-Bridge zurückgegeben
+werden:
+
+Rückgabecodes der EKI-Bridge      Code  Beschreibung  0  Erfolgreich
+-1  Parsing-Fehler in der Konvertierung von XML zu JSON  -2  Interner
+Fehler  -5  Verbindungsfehler von der REST-API  -9  Fehlende oder
+ungültige Lizenz für das EKI-Bridge-Modul
+
+Bemerkung: Die EKI-Bridge liefert auch Rückgabecodes spezifisch zu
+  den individuellen Softwaremodulen zurück. Diese sind im jeweiligen
+
+  Softwaremodul
+
+   dokumentiert.
+
+Bemerkung: Aufgrund von Limitierungen in KRL ist die maximale Länge
+  eines Strings, der von der EKI-Bridge zurückgegeben wird, auf 512
+  Zeichen begrenzt. Alle längeren Strings werden gekürzt.
+
+Services
+
+Das XML-Schema für die Services der Softwaremodule wird aus den
+Argumenten und der Antwort in
+
+JavaScript Object Notation (JSON)
+
+ generiert, wie in
+
+Softwaremodule
+
+ beschrieben. Diese Umwandlung ist bis auf die unten beschriebenen
+Regeln transparent.
+
+Konvertierung von Posen:
+
+   Eine Pose ist ein JSON-Objekt, das die Schlüssel "position" und
+   "orientation" enthält.
+
+         {
+           "pose": {
+             "position": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64",
+             },
+             "orientation": {
+               "x": "float64",
+               "y": "float64",
+               "z": "float64",
+               "w": "float64",
+             }
+           }
+         }
+
+   Dieses JSON-Objekt wird zu einem KRL "FRAME" in der XML-Nachricht
+   konvertiert.
+
+         <pose X="..." Y="..." Z="..." A="..." B="..." C="..."></pose>
+
+   Positionen werden von Metern in Millimetern umgerechnet und
+   Orientierungen von Quaternionen in das KUKA-ABC-Format (in Grad).
+
+   Bemerkung: Es werden in der EKI-Bridge keine anderen
+     Größenumrechnungen vorgenommen. Alle Abmessungen und 3D-
+     Koordinaten, die nicht zu einer Pose gehören, werden in Metern
+     erwartet und zurückgegeben.
+
+Arrays:
+
+   Arrays enthalten die Unterelemente "<le>" (kurz für "List
+   Element"). Als Beispiel wird das JSON-Objekt
+
+         {
+           "rectangles": [
+             {
+               "x": "float64",
+               "y": "float64"
+             }
+           ]
+         }
+
+   in das folgende XML-Fragment konvertiert
+
+         <rectangles>
+           <le>
+             <x>...</x>
+             <y>...</y>
+           </le>
+         </rectangles>
+
+XML-Attribute:
+
+   Alle JSON-Schlüssel, deren Wert ein primitiver Datentyp ist und die
+   nicht zu einem Array gehören, werden in XML-Attributen gespeichert.
+   Als Beispiel wird das JSON-Objekt
+
+         {
+           "item": {
+             "uuid": "string",
+             "confidence": "float64",
+             "rectangle": {
+               "x": "float64",
+               "y": "float64"
+             }
+           }
+         }
+
+   in das folgende XML-Fragment konvertiert
+
+         <item uuid="..." confidence="...">
+           <rectangle x="..." y="...">
+           </rectangle>
+         </item>
+
+Anfrage-XML-Struktur
+
+Das "<SEND>"-Element in der XML-Konfigurationsdatei für einen
+generischen Service folgt der folgenden Spezifikation:
+
+      <SEND>
+        <XML>
+          <ELEMENT Tag="req/node/<node_name>" Type="STRING"/>
+          <ELEMENT Tag="req/service/<service_name>" Type="STRING"/>
+          <ELEMENT Tag="req/args/<argX>" Type="<argX_type>"/>
+          <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+        </XML>
+      </SEND>
+
+Das "<service>"-Element hat ein XML-Unterelement, über das die EKI-
+Bridge den angefragten Service identifiziert. Es ist bereits
+vorausgefüllt in der Konfigurationsdatei enthalten.
+
+Das "<args>" Element beinhaltet die Service-Argumente. Diese können
+jeweils mit der KRL-Instruktion "EKI_Set<Type>" gesetzt werden.
+
+Beispielsweise sieht das "<SEND>"-Element des "rc_load_carrier_db"
+"get_load_carriers" Services (siehe
+
+LoadCarrierDB
+
+) wie folgt aus.
+
+      <SEND>
+        <XML>
+          <ELEMENT Tag="req/node/rc_load_carrier_db" Type="STRING"/>
+          <ELEMENT Tag="req/service/get_load_carriers" Type="STRING"/>
+          <ELEMENT Tag="req/args/load_carrier_ids/le" Type="STRING"/>
+          <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+        </XML>
+      </SEND>
+
+Das "<end_of_request>"-Element erlaubt es, Anfragen mit Arrays zu
+übermitteln. Um ein Array zu senden, wird die Anfrage in so viele
+Nachrichten wie Array-Elemente aufgeteilt. Die letzte Nachricht
+beinhaltet alle XML-Tags inklusive dem "<end_of_request>"-Flag,
+während alle anderen Nachrichten jeweils nur ein Array-Element
+enthalten.
+
+Um z.B. zwei Load-Carrier-Modelle mit dem "get_load_carriers" Service
+vom "rc_load_carrier_db" abzufragen, muss der Nutzer zwei XML-
+Nachrichten senden. Die erste XML-Nachricht lautet:
+
+      <req>
+        <args>
+          <load_carrier_ids>
+            <le>load_carrier1</le>
+          </load_carrier_ids>
+        </args>
+      </req>
+
+Diese Nachricht kann über KRL mit dem "EKI_Send" Kommando gesendet
+werden, indem das Listenelement als Pfad angegeben wird.
+
+      DECL EKI_STATUS RET
+      RET = EKI_SetString("rc_load_carrier_db-get_load_carriers", "req/args/load_carrier_ids/le", "load_carrier1")
+      RET = EKI_Send("rc_load_carrier_db-get_load_carriers", "req/args/load_carrier_ids/le")
+
+Die zweite Nachricht beinhaltet alle XML-Tags und löst die Anfrage
+beim "rc_load_carrier_db" Softwaremodul aus.
+
+      <req>
+        <node>
+          <rc_load_carrier_db></rc_load_carrier_db>
+        </node>
+        <service>
+          <get_load_carriers></get_load_carriers>
+        </service>
+        <args>
+          <load_carrier_ids>
+            <le>load_carrier2</le>
+          </load_carrier_ids>
+        </args>
+        <end_of_request></end_of_request>
+      </req>
+
+Diese Nachricht kann über KRL gesendet werden, indem "req" als Pfad
+für "EKI_Send" angegeben wird:
+
+      DECL EKI_STATUS RET
+      RET = EKI_SetString("rc_load_carrier_db-get_load_carriers", "req/args/load_carrier_ids/le", "load_carrier2")
+      RET = EKI_Send("rc_load_carrier_db-get_load_carriers", "req")
+
+Antwort-XML-Struktur
+
+Das "<SEND>"-Element in der XML-Konfigurationsdatei für einen
+generischen Service folgt der folgenden Spezifikation:
+
+      <RECEIVE>
+        <XML>
+          <ELEMENT Tag="res/<resX>" Type="<resX_type>"/>
+          <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+          <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+          <ELEMENT Tag="res" Set_Flag="998"/>
+        </XML>
+      </RECEIVE>
+
+Beispielsweise sieht das "<RECEIVE>"-Element des "rc_april_tag_detect"
+"detect" Services (siehe
+
+TagDetect
+
+) wie folgt aus.
+
+      <RECEIVE>
+        <XML>
+          <ELEMENT Tag="res/timestamp/@sec" Type="INT"/>
+          <ELEMENT Tag="res/timestamp/@nsec" Type="INT"/>
+          <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+          <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+          <ELEMENT Tag="res/tags/le/pose_frame" Type="STRING"/>
+          <ELEMENT Tag="res/tags/le/timestamp/@sec" Type="INT"/>
+          <ELEMENT Tag="res/tags/le/timestamp/@nsec" Type="INT"/>
+          <ELEMENT Tag="res/tags/le/pose/@X" Type="REAL"/>
+          <ELEMENT Tag="res/tags/le/pose/@Y" Type="REAL"/>
+          <ELEMENT Tag="res/tags/le/pose/@Z" Type="REAL"/>
+          <ELEMENT Tag="res/tags/le/pose/@A" Type="REAL"/>
+          <ELEMENT Tag="res/tags/le/pose/@B" Type="REAL"/>
+          <ELEMENT Tag="res/tags/le/pose/@C" Type="REAL"/>
+          <ELEMENT Tag="res/tags/le/instance_id" Type="STRING"/>
+          <ELEMENT Tag="res/tags/le/id" Type="STRING"/>
+          <ELEMENT Tag="res/tags/le/size" Type="REAL"/>
+          <ELEMENT Tag="res" Set_Flag="998"/>
+        </XML>
+      </RECEIVE>
+
+Bei Arrays beinhaltet die Antwort mehrere Instanzen des gleichen XML-
+Elements. Jedes Element wird in einen separaten Puffer in EKI
+geschrieben und kann daraus mit KRL-Instruktionen ausgelesen werden.
+Die Anzahl an Instanzen (Array-Elementen) kann über "EKI_CheckBuffer"
+abgefragt werden und jede Instanz mit "EKI_Get<Type>" ausgelesen
+werden.
+
+Beispielsweise können die Ergebnisposen aus einer Antwort des
+"rc_april_tag_detect" "detect" Services in KRL wie folgt ausgelesen
+werden:
+
+      DECL EKI_STATUS RET
+      DECL INT i
+      DECL INT num_instances
+      DECL FRAME poses[32]
+
+      DECL FRAME pose = {X 0.0, Y 0.0, Z 0.0, A 0.0, B 0.0, C 0.0}
+
+      RET = EKI_CheckBuffer("rc_april_tag_detect-detect", "res/tags/le/pose")
+      num_instances = RET.Buff
+      for i=1 to num_instances
+        RET = EKI_GetFrame("rc_april_tag_detect-detect", "res/tags/le/pose", pose)
+        poses[i] = pose
+      endfor
+      RET = EKI_ClearBuffer("rc_april_tag_detect-detect", "res")
+
+Bemerkung: Vor jeder Anfrage über EKI zum
+
+  rc_visard NG
+
+   sollten alle Puffer geleert werden, um sicherzustellen, dass nur
+  die aktuelle Antwort in den EKI-Puffern enthalten ist.
+
+Parameter
+
+Die Parameter aller Softwaremodule können über die EKI-Bridge
+ausgelesen und gesetzt werden. Die XML-Konfigurationsdatei für ein
+generisches Softwaremodul folgt dieser Spezifikation:
+
+      <SEND>
+        <XML>
+          <ELEMENT Tag="req/node/<node_name>" Type="STRING"/>
+          <ELEMENT Tag="req/parameters/<parameter_x>/@value" Type="INT"/>
+          <ELEMENT Tag="req/parameters/<parameter_y>/@value" Type="STRING"/>
+          <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+        </XML>
+      </SEND>
+      <RECEIVE>
+        <XML>
+          <ELEMENT Tag="res/parameters/<parameter_x>/@value" Type="INT"/>
+          <ELEMENT Tag="res/parameters/<parameter_x>/@default" Type="INT"/>
+          <ELEMENT Tag="res/parameters/<parameter_x>/@min" Type="INT"/>
+          <ELEMENT Tag="res/parameters/<parameter_x>/@max" Type="INT"/>
+          <ELEMENT Tag="res/parameters/<parameter_y>/@value" Type="REAL"/>
+          <ELEMENT Tag="res/parameters/<parameter_y>/@default" Type="REAL"/>
+          <ELEMENT Tag="res/parameters/<parameter_y>/@min" Type="REAL"/>
+          <ELEMENT Tag="res/parameters/<parameter_y>/@max" Type="REAL"/>
+          <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+          <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+          <ELEMENT Tag="res" Set_Flag="998"/>
+        </XML>
+      </RECEIVE>
+
+Die Anfrage wird als Anfrage zum
+
+Lesen
+
+ von Parametern interpretiert, wenn die "value"-Attribute aller
+Parameter leer sind. Falls mindestens ein "value"-Attribut befüllt
+ist, wird die Anfrage als Anfrage zum
+
+Setzen
+
+ von Parametern interpretiert und die befüllten Parameter gesetzt.
+
+Beispielsweise können die aktuellen Werte aller Parameter von
+"rc_stereomatching" mit der folgenden XML-Nachricht abgefragt werden:
+
+      <req>
+        <node>
+          <rc_stereomatching></rc_stereomatching>
+        </node>
+        <parameters></parameters>
+        <end_of_request></end_of_request>
+      </req>
+
+Diese XML-Nachricht kann folgendermaßen über KRL gesendet werden:
+
+      DECL EKI_STATUS RET
+      RET = EKI_Send("rc_stereomatching-parameters", "req")
+
+Die Antwort der EKI-Bridge enthält alle Parameter:
+
+      <res>
+        <parameters>
+          <acquisition_mode default="Continuous" max="" min="" value="Continuous"/>
+          <quality default="High" max="" min="" value="High"/>
+          <static_scene default="0" max="1" min="0" value="0"/>
+          <seg default="200" max="4000" min="0" value="200"/>
+          <smooth default="1" max="1" min="0" value="1"/>
+          <fill default="3" max="4" min="0" value="3"/>
+          <minconf default="0.5" max="1.0" min="0.5" value="0.5"/>
+          <mindepth default="0.1" max="100.0" min="0.1" value="0.1"/>
+          <maxdepth default="100.0" max="100.0" min="0.1" value="100.0"/>
+          <maxdeptherr default="100.0" max="100.0" min="0.01" value="100.0"/>
+        </parameters>
+        <return_code message="" value="0"/>
+      </res>
+
+Der "quality"-Parameter von "rc_stereomatching" kann mit folgender
+XML-Nachricht auf "Low" gesetzt werden:
+
+      <req>
+          <node>
+            <rc_stereomatching></rc_stereomatching>
+          </node>
+          <parameters>
+            <quality value="Low"></quality>
+          </parameters>
+          <end_of_request></end_of_request>
+      </req>
+
+Diese XML-Nachricht kann folgendermaßen über KRL gesendet werden:
+
+      DECL EKI_STATUS RET
+      RET = EKI_SetString("rc_stereomatching-parameters", "req/parameters/quality/@value", "Low")
+      RET = EKI_Send("rc_stereomatching-parameters", "req")
+
+In diesem Fall wird nur der gesetzte Wert von "quality" zurückgegeben:
+
+      <res>
+        <parameters>
+          <quality default="High" max="" min="" value="Low"/>
+        </parameters>
+        <return_code message="" value="0"/>
+      </res>
+
+Beispielanwendungen
+
+Ausführlichere Beispielanwendungen können unter
+
+https://github.com/roboception/eki_examples
+
+ abgerufen werden.
+
+Fehlerbehebung
+
+SmartPad Fehlermeldung: Limit of element memory reached
+
+Dieser Fehler kann auftreten, wenn die Anzahl der Matches das
+Speicherlimit überschreitet.
+
+Erhöhen Sie den Wert BUFFERING und setzen Sie BUFFSIZE in den EKI
+Konfigurationsdateien. Passen Sie diese Einstellungen an Ihre
+spezielle KRC an.
+
+Verringern Sie den Parameter 'Maximale Matches' im Detektionsmodul.
+
+Selbst wenn das Gesamtspeicherlimit (BUFFSIZE) einer Nachricht nicht
+erreicht wird, kann die KRC die Anzahl der Elemente im XML-Baum
+möglicherweise nicht analysieren, wenn das BUFFERING-Limit zu klein
+ist. Wenn Ihre Anwendung beispielsweise 50 verschiedene Greifpunkte
+vorschlägt, muss das BUFFERING-Limit ebenfalls 50 betragen.

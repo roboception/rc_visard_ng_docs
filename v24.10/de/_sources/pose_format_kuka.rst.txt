@@ -1,0 +1,37 @@
+KUKA XYZ-ABC Format
+
+KUKA Roboter nutzen das sogenannte XYZ-ABC Format. XYZ ist die
+Position in Millimetern. ABC sind Winkel in Grad, wobei A um die
+z-Achse rotiert, B rotiert um die y-Achse und C rotiert um die
+x-Achse. Die Rotationsreihenfolge ist z-y'-x'' (i.e. x-y-z) und wird
+berechnet durch r_z(A) r_y(B) r_x(C).
+
+Umrechnung von KUKA-ABC in Quaternionen
+
+Zur Umrechnung von ABC Winkeln in Grad in eine Quaternion
+q=(\begin{array}{cccc}x & y & z & w\end{array}) werden zuerst alle
+Winkel in das Bogenmaß umgerechnet mit
+
+   A_r = A \frac{\pi}{180} \text{,} \\ B_r = B \frac{\pi}{180}
+   \text{,} \\ C_r = C \frac{\pi}{180} \text{,} \\
+
+und damit die Quaternion berechnet durch
+
+   x = \cos{(A_r/2)}\cos{(B_r/2)}\sin{(C_r/2)} -
+   \sin{(A_r/2)}\sin{(B_r/2)}\cos{(C_r/2)} \text{,} \\ y =
+   \cos{(A_r/2)}\sin{(B_r/2)}\cos{(C_r/2)} +
+   \sin{(A_r/2)}\cos{(B_r/2)}\sin{(C_r/2)} \text{,} \\ z =
+   \sin{(A_r/2)}\cos{(B_r/2)}\cos{(C_r/2)} -
+   \cos{(A_r/2)}\sin{(B_r/2)}\sin{(C_r/2)} \text{,} \\ w =
+   \cos{(A_r/2)}\cos{(B_r/2)}\cos{(C_r/2)} +
+   \sin{(A_r/2)}\sin{(B_r/2)}\sin{(C_r/2)} \text{.}
+
+Umrechnung von Quaternionen in KUKA-ABC
+
+Die Umrechnung von einer Quaternion q=(\begin{array}{cccc}x & y & z &
+w\end{array}) mit ||q||=1 in ABC Winkel in Grad kann wie folgt
+durchgeführt werden.
+
+   A &= \text{atan}_2{(2(wz + xy), 1 - 2(y^2 + z^2))} \frac{180}{\pi}
+   \\ B &= \text{asin}{(2(wy - zx))} \frac{180}{\pi} \\ C &=
+   \text{atan}_2{(2(wx + yz), 1 - 2(x^2 + y^2))} \frac{180}{\pi}

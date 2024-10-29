@@ -1,0 +1,401 @@
+Measure
+
+Einleitung
+
+Das Measure Modul ermöglicht die Messung von Tiefenwerten in einer
+Region of Interest.
+
+Das Measure Modul ist ein Modul, welches intern auf dem
+
+rc_visard NG
+
+ läuft.
+
+Tiefe messen
+
+Das Measure Modul bietet Funktionen zum Messen von Tiefenwerten in der
+aktuellen Szene in einer 2D Region of Interest. Optional kann die
+Region of Interest in bis zu 100 Zellen unterteilt werden, für die
+separate Tiefenmessungen erfolgen, die zusätzlich zu den
+Tiefenmessungen für die gesamte Region of Interest zurückgegeben
+werden.
+
+Die Tiefenmessung besteht aus der durchschnittlichen Tiefe "mean_z",
+der minimalen Tiefe "min_z" und der maximalen Tiefe "max_z", die
+jeweils 3D-Koordinaten enthalten. Die Koordinaten der Messungen
+"min_z" und "max_z" entsprechen dem Punkt in der Zelle oder der
+gesamten Region of Interest mit dem minimalen bzw. maximalen Abstand
+von der Kamera. Die "x"- und "y"-Koordinaten der "mean_z"-Messungen
+definieren einen Punkt in der Mitte der Zelle oder der gesamten Region
+of Interest und die "z"-Koordinate wird aus dem Durchschnitt aller
+Tiefenwerte (Entfernungen von der Kamera) in diesem Bereich bestimmt.
+Darüber hinaus wird für jede Zelle und die gesamte Region of Interest
+ein "coverage" Wert zurückgegeben. Dabei handelt es sich um eine Zahl
+zwischen 0 und 1, die den Anteil der gültigen Tiefenwerte innerhalb
+der jeweiligen Region widerspiegelt. Ein "coverage" Wert von 0
+bedeutet, dass die Zelle ungültig ist und kein Tiefenwert berechnet
+werden konnte.
+
+Wenn als Referenzkoordinatensystem ("pose_frame") "external" für die
+Tiefenmessungen verwendet wird, werden alle 3D-Koordinaten wie oben
+beschrieben berechnet, dann aber in das externe Koordinatensystem
+transformiert. Das heißt, die Tiefe wird immer entlang der Sichtlinie
+der Kamera gemessen, unabhängig vom gewählten
+Referenzkoordinatensystem.
+
+Wechselwirkung mit anderen Modulen
+
+Die folgenden, intern auf dem
+
+rc_visard NG
+
+ laufenden Module liefern Daten für das Measure Modul oder haben
+Einfluss auf die Datenverarbeitung.
+
+Bemerkung: Jede Konfigurationsänderung dieser Module kann direkte
+  Auswirkungen auf die Qualität oder das Leistungsverhalten des
+  Measure Moduls haben.
+
+Tiefenbilder
+
+Folgende Daten werden vom Measure Modul verarbeitet:
+
+Die Disparitätsbilder des Stereo-Matching-Moduls (rc_stereomatching,
+Abschnitt \ref{stereo_matching:sect-stereo-matching}).
+
+IOControl und Projektor-Kontrolle
+
+Für den Anwendungsfall, dass der
+
+rc_visard NG
+
+ zusammen mit einem externen Musterprojektor und dem Modul für
+
+IOControl und Projektor-Kontrolle
+
+ ("rc_iocontrol") betrieben wird, wird empfohlen, den Projektor an
+GPIO Out 1 anzuschließen und den Aufnahmemodus des Stereokamera-Moduls
+auf "SingleFrameOut1" zu setzen (siehe
+
+Stereomatching-Parameter
+
+), damit bei jedem Aufnahme-Trigger ein Bild mit und ohne
+Projektormuster aufgenommen wird.
+
+Alternativ kann der verwendete digitale Ausgang in den Betriebsmodus
+"ExposureAlternateActive" geschaltet werden (siehe
+
+Beschreibung der Laufzeitparameter
+
+).
+
+In beiden Fällen sollte die Belichtungszeitregelung ("exp_auto_mode")
+auf "AdaptiveOut1" gesetzt werden, um die Belichtung beider Bilder zu
+optimieren (siehe
+
+Stereokamera-Parameter
+
+).
+
+Darüber hinaus sind keine weiteren Änderungen für diesen
+Anwendungsfall notwendig.
+
+Hand-Auge-Kalibrierung
+
+Falls die Kamera zu einem Roboter kalibriert wurde, kann das Measure
+Modul automatisch Punkte im Roboterkoordinatensystem ausgeben. Für die
+
+Services
+
+ kann das Koordinatensystem der berechneten Punkte mit dem Argument
+"pose_frame" spezifiziert werden.
+
+Zwei verschiedene Werte für "pose_frame" können gewählt werden:
+
+Kamera-Koordinatensystem (camera): Alle Punkte sind im Kamera-
+Koordinatensystem angegeben und es ist kein zusätzliches Wissen über
+die Lage der Kamera in seiner Umgebung notwendig. Es liegt daher in
+der Verantwortung des Anwenders, in solchen Fällen die entsprechenden
+Punkte der Situation entsprechend zu aktualisieren (beispielsweise für
+den Anwendungsfall einer robotergeführten Kamera).
+
+Benutzerdefiniertes externes Koordinatensystem (external): Alle Punkte
+sind im sogenannten externen Koordinatensystem angegeben, welches vom
+Nutzer während der Hand-Auge-Kalibrierung gewählt wurde. In diesem
+Fall bezieht das Measure Modul alle notwendigen Informationen über die
+Kameramontage und die kalibrierte Hand-Auge-Transformation automatisch
+vom Modul Hand-Auge-Kalibrierung\:(Abschnitt \ref{handeye_calibration
+:sect-handeye-calibration}). Für den Fall einer robotergeführten
+Kamera ist vom Nutzer zusätzlich die jeweils aktuelle Roboterpose
+robot_pose anzugeben.
+
+Bemerkung: Wenn keine Hand-Auge-Kalibrierung durchgeführt wurde bzw.
+  zur Verfügung steht, muss als Referenzkoordinatensystem "pose_frame"
+  immer "camera" angegeben werden.
+
+Zulässige Werte zur Angabe des Referenzkoordinatensystems sind
+"camera" und "external". Andere Werte werden als ungültig
+zurückgewiesen.
+
+Parameter
+
+Das Measure Modul wird in der REST-API als "rc_measure" bezeichnet und
+in der
+
+Web GUI
+
+  unter Module ‣ Measure dargestellt.
+
+Übersicht über die Parameter
+
+Dieses Modul besitzt keine Laufzeitparameter.
+
+Statuswerte
+
+Das Measure Modul meldet folgende Statuswerte:
+
+Statuswerte des rc_measure Moduls      Name  Beschreibung
+data_acquisition_time  Zeit in Sekunden, für die beim letzten Aufruf
+auf Tiefenbilddaten gewartet werden musste  last_timestamp_processed
+Zeitstempel des letzten verarbeiteten Tiefenbilds  processing_time
+Berechnungszeit für die letzte Messung in Sekunden
+
+Services
+
+Die angebotenen Services des Measure Moduls können mithilfe der
+
+REST-API-Schnittstelle
+
+ oder der
+
+rc_visard NG
+
+
+Web GUI
+
+ auf der Seite
+
+Measure
+
+ unter dem Menüpunkt
+
+Module
+
+ ausprobiert und getestet werden.
+
+Das Measure Modul stellt folgende Services zur Verfügung.
+
+measure_depth
+
+   Berechnet die durchschnittliche, minimale und maximale Tiefe in
+   einer angegebenen Region of Interest, die optional in Zellen
+   unterteilt werden kann.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_measure/services/measure_depth
+
+   API version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_measure/services/measure_depth
+
+   Request
+
+   Obligatorische Serviceargumente:
+
+      "pose_frame": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+   Optionale Serviceargumente:
+
+      "region_of_interest_2d_id": Die ID der 2D Region of Interest
+      (siehe
+
+      RoiDB
+
+      ), innerhalb welcher die Tiefenmessung durchgeführt werden soll.
+
+      "region_of_interest_2d" ist eine alternative Definition der
+      Region of Interest für die Tiefenmessung. Diese Region of
+      Interest wird ignoriert, falls eine "region_of_interest_2d_id"
+      gesetzt ist. Die Region of Interest wird immer auf dem
+      Kamerabild mit voller Auflösung definiert, wobei "offset_x" und
+      "offset_y" die Pixelkoordinaten der oberen linken Ecke der
+      rechteckigen Region of Interest sind, und "width" und "height"
+      die Breite und Höhe des Rechtecks in Pixeln angeben. Der
+      Standardwert ist eine Region of Interest, die das gesamte Bild
+      abdeckt.
+
+      "cell_count" ist die Anzahl der Zellen in x und y Richtung, in
+      die die Region of Interest für die Tiefenmessung unterteilt
+      wird. Falls nicht angegeben, wird ein "cell_count" von 0, 0
+      angenommen und es werden nur die Gesamtwerte "overall"
+      berechnet. Die Gesamtanzahl der Zellen, die als Produkt aus den
+      x und y Werten des "cell_count" berechnet werden kann, darf
+      nicht größer sein als 100.
+
+      "data_acquisition_mode": Falls der Aufnahmemodus auf
+      "CAPTURE_NEW" (Standardwert) gesetzt ist, wird ein neuer Bild-
+      Datensatz für die Messung aufgenommen. Falls der Modus auf
+      "USE_LAST" gesetzt wird, wird der Datensatz der vorherigen
+      Messung erneut verwendet.
+
+   Möglicherweise benötigte Serviceargumente:
+
+      "robot_pose": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "cell_count": {
+            "x": "uint32",
+            "y": "uint32"
+          },
+          "data_acquisition_mode": "string",
+          "pose_frame": "string",
+          "region_of_interest_2d": {
+            "height": "uint32",
+            "offset_x": "uint32",
+            "offset_y": "uint32",
+            "width": "uint32"
+          },
+          "region_of_interest_2d_id": "string",
+          "robot_pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          }
+        }
+      }
+
+   Response
+
+   "cells" enthält die Tiefenmessungen aller gewünschter Zellen. Die
+   Zellen sind immer von links nach rechts und oben nach unten in
+   Bildkoordinaten sortiert.
+
+   "overall" enthält die Tiefenmessung der gesamten Region of
+   Interest.
+
+   "coverage" enthält den Anteil der Pixel mit gültigen
+   Tiefenmesswerten, wie in
+
+   Tiefe messen
+
+    beschrieben.
+
+   "mean_z", "min_z" und "max_z" enthalten die gemessenen Koordinaten
+   wie in
+
+   Tiefe messen
+
+   .
+
+   "region_of_interest_2d" gibt die Definition der angeforderten
+   Region of Interest für die Tiefenmessung zurück.
+
+   "pose_frame" enthält das Koordinatensystem der Tiefenmessungen.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "measure_depth",
+        "response": {
+          "cell_count": {
+            "x": "uint32",
+            "y": "uint32"
+          },
+          "cells": [
+            {
+              "coverage": "float64",
+              "max_z": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "mean_z": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "min_z": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            }
+          ],
+          "overall": {
+            "coverage": "float64",
+            "max_z": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "mean_z": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "min_z": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "pose_frame": "string",
+          "region_of_interest_2d": {
+            "height": "uint32",
+            "offset_x": "uint32",
+            "offset_y": "uint32",
+            "width": "uint32"
+          },
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          },
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          }
+        }
+      }
+
+Rückgabecodes
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von "0" quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte
+zutreffend wären, wird der kleinste zurückgegeben, und die
+entsprechenden Textnachrichten werden in "return_code.message"
+akkumuliert.
+
+Die folgende Tabelle listet die möglichen Rückgabe-Codes auf:
+
+Rückgabecodes der Services des Measure Moduls      Code  Beschreibung
+0  Erfolgreich  -1  Ungültige(s) Argument(e)

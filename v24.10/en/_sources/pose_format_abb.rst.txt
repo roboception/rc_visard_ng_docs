@@ -1,0 +1,7 @@
+ABB pose format
+
+ABB robots use a position and a quaternion for describing a pose, like
+
+rc_visard NG
+
+ devices. There is no conversion of the orientation needed.

@@ -1,0 +1,105 @@
+.. include:: global_rst.glb
+
+.. raw:: latex
+
+    \newpage
+
+.. |CE| image:: images/ce-mark_small.*
+
+.. |NRTL| image:: images/NRTL_small.*
+
+.. |FCC| image:: images/fcc_logo_small.*
+
+
+Applicable standards
+====================
+
+.. only:: matrixvision
+
+   The following approvals and certificates have been issued to Roboception GmbH.
+
+Interfaces
+----------
+
+The |rc_xxx| supports the following interface standards:
+
+|genicamlogo|
+
+The Generic Interface for Cameras standard is the basis for plug & play handling of cameras and devices.
+
+|gigelogo|
+
+GigE Vision\ |reg| is an interface standard for transmitting high-speed video and related control data over Ethernet networks.
+
+.. only:: rc_visard_ng
+
+   Approvals
+   ---------
+
+     The |rc_xxx| has received the following approvals:
+
+     |CE|
+          EC Declaration of Conformity
+
+
+   .. _sect-standards:
+
+   Standards
+   ---------
+
+     The |rc_visard_ng| has been tested to be in compliance with the following standards:
+
+     * EN 55032:2015/A11:2020
+     * EN 55035:2017
+     * EN 61000-3-2:2014 / IEC 61000-3-2:2018
+     * EN 61000-3-3:2013 / IEC 61000-3-3:2013+AMD1:2017
+     * EN IEC 61000-6-1:2019 / IEC 61000-6-1:2016
+     * EN 61000-6-2:2005/AC:2005 / IEC 61000-6-2:2016
+     * EN IEC 61000-6-3:2021 / IEC 61000-6-3:2020
+     * EN 61000-6-4:2007/A1:2011 / IEC 61000-6-4:2018
+     * compliant with FCC 47 CFR Part 15B and ICES-003:2021 and 2020
+     * EN IEC 63000:2018 / IEC 63000:2016
+     * IP54 according to DIN EN 60529: 2014-09+AMD1:2017-02+AMD2:2019-06
+
+.. only:: rc_visard
+
+   Approvals
+   ---------
+
+
+     The |rc_xxx| has received the following approvals:
+
+     |CE|
+          EC Declaration of Conformity
+
+
+     |NRTL|
+          NRTL certification by TÜV Süd
+
+     |FCC|
+          Changes or modifications not expressly approved by the manufacturer could void the user’s authority to operate the equipment.
+          This device complies with Part 15 of the FCC rules. Operation is subject to the following two conditions:
+
+          1. This device may not cause harmful interference, and
+          2. this device must accept any interference received, including interference that may cause undesired operation.
+
+   .. _sect-standards:
+
+   Standards
+   ---------
+
+     The |rc_visard| has been tested to be in compliance with the following standards:
+
+     * AS/NZS CISPR32 : 2015 Information technology equipment, Radio disturbance characteristics, Limits and methods of measurement
+     * CISPR 32 : 2015 Electromagnetic compatibility of multimedia equipment - Emission requirements
+     * GB 9254 : 2008 This standard is out of the accreditation scope. Information technology equipment, Radio disturbance characteristics, Limits and methods of measurement
+     * EN 55032 : 2015 Electromagnetic compatibility of multimedia equipment - Emission requirements
+     * EN 55024 : 2010 +A1:2015 Information technology equipment, Immunity characteristics, Limits and methods of measurement
+     * CISPR 24 : 2015 +A1:2015 International special committee on radio interference, Information technology equipment-Immunity characteristics-Limits and methods of measurement
+     * EN 61000-6-2 : 2005 Electromagnetic compatibility (EMC) Part 6-2:Generic standards - Immunity for industrial environments
+     * EN 61000-6-3 : 2007+A1:2011 Electromagnetic compatibility (EMC) - Part 6-3: Generic standards - Emission standard for residential, commercial and light-industrial environments
+     * Registered FCC ID: 2AVMTRCV17
+     * Certified for Canada according to CAN ICES-3(B)/NMB-3(B)
+
+..
+  |TODO| Download link of certification of conformity

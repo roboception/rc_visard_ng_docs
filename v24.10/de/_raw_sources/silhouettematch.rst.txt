@@ -1,0 +1,2050 @@
+.. include:: global_rst.glb
+
+.. _sect-silhouettematch:
+
+SilhouetteMatch
+===============
+
+.. index:: ! SilhouetteMatch
+   single: object detection
+   single: silhouette
+
+.. |silm| replace:: SilhouetteMatch
+
+Introduction
+------------
+
+The |silm| module is an optional on-board module of the |rc_xxx| and requires a separate |silm| :ref:`license<sect-updating-license>`
+:latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
+
+.. only:: rc_cube and (roboception or schunk or basler)
+
+   .. note:: This module is not available in camera pipelines of type ``blaze``.
+
+The module detects objects by matching a predefined silhouette (“template”) to edges in the image.
+
+The |silm| module can detect objects in two different scenarios:
+
+   **With calibrated base plane**: The objects are placed on a common base plane, which must be calibrated before the detection, and the objects have
+   significant edges on a common plane that is parallel to the base plane.
+
+   **With object plane detection**: The objects can be placed at different, previously unknown heights, if the objects have a planar surface and their outer
+   contours are well visible in the images (e.g. stacked flat objects).
+
+Templates for object detection can be created by uploading a DXF file and specifying the object height.
+The correct scale and unit of the contours are extracted from the DXF file. If no units are
+present in the DXF file, the user has to specify which units should be used. When the outer
+contour of the object in the DXF file is closed, a 3D collision model is created automatically
+by extruding the contour by the given object height. This model will then be used for collision checking
+and in 3D visualizations.
+Uploading a DXF file can be done in the |webgui| via the :guilabel:`+ Create a new Template` button in the
+*SilhouetteMatch Templates and Grasps* section on the :menuselection:`Modules --> SilhouetteMatch` or
+:menuselection:`Database --> Templates` pages.
+
+.. only:: roboception or matrixvision
+
+   |manufacturer| also offers a template generation service on their
+   `website <https://roboception.com/en/template-request/>`_:latex:`\:(\url{https://roboception.com/en/template-request/})`,
+   where the user can upload CAD files or recorded data of the objects and request object templates for the |silm| module.
+
+.. only:: schunk
+
+   |company| also also offers a template generation service via mechatronics@de.schunk.com,
+   where the user can send CAD files or recorded data of the objects and request object templates for the |silm| module.
+
+.. only:: basler
+
+   |manufacturer| also offers a template generation service,
+   where the user can upload CAD files or recorded data of the objects and request object templates for the |silm| module.
+
+
+The object templates consist of significant edges of each object. These template edges are matched to the
+edges detected in the left and right camera images, considering the
+actual size of the objects and their distance from the camera. The poses of the detected objects are
+returned and can be used for grasping, for example.
+
+The |silm| module offers:
+
+- A dedicated page on the |rc_xxx| :ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+  for easy setup, configuration, testing, and application tuning.
+- A :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` and a
+  :doc:`eki`:latex:`\:(Section \ref{eki:sect-eki})`.
+- The definition of 2D regions of interest to select relevant parts of the camera image
+  (see :ref:`sect-silhouettematch-roi`:latex:`, Section \ref{silhouettematch:sect-silhouettematch-roi}`).
+- A load carrier detection functionality for bin-picking applications
+  (see :ref:`sect-loadcarrier`:latex:`, Section \ref{loadcarrier:sect-loadcarrier}`),
+  to provide grasps for objects inside a bin only.
+- Storing of up to 50 templates.
+- The definition of up to 50 grasp points for each template via an interactive visualization in the |webgui|.
+- Collision checking between the gripper and the load carrier, the calibrated base plane, other detected objects and/or the point cloud.
+- Support for static and robot-mounted cameras and
+  optional integration with the :doc:`handeye_calibration`
+  :latex:`(Section \ref{handeye_calibration:sect-handeye-calibration})` module,
+  to provide grasps in the user-configured external reference frame.
+- Selection of a sorting strategy to sort the detected objects and returned grasps.
+- 3D visualization of the detection results with grasp points and gripper animations in the |webgui|.
+
+.. only:: rc_cube
+
+   .. note::
+
+      This module is pipeline specific. Changes to its settings or parameters only affect
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+
+      However, the object templates and grasp points are stored globally. Setting, changing
+      or deleting an object template or its grasps affects all camera pipelines.
+
+Suitable objects
+^^^^^^^^^^^^^^^^
+
+The |silm| module is intended for objects which have significant edges on a common plane that is
+parallel to the plane on which the objects are placed. This applies to flat, nontransparent
+objects, such as routed, laser-cut or water-cut 2D parts and flat-machined parts. More complex
+parts can also be detected if there are significant edges on a common plane, e.g. a special
+pattern printed on a flat surface.
+The detection works best for objects on a texture-free plane. The color of the base plane should
+be chosen such that a clear contrast between the objects and the base plane appears in the intensity image.
+
+In case the objects are not placed on a common base plane or the base plane cannot be calibrated beforehand,
+the objects need to have a planar surface and their outer contour must be well visible in the left and right images.
+Furthermore, the template for these objects must have a closed outer contour.
+
+Suitable scene
+^^^^^^^^^^^^^^
+
+The scene must meet the following conditions to be suitable for the |silm| module:
+
+- The objects to be detected must be suitable for the |silm| module as described above.
+- Only objects belonging to one specific template are visible at a time (unmixed scenario). In case other objects are visible as well, a proper region of interest (ROI) must be set.
+- In case a calibrated base plane is used: The offset between the base plane normal and the camera's line of sight does not exceed 10 degrees.
+- In case the object planes are detected automatically: The offset between the object's planar surface normal and the camera's line of sight does not exceed 25 degrees.
+- The objects are not partially or fully occluded.
+- All visible objects are right side up (no flipped objects).
+- The object edges to be matched are visible in both, left and right camera images.
+
+
+.. _sect-silhouettematch-base-plane-calib:
+
+Base-plane calibration
+----------------------
+
+.. index::
+   pair: SilhouetteMatch; base-plane calibration
+   pair: SilhouetteMatch; base-plane
+
+In case all objects are placed on a common plane that is known beforehand,
+a base-plane calibration should be performed before triggering a detection.
+Thereby, the distance and angle of the plane on which the objects are
+placed is measured and stored persistently on the |rc_xxx|.
+
+Separating the detection of the base plane from the actual object detection
+renders scenarios possible in which the base plane is temporarily occluded.
+Moreover, it increases performance of the object detection for scenarios where
+the base plane is fixed for a certain time; thus, it is not necessary
+to continuously re-detect the base plane.
+
+The base-plane calibration can be performed in three different ways,
+which will be explained in more detail further down:
+
+- AprilTag based
+- Stereo based
+- Manual
+
+The base-plane calibration is successful if the normal vector of the estimated base plane is at most
+10 degrees offset to the camera's line of sight. If the base-plane calibration
+is successful, it will be stored persistently on the |rc_xxx| until it is removed or a new base-plane
+calibration is performed.
+
+.. Note::
+
+   To avoid privacy issues, the image of the persistently stored base-plane calibration will
+   appear blurred after rebooting the |rc_xxx|.
+
+In scenarios where the base plane is not accessible for calibration, a plane parallel to the base plane can be calibrated.
+Then an ``offset`` parameter can be used to shift the estimated plane onto the actual base plane where
+the objects are placed. The ``offset`` parameter gives the distance in meters by which the estimated plane
+is shifted towards the camera.
+
+In the |restapi|, a plane is defined by a ``normal`` and a ``distance``.
+``normal`` is a normalized 3-vector, specifying the normal of the plane.
+The normal points away from the camera.
+``distance`` represents the distance of the plane from the camera along the normal.
+Normal and distance can also be interpreted as :math:`a`, :math:`b`, :math:`c`, and :math:`d` components
+of the plane equation, respectively:
+
+.. math::
+   ax + by + cz + d = 0
+
+
+AprilTag based base-plane calibration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+AprilTag detection (ref. :doc:`tagdetect`:latex:`, Section \ref{tagdetect:sect-tag-detection}`)
+is used to find AprilTags
+in the scene and fit a plane through them. At least three AprilTags must be placed on the base
+plane so that they are visible in the left and right camera images. The tags should be placed
+such that they are spanning a triangle that is as large as possible. The larger the triangle,
+the more accurate is the resulting base-plane estimate.
+Use this method if the base plane is untextured and no external random dot projector is available.
+This calibration mode is available via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+and the |rcxxx| |webgui|.
+
+Stereo based base-plane calibration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The 3D point cloud computed by the stereo matching module is used to fit a plane
+through its 3D points.
+Therefore, the region of interest (ROI) for this method must
+be set such that only the relevant base plane is included.
+The ``plane_preference`` parameter allows to select whether the plane closest to
+or farthest from the camera should be used as base plane.
+Selecting the closest plane can be used in scenarios where the base plane is
+completely occluded by objects or not accessible for calibration.
+Use this method if the base plane is well textured or you can
+make use of a random dot projector to project texture on the base plane.
+This calibration mode is available via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+and the |rcxxx| |webgui|.
+
+Manual base-plane calibration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The base plane can be set manually if its parameters are known, e.g. from previous
+calibrations. This calibration mode is only available via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+and not the |rcxxx| |webgui|.
+
+.. _sect-silhouettematch-roi:
+
+Setting a region of interest
+----------------------------
+
+.. index::
+   single: SilhouetteMatch; region of interest
+
+If objects are to be detected only in part of the camera’s field of view,
+a 2D region of interest (ROI) can be set accordingly as described in
+:ref:`sect-roi-definition`:latex:`\:(Section \ref{roi:sect-roi-definition})`.
+
+.. _sect-silhouettematch-grasps:
+
+Setting of grasp points
+-----------------------
+
+.. index::
+   single: SilhouetteMatch; grasp points
+   single: SilhouetteMatch; object template
+
+To use |silm| directly in a robot application, up to 50 grasp points
+can be defined for each template. A grasp point represents the desired position and orientation
+of the robot's TCP (Tool Center Point) to grasp an object as shown in
+:numref:`fig-silhouettematch-grasp-points`.
+
+.. _fig-silhouettematch-grasp-points:
+.. figure:: images/grasp_points_silm.*
+   :width: 50%
+   :align: center
+
+   Definition of grasp points with respect to the robot's TCP
+
+Each grasp consists of an ``id`` which must be
+unique within all grasps for an object template, the ``template_id`` representing the template
+to which the grasp should be attached, and the ``pose`` in the coordinate frame of the object template.
+Grasp points can be set via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`,
+or by using the interactive visualization in the |webgui|.
+Furthermore, a ``priority`` (spanning -2 for very low to 2 for very high) can be assigned to a grasp.
+Priorities can facilitate robot applications and shorten response times when the run-time parameter
+``only_highest_priority_grasps`` is set to true. In this case collision checking concludes when
+grasps with the highest possible priority have been found. Finally, different grasps can be associated with
+different grippers by specifying a ``gripper_id``. These individual grippers are then used for collision checking
+of the corresponding grasps instead of the gripper defined in the ``detect_object`` request. If no ``gripper_id`` is given, the gripper
+defined in the ``detect_object`` request will be used for collision checking.
+
+When a grasp is defined on a symmetric object, all grasps symmetric to the defined one
+will automatically be considered in the |silm| module's ``detect_object`` service call. Symmetric grasps
+for a given grasp point can be retrieved using the ``get_symmetric_grasps`` service call and visualized in the |webgui|.
+
+Users can also define replications of grasps around a custom axis. These replications spawn multiple grasps and free users
+from setting too many grasps manually. The replication origin is defined as a coordinate frame in the object's coordinate
+frame and the x axis of the replication origin frame corresponds to the replication axis.
+The grasp is replicated by rotating it around this x axis
+starting from its original pose. The replication is done in steps of size ``step_x_deg`` degrees.
+The range is defined by the minimal and maximal boundaries ``min_x_deg`` and ``max_x_deg``.
+The minimal (maximal) boundary must be a non-positive (non-negative) number up to (minus) 180 degrees.
+
+.. _sect-silhouettematch-grasps-webgui:
+
+Setting grasp points in the |webgui|
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The |rc_xxx| |webgui| provides an intuitive and interactive way of defining grasp points for object templates.
+In a first step, the object template has to be uploaded to the |rc_xxx|. This can be done
+in the |webgui| in any pipeline under :menuselection:`Modules --> SilhouetteMatch`
+by clicking on :guilabel:`+ Add a new Template` in the
+*Templates and Grasps* section, or in :menuselection:`Database --> Templates` in the
+*SilhouetteMatch Templates and Grasps* section. Once the
+template upload is complete, a dialog with a 3D visualization of the object template is shown
+for adding or editing grasp
+points. The same dialog appears when editing an existing template. If the template contains a collision model or a visualization model,
+this 3D model is visualized as well.
+
+This dialog provides two ways for setting grasp points:
+
+1. **Adding grasps manually**:
+   By clicking on the :guilabel:`+` symbol, a new grasp is placed in the object origin. The
+   grasp can be given a unique name which corresponds to its ID.
+   The desired pose of the grasp can be entered in the fields for *Position* and *Roll/Pitch/Yaw* which are given
+   in the coordinate frame of the object template represented by the long x, y and z axes in the visualization.
+   The grasp point can be placed freely with respect to the object template - inside, outside or on the surface.
+   The grasp point and its orientation are visualized in 3D for verification.
+
+2. **Adding grasps interactively**:
+   Grasp points can be added interactively by first clicking on the :guilabel:`Add Grasp` button
+   in the upper right corner of the visualization and then clicking on the desired point on the object template visualization.
+   If the 3D model is displayed, the grasps will be attached to the surface of the 3D model. Otherwise, the
+   grasp is attached to the template surface. The grasp orientation is a right-handed coordinate system and
+   is chosen such that its z axis is perpendicular to the surface pointing inside the template at
+   the grasp position. The position and orientation in the object coordinate frame is displayed on the right.
+   The position and orientation of the grasp can also be changed interactively.
+   In case :guilabel:`Snap to surface` is disabled (default), the grasp can be translated and rotated freely in all three dimensions
+   by clicking on :guilabel:`Move Grasp` in the visualization menu and then dragging the grasp along the
+   appropriate axis to the desired position. The orientation of the grasp can also be changed by rotating the axis with the mouse.
+   In case :guilabel:`Snap to surface` is enabled in the visualization, the grasp can only be moved along the
+   model surface.
+
+Users can also specify a grasp priority by changing the :guilabel:`Priority` slider. A dedicated gripper can be selected
+in the :guilabel:`Gripper` drop down field.
+
+By activating the :guilabel:`Replication` check box, users can replicate the
+grasp around a custom axis. The replication axis and the resulting replicated grasps are visualized.
+The position and orientation of the replication axis relative to the object coordinate frame can be adjusted
+interactively by clicking on :guilabel:`Move Replication Axis` in the visualization menu and then dragging the axis
+to the desired position and orientation.
+The grasps are replicated within the specified rotation range at the selected rotation step size. Users can cycle through
+a visualization of the replicated grasps by dragging the bar below :guilabel:`Cycle through n replicated grasps` in
+the :guilabel:`View Options` section of the visualization menu. If a gripper is selected for the grasp or a gripper has
+been chosen in the visualization menu, the gripper is also shown at the currently selected grasp.
+
+If the object template has symmetries, the grasps which are symmetric to the defined grasps can be displayed along with
+their replications (if defined) by enabling :guilabel:`... symmetries` in the :guilabel:`View Options` section of the visualization menu.
+The user can also cycle through a visualization of the symmetric grasps by dragging the
+bar below :guilabel:`Cycle through n symmetric grasps`.
+
+
+.. _sect-silhouettematch-grasps-rest-api:
+
+Setting grasp points via the |rest-api|
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Grasp points can be set via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+using the ``set_grasp`` or ``set_all_grasps`` services
+(see :ref:`sect-silhouettematch-internal-services`:latex:`, Section \ref{silhouettematch:sect-silhouettematch-internal-services}`).
+A grasp consists of the ``template_id`` of the template
+to which the grasp should be attached, an ``id`` uniquely identifying the grasp point and
+the ``pose``. The pose is given in the coordinate frame of the object template and
+consists of a ``position`` in meters and an ``orientation`` as quaternion.
+A dedicated gripper can be specified through setting the ``gripper_id`` field. The
+``priority`` is specified by an integer value, ranging from -2 for very low, to 2 for very high with a step size
+of 1. The replication origin is defined as a transformation in the object's coordinate frame and the x axis
+of the transformation corresponds to the replication axis. The
+replication range is controlled by the ``min_x_deg`` and ``max_x_deg`` fields and the step size ``step_x_deg``.
+
+.. _sect-silhouettematch-set-preferred-orientation:
+
+Setting the preferred orientation of the TCP
+--------------------------------------------
+
+.. index::
+   single: SilhouetteMatch; preferred orientation
+
+The |silm| module determines the reachability of grasp points based on the *preferred orientation* of the
+gripper or TCP. The preferred orientation can be set via the ``set_preferred_orientation`` service or on
+the *SilhouetteMatch* page in the |webgui|.
+The resulting direction of the TCP's z axis is used to reject grasps which cannot be reached by the gripper.
+Furthermore, the preferred orientation can be used to sort the reachable grasps by setting the corresponding
+sorting strategy.
+
+The preferred orientation can be set in the camera coordinate frame or in the external coordinate frame, in case
+a hand-eye calibration is available. If the preferred orientation is specified in the external coordinate frame
+and the sensor is robot mounted, the current robot pose has to be given to each object detection call, so that the
+preferred orientation can be used for filtering and, optionally, sorting the grasps on the detected objects.
+If no preferred orientation is set, the orientation of the left camera is used as the preferred orientation of the TCP.
+
+
+.. _sect-silhouettematch-set-sorting-strategies:
+
+Setting the sorting strategies
+------------------------------
+
+The objects and grasps returned by the ``detect_object`` service call are sorted according to a sorting strategy which can be
+chosen by the user. The following sorting strategies are available and
+can be set in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+or using the ``set_sorting_strategies`` service call:
+
+- ``preferred_orientation``: objects and grasp points with minimal rotation difference between their orientation and the preferred orientation of the TCP are returned first,
+- ``direction``: objects and grasp points with the shortest distance along a defined direction ``vector`` in a given ``pose_frame`` are returned first.
+- ``distance_to_point``: objects and grasp points with the shortest or farthest (if ``farthest_first`` is true) distance from a ``point`` in a given ``pose_frame`` are returned first.
+
+If no sorting strategy is set or default sorting is chosen in the Web GUI, sorting is done based on a combination of
+``preferred_orientation`` and the minimal distance from the camera along the z axis of the preferred orientation of the TCP.
+
+.. _sect-silhouettematch-detect:
+
+Detection of objects
+--------------------
+
+.. index::
+   single: SilhouetteMatch; detection of objects
+   single: SilhouetteMatch; sorting
+
+For triggering the object detection, in general, the following information
+must be provided to the |silm| module:
+
+- The template of the object to be detected in the scene.
+- The coordinate frame in which the poses of the detected objects shall be returned
+  (ref. :ref:`sect-silhouettematch-hand-eye-calib`:latex:`, Section \ref{silhouettematch:sect-silhouettematch-hand-eye-calib}`).
+
+Optionally, further information can be given to the |silm| module:
+
+- A flag ``object_plane_detection`` determining whether the surface plane of the objects should be used for the detection instead of the calibrated base plane.
+- An offset, in case the calibrated base plane should be used but the objects are not lying on this plane but on a plane parallel
+  to it. The offset is the distance between both planes
+  given in the direction towards the camera. If omitted, an offset of 0 is assumed. It must not be set if ``object_plane_detection`` is true.
+- The ID of the load carrier which contains the objects to be detected.
+- The ID of the region of interest where to search for the load carrier if a
+  load carrier is set. Otherwise, the ID of the region of interest where the objects should
+  be detected. If omitted, objects are matched in the whole image.
+- The current robot pose in case the camera is mounted on the robot and
+  the chosen coordinate frame for the poses is ``external`` or the preferred orientation
+  is given in the external frame.
+- Collision detection information: The ID of the gripper to enable collision checking and optionally
+  a pre-grasp offset to define a pre-grasp position.
+  Details on collision
+  checking are given below in
+  :ref:`sect-silhouettematch-collision-check-dep`:latex:`\:(Section
+  \ref{silhouettematch:sect-silhouettematch-collision-check-dep})`.
+
+In case the ``object_plane_detection`` flag is not true,
+objects can only be detected after a successful base-plane calibration.
+It must be ensured that the position and orientation of the base plane
+does not change before the detection of objects.
+Otherwise, the base-plane calibration must be renewed.
+
+When ``object_plane_detection`` is set to true, a base-plane calibration is not required and
+an existing base-plane calibration will be ignored. During detection, the scene is clustered into
+planar surfaces and template matching is performed on each plane whose tilt with respect to the
+camera's line of sight is less than 25° and whose size is large enough to contain the selected template.
+When a match is found, its position and orientation are refined using the image edges and the
+point cloud inside the template's outer contour. For this, it is required that the outer contour of
+the template is closed and that the object's surface is planar.
+
+On the |webgui| the detection can be tested in the *Try Out* section of the |silm| page.
+Different image streams can be selected to show intermediate results and the final matches as shown
+in :numref:`fig-silm-stream-images`.
+
+   The **"Template"** image stream shows the template
+   to be matched in red with the defined grasp points in green
+   (see :ref:`sect-silhouettematch-grasps`:latex:`, Section \ref{silhouettematch:sect-silhouettematch-grasps}`).
+   The template is warped to the size and tilt matching
+   objects on the calibrated base plane or, in case ``object_plane_detection`` was used,
+   the highest segmented plane, would have. The corresponding plane is shown in dark blue.
+
+   The **"Intermediate Result"** image stream shows the edges of the left image that were used to search for matches in light blue.
+   The chosen region of interest is shown as bold petrol rectangle.
+   A shaded blue area on the left visualizes the region of the left camera image which does not overlap with
+   the right image, and in which no objects can be detected. If ``object_plane_detection`` was used, this
+   image stream also shows the detected planar clusters in the scene. Clusters that were
+   not used for matching, because they were too small or too tilted, are visualized with a stripe pattern.
+
+   The **"Intermediate Result Right"** image stream shows the edges of the right image that were used to search for matches in light blue.
+   The chosen region of interest is shown as bold petrol rectangle.
+   A shaded blue area on the right visualizes the region of the right camera image which does not overlap with
+   the left image, and in which no objects can be detected.
+
+   The **"Result"** image shows the detection result. The image edges
+   that were used to refine the match poses are shown in light blue and the matches (``instances``)
+   with the template edges are shown in red. The blue circles are the origins of the detected
+   objects as defined in the template and the green circles are the
+   collision-free grasp points. Colliding grasp points are visualized as
+   red dots and grasp points that were not checked for collisions are drawn in yellow.
+
+.. _fig-silm-stream-images:
+.. figure:: images/silhouetteMatchStreams.png
+    :width: 100 %
+    :align: center
+
+    "Template", "Intermediate Result" and "Result" image streams of the |silm| module as shown in the |webgui|
+    for a detection with ``object_plane_detection`` set to true
+
+The poses of the object origins in the chosen
+coordinate frame are returned as results in a list of ``instances``.
+In case the calibrated base plane was used for the detection (``object_plane_detection`` not set or false),
+the orientations of the detected objects are aligned with the normal of the base plane.
+Otherwise, the orientations of the detected objects are aligned with the normal of a plane fitted to the
+object points in the 3D point cloud.
+
+If the chosen template also has grasp points attached,
+a list of ``grasps`` for all objects is returned in addition to the list of detected objects.
+The grasp poses are given in the desired coordinate frame and
+the grasps are sorted according to the selected sorting strategy
+(see :ref:`sect-silhouettematch-set-sorting-strategies`:latex:`, Section \ref{silhouettematch:sect-silhouettematch-set-sorting-strategies}`).
+There are references between the detected object instances and the grasps via their ``uuids``.
+
+In case the templates have a continuous rotational symmetry (e.g. cylindrical objects),
+all returned object poses will have the same orientation. Furthermore, all grasps symmetric
+to each grasp point on an object are checked for reachability and collisions, and only the
+best one according to the given sorting strategy is returned.
+
+For objects with a discrete symmetry (e.g. prismatic objects), all collision-free symmetries of
+each grasp point which are reachable according to the given preferred
+TCP orientation are returned, ordered by the given sorting strategy.
+
+The detection results and run times are affected by several run-time parameters which are listed
+and explained further down. Improper parameters can lead to timeouts of the |silm| module's
+detection process.
+
+
+Interaction with other modules
+------------------------------
+
+Internally, the |silm| module depends on, and interacts with other on-board
+modules as listed below.
+
+.. Note::
+  All changes and configuration updates to these modules will affect
+  the performance of the |silm| module.
+
+.. _sect-silhouettematch-stereo-camera-matching:
+
+Stereo camera and stereo matching
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The |silm| module makes internally use of the rectified images from the
+:doc:`stereo_camera` module (``rc_camera``:latex:`, Section \ref{stereo_camera:sect-stereo-camera}`).
+Thus, the exposure time should be set properly to achieve the optimal performance of the module.
+
+For base-plane calibration in stereo mode, for load carrier detection, for automatic object plane detection and for collision checking
+with the point cloud, the disparity images from the :doc:`stereo_matching` module
+(``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`) are used.
+
+For detecting objects with a calibrated base plane, without load carrier and without collision checking with the point cloud,
+the stereo-matching module should not be run in parallel to the |silm| module, because the detection runtime increases.
+
+For best results it is recommended to enable
+:ref:`smoothing<expl-depth-smooth>` :latex:`(Section \ref{stereo_matching:expl-depth-smooth})`
+for :doc:`stereo_matching`.
+
+.. _sect-silhouettematch-iocontrol:
+
+IO and Projector Control
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+In case the |rc_xxx| is used in conjunction with an external random dot projector and
+the :doc:`iocontrol` module (``rc_iocontrol``:latex:`, Section \ref{iocontrol:sect-iocontrol}`),
+the projector should be used for the stereo-based base-plane calibration, for automatic object plane detection and for collision checking
+with the point cloud.
+
+The projected pattern must not be visible in the left and right camera images during object detection
+as it interferes with the matching process.
+Therefore, it is recommended to connect the projector to GPIO Out 1 and set
+the stereo-camera module's acquisition mode to ``SingleFrameOut1``
+(see :ref:`Stereo matching parameters<sect-disp-image-parameters>`:latex:`, Section \ref{stereo_matching:sect-disp-image-parameters}`), so that
+on each image acquisition trigger an image with and without projector pattern is acquired.
+
+Alternatively, the output mode for the GPIO output in use should be set to ``ExposureAlternateActive``
+(see :ref:`sect-iocontrol-params`:latex:`, Section \ref{iocontrol:sect-iocontrol-params}`).
+
+In either case,
+the *Auto Exposure Mode* ``exp_auto_mode`` should be set to ``AdaptiveOut1`` to optimize the exposure
+of both images (see :ref:`Stereo camera parameters<sect-cam-params>`:latex:`, Section \ref{stereo_camera:sect-cam-params}`).
+
+
+.. _sect-silhouettematch-hand-eye-calib:
+
+Hand-eye calibration
+^^^^^^^^^^^^^^^^^^^^
+
+In case the camera has been calibrated to a robot, the |silm| module can automatically provide
+poses in the robot coordinate frame.
+For the |silm| node's :ref:`sect-silhouettematch-services`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-services})`, the frame of the
+input and output poses and plane coordinates can be controlled with the ``pose_frame``
+argument.
+
+Two different ``pose_frame`` values can be chosen:
+
+1. **Camera frame** (``camera``).
+   All poses and plane coordinates provided to and by the module are in the camera frame.
+
+2. **External frame** (``external``).
+   All poses and plane coordinates provided to and by the module are in the external frame,
+   configured by the user during the hand-eye calibration process.
+   The module relies on the on-board
+   :doc:`Hand-eye calibration module<handeye_calibration>`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`
+   to retrieve the camera mounting (static or robot mounted) and
+   the hand-eye transformation.
+   If the sensor mounting is static, no further information is needed.
+   If the sensor is robot-mounted, the ``robot_pose`` is required
+   to transform poses to and from the ``external`` frame.
+
+All ``pose_frame`` values that are not ``camera`` or ``external`` are rejected.
+
+.. Note::
+   If no hand-eye calibration is available, all ``pose_frame`` values should be set to ``camera``.
+
+.. Note::
+   If the hand-eye calibration has changed after base-plane calibration,
+   the base-plane calibration will be marked as invalid and must be renewed.
+
+If the sensor is robot-mounted, the current ``robot_pose`` has to be provided depending on the value of ``pose_frame``,
+the definition of the preferred TCP orientation and the sorting direction or sorting point:
+
+- If ``pose_frame`` is set to ``external``, providing the robot pose is obligatory.
+- If the preferred TCP orientation is defined in ``external``, providing the robot pose is obligatory.
+- If the sorting direction is defined in ``external``, providing the robot pose is obligatory.
+- If the distance-to-point sorting strategy is defined in ``external``, providing the robot pose is obligatory.
+- In all other cases, providing the robot pose is optional.
+
+If the current robot pose is provided during calibration, it is stored persistently on the |rcxxx|.
+If the updated robot pose is later provided during ``get_base_plane_calibration`` or ``detect_object``
+as well, the base-plane calibration will be transformed automatically to this new robot pose.
+This enables the user to change the robot pose (and thus camera position)
+between base-plane calibration and object detection.
+
+.. Note::
+   Object detection can only be performed if the limit of 10 degrees angle offset between
+   the base plane normal and the camera's line of sight is not exceeded.
+
+.. _sect-silhouettematch-load-carrier-dep:
+
+LoadCarrier
+^^^^^^^^^^^
+
+The |silm| module uses the load carrier detection functionality provided by the
+:doc:`loadcarrier` module (``rc_load_carrier``:latex:`, Section \ref{loadcarrier:sect-loadcarrier}`),
+with the run-time parameters specified for this module. However, only one load carrier will be
+returned and used in case multiple matching load carriers could be found in the scene. In case multiple
+load carriers of the same type are visible, a region of interest should be set to ensure that always the
+same load carrier is used for the |silm| module.
+
+.. _sect-silhouettematch-collision-check-dep:
+
+CollisionCheck
+^^^^^^^^^^^^^^
+
+.. index::
+   single: SilhouetteMatch; collision check
+
+Collision checking can be easily enabled for
+grasp computation of the |silm| module by passing a ``collision_detection`` argument to the
+``detect_object`` service call. It contains the ID of the used gripper and
+optionally a pre-grasp offset. The gripper has to be
+defined in the GripperDB module
+(see :ref:`sect-gripper-db-gripper`:latex:`, Section \ref{gripper_db:sect-gripper-db-gripper}`)
+and details about collision checking are given in :ref:`sect-collision-check-other-modules`:latex:`\:(Section \ref{collisioncheck:sect-collision-check-other-modules})`. 
+
+Alternatively, grasp points can be assigned individual gripper IDs, and collision checking can be enabled for all
+grasp points with gripper IDs by enabling the run-time parameter ``check_collisions``.
+
+In addition to collision checking between the gripper and the detected load carrier, collisions
+between the gripper and the calibrated base plane will be checked, if the run-time parameter ``check_collisions_with_base_plane`` is true.
+If the selected |silm| template contains a collision model and the run-time parameter ``check_collisions_with_matches`` is true,
+also collisions between the gripper and all other detected objects (not limited to ``max_number_of_detected_objects``) will be checked. The object
+on which the grasp point to be checked is located, is excluded from the collision check.
+
+If the run-time parameter ``check_collisions_with_point_cloud`` is true,
+also collisions between the gripper and a watertight version of the point cloud are checked.
+If this feature is used with suctions grippers, it should be ensured that the TCP is defined
+to be outside the gripper geometry, or that the grasp points are defined above the object surface.
+Otherwise every grasp will result in a collision between the gripper and the point cloud.
+
+If the run-time parameter ``check_collisions_during_retraction`` is true and a load carrier and a pre-grasp offset are given,
+each grasp point will be checked for collisions between the object in the gripper and the load carrier walls during retraction.
+This collision check is performed along the full linear trajectory from the grasp point back to the pre-grasp position.
+
+If collision checking is enabled, only grasps which are collision free or could not be checked for collisions
+(e.g. because no gripper was given) will be returned.
+The visualization images on the *SilhouetteMatch* page of the |webgui| shows collision-free grasps in green, 
+unchecked grasps in yellow and colliding grasp points in red. The detected objects which are considered in the collision check are
+also visualized with their edges in red.
+
+The CollisionCheck module's run-time parameters affect the collision detection as described in
+:ref:`CollisionCheck Parameters<sect-collisioncheck-parameters>`:latex:`\:(Section \ref{collisioncheck:sect-collisioncheck-parameters})`.
+
+Parameters
+----------
+
+.. index::
+  single: SilhouetteMatch; parameters
+
+The |silm| software module is called ``rc_silhouettematch`` in the |rest-api| and is represented in the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`:cubeonly:`in the desired pipeline` under
+:menuselection:`Modules --> SilhouetteMatch`.
+The user can explore and configure the ``rc_silhouettematch``
+module's run-time parameters, e.g. for development and testing, using the |webgui| or the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_silhouettematch.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the |webgui|'s |silm| page.
+The name in the |webgui| is given in brackets behind the parameter name and the parameters are
+listed in the order they appear in the |webgui|:
+
+.. _expl-silhouettematch-max-objects:
+
+``max_number_of_detected_objects`` (*Maximum Object Number*)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    This parameter gives the maximum number of objects to detect in the scene. If more than
+    the given number of objects can be detected in the scene, only the objects matching best to
+    the given sorting strategy are returned.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?max_number_of_detected_objects=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?max_number_of_detected_objects=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?max_number_of_detected_objects=<value>
+
+.. _expl-silhouettematch-quality:
+
+``quality`` (*Quality*)
+'''''''''''''''''''''''
+    Object detection can be performed on images with different resolutions:
+    ``High`` (full image resolution), ``Medium`` (half image resolution) and
+    ``Low`` (quarter image resolution). The lower
+    the resolution, the lower the detection time, but the fewer details of the objects
+    are visible.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?quality=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?quality=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?quality=<value>
+
+.. _expl-silhouettematch-max-distance:
+
+``match_max_distance`` (*Maximum Matching Distance*)
+''''''''''''''''''''''''''''''''''''''''''''''''''''
+    This parameter gives the maximum allowed pixel distance of an image edge pixel from the object
+    edge pixel in the template to be still considered as matching. If the object is not perfectly
+    represented in the template, it might not be detected when this parameter is low. High values,
+    however, might lead to false detections in case of a cluttered scene or the presence of similar
+    objects, and also increase runtime.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?match_max_distance=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?match_max_distance=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?match_max_distance=<value>
+
+.. _expl-silhouettematch-match-percentile:
+
+``match_percentile`` (*Matching Percentile*)
+''''''''''''''''''''''''''''''''''''''''''''
+    This parameter indicates how strict the matching process should be. The matching percentile is
+    the ratio of template pixels that must be within the Maximum Matching Distance to successfully match the template.
+    The higher this number, the more accurate the match must be to be considered as valid.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?match_percentile=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?match_percentile=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?match_percentile=<value>
+
+.. _expl-silhouettematch-edge-sensitivity:
+
+``edge_sensitivity`` (*Edge Sensitivity*)
+'''''''''''''''''''''''''''''''''''''''''
+    This parameter influences how many edges are detected in the left and right camera images. The higher this number, the
+    more edges are found in the intensity images. That means, for lower numbers, only the most significant edges
+    are considered for template matching. A large number of edges in the image might increase the detection time.
+    It must be ensured that the edges of the objects to be detected are detected in both, the left and the right camera images.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?edge_sensitivity=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?edge_sensitivity=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?edge_sensitivity=<value>
+
+.. _expl-silhouettematch-only-highest-priority-grasps:
+
+``only_highest_priority_grasps`` (*Only Highest Priority Grasps*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+   If set to true, only grasps with the highest priority will be returned. If collision checking is enabled, only the collision-free
+   grasps among the group of grasps with the highest priority are returned.
+   This can save computation time and reduce the number of grasps to be parsed on the application side.
+
+   Without collision checking, only grasps of highest priority are returned.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?only_highest_priority_grasps=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?only_highest_priority_grasps=<value>
+
+.. _expl-silhouettematch-check-collisions:
+
+``check_collisions`` (*Check Collisions*)
+'''''''''''''''''''''''''''''''''''''''''
+    If this parameter is enabled, collision checking will be performed for all grasps which have a gripper ID assigned,
+    even when no default gripper is given in the ``detect_object`` service call. If a load carrier is used, the collision 
+    check will always be performed between the gripper and the load carrier. 
+    Collision checking with the point cloud and other matches is only performed when the corresponding runtime parameters are enabled.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?check_collisions=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?check_collisions=<value>
+
+
+.. _expl-silhouettematch-check-collisions-with-base-plane:
+
+``check_collisions_with_base_plane`` (*Check Collisions with Base Plane*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    This parameter is only used when collision checking is enabled by passing a gripper to the ``detect_object`` service call
+    or by enabling the ``check_collisions`` runtime parameter.
+    If ``check_collisions_with_base_plane`` is set to true,
+    all grasp points will be checked for collisions between the gripper and the
+    calibrated base plane, and only grasp points at which the gripper would not collide with the base plane will be
+    returned.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?check_collisions_with_base_plane=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?check_collisions_with_base_plane=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?check_collisions_with_base_plane=<value>
+
+
+.. _expl-silhouettematch-check-collisions-with-matches:
+
+``check_collisions_with_matches`` (*Check Collisions with Matches*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    This parameter is only used when collision checking is enabled by passing a gripper to the ``detect_object`` service call
+    or by enabling the ``check_collisions`` runtime parameter.
+    If ``check_collisions_with_matches`` is set to true, all grasp points will be checked for collisions between the gripper and 
+    all other detected objects (not limited to
+    ``max_number_of_detected_objects``), and only grasp points at which the gripper would not collide with any other detected object
+    will be returned.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?check_collisions_with_matches=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?check_collisions_with_matches=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?check_collisions_with_matches=<value>
+
+
+.. _expl-silhouettematch-check-collisions-with-point-cloud:
+
+``check_collisions_with_point_cloud`` (*Check Collisions with Point Cloud*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    This parameter is only used when collision checking is enabled by passing a gripper to the ``detect_object`` service call
+    or by enabling the ``check_collisions`` runtime parameter.
+    If ``check_collisions_with_point_cloud`` set to true, all grasp points will be checked for 
+    collisions between the gripper a watertight version of the point cloud, and only grasp points
+    at which the gripper would not collide with this point cloud will be returned.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?check_collisions_with_point_cloud=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?check_collisions_with_point_cloud=<value>
+
+
+.. _expl-silhouettematch-point-cloud-enhancement:
+
+``point_cloud_enhancement`` (*Enhance with Base Plane*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    This parameter is only considered when ``check_collisions_with_point_cloud`` is true and the object detection was
+    triggered without ``object_plane_detection``. By default, ``point_cloud_enhancement`` is set to ``Off`` (*Off*).
+    If ``point_cloud_enhancement`` is set to ``ReplaceBright`` (*Replace Bright Image Pixels*), the calibrated base plane will
+    be used to enhance the point cloud that is used for collision checking. For this, the depth values of all bright image pixels inside the image or,
+    if set, the 2D region of interest will be set to the depth of the calibrated base plane. This parameter should be used when dark objects are placed on an
+    untextured bright background, e.g. on a light table.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?point_cloud_enhancement=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?point_cloud_enhancement=<value>
+
+.. _expl-silhouettematch-check-collisions-during-retraction:
+
+``check_collisions_during_retraction`` (*Check Collisions during Retraction*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    This parameter is only used when collision checking is enabled by passing a gripper to the ``detect_object`` service call
+    or by enabling the ``check_collisions`` runtime parameter.
+    When ``check_collisions_during_retraction`` is enabled and a load carrier and a pre-grasp offset are given,
+    each grasp point will be checked for collisions 
+    between the object in the gripper and the load carrier walls during retraction. 
+    This collision checking is performed along the full linear trajectory from the grasp point back to the pre-grasp position.
+    Only collision-free grasp points will be returned.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?check_collisions_during_retraction=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?check_collisions_during_retraction=<value>
+
+
+Status values
+-------------
+
+.. index::
+  single: SilhouetteMatch; status
+
+This module reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_silhouettematch`` module's status values
+   :header:  Name, Description
+
+	"``data_acquisition_time``","Time in seconds required by the last active service to acquire images"
+	"``last_timestamp_processed``","The timestamp of the last processed dataset"
+	"``load_carrier_detection_time``","Processing time of the last load carrier detection in seconds"
+	"``processing_time``","Processing time of the last detection (including load carrier detection) in seconds"
+
+.. _sect-silhouettematch-services:
+
+Services
+--------
+
+.. index::
+  single: SilhouetteMatch; services
+
+The user can explore and call the ``rc_silhouettematch`` module's services,
+e.g. for development and testing, using the
+:ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |rc_xxx|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+The |silm| module offers the following services.
+
+
+.. _expl-silhouettematch-srv-detect-objects:
+
+``detect_object``
+^^^^^^^^^^^^^^^^^
+
+   Triggers an object detection as described in
+   :ref:`sect-silhouettematch-detect`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-detect})`
+   and returns the pose of all found object instances.
+
+   .. toggle-header::
+      :header: **Details**
+
+      All images used by the service are guaranteed to be newer than the service trigger time.
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/detect_object
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/detect_object
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/detect_object
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Required arguments:
+
+               ``object_id`` in ``object_to_detect``: ID of the template which should be detected.
+
+               ``pose_frame``: see :ref:`sect-silhouettematch-hand-eye-calib`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-hand-eye-calib})`.
+
+            Potentially required arguments:
+
+               ``robot_pose``: see :ref:`sect-silhouettematch-hand-eye-calib`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-hand-eye-calib})`.
+
+            Optional arguments:
+
+               ``object_plane_detection``: false if the objects are placed on a calibrated base plane, true if the objects' surfaces are planar and
+               the base plane is unknown or the objects are located on multiple different planes, e.g. stacks.
+
+               ``offset``: offset in meters by which the base-plane calibration will be shifted towards the camera.
+
+               ``load_carrier_id``: ID of the load carrier which contains the items to be detected.
+
+               ``collision_detection``: see :ref:`sect-collision-check-other-modules`:latex:`\:(Section \ref{collisioncheck:sect-collision-check-other-modules})`.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_detect_object_request.txt
+
+         .. tab:: **Response**
+
+            The maximum number of returned instances can be controlled with the ``max_number_of_detected_objects``
+            parameter.
+
+            ``object_id``: ID of the detected template.
+
+            ``instances``: list of detected object instances, ordered according to the chosen sorting strategy.
+
+            ``grasps``: list of grasps on the detected objects, ordered according to the chosen sorting strategy.
+            The ``instance_uuid`` gives the reference to the detected object in ``instances`` this grasp belongs to.
+            The list of returned grasps will be trimmed to the 100 best grasps if more reachable grasps are found.
+            Each grasp contains a flag ``collision_checked`` and a ``gripper_id``
+            (see :ref:`sect-collision-check-other-modules`:latex:`, Section \ref{collisioncheck:sect-collision-check-other-modules}`).
+
+            ``load_carriers``: list of detected load carriers.
+
+            ``timestamp``: timestamp of the image set the detection ran on.
+
+            ``return_code``: holds possible warnings or error codes and messages.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_detect_object_response.txt
+
+.. _expl-silhouettematch-srv-calib:
+
+``calibrate_base_plane``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers the calibration of the base plane, as described in
+   :ref:`sect-silhouettematch-base-plane-calib`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-base-plane-calib})`.
+
+   .. toggle-header::
+      :header: **Details**
+
+      A successful base-plane calibration is stored persistently on the |rc_xxx| and returned by this service.
+      The base-plane calibration is persistent over firmware updates and rollbacks.
+
+      All images used by the service are guaranteed to be newer than the service trigger time.
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/calibrate_base_plane
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/calibrate_base_plane
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/calibrate_base_plane
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Required arguments:
+
+               ``plane_estimation_method``: method to use for base-plane calibration. Valid values are ``STEREO``, ``APRILTAG``, ``MANUAL``.
+
+               ``pose_frame``: see :ref:`sect-silhouettematch-hand-eye-calib`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-hand-eye-calib})`.
+
+            Potentially required arguments:
+
+               ``plane`` if ``plane_estimation_method`` is ``MANUAL``: plane that will be set as base-plane calibration.
+
+               ``robot_pose``: see :ref:`sect-silhouettematch-hand-eye-calib`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-hand-eye-calib})`.
+
+               ``region_of_interest_2d_id``: ID of the region of interest for base-plane calibration.
+
+            Optional arguments:
+
+               ``offset``: offset in meters by which the estimated plane will be shifted towards the camera.
+
+               ``plane_preference`` in ``stereo``: whether the plane closest to or farthest from the camera should be used as base plane.
+               This option can be set only if ``plane_estimation_method`` is ``STEREO``.
+               Valid values are ``CLOSEST`` and ``FARTHEST``. If not set, the default is ``FARTHEST``.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_calibrate_base_plane_request.txt
+
+         .. tab:: **Response**
+
+            ``plane``: calibrated base plane.
+
+            ``timestamp``: timestamp of the image set the calibration ran on.
+
+            ``return_code``: holds possible warnings or error codes and messages.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_calibrate_base_plane_response.txt
+
+
+.. _expl-silhouettematch-srv-get-calib:
+
+``get_base_plane_calibration``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured base-plane calibration.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_base_plane_calibration
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/get_base_plane_calibration
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_base_plane_calibration
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Required arguments:
+
+               ``pose_frame``: see :ref:`sect-silhouettematch-hand-eye-calib`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-hand-eye-calib})`.
+
+            Potentially required arguments:
+
+               ``robot_pose``: see :ref:`sect-silhouettematch-hand-eye-calib`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-hand-eye-calib})`.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_get_base_plane_calibration_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_get_base_plane_calibration_response.txt
+
+
+.. _expl-silhouettematch-srv-delete-calib:
+
+``delete_base_plane_calibration``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured base-plane calibration.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/delete_base_plane_calibration
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/delete_base_plane_calibration
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/delete_base_plane_calibration
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_delete_base_plane_calibration_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_delete_base_plane_calibration_response.txt
+
+
+.. _expl-silhouettematch-srv-set-preferred-orientation:
+
+``set_preferred_orientation``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores the preferred orientation of the gripper to compute the reachability of the grasps,
+   which is used for filtering and, optionally, sorting the grasps returned by the ``detect_object`` service
+   (see :ref:`sect-silhouettematch-set-preferred-orientation`:latex:`, Section \ref{silhouettematch:sect-silhouettematch-set-preferred-orientation}`).
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/set_preferred_orientation
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/set_preferred_orientation
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_preferred_orientation
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_set_preferred_orientation_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_set_preferred_orientation_response.txt
+
+.. _expl-silhouettematch-srv-get-preferred-orientation:
+
+``get_preferred_orientation``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the preferred orientation of the gripper to compute the reachability of the grasps,
+   which is used for filtering and, optionally, sorting the grasps returned by the ``detect_object`` service
+   (see :ref:`sect-silhouettematch-set-preferred-orientation`:latex:`, Section \ref{silhouettematch:sect-silhouettematch-set-preferred-orientation}`).
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_preferred_orientation
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/get_preferred_orientation
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_preferred_orientation
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_get_preferred_orientation_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_get_preferred_orientation_response.txt
+
+.. _expl-silhouettematch-srv-set-sorting-strategies:
+
+``set_sorting_strategies``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores the sorting strategy for sorting the grasps and detected objects returned by the ``detect_object`` service
+   (see :ref:`sect-silhouettematch-detect`:latex:`, Section \ref{silhouettematch:sect-silhouettematch-detect}`).
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/set_sorting_strategies
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/set_sorting_strategies
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_sorting_strategies
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Only one strategy may have a ``weight`` greater than 0. If all ``weight`` values are set to 0, the module will use the
+            default sorting strategy.
+
+            If the weight for ``direction`` is set, the
+            ``vector`` must contain the direction vector and ``pose_frame`` must be either ``camera`` or ``external``.
+
+            If the weight for ``distance_to_point`` is set, ``point`` must contain the sorting point and ``pose_frame`` must be either ``camera`` or ``external``.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_set_sorting_strategies_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_set_sorting_strategies_response.txt
+
+.. _expl-silhouettematch-srv-get-sorting-strategies:
+
+``get_sorting_strategies``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the sorting strategy for sorting the grasps and detected objects returned by the ``detect_object`` service
+   (see :ref:`sect-silhouettematch-detect`:latex:`, Section \ref{silhouettematch:sect-silhouettematch-detect}`).
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_sorting_strategies
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/get_sorting_strategies
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_sorting_strategies
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_get_sorting_strategies_request.txt
+
+         .. tab:: **Response**
+
+            All ``weight`` values are 0 when the module uses the default sorting strategy.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_get_sorting_strategies_response.txt
+
+.. only:: rc_cube
+
+   .. _expl-silhouettematch-srv-trigger-dump:
+
+   ``trigger_dump``
+   ^^^^^^^^^^^^^^^^
+      Triggers dumping of the detection that corresponds to the given timestamp,
+      or the latest detection, if no timestamp is given. The dumps are saved to the
+      connected USB drive.
+
+      .. toggle-header::
+         :header: **Details**
+
+         This service can be called as follows.
+
+         .. tabs::
+
+            .. tab:: **API version 2**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/trigger_dump
+
+            .. tab:: **API version 1 (deprecated)**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/trigger_dump
+
+         .. tabs::
+
+            .. tab:: **Request**
+
+               .. include:: _gen/nodes/services/rc_silhouettematch_trigger_dump_request.txt
+
+            .. tab:: **Response**
+
+               .. include:: _gen/nodes/services/rc_silhouettematch_trigger_dump_response.txt
+
+.. _expl-silhouettematch-srv-reset-params:
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Resets all parameters of the module to its default values,
+   as listed in above table.
+   Also resets preferred orientation and sorting strategies.
+   The reset does not apply to templates and base-plane calibration.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/reset_defaults
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_reset_defaults_response.txt
+
+.. _expl-silhouettematch-srv-set-roi:
+
+``set_region_of_interest_2d`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a 2D region of interest on the |rc_xxx|.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            This service is not available in API version 2.
+            Use :ref:`expl-roi-srv-set-roi-2d`:latex:`\:(Section \ref{roi:expl-roi-srv-set-roi-2d})` in ``rc_roi_db`` instead.
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_region_of_interest_2d
+
+.. _expl-silhouettematch-srv-get-roi:
+
+``get_regions_of_interest_2d`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured 2D regions of interest with the requested ``region_of_interest_2d_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            This service is not available in API version 2.
+            Use :ref:`expl-roi-srv-get-roi-2d`:latex:`\:(Section \ref{roi:expl-roi-srv-get-roi-2d})` in ``rc_roi_db`` instead.
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_regions_of_interest_2d
+
+.. _expl-silhouettematch-srv-delete-roi:
+
+``delete_regions_of_interest_2d`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured 2D regions of interest with the requested ``region_of_interest_2d_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            This service is not available in API version 2.
+            Use :ref:`expl-roi-srv-delete-roi-2d`:latex:`\:(Section \ref{roi:expl-roi-srv-delete-roi-2d})` in ``rc_roi_db`` instead.
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/delete_regions_of_interest_2d
+
+.. _sect-silhouettematch-internal-services:
+
+Internal services
+-----------------
+
+The following services for configuring grasps can change in future without notice.
+Setting, retrieving and deleting grasps is recommend to be done via the |webgui|.
+
+.. only:: rc_cube
+
+   .. note::
+
+      Configuring grasps is global for all templates on the |rc_cube| and affects all
+      camera pipelines.
+
+.. _expl-silhouettematch-srv-set-grasp:
+
+``set_grasp``
+^^^^^^^^^^^^^
+
+   Persistently stores a grasp for the given object template on the |rc_xxx|.
+   All configured grasps are persistent over firmware updates and rollbacks.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/set_grasp
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/set_grasp
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_grasp
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Details for the definition of the ``grasp`` type are given in
+            :ref:`sect-silhouettematch-grasps`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-grasps})`.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_set_grasp_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_set_grasp_response.txt
+
+
+.. _expl-silhouettematch-srv-set-all-grasps:
+
+``set_all_grasps``
+^^^^^^^^^^^^^^^^^^
+
+   Replaces the list of grasps for the given object template on the |rc_xxx|.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/set_all_grasps
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/set_all_grasps
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_all_grasps
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Details for the definition of the ``grasp`` type are given in
+            :ref:`sect-silhouettematch-grasps`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-grasps})`.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_set_all_grasps_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_set_all_grasps_response.txt
+
+.. _expl-silhouettematch-srv-get-grasps:
+
+``get_grasps``
+^^^^^^^^^^^^^^
+
+   Returns all configured grasps which have the requested ``grasp_ids`` and belong to the requested ``template_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_grasps
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/get_grasps
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_grasps
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            If no ``grasp_ids`` are provided, all grasps belonging to the requested ``template_ids`` are returned.
+            If no ``template_ids`` are provided, all grasps with the requested ``grasp_ids`` are returned.
+            If neither IDs are provided, all configured grasps are returned.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_get_grasps_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_get_grasps_response.txt
+
+.. _expl-silhouettematch-srv-delete-grasps:
+
+``delete_grasps``
+^^^^^^^^^^^^^^^^^
+
+   Deletes all grasps with the requested ``grasp_ids`` that belong to the requested ``template_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/delete_grasps
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/delete_grasps
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/delete_grasps
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            If no ``grasp_ids`` are provided, all grasps belonging to the requested ``template_ids`` are deleted.
+            The ``template_ids`` list must not be empty.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_delete_grasps_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_delete_grasps_response.txt
+
+.. _expl-silhouettematch-srv-get-symmetric-grasps:
+
+``get_symmetric_grasps``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns all grasps that are symmetric to the given grasp.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_symmetric_grasps
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/services/get_symmetric_grasps
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_symmetric_grasps
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Details for the definition of the ``grasp`` type are given in
+            :ref:`sect-silhouettematch-grasps`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-grasps})`.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_get_symmetric_grasps_request.txt
+
+         .. tab:: **Response**
+
+            The first grasp in the returned list is the one that was passed with the service call.
+            If the object template does not have an exact symmetry, only the grasp passed with the
+            service call will be returned. If the object template has a continuous symmetry (e.g. a
+            cylindrical object), only 12 equally spaced sample grasps will be returned.
+
+            Details for the definition of the ``grasp`` type are given in
+            :ref:`sect-silhouettematch-grasps`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch-grasps})`.
+
+            .. include:: _gen/nodes/services/rc_silhouettematch_get_symmetric_grasps_response.txt
+
+.. _sect-silhouettematch-return-codes:
+
+Return codes
+------------
+
+.. index::
+   pair: SilhouetteMatch; return codes
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+
+.. tabularcolumns:: |c|L|
+.. _tab-silhouettematch-return-codes:
+.. csv-table:: Return codes of the |silm| module services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided."
+    "-3",   "An internal timeout occurred, e.g. during object detection."
+    "-4",   "Data acquisition took longer than allowed."
+    "-7",   "Data could not be read or written to persistent storage."
+    "-8",   "Module is not in a state in which this service can be called. E.g. ``detect_object`` cannot be called if there is no base-plane calibration."
+    "-10",  "New element could not be added as the maximum storage capacity of regions of interest or templates has been exceeded."
+    "-100", "An internal error occurred."
+    "-101", "Detection of the base plane failed."
+    "-102", "The hand-eye calibration changed since the last base-plane calibration."
+    "-104", "Offset between the base plane normal and the camera's line of sight exceeds 10 degrees."
+    "10",   "The maximum storage capacity of regions of interest or templates has been reached."
+    "11",  "An existing element was overwritten."
+    "100",  "The requested load carrier was not detected in the scene."
+    "101",  "None of the detected grasps is reachable."
+    "102",  "The detected load carrier is empty."
+    "103",  "All detected grasps are in collision."
+    "107",  "The base plane was not transformed to the current camera pose, e.g. because no robot pose was provided during base-plane calibration."
+    "108",  "The template is deprecated."
+    "109",  "The plane for object detection does not fit to the load carrier, e.g. objects are below the load carrier floor."
+    "111",  "The detection result's pose could not be refined with the point cloud because the template's outer contour is not closed."
+    "113",  "No gripper was found for collision checking."
+    "114",  "Collision checking during retraction was skipped, e.g. because no load carrier or no pre-grasp offset were given."
+    "151",  "The object template has a continuous symmetry."
+    "999",  "Additional hints for application development"
+
+.. _sect-silhouettematch-template-upload:
+
+Template API
+------------
+
+.. index::
+  single: SilhouetteMatch; template api
+  single: SilhouetteMatch; template download
+  single: SilhouetteMatch; template upload
+  single: SilhouetteMatch; template deletion
+
+For template upload, download, listing and removal, special |rest-api| endpoints are provided.
+Templates can also be uploaded, downloaded and removed via the |webgui|.
+The templates include the grasp points, if grasp points have been configured.
+Up to 50 templates can be stored persistently on the |rc_xxx|.
+
+.. only:: rc_visard
+
+   .. include:: _gen/swagger/rc_visard/templates_rc_silhouettematch.txt
+
+.. only:: rc_visard_ng
+
+   .. include:: _gen/swagger/rc_visard_ng/templates_rc_silhouettematch.txt
+
+.. only:: rc_cube
+
+   .. include:: _gen/swagger/rc_cube/templates_rc_silhouettematch.txt

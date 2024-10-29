@@ -1,0 +1,10 @@
+Pipelines
+
+Pipelines represent the
+
+rc_visard NG
+
+'s camera pipelines.
+
+The following list includes all REST-API requests regarding the camera
+pipelines' configuration:

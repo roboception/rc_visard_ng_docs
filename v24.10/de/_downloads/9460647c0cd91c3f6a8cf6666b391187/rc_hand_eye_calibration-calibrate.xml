@@ -1,0 +1,40 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="32"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_hand_eye_calibration" Type="STRING"/>
+      <ELEMENT Tag="req/service/calibrate" Type="STRING"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/error" Type="REAL"/>
+      <ELEMENT Tag="res/message" Type="STRING"/>
+      <ELEMENT Tag="res/pose/@X" Type="REAL"/>
+      <ELEMENT Tag="res/pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="res/pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="res/pose/@A" Type="REAL"/>
+      <ELEMENT Tag="res/pose/@B" Type="REAL"/>
+      <ELEMENT Tag="res/pose/@C" Type="REAL"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/robot_mounted" Type="BOOL"/>
+      <ELEMENT Tag="res/rotation_error_degree" Type="REAL"/>
+      <ELEMENT Tag="res/status" Type="INT"/>
+      <ELEMENT Tag="res/success" Type="BOOL"/>
+      <ELEMENT Tag="res/translation_error_meter" Type="REAL"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>
