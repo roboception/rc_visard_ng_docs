@@ -1,0 +1,17 @@
+.. include:: global_rst.glb
+
+.. _sect-rest-api-pipelines:
+
+Pipelines
+~~~~~~~~~
+
+.. index::
+   pair: REST-API; node
+
+Pipelines represent the |rcxxx|'s camera pipelines.
+
+The following list includes all |restapi| requests regarding the camera pipelines' configuration:
+
+.. only:: rc_cube
+
+   .. include:: _gen/swagger/rc_cube/pipelines.txt

@@ -1,0 +1,836 @@
+TagDetect
+
+Einführung
+
+Die TagDetect-Module sind optionale Module, die intern auf dem
+
+rc_visard NG
+
+ laufen, und benötigen gesonderte
+
+Lizenzen
+
+, die erworben werden müssen. Diese Lizenzen sind auf jedem
+
+rc_visard NG
+
+, der nach dem 01.07.2020 gekauft wurde, vorhanden.
+
+Die TagDetect-Module laufen intern auf dem
+
+rc_visard NG
+
+ und ermöglichen es, 2D-Matrixcodes und Marker (Tags) zu erkennen.
+Derzeit gibt es TagDetect-Module für *QR-Codes* und *AprilTags*. Neben
+der Erkennung berechnen die Module die Position und Orientierung jedes
+Tags im 3D-Kamerakoordinatensystem, um diesen beispielsweise mit einem
+Roboter zu manipulieren oder die Pose der Kamera in Bezug auf den Tag
+zu berechnen.
+
+Die Tagerkennung besteht aus drei Schritten:
+
+Tagerkennung auf dem 2D-Bildpaar (siehe Tagerkennung, Abschnitt
+\ref{tagdetect:sect-tag-reading}).
+
+Schätzung der Pose jedes Tags (siehe Posenschätzung, Abschnitt
+\ref{tagdetect:sect-tag-pose-estimation}).
+
+Wiedererkennung von bisher gesehenen Tags (siehe Tag-Wiedererkennung,
+Abschnitt \ref{tagdetect:sect-tag-re-identification}).
+
+Im Folgenden werden die zwei unterstützten Tagtypen näher beschrieben,
+gefolgt von einem Vergleich.
+
+QR-Code
+
+
+QR-Codes sind zweidimensionale Matrixcodes, welche beliebige,
+benutzerspezifizierte Daten enthalten können. Viele Alltagsgeräte, wie
+beispielsweise Smartphones, unterstützen die Erkennung von QR-Codes.
+Zusätzlich stehen Online- und Offlinetools zur Verfügung, um QR-Codes
+zu generieren.
+
+Die "Pixel" eines QR-Codes werden *Module* genannt. Das Aussehen und
+die Auflösung von QR-Codes ändert sich mit der Menge der in ihnen
+gespeicherten Daten. Während die speziellen Muster in den drei Ecken
+immer 7 Module breit sind, erhöht sich die Anzahl der Module
+dazwischen, je mehr Daten gespeichert sind. Der am niedrigsten
+aufgelöste QR-Code besitzt eine Größe von 21x21 Modulen und kann bis
+zu 152 Bits speichern.
+
+Auch wenn viele QR-Code-Generatoren speziell designte QR-Codes
+erzeugen können (bspw. mit einem Logo, mit runden Ecken oder mit
+Punkten als Module), wird eine zuverlässige Erkennung solcher Tags mit
+dem TagDetect-Modul nicht garantiert. Gleiches gilt für QR-Codes,
+welche Zeichen außerhalb des ASCII-Zeichensatzes beinhalten.
+
+AprilTag
+
+
+AprilTags sind ähnlich zu QR-Codes. Sie wurden allerdings speziell zur
+robusten Identifikation auf weite Entfernungen entwickelt. Wie bei QR-
+Codes werden die "Pixel" *Module* genannt.
+
+Abb. 22
+
+ veranschaulicht den Aufbau von AprilTags. Sie haben einen
+obligatorischen weißen und schwarzen Rahmen, welcher jeweils ein Modul
+breit ist. Tags der Familien 16h5, 25h9, 36h10 und 36h11 sind von
+diesem Rahmen umschlossen und enthalten innen eine variable Menge an
+Datenmodulen. Bei Tags der Familie 41h12 ist der Rahmen nach innen
+verschoben und die Datenmodule befinden sich sowohl innerhalb als auch
+außerhalb des Rahmens. Anders als QR-Codes speichern AprilTags keine
+benutzerdefinierten Informationen, sondern werden durch eine
+vordefinierte
+
+Familie
+
+ und
+
+ID
+
+ identifiziert. Die Tags in
+
+Abb. 22
+
+ sind zum Beispiel aus Familie 16h5, 36h11 bzw. 41h12 und besitzen ID
+0, 11 bzw. 0. Alle unterstützten Familien werden in
+
+Tab. 17
+
+ aufgelistet.
+
+AprilTag-Familien        Familie  Anzahl IDs  Empfohlen  16h5  30  -
+25h9  35  o  36h10  2320  o  36h11  587  +  41h12  2115  +
+
+Die Zahl vor dem "h" jeder Familie bezeichnet die Anzahl der
+Datenmodule, welche im Tag enthalten sind: Während ein 16h5 Tag 16
+(4x4) Datenmodule enthält ((c) in
+
+Abb. 22
+
+) und ein 36h11 Tag 36 (6x6), beinhaltet ein 41h12 Tag 41 Datenmodule
+(3x3 innen und 4x8 außen). Die Zahl hinter dem "h" bezeichnet den
+Hamming-Abstand zwischen zwei Tags der Familie. Je höher, desto höher
+ist die Robustheit, aber desto weniger IDs stehen bei gleicher Anzahl
+an Datenmodulen zur Verfügung (siehe
+
+Tab. 17
+
+).
+
+Der Vorteil von Familien mit weniger Modulen (bspw. 16h5 im Vergleich
+zu 36h11) ist die niedrigere Auflösung der Tags. Jedes Modul ist somit
+größer, weshalb der Tag auf eine größere Distanz erkannt werden kann.
+Dies hat allerdings auch Nachteile: Zum einen stehen bei niedrigerer
+Zahl an Datenmodulen auch weniger IDs zur Verfügung. Wichtiger aber
+ist, dass die Robustheit der Tagerkennung signifikant reduziert wird,
+da es zu einer höheren Falsch-Positiv-Rate kommt. Dies bedeutet, dass
+Tags verwechselt werden oder nicht existierende Tags in zufälliger
+Bildtextur oder im Bildrauschen erkannt werden. Die 41h12 Familie hat
+ihren Rahmen nach innen verschoben, was im Vergleich zur 36h11 Familie
+mehr Datenmodule bei einer geringen Gesamtmodulanzahl ermöglicht.
+
+Aus diesen Gründen empfehlen wir die Verwendung der 42h12 und
+36h11-Familien und raten ausdrücklich von der Familie 16h5 ab.
+Letztgenannte Familie sollten nur benutzt werden, wenn eine große
+Erkennungsdistanz für die Anwendung unbedingt erforderlich ist. Jedoch
+ist die maximale Erkennungsdistanz nur ca. 25% größer, wenn anstelle
+der 36h11-Familie die 16h5-Familie verwendet wird.
+
+Vorgenerierte AprilTags können von der AprilTag-Projektwebseite (
+
+https://april.eecs.umich.edu/software/apriltag.html
+
+) heruntergeladen werden. Jede Familie besteht aus mehreren PNGs,
+welche jeweils einen AprilTag enthalten. Jedes Pixel im PNG entspricht
+dabei einem Modul des AprilTags. Beim Drucken der Tags der Familien
+36h11, 36h10, 25h9 und 16h5 sollte darauf geachtet werden, den weißen
+Rand um den AprilTag mit einzuschließen -- dieser ist in den PNGs
+enthalten (siehe (a) in
+
+Abb. 22
+
+). Die Tags müssen außerdem ohne Interpolation auf die Druckgröße
+skaliert werden, sodass die scharfen Kanten erhalten bleiben.
+
+Vergleich
+
+Sowohl QR-Codes als auch AprilTags haben ihre Vor- und Nachteile.
+Während QR-Codes die Speicherung von benutzerdefinierten Daten
+erlauben, sind die Tags bei AprilTags vordefiniert und in ihrer Anzahl
+limitiert. Andererseits haben AprilTags eine niedrigere Auflösung und
+können daher auf eine größere Distanz erkannt werden. Zusätzlich hilft
+die durchgängige weiß-zu-schwarz-Kante in jedem AprilTag bei einer
+präziseren Posenschätzung.
+
+Bemerkung: Falls die Speicherung von benutzerdefinierten Daten nicht
+  benötigt wird, sollten AprilTags QR-Codes vorgezogen werden.
+
+Tagerkennung
+
+Der erste Schritt der Tagerkennung ist die Detektion der Tags auf dem
+Stereo-Bildpaar. Dieser Schritt benötigt die meiste Zeit und seine
+Präzision ist entscheidend für die Präzision der finalen Tagpose. Um
+die Dauer dieses Schritts zu kontrollieren, kann der Parameter
+"quality" vom Benutzer konfiguriert werden. Er hat ein
+Herunterskalieren des Stereo-Bildpaares vor der Tagerkennung zur
+Folge.
+
+Hoch
+
+ ("High") ergibt die höchste maximale Erkennungsdistanz und Präzision,
+aber auch die längste Dauer der Erkennung.
+
+Niedrig
+
+ ("Low") führt zur kleinsten maximalen Erkennungsdistanz und
+Präzision, aber benötigt auch nur weniger als die halbe Zeit.
+
+Mittel
+
+ ("Medium") liegt dazwischen. Es sollte beachtet werden, dass dieser
+"quality"-Parameter keine Verbindung zum "quality"-Parameter des
+
+Stereo-Matching
+
+ hat.
+
+
+Die maximale Erkennungsdistanz z für Qualität
+
+Hoch
+
+ ("High") kann mit folgenden Formeln angenähert werden:
+
+   z = \frac{f s}{p},
+
+   s = \frac{t}{r},
+
+wobei f die
+
+Brennweite
+
+ in Pixeln und s die Größe jedes Moduls in Metern bezeichnet. s kann
+leicht mit letztgenannter Formel berechnet werden, in welcher t der
+Taggröße in Metern und r der Breite des Tags in Modulen entspricht
+(bei AprilTags ohne den weißen Rahmen).
+
+Abb. 23
+
+ veranschaulicht diese Variablen. p bezeichnet die Zahl der Bildpixel
+pro Modul, welche für eine Erkennung erforderlich sind. Sie
+unterscheidet sich zwischen QR-Codes und AprilTags. Auch der Winkel
+des Tags zur Kamera und die Beleuchtung spielen eine Rolle. Ungefähre
+Werte für eine robuste Erkennung sind:
+
+AprilTag: p=5 Pixel/Modul
+
+QR-Code: p=6 Pixel/Modul
+
+Die folgenden Tabellen enthalten Beispiele für die maximale
+Erkennungsdistanz in unterschiedlichen Situationen. Die Brennweite des
+
+rc_visard
+
+ wird dafür mit 1075 Pixeln, die Qualität mit "High" angenommen.
+
+Beispiele zur maximalen Erkennungsdistanz für AprilTags mit einer
+Breite von t=4 cm        AprilTag-Familie  Tagbreite  Maximale Distanz
+36h11 (empfohlen)  8 Module  1.1 m  16h5  6 Module  1.4 m  41h12
+(empfohlen)  5 Module  1.7 m
+
+Beispiele zur maximalen Erkennungsdistanz für QR-Codes mit einer
+Breite von t=8 cm      Tagbreite  Maximale Distanz  29 Module  0.49 m
+21 Module  0.70 m
+
+Posenschätzung
+
+Für jeden erkannten Tag wird dessen Pose im Kamerakoordinatensystem
+geschätzt. Eine Bedingung dafür ist, dass der Tag vollständig im
+linken und rechten Bild zu sehen ist. Das Koordinatensystem ist wie
+unten gezeigt am Tag ausgerichtet.
+
+
+Die z-Achse zeigt "in" den Tag. Es ist zu beachten, dass, auch wenn
+AprilTags den weißen Rand in ihrer Definition enthalten, der Ursprung
+des Koordinatensystems trotzdem am Übergang des weißen zum schwarzen
+Rand liegt. Da AprilTags keine offensichtliche Orientierung haben,
+liegt der Ursprung in der oberen linken Ecke des vorgenerierten
+AprilTags.
+
+Während der Posenschätzung wird auch die Größe des Tags geschätzt
+unter der Annahme, dass der Tag quadratisch ist. Bei QR-Codes bezieht
+sich die Größe auf den gesamten Tag, bei AprilTags dagegen nur auf den
+Bereich innerhalb des Übergangs vom schwarzen zum weißen Rand. Das
+heißt, dass bei Tags der Familien 16h5, 25h9, 36h10 und 36h11 der
+äußere weiße Rand ignoriert wird.
+
+Der Benutzer kann auch die ungefähre Größe (\pm 10\%) eines Tags
+angeben. Alle Tags, die dieser Einschränkung nicht entsprechen, werden
+automatisch herausgefiltert. Weiter hilft diese Information in
+bestimmten Situationen, Mehrdeutigkeiten in der Posenschätzung
+aufzulösen, die entstehen können, wenn mehrere Tags mit derselben ID
+im linken und rechten Bild sichtbar und diese Tags parallel zu den
+Bildzeilen ausgerichtet sind.
+
+Bemerkung: Für beste Ergebnisse der Posenschätzung sollte der Tag
+  sorgfältig gedruckt und auf einem steifen und möglichst ebenen
+  Untergrund angebracht werden. Jegliche Verzerrung des Tags oder
+  Unebenheit der Oberfläche verschlechtert die geschätzte Pose.
+
+Bemerkung: Wir empfehlen, die ungefähre Größe der Tags anzugeben.
+  Ansonsten, falls mehrere Tags mit derselben ID im linken oder
+  rechten Bild sichtbar sind, kann es zu einer fehlerhaften
+  Posenschätzung kommen, wenn die Tags gleich orientiert sind und sie
+  ungefähr parallel zu den Bildzeilen angeordnet sind. Auch wenn die
+  Größe nicht angegeben sein sollte, versuchen die TagDetect-Module
+  jedoch, solche Situationen zu erkennen und verwerfen betroffene
+  Tags.
+
+Unten stehende Tabellen enthalten grobe Angaben zur Präzision der
+geschätzten Posen von AprilTags. Wir unterscheiden zwischen lateraler
+Präzision (also in x- und y-Richtung) und Präzision in z-Richtung. Es
+wird angenommen, dass "quality" auf "High" gesetzt ist, und dass die
+Blickrichtung der Kamera parallel zur Normalen des Tags ist. Die Größe
+eines Tags hat keinen signifikanten Einfluss auf die Präzision in
+lateraler und z-Richtung. Im Allgemeinen verbessert ein größerer Tag
+allerdings die Präzision. Im Bezug auf die Präzision der Rotation, im
+speziellen um die x- und y-Achsen, übertreffen große Tags kleinere
+deutlich.
+
+Ungefähre Präzision der Position von AprilTag Messungen mit Qualität
+Hoch in einem idealen Szenario        Distanz  rc_visard NG 160 -
+lateral  rc_visard NG 160 - z  0.5 m  0.05 mm  0.3 mm  1.0 m  0.15 mm
+1.4 mm  2.0 m  0.5 mm  3.7 mm
+
+Ungefähre Präzision der Orientierung von AprilTag Messungen mit
+Qualität Hoch in einem idealen Szenario für verschiedene Tag-Größen
+Distanz  60 x 60 mm  120 x 120 mm  0.5 m  0.2°  --  1.0 m  0.8°  0.3°
+2.0 m  2.0°  0.8°  3.0 m  --  1.8°
+
+Tag-Wiedererkennung
+
+Jeder Tag besitzt eine ID: bei AprilTags ist dies die
+
+Familie
+
+ zusammen mit der AprilTag-
+
+ID
+
+, bei QR-Codes die enthaltenen Daten. Diese IDs sind jedoch nicht
+einzigartig, da mehrere Tags mit derselben ID in einer Szene vorkommen
+können.
+
+Zur Unterscheidung dieser Tags weisen die TagDetect-Module jedem Tag
+einen eindeutigen Identifikator zu. Um den Benutzer dabei zu
+unterstützen, denselben Tag über mehrere Tagerkennungsläufe hinweg zu
+identifizieren, versucht das TagDetect-Modul Tags wiederzuerkennen.
+Falls erfolgreich, wird einem Tag derselbe Identifikator zugewiesen.
+
+Die Tag-Wiedererkennung vergleicht die Positionen der Ecken der Tags
+im Kamera-Koordinatensystem, um identische Tags wiederzufinden. Tags
+werden als identisch angenommen, falls sie sich nicht oder nur
+geringfügig in diesem Koordinatensystem bewegt haben.
+
+Über den "max_corner_distance"-Parameter kann der Benutzer festlegen,
+wie weit ein Tag sich zwischen zwei Erkennungsläufen bewegen darf, um
+als identisch zu gelten. Der Parameter definiert die maximale Distanz
+zwischen den Ecken zweier Tags, was in
+
+Abb. 25
+
+ dargestellt ist. Die euklidischen Abstände der vier
+zusammengehörenden Tagecken in 3D werden berechnet. Falls keiner
+dieser Abstände den Grenzwert überschreitet, gilt der Tag als
+wiedererkannt.
+
+
+Nach einer bestimmten Anzahl von Tagerkennungsläufen werden vorher
+gesehene Tags verworfen, falls diese in der Zwischenzeit nicht mehr
+erkannt wurden. Dies kann über den Parameter
+"forget_after_n_detections" festgelegt werden.
+
+Hand-Auge-Kalibrierung
+
+Falls die Kamera zu einem Roboter kalibriert wurde, kann das
+TagDetect-Modul automatisch Posen im Roboterkoordinatensystem
+ausgeben. Für die
+
+Services
+
+ kann das Koordinatensystem der berechneten Posen mit dem Argument
+"pose_frame" spezifiziert werden.
+
+Zwei verschiedene "pose_frame"-Werte können gewählt werden:
+
+Kamera-Koordinatensystem (camera): Alle Posen sind im Kamera-
+Koordinatensystem angegeben.
+
+Benutzerdefiniertes externes Koordinatensystem (external): Alle Posen
+sind im sogenannten externen Koordinatensystem angegeben, welches vom
+Nutzer während der Hand-Auge-Kalibrierung gewählt wurde. In diesem
+Fall bezieht das Modul alle notwendigen Informationen über die
+Kameramontage und die kalibrierte Hand-Auge-Transformation automatisch
+vom Modul Hand-Auge-Kalibrierung\:(Abschnitt \ref{handeye_calibration
+:sect-handeye-calibration}). Für den Fall einer robotergeführten
+Kamera ist vom Nutzer zusätzlich die jeweils aktuelle Roboterpose
+robot_pose anzugeben.
+
+Zulässige Werte zur Angabe des Referenzkoordinatensystems sind
+"camera" und "external". Andere Werte werden als ungültig
+zurückgewiesen.
+
+Parameter
+
+Es stehen zwei getrennte Module für die Tagerkennung zur Verfügung,
+eines für AprilTag- und eines für QR-Code-Erkennung:
+"rc_april_tag_detect" bzw. "rc_qr_code_detect". Abgesehen vom
+Modulnamen teilen beide die gleiche Schnittstellendefinition.
+
+Neben der
+
+REST-API-Schnittstelle
+
+ stellen die TagDetect-Module außerdem Seiten in der Web GUI  unter
+Module ‣ AprilTag und Module ‣ QR Code bereit, über welche sie manuell
+ausprobiert und konfiguriert werden können.
+
+Im Folgenden sind die Parameter am Beispiel von "rc_qr_code_detect"
+aufgelistet. Sie gleichen denen von "rc_april_tag_detect".
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter:
+
+Laufzeitparameter des rc_qr_code_detect-Moduls              Name  Typ
+Min.  Max.  Default  Beschreibung  detect_inverted_tags  bool  false
+true  false  Erkennt Tags, bei denen Schwarz und Weiß vertauscht sind
+forget_after_n_detections  int32  1  1000  30  Anzahl an
+Erkennungsläufen, nach denen ein vorher gesehener Tag während der Tag-
+Wiedererkennung verworfen wird  max_corner_distance  float64  0.001
+0.01  0.005  Maximale Distanz zusammengehöriger Ecken zweier Tags
+während der Tag-Wiedererkennung  quality  string  -  -  High  Qualität
+der Tagerkennung: [Low, Medium, High]  use_cached_images  bool  false
+true  false  Benutze das zuletzt empfangene Stereo-Bildpaar, anstatt
+auf ein neues zu warten
+
+Über die REST-API können diese Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/<rc_qr_code_detect|rc_april_tag_detect>/parameters/parameters?<parameter-name>=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/parameters?<parameter-name>=<value>
+
+Statuswerte
+
+Die TagDetect-Module melden folgende Statuswerte:
+
+Statuswerte der rc_qr_code_detect- und rc_april_tag_detect-Module
+Name  Beschreibung  data_acquisition_time  Zeit in Sekunden, für die
+beim letzten Aufruf auf Bilddaten gewartet werden musste
+last_timestamp_processed  Zeitstempel des letzten verarbeiteten
+Bilddatensatzes  processing_time  Berechnungszeit für die letzte
+Erkennung in Sekunden  state  Der aktuelle Zustand des Moduls
+
+Der Parameter "state" kann folgende Werte annehmen:
+
+Mögliche Zustände der TagDetect-Module      Zustandsname  Beschreibung
+IDLE  Das Modul ist inaktiv.  RUNNING  Das Modul läuft und ist bereit
+zur Tagerkennung.  FATAL  Ein schwerwiegender Fehler ist aufgetreten.
+
+Services
+
+Die TagDetect-Module implementieren einen Zustandsautomaten, welcher
+zum Starten und Stoppen genutzt werden kann. Die eigentliche
+Tagerkennung kann mit "detect" ausgelöst werden.
+
+Die angebotenen Services von "rc_qr_code_detect" bzw.
+"rc_april_tag_detect" können mithilfe der
+
+REST-API-Schnittstelle
+
+ oder der
+
+rc_visard NG
+
+
+Web GUI
+
+ ausprobiert und getestet werden.
+
+detect
+
+   löst eine Tagerkennung aus.
+
+      Details
+
+      Abhängig vom "use_cached_images"-Parameter arbeitet das Modul
+      auf dem zuletzt empfangenen Bildpaar (wenn *true*) oder wartet
+      auf ein Bildpaar, das nach dem Auslösen des Services aufgenommen
+      wurde (wenn *false*, dies ist das Standardverhalten). Auch wenn
+      der Parameter auf *true* steht, arbeitet die Tagerkennung
+      niemals mehrmals auf einem Bildpaar.
+
+      Es wird empfohlen, "detect" nur im Zustand "RUNNING" aufzurufen.
+      Es ist jedoch auch im Zustand "IDLE" möglich, was zu einem
+      Autostart und -stop des Moduls führt. Dies hat allerdings
+      Nachteile: Erstens dauert der Aufruf deutlich länger, zweitens
+      funktioniert die Tag-Wiedererkennung nicht. Es wird daher
+      ausdrücklich empfohlen, das Modul manuell zu starten, bevor
+      "detect" aufgerufen wird.
+
+      Tags können vom "detect"-Ergebnis aus mehreren Gründen
+      ausgeschlossen werden, z.B. falls ein Tag nur in einem der
+      Kamerabilder sichtbar war, oder falls die Posenschätzung
+      fehlschlug. Diese herausgefilterten Tags werden im Log
+      aufgelistet, auf welches wie in
+
+      Download der Logdateien
+
+       beschrieben zugegriffen werden kann.
+
+      Auf den Web GUI-Seiten der TagDetect-Module wird eine
+      Visualisierung der letzten Tagerkennung bereitgestellt. Diese
+      Visualisierung wird allerdings erst angezeigt, sobald die
+      Tagerkennung mindestens einmal ausgeführt wurde. In der Web GUI
+      kann die Tagerkennung außerdem manuell ausprobiert werden, indem
+      die Detektieren-Schaltfläche betätigt wird.
+
+      Aufgrund von Änderungen der Systemzeit auf dem
+
+      rc_visard NG
+
+       können Zeitsprünge auftreten, sowohl vorwärts als auch
+      rückwärts (siehe
+
+      Zeitsynchronisierung
+
+      ). Während Vorwärtssprünge keinen Einfluss auf die TagDetect-
+      Module haben, invalidieren Rücksprünge die bereits empfangenen
+      Bilder. Deshalb wird, wenn ein Rücksprung erkannt wird, Fehler
+      -102 beim nächsten "detect"-Aufruf zurückgegeben. Dies geschieht
+      auch, um den Benutzer darauf hinzuweisen, dass die Zeitstempel
+      in der "detect"-Antwort ebenso zurückspringen werden.
+
+      API Version 2
+
+         PUT http://<host>/api/v2/pipelines/0/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/detect
+
+      API Version 1 (veraltet)
+
+         PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/detect
+
+      Request
+
+      Optionale Serviceargumente:
+
+         "tags" bezeichnet die Liste der Tag-IDs, welche erkannt
+         werden sollen. Bei QR-Codes ist die ID gleich den enthaltenen
+         Daten. Bei AprilTags ist es *"<Familie>_<ID>"*, also
+         beispielsweise *"36h11_5"* für Familie 36h11 und ID 5.
+         Natürlich kann das AprilTag-Modul nur zur Erkennung von
+         AprilTags und das QR-Code-Modul nur zur Erkennung von QR-
+         Codes genutzt werden.
+
+         Die "tags"-Liste kann auch leer gelassen werden. In diesem
+         Fall werden alle erkannten Tags zurückgegeben. Dieses Feature
+         sollte nur während der Entwicklung einer Applikation oder zur
+         Fehlerbehebung benutzt werden. Wann immer möglich sollten die
+         konkreten Tag-IDs aufgelistet werden, zum einen zur
+         Vermeidung von Fehldetektionen, zum anderen auch um die
+         Tagerkennung zu beschleunigen, da nicht benötigte Tags
+         aussortiert werden können.
+
+         Bei AprilTags kann der Benutzer nicht nur einzelne Tags,
+         sondern auch eine gesamte Familie spezifizieren, indem die ID
+         auf "<family>" gesetzt wird, bspw. "36h11". Dadurch werden
+         alle Tags dieser Familie erkannt. Es ist auch möglich,
+         mehrere Familien oder eine Kombination aus Familien und
+         einzelnen Tags anzugeben. Zum Beispiel kann "detect" mit
+         "36h11", "25h9_3" und "36h10" zur gleichen Zeit aufgerufen
+         werden.
+
+         Zusätzlich zur ID kann auch die ungefähre Größe (\pm 10\%)
+         eines Tags angegeben werden. Wie in
+
+         Posenschätzung
+
+          erklärt, verhilft dies Mehrdeutigkeiten aufzulösen, die in
+         bestimmten Situationen auftreten können, und kann zum
+         Herausfiltern von Tags genutzt werden, die nicht der
+         angegebenen Größe entsprechen.
+
+         Die "tags"-Liste ist ODER-verknüpft. Es werden alle Tags
+         zurückgegeben, die mit einem der "id"-"size"-Paare in der
+         "tags"-Liste übereinstimmen.
+
+         Das Feld "pose_frame" gibt an, ob die Posen im Kamera- oder
+         im externen Koordinatensystem zurückgegeben werden (siehe
+
+         Hand-Auge-Kalibrierung
+
+         . Der Standardwert ist "camera".
+
+         Die Definition der *Request*-Argumente mit jeweiligen
+         Datentypen ist:
+
+            {
+              "args": {
+                "pose_frame": "string",
+                "robot_pose": {
+                  "orientation": {
+                    "w": "float64",
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  },
+                  "position": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  }
+                },
+                "tags": [
+                  {
+                    "id": "string",
+                    "size": "float64"
+                  }
+                ]
+              }
+            }
+
+      Response
+
+      "timestamp" wird auf den Zeitstempel des Bildpaares gesetzt, auf
+      dem die Tagerkennung gearbeitet hat.
+
+      "tags" enthält alle erkannten Tags.
+
+      "id" ist die ID des Tags, vergleichbar zur "id" in der Anfrage.
+
+      "instance_id" ist der zufällige, eindeutige Identifikator eines
+      Tags, welcher von der Tag-Wiedererkennung zugewiesen wird.
+
+      "pose" enthält "position" und "orientation". Die Orientierung
+      ist im Quaternionen-Format angegeben.
+
+      "pose_frame" bezeichnet das Koordinatensystem, auf welches obige
+      Pose bezogen ist, und hat den Wert "camera" oder "external".
+
+      "size" wird auf die gemessene Taggröße gesetzt.
+
+      "return_code" enthält mögliche Warnungen oder Fehlercodes und
+      Nachrichten.
+
+      Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+         {
+           "name": "detect",
+           "response": {
+             "return_code": {
+               "message": "string",
+               "value": "int16"
+             },
+             "tags": [
+               {
+                 "id": "string",
+                 "instance_id": "string",
+                 "pose": {
+                   "orientation": {
+                     "w": "float64",
+                     "x": "float64",
+                     "y": "float64",
+                     "z": "float64"
+                   },
+                   "position": {
+                     "x": "float64",
+                     "y": "float64",
+                     "z": "float64"
+                   }
+                 },
+                 "pose_frame": "string",
+                 "size": "float64",
+                 "timestamp": {
+                   "nsec": "int32",
+                   "sec": "int32"
+                 }
+               }
+             ],
+             "timestamp": {
+               "nsec": "int32",
+               "sec": "int32"
+             }
+           }
+         }
+
+start
+
+   startet das Modul durch einen Übergang von "IDLE" nach "RUNNING".
+
+   Details
+
+   Wenn das Modul läuft, empfängt es die Bilder der Stereokamera und
+   ist bereit, Tags zu erkennen. Um Rechenressourcen zu sparen, sollte
+   das Modul nur laufen, wenn dies nötig ist.
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/start
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/start
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "start",
+        "response": {
+          "accepted": "bool",
+          "current_state": "string"
+        }
+      }
+
+stop
+
+   stoppt das Modul durch einen Übergang zu "IDLE".
+
+      Details
+
+      Dieser Übergang kann auf dem Zustand "RUNNING" und "FATAL"
+      durchgeführt werden. Alle Tag-Wiedererkennungs-Informationen
+      werden beim Stoppen gelöscht.
+
+      Dieser Service kann wie folgt aufgerufen werden.
+
+      API Version 2
+
+         PUT http://<host>/api/v2/pipelines/0/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/stop
+
+      API Version 1 (veraltet)
+
+         PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/stop
+
+      Request
+
+      Dieser Service hat keine Argumente.
+
+      Response
+
+      Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+         {
+           "name": "stop",
+           "response": {
+             "accepted": "bool",
+             "current_state": "string"
+           }
+         }
+
+restart
+
+   startet das Modul neu.
+
+      Details
+
+      Wenn im Zustand "RUNNING" oder "FATAL", wird das Modul erst
+      gestoppt und dann wieder gestartet. In "IDLE" wird das Modul nur
+      gestartet.
+
+      Dieser Service kann wie folgt aufgerufen werden.
+
+      API Version 2
+
+         PUT http://<host>/api/v2/pipelines/0/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/restart
+
+      API Version 1 (veraltet)
+
+         PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/restart
+
+      Request
+
+      Dieser Service hat keine Argumente.
+
+      Response
+
+      Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+         {
+           "name": "restart",
+           "response": {
+             "accepted": "bool",
+             "current_state": "string"
+           }
+         }
+
+reset_defaults
+
+   stellt die Werkseinstellungen der Parameter dieses Moduls wieder
+   her und wendet sie an („factory reset“).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/reset_defaults
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/<rc_qr_code_detect|rc_april_tag_detect>/services/reset_defaults
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Rückgabecodes
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von "0" quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte
+zutreffend wären, wird der kleinste zurückgegeben, und die
+entsprechenden Textnachrichten werden in "return_code.message"
+akkumuliert.
+
+Die folgende Tabelle listet die möglichen Rückgabe-Codes auf:
+
+       Code  Beschreibung  0  Erfolg  -1  Ein ungültiges Argument
+   wurde übergeben.  -4  Die maximale Wartezeit auf ein Stereo-
+   Bildpaar wurde überschritten.  -9  Die Lizenz ist ungültig.  -11
+   Sensor nicht verbunden, nicht unterstützt oder nicht bereit  -101
+   Ein interner Fehler trat während der Tagerkennung auf.  -102  Ein
+   Rückwärtssprung der Systemzeit trat auf  -103  Ein interner Fehler
+   trat während der Posenschätzung auf.  -200  Ein schwerwiegender
+   interner Fehler trat auf.  200  Mehrere Warnungen traten auf. Siehe
+   die Auflistung in message.  201  Das Modul war nicht im Zustand
+   RUNNING.

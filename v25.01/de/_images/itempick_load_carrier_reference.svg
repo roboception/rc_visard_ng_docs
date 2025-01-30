@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 453.5 242.3" style="enable-background:new 0 0 453.5 242.3;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#070809;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:5,2,1,2;}
+	.st1{fill:#070809;}
+	.st2{font-family:'MicrosoftSansSerif';}
+	.st3{font-size:10px;}
+	.st4{stroke:#000000;stroke-width:0.25;stroke-miterlimit:10;}
+	.st5{fill:none;stroke:#070809;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st6{stroke:#000000;stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:5,2;}
+</style>
+<g id="Ebene_1">
+	<g>
+		<g id="LINE_129_">
+			<g>
+				<g>
+					<line class="st0" x1="221.3" y1="146.3" x2="189" y2="134.5"/>
+					<g>
+						<polygon class="st1" points="220.9,144.6 225.5,147.8 219.9,147.3 						"/>
+					</g>
+				</g>
+			</g>
+		</g>
+		<g id="LINE_128_">
+			<g>
+				<g>
+					<line class="st0" x1="214.7" y1="130.9" x2="197.3" y2="155.1"/>
+					<g>
+						<polygon class="st1" points="212.9,130.8 217.3,127.3 215.3,132.5 						"/>
+					</g>
+				</g>
+			</g>
+		</g>
+		<g id="LINE_127_">
+			<g>
+				<g>
+					<line class="st0" x1="206.4" y1="131.6" x2="208.5" y2="155.2"/>
+					<g>
+						<polygon class="st1" points="205,132.7 206,127.2 207.9,132.4 						"/>
+					</g>
+				</g>
+			</g>
+		</g>
+		<g id="MTEXT_19_">
+			<text transform="matrix(0.8 0 0 1 221.4435 143.4047)" class="st2 st3">x</text>
+		</g>
+		<g id="MTEXT_18_">
+			<text transform="matrix(0.8 0 0 1 209.3732 131.85)" class="st2 st3">y</text>
+		</g>
+		<g id="MTEXT_17_">
+			<text transform="matrix(0.8 0 0 1 200.0646 132.7367)" class="st2 st3">z</text>
+		</g>
+		<g id="DIMENSION_11_">
+			<g id="MTEXT_15_">
+				<text transform="matrix(0.6576 0.2399 -0.3427 0.9394 233.5038 26.2444)" class="st2 st3">outer_dimensions.x</text>
+			</g>
+			<g id="LINE_126_">
+				<line class="st4" x1="308.7" y1="98.6" x2="321.7" y2="80.5"/>
+			</g>
+			<g id="LINE_125_">
+				<line class="st4" x1="321.7" y1="80.5" x2="333.6" y2="64"/>
+			</g>
+			<g id="LINE_124_">
+				<line class="st4" x1="160.1" y1="43.9" x2="184.7" y2="9.7"/>
+			</g>
+			<g id="LINE_123_">
+				<line class="st4" x1="332.3" y1="65.7" x2="257.9" y2="38.5"/>
+			</g>
+			<g id="LINE_122_">
+				<line class="st4" x1="183.5" y1="11.4" x2="257.9" y2="38.5"/>
+			</g>
+			<g id="INSERT_23_">
+				<g id="SOLID_23_">
+					<polygon points="332.3,65.7 327.5,64.6 327.9,63.4 					"/>
+				</g>
+			</g>
+			<g id="INSERT_22_">
+				<g id="SOLID_22_">
+					<polygon points="183.5,11.4 188.4,12.5 188,13.7 					"/>
+				</g>
+			</g>
+		</g>
+		<g id="DIMENSION_10_">
+			<g id="MTEXT_14_">
+				<text transform="matrix(0.6576 0.2399 -0.3427 0.9394 224.0222 41.8841)" class="st2 st3">inner_dimensions.x</text>
+			</g>
+			<g id="LINE_121_">
+				<line class="st4" x1="289.1" y1="104" x2="299.5" y2="89.5"/>
+			</g>
+			<g id="LINE_120_">
+				<line class="st4" x1="299.5" y1="89.5" x2="310" y2="75"/>
+			</g>
+			<g id="LINE_119_">
+				<line class="st4" x1="165.2" y1="58.5" x2="186" y2="29.7"/>
+			</g>
+			<g id="LINE_118_">
+				<line class="st4" x1="308.8" y1="76.7" x2="246.8" y2="54.1"/>
+			</g>
+			<g id="LINE_117_">
+				<line class="st4" x1="184.7" y1="31.4" x2="246.8" y2="54.1"/>
+			</g>
+			<g id="INSERT_21_">
+				<g id="SOLID_21_">
+					<polygon points="308.8,76.7 303.9,75.6 304.3,74.4 					"/>
+				</g>
+			</g>
+			<g id="INSERT_20_">
+				<g id="SOLID_20_">
+					<polygon points="184.7,31.4 189.6,32.6 189.2,33.7 					"/>
+				</g>
+			</g>
+		</g>
+		<g id="DIMENSION_9_">
+			<g id="MTEXT_13_">
+				<text transform="matrix(0.4088 -0.5683 0.8118 0.5839 319.6711 185.4231)" class="st2 st3">inner_dimensions.y</text>
+			</g>
+			<g id="LINE_116_">
+				<line class="st4" x1="289.9" y1="107.9" x2="336.2" y2="124.8"/>
+			</g>
+			<g id="LINE_115_">
+				<line class="st4" x1="336.2" y1="124.8" x2="362.6" y2="134.4"/>
+			</g>
+			<g id="LINE_114_">
+				<line class="st4" x1="249.4" y1="164.7" x2="310.9" y2="187.1"/>
+			</g>
+			<g id="LINE_113_">
+				<line class="st4" x1="310.9" y1="187.1" x2="321.7" y2="191.1"/>
+			</g>
+			<g id="LINE_112_">
+				<line class="st4" x1="360.6" y1="133.6" x2="340.2" y2="162"/>
+			</g>
+			<g id="LINE_111_">
+				<line class="st4" x1="319.7" y1="190.4" x2="340.2" y2="162"/>
+			</g>
+			<g id="INSERT_19_">
+				<g id="SOLID_19_">
+					<polygon points="360.6,133.6 358.2,138 357.2,137.3 					"/>
+				</g>
+			</g>
+			<g id="INSERT_18_">
+				<g id="SOLID_18_">
+					<polygon points="319.7,190.4 322.1,186 323.1,186.7 					"/>
+				</g>
+			</g>
+		</g>
+		<g id="DIMENSION_8_">
+			<g id="MTEXT_12_">
+				<text transform="matrix(0.4088 -0.5683 0.8118 0.5839 339.8564 192.1707)" class="st2 st3">outer_dimensions.y</text>
+			</g>
+			<g id="LINE_110_">
+				<line class="st4" x1="308.8" y1="102.8" x2="358.3" y2="120.9"/>
+			</g>
+			<g id="LINE_109_">
+				<line class="st4" x1="358.3" y1="120.9" x2="388.7" y2="131.9"/>
+			</g>
+			<g id="LINE_108_">
+				<line class="st4" x1="256.1" y1="179.1" x2="324.7" y2="204.1"/>
+			</g>
+			<g id="LINE_107_">
+				<line class="st4" x1="324.7" y1="204.1" x2="334.3" y2="207.6"/>
+			</g>
+			<g id="LINE_106_">
+				<line class="st4" x1="386.7" y1="131.2" x2="359.5" y2="169.1"/>
+			</g>
+			<g id="LINE_105_">
+				<line class="st4" x1="332.3" y1="206.9" x2="359.5" y2="169.1"/>
+			</g>
+			<g id="INSERT_17_">
+				<g id="SOLID_17_">
+					<polygon points="386.7,131.2 384.3,135.6 383.3,134.9 					"/>
+				</g>
+			</g>
+			<g id="INSERT_16_">
+				<g id="SOLID_16_">
+					<polygon points="332.3,206.9 334.7,202.5 335.7,203.2 					"/>
+				</g>
+			</g>
+		</g>
+		<g id="DIMENSION_7_">
+			<g id="MTEXT_11_">
+				<text transform="matrix(6.323100e-02 0.6971 -0.9959 9.033000e-02 83.9979 36.3293)" class="st2 st3">inner_dimensions.z</text>
+			</g>
+			<g id="LINE_104_">
+				<line class="st4" x1="123.6" y1="164.9" x2="88.8" y2="152.2"/>
+			</g>
+			<g id="LINE_103_">
+				<line class="st4" x1="119.8" y1="117.4" x2="84.5" y2="104.6"/>
+			</g>
+			<g id="LINE_102_">
+				<line class="st4" x1="90.8" y1="153" x2="88.6" y2="129.1"/>
+			</g>
+			<g id="LINE_101_">
+				<line class="st4" x1="86.5" y1="105.3" x2="88.6" y2="129.1"/>
+			</g>
+			<g id="LINE_100_">
+				<line class="st4" x1="88.6" y1="129.1" x2="80" y2="34.4"/>
+			</g>
+			<g id="INSERT_15_">
+				<g id="SOLID_15_">
+					<polygon points="90.8,153 89.7,148.1 91,148 					"/>
+				</g>
+			</g>
+			<g id="INSERT_14_">
+				<g id="SOLID_14_">
+					<polygon points="86.5,105.3 87.5,110.2 86.3,110.3 					"/>
+				</g>
+			</g>
+		</g>
+		<g id="DIMENSION_6_">
+			<g id="MTEXT_10_">
+				<text transform="matrix(6.323100e-02 0.6971 -0.9959 9.033000e-02 66.3833 39.5815)" class="st2 st3">outer_dimensions.z</text>
+			</g>
+			<g id="LINE_99_">
+				<line class="st4" x1="105.3" y1="179.4" x2="73.1" y2="167.7"/>
+			</g>
+			<g id="LINE_98_">
+				<line class="st4" x1="100" y1="122.2" x2="67.9" y2="110.5"/>
+			</g>
+			<g id="LINE_97_">
+				<line class="st4" x1="75.1" y1="168.4" x2="72.5" y2="139.8"/>
+			</g>
+			<g id="LINE_96_">
+				<line class="st4" x1="69.9" y1="111.2" x2="72.5" y2="139.8"/>
+			</g>
+			<g id="LINE_95_">
+				<line class="st4" x1="72.5" y1="139.8" x2="63.3" y2="39.2"/>
+			</g>
+			<g id="INSERT_13_">
+				<g id="SOLID_13_">
+					<polygon points="75.1,168.4 74,163.5 75.2,163.4 					"/>
+				</g>
+			</g>
+			<g id="INSERT_12_">
+				<g id="SOLID_12_">
+					<polygon points="69.9,111.2 70.9,116.1 69.7,116.2 					"/>
+				</g>
+			</g>
+		</g>
+		<g id="LINE_90_">
+			<line class="st5" x1="108.2" y1="180.5" x2="103" y2="123.3"/>
+		</g>
+		<g id="LINE_89_">
+			<line class="st5" x1="157.5" y1="47.6" x2="103" y2="123.3"/>
+		</g>
+		<g id="LINE_88_">
+			<line class="st6" x1="126.6" y1="166" x2="122.2" y2="118.3"/>
+		</g>
+		<g id="LINE_87_">
+			<line class="st5" x1="163.1" y1="61.6" x2="122.2" y2="118.3"/>
+		</g>
+		<g id="LINE_86_">
+			<line class="st5" x1="108.2" y1="180.5" x2="257.1" y2="234.8"/>
+		</g>
+		<g id="LINE_85_">
+			<line class="st6" x1="162.6" y1="104.8" x2="108.2" y2="180.5"/>
+		</g>
+		<g id="LINE_84_">
+			<line class="st5" x1="167.4" y1="109.3" x2="152.8" y2="129.5"/>
+		</g>
+		<g id="LINE_83_">
+			<line class="st6" x1="152.8" y1="129.5" x2="126.6" y2="166"/>
+		</g>
+		<g id="LINE_82_">
+			<line class="st6" x1="126.6" y1="166" x2="250.6" y2="211.3"/>
+		</g>
+		<g id="LINE_81_">
+			<line class="st6" x1="162.6" y1="104.8" x2="157.5" y2="47.6"/>
+		</g>
+		<g id="LINE_80_">
+			<line class="st5" x1="167.4" y1="109.3" x2="163.1" y2="61.6"/>
+		</g>
+		<g id="LINE_79_">
+			<line class="st5" x1="103" y1="123.3" x2="251.9" y2="177.6"/>
+		</g>
+		<g id="LINE_78_">
+			<line class="st5" x1="122.2" y1="118.3" x2="246.3" y2="163.6"/>
+		</g>
+		<g id="LINE_77_">
+			<line class="st6" x1="291.4" y1="154.5" x2="260.8" y2="143.3"/>
+		</g>
+		<g id="LINE_76_">
+			<line class="st5" x1="260.8" y1="143.3" x2="167.4" y2="109.3"/>
+		</g>
+		<g id="LINE_75_">
+			<line class="st6" x1="311.5" y1="159.1" x2="162.6" y2="104.8"/>
+		</g>
+		<g id="LINE_74_">
+			<line class="st6" x1="250.6" y1="211.3" x2="246.3" y2="163.6"/>
+		</g>
+		<g id="LINE_73_">
+			<line class="st5" x1="257.1" y1="234.8" x2="251.9" y2="177.6"/>
+		</g>
+		<g id="LINE_72_">
+			<line class="st5" x1="246.3" y1="163.6" x2="287.1" y2="106.8"/>
+		</g>
+		<g id="LINE_71_">
+			<line class="st5" x1="251.9" y1="177.6" x2="306.3" y2="101.9"/>
+		</g>
+		<g id="LINE_70_">
+			<line class="st5" x1="287.1" y1="106.8" x2="163.1" y2="61.6"/>
+		</g>
+		<g id="LINE_69_">
+			<line class="st5" x1="306.3" y1="101.9" x2="157.5" y2="47.6"/>
+		</g>
+		<g id="LINE_68_">
+			<line class="st6" x1="291.4" y1="154.5" x2="287.1" y2="106.8"/>
+		</g>
+		<g id="LINE_67_">
+			<line class="st6" x1="250.6" y1="211.3" x2="291.4" y2="154.5"/>
+		</g>
+		<g id="LINE_66_">
+			<line class="st5" x1="311.5" y1="159.1" x2="306.3" y2="101.9"/>
+		</g>
+		<g id="LINE_65_">
+			<line class="st5" x1="257.1" y1="234.8" x2="311.5" y2="159.1"/>
+		</g>
+	</g>
+</g>
+<g id="Ebene_2">
+</g>
+</svg>

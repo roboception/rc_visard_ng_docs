@@ -1,0 +1,37 @@
+Yaskawa Pose Format
+
+The pose format that is used by Yaskawa robots consists of a position
+XYZ in millimeters and an orientation that is given by three angles in
+degrees, with Rx rotating around x-axis, Ry rotating around y-axis and
+Rz rotating around z-axis. The rotation order is x-y-z and computed by
+r_z(Rz) r_y(Ry) r_x(Rx).
+
+Conversion from Yaskawa Rx, Ry, Rz to quaternion
+
+The conversion from the Rx, Ry, Rz angles in degrees to a quaternion
+q=(\begin{array}{cccc}x & y & z & w\end{array}) can be done by first
+converting all angles to radians
+
+   X_r = Rx \frac{\pi}{180} \text{,} \\ Y_r = Ry \frac{\pi}{180}
+   \text{,} \\ Z_r = Rz \frac{\pi}{180} \text{,} \\
+
+and then calculating the quaternion with
+
+   x = \cos{(Z_r/2)}\cos{(Y_r/2)}\sin{(X_r/2)} -
+   \sin{(Z_r/2)}\sin{(Y_r/2)}\cos{(X_r/2)} \text{,} \\ y =
+   \cos{(Z_r/2)}\sin{(Y_r/2)}\cos{(X_r/2)} +
+   \sin{(Z_r/2)}\cos{(Y_r/2)}\sin{(X_r/2)} \text{,} \\ z =
+   \sin{(Z_r/2)}\cos{(Y_r/2)}\cos{(X_r/2)} -
+   \cos{(Z_r/2)}\sin{(Y_r/2)}\sin{(X_r/2)} \text{,} \\ w =
+   \cos{(Z_r/2)}\cos{(Y_r/2)}\cos{(X_r/2)} +
+   \sin{(Z_r/2)}\sin{(Y_r/2)}\sin{(X_r/2)} \text{.}
+
+Conversion from quaternion to Yaskawa Rx, Ry, Rz
+
+The conversion from a quaternion q=(\begin{array}{cccc}x & y & z &
+w\end{array}) with ||q||=1 to the Rx, Ry, Rz angles in degrees can be
+done as follows.
+
+   Rx &= \text{atan}_2{(2(wx + yz), 1 - 2(x^2 + y^2))} \frac{180}{\pi}
+   \\ Ry &= \text{asin}{(2(wy - zx))} \frac{180}{\pi} \\ Rz &=
+   \text{atan}_2{(2(wz + xy), 1 - 2(y^2 + z^2))} \frac{180}{\pi}

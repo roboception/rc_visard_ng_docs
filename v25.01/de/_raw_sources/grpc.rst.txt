@@ -1,0 +1,83 @@
+.. include:: global_rst.glb
+
+.. _sect-grpc:
+
+gRPC image stream interface
+===========================
+
+.. index::
+   single: gRPC
+
+The gRPC image streaming interface can be used as an alternative to the
+:ref:`GigE Vision / GenICam interface <sect-genicam>`:latex:`\ (Section \ref{gigevision:sect-genicam})`
+for getting camera images and synchronized sets of images (e.g. left camera
+image and corresponding disparity image). `gRPC <https://grpc.io/>`_ is a
+remote procedure call system that also
+supports streaming. It uses `Protocol Buffers <https://developers.google.com/protocol-buffers/>`_
+(see https://developers.google.com/protocol-buffers/)
+as interface description language and data serialization. For a gRPC
+introduction and more details please see the official website (https://grpc.io/).
+
+The advantages of the gRPC interface in comparison to GigE Vision are:
+
+  * It is simpler to use in own programs than GigE Vision.
+  * There is gRPC support for a lot of programming languages (see https://grpc.io/).
+  * The communication is based on TCP instead of UDP and therefore it also works over less stable networks, e.g. WLAN.
+
+The disadvantages of the gRPC interface in comparison to GigE Vision are:
+
+  * It does not support changing parameters, but the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` can be used for changing parameters.
+  * It is not a standard vision interface like GigE Vision.
+
+.. only:: rc_cube
+
+   The |rc_xxx| provides synchronized image sets via gRPC server side streams on
+   a separate port for each pipeline. The port is 50051 + pipeline number,
+   so 50051 for pipeline 0, 50052 for pipeline 1, etc.
+
+.. only:: rc_visard or rc_visard_ng
+
+   The |rc_xxx| provides synchronized image sets via gRPC server side streams on
+   port 50051.
+
+The communication is started by sending an ``ImageSetRequest``
+message to the server. The message contains the information about requested
+images, i.e. left, right, disparity, confidence and disparity_error images can
+be enabled separately.
+
+After getting the request, the server starts continuously sending ``ImageSet``
+messages that contain all requested images with all parameters necessary for
+interpreting the images. The images that are contained in an ``ImageSet``
+message are synchronized, i.e. they are all captured at the same time. The only
+exception to this rule is if the
+:ref:`out1_mode <expl-iocontrol-out1-mode>`:latex:`\ (Section \ref{iocontrol:expl-iocontrol-out1-mode})`
+is set to ``AlternateExposureActive``. In this case, the camera and disparity
+images are taken 40 ms apart, so that the GPIO Out1 is LOW when the
+left and right images are taken, and HIGH for the disparity, confidence and
+error images. This mode is useful when a random dot projector is used, 
+because the projector would be off for capturing the left and
+right image, and on for the disparity image, which results in undisturbed camera
+images and a much denser and more accurate disparity image.
+
+Streaming of images is done until the client closes the connection.
+
+gRPC service definition
+-----------------------
+
+.. _protobuf-image-interface:
+
+.. literalinclude:: _protobuf/image_interface.proto
+   :language: protobuf
+
+Image stream conversions
+------------------------
+
+The conversion of disparity images into a point cloud can be done as described in the
+:ref:`GigE Vision / GenICam interface <sect-image-stream-conversions>`:latex:`\ (Section \ref{gigevision:sect-image-stream-conversions})`.
+
+.. only:: roboception or schunk or matrixvision
+
+   Example client
+   --------------
+
+   A simple example C++ client can be found at https://github.com/roboception/grpc_image_client_example.

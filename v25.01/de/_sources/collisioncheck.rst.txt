@@ -1,0 +1,725 @@
+CollisionCheck
+
+Einleitung
+
+Das CollisionCheck Modul ist ein optionales Modul, welches intern auf
+dem
+
+rc_visard NG
+
+ läuft, und ist freigeschaltet, sobald eine gültige Lizenz für eines
+der Module
+
+ItemPick
+
+ and
+
+BoxPick
+
+ oder
+
+CADMatch
+
+ und
+
+SilhouetteMatch
+
+ vorhanden ist. Andernfalls benötigt dieses Modul eine separate
+
+Lizenz
+
+.
+
+Das Modul ermöglicht die Kollisionsprüfung zwischen dem Greifer und
+dem Load Carrier, der Punktwolke (nur in Kombination mit
+
+CADMatch
+
+ und
+
+SilhouetteMatch
+
+),` oder anderen detektierten Objekten (nur in Kombination mit
+
+CADMatch
+
+ und
+
+SilhouetteMatch
+
+). Es ist in die Module
+
+ItemPick
+
+ and
+
+BoxPick
+
+ und
+
+CADMatch
+
+ und
+
+SilhouetteMatch
+
+ integriert, kann aber auch als eigenständiges Modul genutzt werden.
+Die Greifermodelle für die Kollisionsprüfung müssen über das
+
+GripperDB
+
+ Modul definiert werden.
+
+Warnung: Es werden nur Kollisionen zwischen dem Load Carrier und dem
+  Greifer geprüft, aber nicht Kollisionen mit dem Roboter, dem Flansch
+  oder anderen Objekten. Nur in Kombination mit
+
+  CADMatch
+
+   und
+
+  SilhouetteMatch
+
+  , und nur wenn das gewählte Template eine Kollisionsgeometrie
+  enthält und "check_collisions_with_matches" im entsprechenden Modul
+  aktiviert ist, werden auch Kollisionen zwischen dem Greifer und den
+  anderen
+
+  detektierten
+
+   Objekten geprüft. Kollisionen mit Objekten, die nicht detektiert
+  werden können, werden nicht geprüft. Nur in Kombination mit
+
+  CADMatch
+
+   und
+
+  SilhouetteMatch
+
+  , und nur wenn "check_collisions_with_point_cloud" im entsprechenden
+  Modul aktiviert ist, werden auch Kollisionen zwischen dem Greifer
+  und einer wasserdichten Version der Punktwolke geprüft.
+
+Spezifikationen des CollisionCheck-Moduls      Kollisionsprüfung mit
+detektierter Load Carrier, detektierte Objekte (nur
+CADMatch\:(Abschnitt \ref{cadmatch:sect-cadmatch}) und
+SilhouetteMatch\:(Abschnitt \ref{silhouettematch:sect-
+silhouettematch})), Basisebene (nur CADMatch\:(Abschnitt \ref{cadmatch
+:sect-cadmatch}) und SilhouetteMatch\:(Abschnitt \ref{silhouettematch
+:sect-silhouettematch}))  Kollisionsprüfung verfügbar in
+ItemPick\:(Section \ref{itempick:sect-itempick}) and BoxPick\:(Section
+\ref{boxpick:sect-boxpick}), CADMatch\:(Abschnitt \ref{cadmatch:sect-
+cadmatch}) und SilhouetteMatch\:(Abschnitt \ref{silhouettematch:sect-
+silhouettematch})
+
+Kollisionsprüfung
+
+Stand-Alone Kollisionsprüfung
+
+Der Service "check_collisions" triggert die Kollisionsprüfung zwischen
+dem angegebenen Greifer und dem angegebenen Load Carrier für jeden der
+übergebenen Greifpunkte. Eine Kollisionsprüfung mit anderen Objekten
+oder der Punktwolke ist nicht möglich. Das CollisionCheck-Modul
+überprüft, ob sich der Greifer in Kollision mit mindestens einem Load
+Carrier befindet, wenn sich der TCP an der Greifposition befindet. Es
+können mehrere Load Carrier gleichzeitig getestet werden. Der Griff
+wird als Kollision markiert, wenn es mit mindestens einem der
+definierten Load Carriern zu einer Kollision kommen würde.
+
+Das Argument "pre_grasp_offset" (Greif-Offset) kann für eine
+erweiterte Kollisionsprüfung genutzt werden. Der Greif-Offset P_{off}
+ist der Offset vom Greifpunkt P_{grasp} zur Vorgreifposition P_{pre}
+im Koordinatensystem des Greifpunkts (siehe
+
+Abb. 41
+
+). Wenn der Greif-Offset angegeben wird, werden Greifpunkte auch dann
+als Kollisionen erkannt, wenn der Greifer an einem beliebigen Punkt
+während der linearen Bewegung zwischen Vorgreifposition und
+Greifposition in Kollision geraten würde.
+
+
+Integrierte Kollisionsprüfung in anderen Modulen
+
+Die Kollisionsprüfung ist in die Services der folgenden Softwaremodule
+integriert:
+
+ItemPick\:(Abschnitt \ref{itempick:sect-itempick}): compute_grasps
+(siehe compute_grasps, Abschnitt \ref{itempick:expl-itempick-srv-
+compute-grasps}
+
+BoxPick\:(Abschnitt \ref{boxpick:sect-boxpick}): compute_grasps (siehe
+compute_grasps, Abschnitt \ref{boxpick:expl-boxpick-srv-compute-
+grasps}
+
+SilhouetteMatch\:(Abschnitt \ref{silhouettematch:sect-
+silhouettematch}): detect_object (siehe detect_object, Abschnitt
+\ref{silhouettematch:expl-silhouettematch-srv-detect-objects})
+
+CADMatch\:(Abschnitt \ref{cadmatch:sect-cadmatch}): detect_object
+(siehe detect_object, Abschnitt \ref{cadmatch:expl-cadmatch-srv-
+detect-object})
+
+Jedem dieser Services kann ein "collision_detection"-Argument
+übergeben werden, das aus der ID des Standardgreifers ("gripper_id")
+und aus dem Greif-Offset ("pre_grasp_offset", siehe
+
+Stand-Alone Kollisionsprüfung
+
+) besteht. Der Standardgreifer, der durch das "gripper_id" Argument
+übergeben wird, wird nur für Greifpunkte verwendet, denen keine
+individuelle Greifer-ID zugewiesen wurde. Wenn das
+"collision_detection" Argument übergeben wird, liefern diese Services
+nur die Greifpunkte zurück, an denen der Greifer nicht in Kollision
+mit dem erkannten Load Carrier ist, oder für die keine
+Kollisionsprüfung durchgeführt werden konnte. Wenn eine Load Carrier
+ID angegeben wurde, wird die Kollisionsprüfung immer mit dem Load
+Carrier durchgeführt. Zusätzliche Funktionen für die Kollisionsprüfung
+können abhängig vom Modul aktiviert werden.
+
+Nur in
+
+CADMatch
+
+ und
+
+SilhouetteMatch
+
+, und nur wenn das gewählte Template eine Kollisionsgeometrie enthält
+und "check_collisions_with_matches" im entsprechenden Modul aktiviert
+ist, werden auch Greifpunkte, bei denen der Greifer in Kollision mit
+anderen
+
+detektierten
+
+ Objekten wäre, herausgefiltert. Dabei ist das Objekt, auf dem sich
+der jeweilige Greifpunkt befindet, von der Prüfung ausgenommen.
+
+Wenn ein Greifer für einen Greifpunkt in einem Template von
+
+CADMatch
+
+ und
+
+SilhouetteMatch
+
+ definiert ist, wird dieser Greifer und nicht der im
+"collision_detection" Argument des "detect_object" Services angegebene
+Greifer zur Kollisionsprüfung dieses Greifpunkts verwendet (siehe
+
+Setzen von Greifpunkten
+
+). Die vom "detect_object" Service  zurückgelieferten Greifpunkte
+enthalten ein Flag "collision_checked", das angibt ob der jeweilige
+Greifpunkt auf Kollisionen geprüft wurde, und das Feld "gripper_id".
+Wenn "collision_checked" true ist, enthält das Feld "gripper_id" die
+ID des Greifers, der für die Kollisionsprüfung dieses Greifpunkts
+verwendet wurde. Dies ist die ID des Greifers, der für den jeweiligen
+Greifpunkt definiert wurde, oder, falls kein Greifer definiert wurde,
+die ID des Greifers die im "collision_detection" Argument des
+Serviceaufrufs angegeben wurde. Wenn "collision_checked" false ist,
+enthält "gripper_id" die ID des Greifers, die für den Greifpunkt
+definiert wurde.
+
+In
+
+SilhouetteMatch
+
+ werden Kollisionen zwischen dem Greifer und der Basisebene geprüft,
+wenn der Parameter "check_collisions_with_base_plane" in
+SilhouetteMatch aktiviert ist.
+
+Kollisionen zwischen dem Greifer und einer wasserdichten Version der
+Punktwolke können in
+
+CADMatch
+
+ und
+
+SilhouetteMatch
+
+ geprüft werden, wenn der Parameter
+"check_collisions_with_point_cloud" im jeweiligen Modul aktiviert ist.
+
+Warnung: Es werden nur Kollisionen zwischen dem Load Carrier und dem
+  Greifer geprüft, aber nicht Kollisionen mit dem Roboter, dem Flansch
+  oder anderen Objekten. Nur in Kombination mit
+
+  CADMatch
+
+   und
+
+  SilhouetteMatch
+
+  , und nur wenn das gewählte Template eine Kollisionsgeometrie
+  enthält und "check_collisions_with_matches" im entsprechenden Modul
+  aktiviert ist, werden auch Kollisionen zwischen dem Greifer und den
+  anderen
+
+  detektierten
+
+   Objekten geprüft. Kollisionen mit Objekten, die nicht detektiert
+  werden können, werden nicht geprüft. Nur in Kombination mit
+
+  CADMatch
+
+   und
+
+  SilhouetteMatch
+
+  , und nur wenn "check_collisions_with_point_cloud" im entsprechenden
+  Modul aktiviert ist, werden auch Kollisionen zwischen dem Greifer
+  und einer wasserdichten Version der Punktwolke geprüft.Nur in
+  Kombination mit
+
+  CADMatch
+
+   und nur wenn "check_collisions_during_retraction" in CADMatch
+  aktiviert ist, ein Load Carrier und ein Greif-Offset angegeben
+  werden, werden Kollisionen zwischen dem Objekt im Greifer und den
+  Wänden des Load Carriers auf der linearen Trajektorie zwischen
+  Greifpunkt und Vorgreifposition geprüft.
+
+Die Kollisionsprüfung wird von Laufzeitparametern beeinflusst, die
+weiter unten aufgeführt und beschrieben werden.
+
+Parameter
+
+Das CollisionCheck-Modul wird in der REST-API als "rc_collision_check"
+bezeichnet und in der
+
+Web GUI
+
+  unter Konfiguration ‣ CollisionCheck dargestellt. Der Benutzer kann
+die Parameter entweder dort oder über die
+
+REST-API-Schnittstelle
+
+ ändern.
+
+Übersicht der Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter:
+
+Applikationsspezifische Laufzeitparameter des rc_collision_check
+Moduls              Name  Typ  Min  Max  Default  Beschreibung
+check_bottom  bool  false  true  true  Aktiviert die Kollisionsprüfung
+mit dem Boden des Load Carriers.  check_flange  bool  false  false
+true  Bestimmt, ob ein Greifpunkt als Kollision erkannt wird, sobald
+der Flansch innerhalb des Load Carriers ist.  collision_dist  float64
+0.0  0.1  0.01  Minimaler Abstand in Metern zwischen einem
+Greiferelement und dem Load Carrier und/oder der Basisebene (nur
+SilhouetteMatch) für einen kollisionsfreien Griff.
+
+Beschreibung der Laufzeitparameter
+
+Jeder Laufzeitparameter ist durch eine eigene Zeile in der Web GUI im
+Abschnitt
+
+Einstellungen
+
+  unter Konfiguration ‣ CollisionCheck repräsentiert. Der Web GUI-Name
+des Parameters ist in Klammern hinter dem Namen des Parameters
+angegeben:
+
+collision_dist (Sicherheitsabstand)
+
+   Minimaler Abstand in Metern zwischen einem Greiferelement und dem
+   Load Carrier und/oder der Basisebene (nur SilhouetteMatch) für
+   einen kollisionsfreien Griff.
+
+   Bemerkung: Der Sicherheitsabstand wird nicht für die
+     Kollisionsprüfung zwischen dem Greifer und der Punktwolke, oder
+     dem Greifer und anderen detektierten Objekten angewendet. Er wird
+     auch nicht verwendet um zu prüfen, ob sich der Flansch innerhalb
+     des Load Carriers befindet ("check_flange").
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/parameters?collision_dist=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/parameters?collision_dist=<value>
+
+check_flange (Flansch-Check)
+
+   Ermöglicht einen Sicherheitscheck mit dem Flansch, wie in
+
+   Flanschradius
+
+    beschrieben. Wenn dieser Parameter gesetzt ist, gelten alle
+   Griffe, bei denen der Flansch innerhalb des Load Carriers wäre, als
+   Kollisionen.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/parameters?check_flange=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/parameters?check_flange=<value>
+
+check_bottom (Boden-Check)
+
+   Wenn dieser Check aktiviert ist, werden Kollisionen nicht nur mit
+   den Load Carrier Wänden, sondern auch mit dem Boden geprüft. Falls
+   der TCP innerhalb der Kollisionsgeometrie (z.B. innerhalb des
+   Sauggreifers) liegt, ist es möglicherweise nötig, diesen Check zu
+   deaktivieren.
+
+   Der Load Carrier Boden wird immer ausgenommen von der
+   Kollisionsprüfung zwischen dem Objekt im Greifer und dem Load
+   Carrier während der Entnahme in Kombination mit
+
+   CADMatch
+
+    wenn "check_collisions_during_retraction" aktiv ist.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/parameters?check_bottom=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/parameters?check_bottom=<value>
+
+Statuswerte
+
+Statuswerte des "rc_collision_check"-Moduls:
+
+Statuswerte des rc_collision_check-Moduls      Name  Beschreibung
+last_evaluated_grasps  Anzahl der ausgewerteten Griffe
+last_collision_free_grasps  Anzahl der kollisionsfreien Griffe
+collision_check_time  Laufzeit der Kollisionsprüfung
+
+Services
+
+Die angebotenen Services von "rc_collision_check" können mithilfe der
+
+REST-API-Schnittstelle
+
+ oder der
+
+rc_visard NG
+
+
+Web GUI
+
+ ausprobiert und getestet werden.
+
+Das CollisionCheck-Modul stellt folgende Services zur Verfügung.
+
+reset_defaults
+
+   stellt die Werkseinstellungen der Parameter dieses Moduls wieder
+   her und wendet sie an ("factory reset").
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/services/reset_defaults
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/services/reset_defaults
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+check_collisions (veraltet)
+
+   löst eine Kollisionsprüfung zwischen dem Greifer und einem Load
+   Carrier aus.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/services/check_collisions
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/services/check_collisions
+
+   Request
+
+   Obligatorische Serviceargumente:
+
+      "grasps": Liste von Griffen, die überprüft werden sollen.
+
+      "load_carriers": Liste von Load Carriern, die auf Kollisionen
+      überprüft werden sollen. Die Felder der Load Carrier Definition
+      sind in
+
+      Erkennung von Load Carriern
+
+       beschrieben. Die Griffe und die Load Carrier Positionen müssen
+      im selben Koordinatensystem angegeben werden.
+
+      "gripper_id": Die ID des Greifers, der in der Kollisionsprüfung
+      verwendet werden soll. Der Greifer muss zuvor konfiguriert
+      worden sein.
+
+   Optionale Serviceargumente:
+
+      "pre_grasp_offset": Der Greif-Offset in Metern vom Greifpunkt
+      zur Vorgreifposition. Wird ein Greif-Offset angegeben, dann wird
+      die Kollisionsprüfung auf der gesamten linearen Trajektorie von
+      der Vorgreifposition bis zur Greifposition durchgeführt.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "grasps": [
+            {
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "uuid": "string"
+            }
+          ],
+          "gripper_id": "string",
+          "load_carriers": [
+            {
+              "id": "string",
+              "inner_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "outer_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "rim_thickness": {
+                "x": "float64",
+                "y": "float64"
+              }
+            }
+          ],
+          "pre_grasp_offset": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          }
+        }
+      }
+
+   Response
+
+   "colliding_grasps": Liste von Griffen, die in Kollision mit einem
+   oder mehreren Load Carriern sind.
+
+   "collision_free_grasps": Liste von kollisionsfreien Griffen.
+
+   "return_code": enthält mögliche Warnungen oder Fehlercodes und
+   Nachrichten.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "check_collisions",
+        "response": {
+          "colliding_grasps": [
+            {
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "uuid": "string"
+            }
+          ],
+          "collision_free_grasps": [
+            {
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "uuid": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_gripper (veraltet)
+
+   konfiguriert und speichert einen Greifer auf dem
+
+   rc_visard NG
+
+   .
+
+   API Version 2
+
+   Dieser Service ist in API Version 2 nicht verfügbar. Nutzen Sie
+   stattdessen
+
+   set_gripper
+
+    in "rc_gripper_db".
+
+   API Version 1 (veraltet)
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/services/set_gripper
+
+   Die Definitionen von Request und Response sind dieselben wie in
+
+   set_gripper
+
+    in "rc_gripper_db" beschrieben.
+
+get_grippers (veraltet)
+
+   gibt die mit "gripper_ids" spezifizierten und gespeicherten Greifer
+   zurück.
+
+   API Version 2
+
+   Dieser Service ist in API Version 2 nicht verfügbar. Nutzen Sie
+   stattdessen
+
+   get_grippers
+
+    in "rc_gripper_db".
+
+   API Version 1 (veraltet)
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/services/get_grippers
+
+   Die Definitionen von Request und Response sind dieselben wie in
+
+   get_grippers
+
+    in "rc_gripper_db" beschrieben.
+
+delete_grippers (veraltet)
+
+   löscht die mit "gripper_ids" spezifizierten, gespeicherten Greifer.
+
+   API Version 2
+
+   Dieser Service ist in API Version 2 nicht verfügbar. Nutzen Sie
+   stattdessen
+
+   delete_grippers
+
+    in "rc_gripper_db".
+
+   API Version 1 (veraltet)
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v1/nodes/rc_collision_check/services/delete_grippers
+
+   Die Definitionen von Request und Response sind dieselben wie in
+
+   delete_grippers
+
+    in "rc_gripper_db" beschrieben.
+
+Rückgabecodes
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von "0" quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte
+zutreffend wären, wird der kleinste zurückgegeben, und die
+entsprechenden Textnachrichten werden in "return_code.message"
+akkumuliert.
+
+Die folgende Tabelle listet die möglichen Rückgabecodes auf:
+
+Fehlercodes des CollisionCheck-Services      Code  Beschreibung  0
+Erfolgreich  -1  Ein ungültiges Argument wurde übergeben.  -7  Daten
+konnten nicht in den persistenten Speicher geschrieben oder vom
+persistenten Speicher gelesen werden.  -9  Lizenz für CollisionCheck
+ist nicht verfügbar.  -10  Das neue Element konnte nicht hinzugefügt
+werden, da die maximal speicherbare Anzahl an Greifern überschritten
+wurde.  10  Die maximal speicherbare Anzahl an Greifern wurde
+erreicht.  11  Bestehender Greifer wurde überschrieben.

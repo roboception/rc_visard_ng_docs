@@ -1,0 +1,2205 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ItemPick &mdash; rc_visard NG 25.01.1
+ documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/sphinx_tabs/tabs.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/contentui.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rc_visard NG 25.01.1
+ documentation" href="index.html"/>
+        <link rel="up" title="Detection &amp; Measure modules" href="detection_modules.html"/>
+        <link rel="next" title="BoxPick" href="boxpick.html"/>
+        <link rel="prev" title="TagDetect" href="tagdetect.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard NG
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                25.01
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Applicable standards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Approvals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="disposal.html">Information on disposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">General warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Intended use</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Scope of delivery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technical specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Environmental and operating conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Power-supply specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Wiring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanical interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Power up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Discovery of <em>rc_visard NG</em> devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Resetting configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Network configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatic configuration (factory default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manual configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Measurement principles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereo vision</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Software modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="camera_modules.html">3D camera modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html">Camera</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#rectification">Rectification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#viewing-and-downloading-images">Viewing and downloading images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html">Stereo matching</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Computing disparity images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Computing depth images and point clouds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Confidence and error images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#viewing-and-downloading-images-and-point-clouds">Viewing and downloading images and point clouds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="detection_modules.html">Detection &amp; Measure modules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="measure.html">Measure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#measuring-depth">Measuring Depth</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">LoadCarrier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Detection of load carriers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Detection of filling level</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-reading">Tag reading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#pose-estimation">Pose estimation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag re-identification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-eye calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ItemPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#computation-of-grasps">Computation of grasps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="boxpick.html">BoxPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#detection-of-items">Detection of items</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#computation-of-grasps">Computation of grasps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#return-codes">Return codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#boxpick-template-api">BoxPick Template API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Base-plane calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setting a region of interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setting of grasp points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-sorting-strategies">Setting the sorting strategies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Detection of objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Internal services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Return codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cadmatch.html">CADMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-grasp-points">Setting of grasp points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-pose-priors">Setting of pose priors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-sorting-strategies">Setting the sorting strategies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#detection-of-objects">Detection of objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#internal-services">Internal services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#return-codes">Return codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#template-api">Template API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration_modules.html">Configuration modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html">Hand-eye calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Calibration interfaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Camera mounting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Calibration routine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking">Collision checking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html">Camera calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#self-calibration">Self-calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#calibration-process">Calibration process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html">IO and Projector Control</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database_modules.html">Database modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier_db.html">LoadCarrierDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-definition">Load carrier definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-compartments">Load carrier compartments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">RoiDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gripper_db.html">GripperDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#setting-a-gripper">Setting a gripper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#return-codes">Return codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#cad-element-api">CAD element API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Web GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#accessing-the-web-gui">Accessing the Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#exploring-the-web-gui">Exploring the Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#web-gui-access-control">Web GUI access control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-camera-images">Downloading camera images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Downloading depth images and point clouds</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">General API structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Available resources and requests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Nodes, parameters, and services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_userspace.html">UserSpace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System and logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Data type definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Ethernet connection configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Generic XML structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Return code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Request XML structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Response XML structure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI XML configuration files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#example-applications">Example applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC image stream interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Example client</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#setting-time-manually">Setting time manually</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userspace.html">UserSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="userspace.html#configure-userspace-via-the-webgui">Configure UserSpace via the Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configure-http-proxy">Configure HTTP proxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#view-running-applications">View running applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#network-access-to-userspace-applications">Network access to UserSpace applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#interfaces">Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#restrictions">Restrictions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Lens cleaning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Camera calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Creating and restoring backups of settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Rebooting the <em>rc_visard NG</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Connectivity kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Wiring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Power connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Power supplies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Spare parts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Hardware issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Connectivity issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Camera-image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Depth/Disparity, error, and confidence image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">GigE Vision/GenICam issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#pose-formats">Pose formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_rt.html">Rotation matrix and translation vector</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-rotation-matrix-to-quaternion">Conversion from rotation matrix to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-quaternion-to-rotation-matrix">Conversion from quaternion to rotation matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_abb.html">ABB pose format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fanuc.html">FANUC XYZ-WPR format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-fanuc-wpr-to-quaternion">Conversion from FANUC-WPR to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-quaternion-to-fanuc-wpr">Conversion from quaternion to FANUC-WPR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_franka_emika.html">Franka Emika Pose Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-transformation-matrix-to-quaternion">Conversion from transformation matrix to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-rotation-xyz-to-quaternion">Conversion from Rotation-XYZ to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-and-translation-to-transformation">Conversion from quaternion and translation to transformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-to-rotation-xyz">Conversion from quaternion to Rotation-XYZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#pose-representation-in-racecom-messages-and-state-machines">Pose representation in RaceCom messages and state machines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fruitcore_horst.html">Fruitcore HORST pose format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kawasaki.html">Kawasaki XYZ-OAT format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-kawasaki-oat-to-quaternion">Conversion from Kawasaki-OAT to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-quaternion-to-kawasaki-oat">Conversion from quaternion to Kawasaki-OAT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kuka.html">KUKA XYZ-ABC format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-kuka-abc-to-quaternion">Conversion from KUKA-ABC to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-quaternion-to-kuka-abc">Conversion from quaternion to KUKA-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_mitsubishi.html">Mitsubishi XYZ-ABC format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-mitsubishi-abc-to-quaternion">Conversion from Mitsubishi-ABC to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-quaternion-to-mitsubishi-abc">Conversion from quaternion to Mitsubishi-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_ur.html">Universal Robots pose format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-angle-axis-format-to-quaternion">Conversion from angle-axis format to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-quaternion-to-angle-axis-format">Conversion from quaternion to angle-axis format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_yaskawa.html">Yaskawa Pose Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-yaskawa-rx-ry-rz-to-quaternion">Conversion from Yaskawa Rx, Ry, Rz to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-quaternion-to-yaskawa-rx-ry-rz">Conversion from quaternion to Yaskawa Rx, Ry, Rz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard NG</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">rc_visard NG</a> &gt;</li>
+        
+          <li><a href="modules.html">Software modules</a> &gt;</li>
+        
+          <li><a href="detection_modules.html">Detection &amp; Measure modules</a> &gt;</li>
+        
+      <li>ItemPick</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="itempick">
+<span id="sect-itempick"></span><h1>ItemPick<a class="headerlink" href="#itempick" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<span id="index-0"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The ItemPick module provides an out-of-the-box perception solution for robotic pick-and-place
+applications. ItemPick targets the detection of flat surfaces on unknown objects for picking
+with a suction gripper. </p>
+<p>In addition, the module offers:</p>
+<ul class="simple">
+<li>A dedicated page on the <em>rc_visard NG</em> <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>
+for easy setup, configuration, testing, and application tuning.</li>
+<li>The definition of regions of interest to select relevant volumes in the scene
+(see <a class="reference internal" href="roi.html#sect-roi"><span class="std std-ref">RoiDB</span></a>).</li>
+<li>A load carrier detection functionality for bin-picking applications
+(see <a class="reference internal" href="loadcarrier.html#sect-loadcarrier"><span class="std std-ref">LoadCarrier</span></a>),
+to provide grasps for items inside a bin only.</li>
+<li>The definition of compartments inside a load carrier to provide grasps
+for specific volumes of the bin only.</li>
+<li>Support for static and robot-mounted cameras and
+optional integration with the <a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-eye calibration</span></a>
+ module,
+to provide grasps in the user-configured external reference frame.</li>
+<li>A quality value associated to each suggested grasp and related to the flatness of the grasping surface.</li>
+<li>Selection of a sorting strategy to sort the returned grasps.</li>
+<li>3D visualization of the detection results with grasp points and gripper animations in the Web GUI.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In this chapter, cluster and surface are used as synonyms and identify a set of
+points (or pixels) with defined geometrical properties.</p>
+</div>
+<p>The module is an optional on-board module of the <em>rc_visard NG</em>
+and requires a separate ItemPick  <a class="reference internal" href="maintenance.html#sect-updating-license"><span class="std std-ref">license</span></a>
+ to be purchased.</p>
+</div>
+<div class="section" id="computation-of-grasps">
+<span id="sect-itempick-compute-grasps"></span><h2>Computation of grasps<a class="headerlink" href="#computation-of-grasps" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">The ItemPick module offers a service for computing grasps for
+suction grippers. The gripper is defined by its suction surface length and width.</p>
+<p>The ItemPick module identifies flat surfaces in the scene and supports
+flexible and/or deformable items. The <code class="docutils literal notranslate"><span class="pre">type</span></code> of these <code class="docutils literal notranslate"><span class="pre">item_models</span></code> is
+called <code class="docutils literal notranslate"><span class="pre">UNKNOWN</span></code> since they don’t need to have a standard geometrical shape.
+Optionally, the user can also specify the minimum and maximum size of the item.</p>
+<p>Optionally, further information can be given to the modules in a grasp
+computation request:</p>
+<ul class="simple">
+<li>The ID of the load carrier which contains the items to be grasped.</li>
+<li>A compartment inside the load carrier where to compute grasps
+(see <a class="reference internal" href="loadcarrier_db.html#sect-loadcarrier-compartment"><span class="std std-ref">Load carrier compartments</span></a>).</li>
+<li>The ID of the 3D region of interest where to search for the load carriers if a
+load carrier is set.
+Otherwise, the ID of the 3D region of interest where to compute grasps.</li>
+<li>Collision detection information: The ID of the gripper to enable collision checking and optionally
+a pre-grasp offset to define a pre-grasp position.
+Details on collision
+checking are given below in <a class="reference internal" href="#sect-itempick-collision-check-dep"><span class="std std-ref">CollisionCheck</span></a>.</li>
+</ul>
+<p>A grasp provided by the ItemPick module represents the recommended
+pose of the TCP (Tool Center Point) of the suction gripper.
+The grasp <code class="docutils literal notranslate"><span class="pre">type</span></code> is always set to <code class="docutils literal notranslate"><span class="pre">SUCTION</span></code>.</p>
+<p>For ItemPick with an <code class="docutils literal notranslate"><span class="pre">UNKNOWN</span></code> item model, the computed grasp pose is the center
+of the biggest ellipse that can be inscribed in each surface.</p>
+<p>The grasp orientation is a right-handed coordinate system and is defined such
+that its z axis is normal to the surface pointing inside the object at the grasp position and
+its x axis is directed along the maximum elongation of the ellipse. Since the x axis can have two possible directions,
+the one that better fits to the preferred TCP orientation (see <a class="reference internal" href="#sect-itempick-set-preferred-orientation"><span class="std std-ref">Setting the preferred orientation of the TCP</span></a>) is selected. If the run-time parameter <code class="docutils literal notranslate"><span class="pre">allow_any_grasp_z_rotation</span></code>
+is set to true, the x axis will not be forced to be aligned with the maximum elongation of the graspable ellipse, but can have
+any rotation around the z axis. In this case, the returned grasp will have the orientation that best fits to the preferred TCP orientation
+and is collision free, if collision checking.</p>
+<div class="figure align-center" id="id2">
+<span id="fig-itempick-grasp-surface"></span><a class="reference internal image-reference" href="_images/itempick_grasp_surface.png"><img alt="_images/itempick_grasp_surface.png" src="_images/itempick_grasp_surface.png" style="width: 300px;" /></a>
+<p class="caption"><span class="caption-number">Fig. 26 </span><span class="caption-text">Illustration of a suction grasp with coordinate system and ellipse representing
+the maximum suction surface</span></p>
+</div>
+<p>Each grasp includes the dimensions of the maximum suction surface available,
+modelled as an ellipse of axes <code class="docutils literal notranslate"><span class="pre">max_suction_surface_length</span></code> and
+<code class="docutils literal notranslate"><span class="pre">max_suction_surface_width</span></code>. The user is enabled to filter grasps by specifying
+the minimum suction surface required by the suction device in use.
+If the run-time parameter <code class="docutils literal notranslate"><span class="pre">allow_any_grasp_z_rotation</span></code>
+is set to true, <code class="docutils literal notranslate"><span class="pre">max_suction_surface_length</span></code> and
+<code class="docutils literal notranslate"><span class="pre">max_suction_surface_width</span></code> will be equal and correspond to the shortest axis of the largest
+graspable ellipse.</p>
+<p>Each grasp also includes a <code class="docutils literal notranslate"><span class="pre">quality</span></code> value, which gives an
+indication of the flatness of the grasping surface.
+The <code class="docutils literal notranslate"><span class="pre">quality</span></code> value varies between 0 and 1, where higher numbers correspond to a
+flatter reconstructed surface.</p>
+<p>The grasp definition is complemented by a <code class="docutils literal notranslate"><span class="pre">uuid</span></code> (Universally Unique Identifier)
+and the <code class="docutils literal notranslate"><span class="pre">timestamp</span></code> of the oldest image that was used to compute the grasp.</p>
+<p>Grasp sorting is performed based on the selected sorting strategy. The following sorting strategies
+are available and can be set in the <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>
+or using the <code class="docutils literal notranslate"><span class="pre">set_sorting_strategies</span></code> service call:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">gravity</span></code>: highest grasp points along the gravity direction are returned first,</li>
+<li><code class="docutils literal notranslate"><span class="pre">surface_area</span></code>: grasp points with the largest surface area are returned first,</li>
+<li><code class="docutils literal notranslate"><span class="pre">direction</span></code>: grasp points with the shortest distance along a defined direction <code class="docutils literal notranslate"><span class="pre">vector</span></code> in a given <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> are returned first.</li>
+<li><code class="docutils literal notranslate"><span class="pre">distance_to_point</span></code>: grasp points with the shortest or farthest (if <code class="docutils literal notranslate"><span class="pre">farthest_first</span></code> is true) distance from a <code class="docutils literal notranslate"><span class="pre">point</span></code> in a given <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> are returned first.</li>
+</ul>
+<p>If no sorting strategy is set or default sorting is chosen in the Web GUI, sorting is done based on a combination of
+<code class="docutils literal notranslate"><span class="pre">gravity</span></code> and <code class="docutils literal notranslate"><span class="pre">surface_area</span></code>.</p>
+</div>
+<div class="section" id="setting-the-preferred-orientation-of-the-tcp">
+<span id="sect-itempick-set-preferred-orientation"></span><h2>Setting the preferred orientation of the TCP<a class="headerlink" href="#setting-the-preferred-orientation-of-the-tcp" title="Permalink to this headline">¶</a></h2>
+<p id="index-2">The ItemPick module determines the reachability of grasp points based on the <em>preferred orientation</em> of the
+TCP. The preferred orientation can be set via the <code class="docutils literal notranslate"><span class="pre">set_preferred_orientation</span></code> service or on
+the ItemPick  page in the Web GUI.
+The resulting direction of the TCP’s z axis is used to reject grasps which cannot be reached by the gripper.
+Furthermore, the preferred orientation is used to select one grasp of several possible symmetries that is best reachable for the robot.</p>
+<p>The preferred orientation can be set in the camera coordinate frame or in the external coordinate frame, in case
+a hand-eye calibration is available. If the preferred orientation is specified in the external coordinate frame
+and the sensor is robot mounted, the current robot pose has to be given to each object detection call.
+If no preferred orientation is set, the orientation of the left camera
+(see <a class="reference external" href="https://doc.rc-visard.com/latest/en/hardware_spec.html#sect-coordinate-frames" title="(in rc_visard v24.10)"><span>Coordinate frames</span></a> ) will be used as the preferred orientation of the TCP.</p>
+</div>
+<div class="section" id="interaction-with-other-modules">
+<span id="sect-itempick-dependencies"></span><h2>Interaction with other modules<a class="headerlink" href="#interaction-with-other-modules" title="Permalink to this headline">¶</a></h2>
+<p>Internally, the ItemPick module depends on, and interacts with other on-board
+modules as listed below.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All changes and configuration updates to these modules will affect
+the performance of the ItemPick module.</p>
+</div>
+<div class="section" id="stereo-camera-and-stereo-matching">
+<span id="sect-itempick-stereo-camera-matching"></span><h3>Stereo camera and Stereo matching<a class="headerlink" href="#stereo-camera-and-stereo-matching" title="Permalink to this headline">¶</a></h3>
+<p>The ItemPick module makes internally use of the following data:</p>
+<ul class="simple">
+<li>Rectified images from the <a class="reference internal" href="stereo_camera.html"><span class="doc">Camera</span></a> module
+(<code class="docutils literal notranslate"><span class="pre">rc_camera</span></code>);</li>
+<li>Disparity, error, and confidence images from the <a class="reference internal" href="stereo_matching.html"><span class="doc">Stereo matching</span></a> module
+(<code class="docutils literal notranslate"><span class="pre">rc_stereomatching</span></code>).</li>
+</ul>
+<p>All processed images are guaranteed to be captured after the module trigger time.</p>
+</div>
+<div class="section" id="io-and-projector-control">
+<span id="sect-itempick-iocontrol-dep"></span><h3>IO and Projector Control<a class="headerlink" href="#io-and-projector-control" title="Permalink to this headline">¶</a></h3>
+<p>In case the <em>rc_visard NG</em> is used in conjunction with an external random dot projector and
+the <a class="reference internal" href="iocontrol.html"><span class="doc">IO and Projector Control</span></a> module (<code class="docutils literal notranslate"><span class="pre">rc_iocontrol</span></code>),
+it is recommended to connect the projector to GPIO Out 1 and set
+the stereo-camera module’s acquisition mode to <code class="docutils literal notranslate"><span class="pre">SingleFrameOut1</span></code>
+(see <a class="reference internal" href="stereo_matching.html#sect-disp-image-parameters"><span class="std std-ref">Stereo matching parameters</span></a>), so that
+on each image acquisition trigger an image with and without projector pattern is acquired.</p>
+<p>Alternatively, the output mode for the GPIO output in use should be set to <code class="docutils literal notranslate"><span class="pre">ExposureAlternateActive</span></code>
+(see <a class="reference internal" href="iocontrol.html#sect-iocontrol-params"><span class="std std-ref">Description of run-time parameters</span></a>).</p>
+<p>In either case,
+the <em>Auto Exposure Mode</em> <code class="docutils literal notranslate"><span class="pre">exp_auto_mode</span></code> should be set to <code class="docutils literal notranslate"><span class="pre">AdaptiveOut1</span></code> to optimize the exposure
+of both images (see <a class="reference internal" href="stereo_camera.html#sect-cam-params"><span class="std std-ref">Stereo camera parameters</span></a>).</p>
+</div>
+<div class="section" id="hand-eye-calibration">
+<span id="sect-itempick-hand-eye-dep"></span><h3>Hand-eye calibration<a class="headerlink" href="#hand-eye-calibration" title="Permalink to this headline">¶</a></h3>
+<p>In case the camera has been calibrated to a robot, the ItemPick module
+can automatically provide poses in the robot coordinate frame.
+For the ItemPick node’s <a class="reference internal" href="#sect-itempick-services"><span class="std std-ref">Services</span></a>, the frame of the
+output poses can be controlled with the <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> argument.</p>
+<p>Two different <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> values can be chosen:</p>
+<ol class="arabic simple">
+<li><strong>Camera frame</strong> (<code class="docutils literal notranslate"><span class="pre">camera</span></code>).
+All poses provided by the modules are in the camera frame,
+and no prior knowledge about the pose of the camera in the environment is required.
+This means that the configured regions of interest and load carriers move with the camera.
+It is the user’s responsibility to update the configured poses
+if the camera frame moves (e.g. with a robot-mounted camera).</li>
+<li><strong>External frame</strong> (<code class="docutils literal notranslate"><span class="pre">external</span></code>).
+All poses provided by the modules are in the external frame,
+configured by the user during the hand-eye calibration process.
+The module relies on the on-board
+<a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-eye calibration module</span></a>
+to retrieve the sensor mounting (static or robot mounted) and
+the hand-eye transformation.
+If the mounting is static, no further information is needed.
+If the sensor is robot-mounted, the <code class="docutils literal notranslate"><span class="pre">robot_pose</span></code> is required
+to transform poses to and from the <code class="docutils literal notranslate"><span class="pre">external</span></code> frame.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If no hand-eye calibration is available, all <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> values should be set to <code class="docutils literal notranslate"><span class="pre">camera</span></code>.</p>
+</div>
+<p>All <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> values that are not <code class="docutils literal notranslate"><span class="pre">camera</span></code> or <code class="docutils literal notranslate"><span class="pre">external</span></code> are rejected.</p>
+<p>If the sensor is robot-mounted, the current <code class="docutils literal notranslate"><span class="pre">robot_pose</span></code> has to be provided depending on the value of <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code>
+and the definition of the sorting direction or sorting point:</p>
+<ul class="simple">
+<li>If <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> is set to <code class="docutils literal notranslate"><span class="pre">external</span></code>, providing the robot pose is obligatory.</li>
+<li>If the sorting direction is defined in <code class="docutils literal notranslate"><span class="pre">external</span></code>, providing the robot pose is obligatory.</li>
+<li>If the distance-to-point sorting strategy is defined in <code class="docutils literal notranslate"><span class="pre">external</span></code>, providing the robot pose is obligatory.</li>
+<li>In all other cases, providing the robot pose is optional.</li>
+</ul>
+</div>
+<div class="section" id="loadcarrier">
+<span id="sect-itempick-load-carrier-dep"></span><h3>LoadCarrier<a class="headerlink" href="#loadcarrier" title="Permalink to this headline">¶</a></h3>
+<p>The ItemPick module uses the load carrier detection functionality provided by the
+<a class="reference internal" href="loadcarrier.html"><span class="doc">LoadCarrier</span></a> module (<code class="docutils literal notranslate"><span class="pre">rc_load_carrier</span></code>),
+with the run-time parameters specified for this module. However, only one load carrier will be
+returned and used in case multiple matching load carriers could be found in the scene. In case multiple
+load carriers of the same type are visible, a 3D region of interest should be set to ensure that always the
+same load carrier is used for the ItemPick module.</p>
+</div>
+<div class="section" id="collisioncheck">
+<span id="sect-itempick-collision-check-dep"></span><h3>CollisionCheck<a class="headerlink" href="#collisioncheck" title="Permalink to this headline">¶</a></h3>
+<p>Collision checking can be easily enabled for
+grasp computation of the ItemPick module by passing the ID of the used gripper and
+optionally a pre-grasp offset to the
+<code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> service call. The gripper has to be
+defined in the GripperDB module
+(see <a class="reference internal" href="gripper_db.html#sect-gripper-db-gripper"><span class="std std-ref">Setting a gripper</span></a>)
+and details about collision checking are given in <a class="reference internal" href="collisioncheck.html#sect-collision-check-other-modules"><span class="std std-ref">Collision checking within other modules</span></a>.</p>
+<p>If collision checking is enabled, only grasps which are collision free will be returned.
+However, the visualization images on the ItemPick 
+page of the Web GUI also show colliding grasp points as black ellipses.</p>
+<p>The CollisionCheck module’s run-time parameters affect the collision detection as described in
+<a class="reference internal" href="collisioncheck.html#sect-collisioncheck-parameters"><span class="std std-ref">CollisionCheck Parameters</span></a>.</p>
+</div>
+</div>
+<div class="section" id="parameters">
+<span id="sect-itempick-parameters"></span><h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p id="index-3">ItemPick is represented by the <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> node
+in the REST-API and are reached in the <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>
+ under <span class="menuselection">Modules ‣ ItemPick</span>.
+The user can explore and configure the <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> module’s run-time parameters, e.g.
+for development and testing, using the Web GUI or the <a class="reference internal" href="rest_api.html"><span class="doc">REST-API interface</span></a>.</p>
+<p>The user can explore and configure the <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code>
+module’s run-time parameters, e.g. for development and testing, using the Web GUI or the
+<a class="reference internal" href="rest_api.html"><span class="doc">REST-API interface</span></a>.</p>
+<div class="section" id="parameter-overview">
+<h3>Parameter overview<a class="headerlink" href="#parameter-overview" title="Permalink to this headline">¶</a></h3>
+<p>This module offers the following run-time parameters:</p>
+<table border="1" class="docutils" id="id3">
+<caption><span class="caption-number">Table 25 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> module’s run-time parameters</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Min</th>
+<th class="head">Max</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">allow_any_grasp_z_rotation</span></code></td>
+<td>bool</td>
+<td>false</td>
+<td>true</td>
+<td>false</td>
+<td>Whether the grasps are allowed to have arbitrary rotation instead being aligned with the major axis of the graspable ellipse</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">cluster_max_curvature</span></code></td>
+<td>float64</td>
+<td>0.005</td>
+<td>0.5</td>
+<td>0.11</td>
+<td>Maximum curvature allowed within one cluster. The smaller this value, the more clusters will be split apart.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">cluster_max_dimension</span></code></td>
+<td>float64</td>
+<td>0.05</td>
+<td>2.0</td>
+<td>0.3</td>
+<td>Maximum allowed diameter for a cluster in meters. Clusters with a diameter larger than this value are not used for grasp computation.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">clustering_discontinuity_factor</span></code></td>
+<td>float64</td>
+<td>0.1</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>Factor used to discriminate depth discontinuities within a patch. The smaller this value, the more clusters will be split apart.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">clustering_max_surface_rmse</span></code></td>
+<td>float64</td>
+<td>0.0005</td>
+<td>0.01</td>
+<td>0.004</td>
+<td>Maximum root-mean-square error (RMSE) in meters of points belonging to a surface</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">clustering_patch_size</span></code></td>
+<td>int32</td>
+<td>3</td>
+<td>10</td>
+<td>4</td>
+<td>Size in pixels of the square patches the depth map is subdivided into during the first clustering step</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">grasp_filter_</span></code>-<code class="docutils literal notranslate"><span class="pre">orientation_threshold</span></code></td>
+<td>float64</td>
+<td>0.0</td>
+<td>180.0</td>
+<td>45.0</td>
+<td>Maximum allowed orientation change between grasp and preferred orientation in degrees</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">max_grasps</span></code></td>
+<td>int32</td>
+<td>1</td>
+<td>20</td>
+<td>5</td>
+<td>Maximum number of provided grasps</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="description-of-run-time-parameters">
+<h3>Description of run-time parameters<a class="headerlink" href="#description-of-run-time-parameters" title="Permalink to this headline">¶</a></h3>
+<p>Each run-time parameter is represented by a row on the Web GUI’s ItemPick  page.
+The name in the Web GUI is given in brackets behind the parameter name and the parameters are
+listed in the order they appear in the Web GUI:</p>
+<div class="section" id="max-grasps-maximum-grasps">
+<span id="expl-itempick-max-grasps"></span><h4><code class="docutils literal notranslate"><span class="pre">max_grasps</span></code> (<em>Maximum Grasps</em>)<a class="headerlink" href="#max-grasps-maximum-grasps" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><blockquote>
+<div><p>sets the maximum number of provided grasps.</p>
+<p>Via the REST-API, this parameter can be set as follows.</p>
+</div></blockquote>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-0-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-0-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-0-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?max_grasps<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-0-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/parameters?max_grasps<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="cluster-max-dimension-cluster-maximum-dimension">
+<span id="expl-itempick-cluster-max-dimension"></span><h4><code class="docutils literal notranslate"><span class="pre">cluster_max_dimension</span></code> (<em>Cluster Maximum Dimension</em>)<a class="headerlink" href="#cluster-max-dimension-cluster-maximum-dimension" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><blockquote>
+<div><p>is the maximum allowed diameter for a cluster in meters. Clusters with a diameter larger than this value are not used for grasp computation.</p>
+<p>Via the REST-API, this parameter can be set as follows.</p>
+</div></blockquote>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-1-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-1-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-1-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?cluster_max_dimension<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-1-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/parameters?cluster_max_dimension<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="cluster-max-curvature-cluster-maximum-curvature">
+<span id="expl-itempick-cluster-max-curvature"></span><h4><code class="docutils literal notranslate"><span class="pre">cluster_max_curvature</span></code> (<em>Cluster Maximum Curvature</em>)<a class="headerlink" href="#cluster-max-curvature-cluster-maximum-curvature" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><blockquote>
+<div><p>is the maximum curvature allowed within one cluster. The smaller this value, the more clusters will be split apart.</p>
+<p>Via the REST-API, this parameter can be set as follows.</p>
+</div></blockquote>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-2-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-2-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-2-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?cluster_max_curvature<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-2-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/parameters?cluster_max_curvature<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="clustering-patch-size-patch-size">
+<span id="expl-itempick-clustering-patch-size"></span><h4><code class="docutils literal notranslate"><span class="pre">clustering_patch_size</span></code> (<em>Patch Size</em>)<a class="headerlink" href="#clustering-patch-size-patch-size" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><blockquote>
+<div><p>is the size of the square patches the depth map is subdivided into during the first clustering step in pixels.</p>
+<p>Via the REST-API, this parameter can be set as follows.</p>
+</div></blockquote>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-3-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-3-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-3-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?clustering_patch_size<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-3-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/parameters?clustering_patch_size<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="clustering-discontinuity-factor-discontinuity-factor">
+<span id="expl-itempick-clustering-discontinuity-factor"></span><h4><code class="docutils literal notranslate"><span class="pre">clustering_discontinuity_factor</span></code> (<em>Discontinuity Factor</em>)<a class="headerlink" href="#clustering-discontinuity-factor-discontinuity-factor" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><blockquote>
+<div><p>is the factor used to discriminate depth discontinuities within a patch. The smaller this value, the more clusters will be split apart.</p>
+<p>Via the REST-API, this parameter can be set as follows.</p>
+</div></blockquote>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-4-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-4-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-4-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?clustering_discontinuity_factor<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-4-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/parameters?clustering_discontinuity_factor<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="clustering-max-surface-rmse-maximum-surface-rmse">
+<span id="expl-itempick-clustering-max-surface-rmse"></span><h4><code class="docutils literal notranslate"><span class="pre">clustering_max_surface_rmse</span></code> (<em>Maximum Surface RMSE</em>)<a class="headerlink" href="#clustering-max-surface-rmse-maximum-surface-rmse" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><blockquote>
+<div><p>is the maximum root-mean-square error (RMSE) in meters of points belonging to a surface.</p>
+<p>Via the REST-API, this parameter can be set as follows.</p>
+</div></blockquote>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-5-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-5-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-5-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?clustering_max_surface_rmse<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-5-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/parameters?clustering_max_surface_rmse<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="grasp-filter-orientation-threshold-grasp-orientation-threshold">
+<span id="expl-itempick-grasp-filter-orientation-threshold"></span><h4><code class="docutils literal notranslate"><span class="pre">grasp_filter_orientation_threshold</span></code> (<em>Grasp Orientation Threshold</em>)<a class="headerlink" href="#grasp-filter-orientation-threshold-grasp-orientation-threshold" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><blockquote>
+<div><p>is the maximum deviation of the TCP’s z axis at the grasp point from the z axis of the TCP’s preferred orientation in degrees.
+Only grasp points which are within this threshold are returned. When set
+to zero, any deviations are valid.</p>
+<p>Via the REST-API, this parameter can be set as follows.</p>
+</div></blockquote>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-6-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-6-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-6-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/&lt;<span class="m">0</span>,1,2,3&gt;/nodes/rc_itempick/parameters?grasp_filter_orientation_threshold<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-6-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/parameters?grasp_filter_orientation_threshold<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="allow-any-grasp-z-rotation-allow-any-grasp-z-rotation">
+<span id="id1"></span><h4><code class="docutils literal notranslate"><span class="pre">allow_any_grasp_z_rotation</span></code> (<em>Allow Any Grasp Z Rotation</em>)<a class="headerlink" href="#allow-any-grasp-z-rotation-allow-any-grasp-z-rotation" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><blockquote>
+<div><p>If set to true, the returned grasps are no longer forced to have their x axes aligned with the maximum elongation of the graspable ellipse, but
+can have any rotation around the z axis. The returned <code class="docutils literal notranslate"><span class="pre">max_suction_surface_length</span></code> and <code class="docutils literal notranslate"><span class="pre">max_suction_surface_width</span></code> will be equal and correspond to the shortest diameter of the largest graspable ellipse. This parameter enables the robot to get more options for grasping objects, especially in scenes where collisions can occur. However, in case of <code class="docutils literal notranslate"><span class="pre">UNKNOWN</span></code> item models, since the grasp is no longer aligned with the graspable ellipse, the correct orientation for placing the object must be determined by other means. </p>
+<p>Via the REST-API, this parameter can be set as follows.</p>
+</div></blockquote>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-7-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-7-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-7-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/&lt;<span class="m">0</span>,1,2,3&gt;/nodes/rc_itempick/parameters?allow_any_grasp_z_rotation<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-7-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/parameters?allow_any_grasp_z_rotation<span class="o">=</span>&lt;value&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="status-values">
+<span id="sect-itempick-status-values"></span><h2>Status values<a class="headerlink" href="#status-values" title="Permalink to this headline">¶</a></h2>
+<p id="index-4">The <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> node reports the following status values:</p>
+<table border="1" class="docutils" id="id4">
+<caption><span class="caption-number">Table 26 </span><span class="caption-text">The <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> node’s status values</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">data_acquisition_time</span></code></td>
+<td>Time in seconds required by the last active service to acquire images</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">grasp_computation_time</span></code></td>
+<td>Processing time of the last grasp computation in seconds</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">last_timestamp_processed</span></code></td>
+<td>The timestamp of the last processed dataset</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">load_carrier_detection_time</span></code></td>
+<td>Processing time of the last load carrier detection in seconds</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">processing_time</span></code></td>
+<td>Processing time of the last detection (including load carrier detection) in seconds</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">state</span></code></td>
+<td>The current state of the rc_itempick node</td>
+</tr>
+</tbody>
+</table>
+<p>The reported <code class="docutils literal notranslate"><span class="pre">state</span></code> can take one of the following values.</p>
+<span id="tab-itempick-states"></span><table border="1" class="docutils" id="id5">
+<caption><span class="caption-number">Table 27 </span><span class="caption-text">Possible states of the ItemPick module</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">State name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>IDLE</td>
+<td>The module is idle.</td>
+</tr>
+<tr class="row-odd"><td>RUNNING</td>
+<td>The module is running and ready for load carrier detection and grasp computation.</td>
+</tr>
+<tr class="row-even"><td>FATAL</td>
+<td>A fatal error has occurred.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="services">
+<span id="sect-itempick-services"></span><h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<p id="index-5">The user can explore and call the <code class="docutils literal notranslate"><span class="pre">rc_itempick</span></code> node’s services,
+e.g. for development and testing, using the
+<a class="reference internal" href="rest_api.html"><span class="doc">REST-API interface</span></a> or
+the <em>rc_visard NG</em>
+<a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>.</p>
+<p>The ItemPick module offers the following services.</p>
+<div class="section" id="compute-grasps">
+<span id="expl-itempick-srv-compute-grasps"></span><h3><code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code><a class="headerlink" href="#compute-grasps" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Triggers the computation of grasping poses for a suction device as described in
+<a class="reference internal" href="#sect-itempick-compute-grasps"><span class="std std-ref">Computation of grasps</span></a>.</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>This service can be called as follows.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-8-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-8-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-8-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/services/compute_grasps
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-8-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/services/compute_grasps
+</pre></div>
+</div>
+</div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-9-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-9-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-9-0 active docutils container">
+<p>Required arguments:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">pose_frame</span></code>: see <a class="reference internal" href="#sect-itempick-hand-eye-dep"><span class="std std-ref">Hand-eye calibration</span></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">suction_surface_length</span></code>: length of the suction device grasping surface.</p>
+<p><code class="docutils literal notranslate"><span class="pre">suction_surface_width</span></code>: width of the suction device grasping surface.</p>
+</div></blockquote>
+<p>Potentially required arguments:</p>
+<blockquote>
+<div><code class="docutils literal notranslate"><span class="pre">robot_pose</span></code>: see <a class="reference internal" href="#sect-itempick-hand-eye-dep"><span class="std std-ref">Hand-eye calibration</span></a>.</div></blockquote>
+<p>Optional arguments:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">load_carrier_id</span></code>: ID of the load carrier which contains the items to be grasped.</p>
+<p><code class="docutils literal notranslate"><span class="pre">load_carrier_compartment</span></code>: compartment inside the load carrier where to compute grasps
+(see <a class="reference internal" href="loadcarrier_db.html#sect-loadcarrier-compartment"><span class="std std-ref">Load carrier compartments</span></a>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">region_of_interest_id</span></code>: if <code class="docutils literal notranslate"><span class="pre">load_carrier_id</span></code> is set,
+ID of the 3D region of interest where to search for the load carriers.
+Otherwise, ID of the 3D region of interest where to compute grasps.</p>
+<p><code class="docutils literal notranslate"><span class="pre">item_models</span></code>: list of items to be detected. In case of ItemPick, currently only a single item model
+of type <code class="docutils literal notranslate"><span class="pre">UNKNOWN</span></code> with minimum and maximum dimensions is supported, with the
+minimum dimensions strictly smaller than the maximum dimensions.</p>
+<p><code class="docutils literal notranslate"><span class="pre">collision_detection</span></code>: see <a class="reference internal" href="collisioncheck.html#sect-collision-check-other-modules"><span class="std std-ref">Collision checking within other modules</span></a>.</p>
+</div></blockquote>
+<p>The definition for the request arguments with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;collision_detection&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;gripper_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;pre_grasp_offset&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;item_models&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;unknown&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;max_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;min_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;load_carrier_compartment&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;box&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;load_carrier_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;region_of_interest_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;robot_pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;suction_surface_length&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;suction_surface_width&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-9-1 docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">load_carriers</span></code>: list of detected load carriers.</p>
+<p><code class="docutils literal notranslate"><span class="pre">grasps</span></code>: sorted list of suction grasps.</p>
+<p><code class="docutils literal notranslate"><span class="pre">items</span></code>: sorted list of items corresponding to the returned grasps. In case of ItemPick, this list is always empty.</p>
+<p><code class="docutils literal notranslate"><span class="pre">timestamp</span></code>: timestamp of the image set the detection ran on.</p>
+<p><code class="docutils literal notranslate"><span class="pre">return_code</span></code>: holds possible warnings or error codes and messages.</p>
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;compute_grasps&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;grasps&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;item_uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;max_suction_surface_length&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;max_suction_surface_width&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;quality&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;bounding_box&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;grasp_uuids&quot;</span><span class="p">:</span> <span class="p">[</span>
+          <span class="s2">&quot;string&quot;</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;template_id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;view_name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;view_pose_set&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;view_uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;load_carriers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;height_open_side&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;inner_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;outer_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;overfilled&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;rim_ledge&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;rim_step_height&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;rim_thickness&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;nsec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;sec&quot;</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="set-preferred-orientation">
+<span id="expl-itempick-srv-set-preferred-orientation"></span><h3><code class="docutils literal notranslate"><span class="pre">set_preferred_orientation</span></code><a class="headerlink" href="#set-preferred-orientation" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Persistently stores the preferred orientation of the TCP to compute the reachability of the grasps,
+which is used for filtering and the grasps returned by the <code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> service
+(see <a class="reference internal" href="#sect-itempick-set-preferred-orientation"><span class="std std-ref">Setting the preferred orientation of the TCP</span></a>).</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>This service can be called as follows.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-10-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-10-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-10-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/services/set_preferred_orientation
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-10-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/services/set_preferred_orientation
+</pre></div>
+</div>
+</div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-11-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-11-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-11-0 active docutils container">
+<p>The definition for the request arguments with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-11-1 docutils container">
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;set_preferred_orientation&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="get-preferred-orientation">
+<span id="expl-itempick-srv-get-preferred-orientation"></span><h3><code class="docutils literal notranslate"><span class="pre">get_preferred_orientation</span></code><a class="headerlink" href="#get-preferred-orientation" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Returns the preferred orientation of the TCP to compute the reachability of the grasps,
+which is used for filtering the grasps returned by the <code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> service
+(see <a class="reference internal" href="#sect-itempick-set-preferred-orientation"><span class="std std-ref">Setting the preferred orientation of the TCP</span></a>).</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>This service can be called as follows.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-12-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-12-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-12-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/services/get_preferred_orientation
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-12-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/services/get_preferred_orientation
+</pre></div>
+</div>
+</div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-13-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-13-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-13-0 active docutils container">
+This service has no arguments.</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-13-1 docutils container">
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;get_preferred_orientation&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="set-sorting-strategies">
+<span id="expl-itempick-srv-set-sorting-strategies"></span><h3><code class="docutils literal notranslate"><span class="pre">set_sorting_strategies</span></code><a class="headerlink" href="#set-sorting-strategies" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Persistently stores the sorting strategy for sorting the grasps returned by the <code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> service
+(see <a class="reference internal" href="#sect-itempick-compute-grasps"><span class="std std-ref">Computation of grasps</span></a>).</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>This service can be called as follows.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-14-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-14-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-14-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/services/set_sorting_strategies
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-14-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/services/set_sorting_strategies
+</pre></div>
+</div>
+</div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-15-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-15-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-15-0 active docutils container">
+<p>Only one strategy may have a <code class="docutils literal notranslate"><span class="pre">weight</span></code> greater than 0. If all <code class="docutils literal notranslate"><span class="pre">weight</span></code> values are set to 0, the module will use the
+default sorting strategy.</p>
+<p>If the weight for <code class="docutils literal notranslate"><span class="pre">direction</span></code> is set, the
+<code class="docutils literal notranslate"><span class="pre">vector</span></code> must contain the direction vector and <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> must be either <code class="docutils literal notranslate"><span class="pre">camera</span></code> or <code class="docutils literal notranslate"><span class="pre">external</span></code>.</p>
+<p>If the weight for <code class="docutils literal notranslate"><span class="pre">distance_to_point</span></code> is set, <code class="docutils literal notranslate"><span class="pre">point</span></code> must contain the sorting point and <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> must be either <code class="docutils literal notranslate"><span class="pre">camera</span></code> or <code class="docutils literal notranslate"><span class="pre">external</span></code>.</p>
+<p>The definition for the request arguments with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;direction&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;vector&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;distance_to_point&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;farthest_first&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;point&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;gravity&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;surface_area&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-15-1 docutils container">
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;set_sorting_strategies&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="get-sorting-strategies">
+<span id="expl-itempick-srv-get-sorting-strategies"></span><h3><code class="docutils literal notranslate"><span class="pre">get_sorting_strategies</span></code><a class="headerlink" href="#get-sorting-strategies" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Returns the sorting strategy for sorting the grasps returned by the <code class="docutils literal notranslate"><span class="pre">compute-grasps</span></code> service
+(see <a class="reference internal" href="#sect-itempick-compute-grasps"><span class="std std-ref">Computation of grasps</span></a>).</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>This service can be called as follows.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-16-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-16-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-16-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/services/get_sorting_strategies
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-16-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/services/get_sorting_strategies
+</pre></div>
+</div>
+</div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-17-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-17-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-17-0 active docutils container">
+This service has no arguments.</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-17-1 docutils container">
+<p>All <code class="docutils literal notranslate"><span class="pre">weight</span></code> values are 0 when the module uses the default sorting strategy.</p>
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;get_sorting_strategies&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;direction&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;vector&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;distance_to_point&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;farthest_first&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;point&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;gravity&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;surface_area&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="start">
+<span id="expl-itempick-srv-start"></span><h3><code class="docutils literal notranslate"><span class="pre">start</span></code><a class="headerlink" href="#start" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Starts the module. If the command is accepted, the module moves to state <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code>.</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>This service can be called as follows.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-18-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-18-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-18-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/services/start
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-18-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/services/start
+</pre></div>
+</div>
+</div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-19-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-19-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-19-0 active docutils container">
+This service has no arguments.</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-19-1 docutils container">
+<p>The <code class="docutils literal notranslate"><span class="pre">current_state</span></code> value in the service response may differ from <code class="docutils literal notranslate"><span class="pre">RUNNING</span></code> if
+the state transition is still in process when the service returns.</p>
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;start&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="stop">
+<span id="expl-itempick-srv-stop"></span><h3><code class="docutils literal notranslate"><span class="pre">stop</span></code><a class="headerlink" href="#stop" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Stops the module. If the command is accepted, the module moves to state <code class="docutils literal notranslate"><span class="pre">IDLE</span></code>.</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>This service can be called as follows.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-20-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-20-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-20-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/services/stop
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-20-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/services/stop
+</pre></div>
+</div>
+</div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-21-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-21-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-21-0 active docutils container">
+This service has no arguments.</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-21-1 docutils container">
+<p>The <code class="docutils literal notranslate"><span class="pre">current_state</span></code> value in the service response may differ from <code class="docutils literal notranslate"><span class="pre">IDLE</span></code> if
+the state transition is still in process when the service returns.</p>
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stop&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;accepted&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;current_state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="reset-defaults">
+<span id="expl-itempick-srv-reset-params"></span><h3><code class="docutils literal notranslate"><span class="pre">reset_defaults</span></code><a class="headerlink" href="#reset-defaults" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Resets all parameters of the module to its default values,
+as listed in above table. Also resets sorting strategies.</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>This service can be called as follows.</p>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-22-0 docutils container">
+<div class="docutils container">
+<strong>API version 2</strong></div>
+</div>
+<div class="item sphinx-data-tab-22-1 docutils container">
+<div class="docutils container">
+<strong>API version 1 (deprecated)</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-22-0 active docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/pipelines/0/nodes/rc_itempick/services/reset_defaults
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-22-1 docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v1/nodes/rc_itempick/services/reset_defaults
+</pre></div>
+</div>
+</div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-23-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-23-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-23-0 active docutils container">
+This service has no arguments.</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-23-1 docutils container">
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;reset_defaults&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="return-codes">
+<span id="sect-itempick-return-codes"></span><h2>Return codes<a class="headerlink" href="#return-codes" title="Permalink to this headline">¶</a></h2>
+<p id="index-6">Each service response contains a <code class="docutils literal notranslate"><span class="pre">return_code</span></code>,
+which consists of a <code class="docutils literal notranslate"><span class="pre">value</span></code> plus an optional <code class="docutils literal notranslate"><span class="pre">message</span></code>.
+A successful service returns with a <code class="docutils literal notranslate"><span class="pre">return_code</span></code> value of <code class="docutils literal notranslate"><span class="pre">0</span></code>.
+Negative <code class="docutils literal notranslate"><span class="pre">return_code</span></code> values indicate that the service failed.
+Positive <code class="docutils literal notranslate"><span class="pre">return_code</span></code> values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple <code class="docutils literal notranslate"><span class="pre">return_code</span></code> values,
+but all messages are appended in the <code class="docutils literal notranslate"><span class="pre">return_code</span></code> message.</p>
+<p>The following table contains a list of common codes:</p>
+<span id="tab-itempick-return-codes"></span><table border="1" class="docutils" id="id6">
+<caption><span class="caption-number">Table 28 </span><span class="caption-text">Return codes of the ItemPick services</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>Success</td>
+</tr>
+<tr class="row-odd"><td>-1</td>
+<td>An invalid argument was provided</td>
+</tr>
+<tr class="row-even"><td>-3</td>
+<td>An internal timeout occurred, e.g. during box detection if the given dimension range is too large</td>
+</tr>
+<tr class="row-odd"><td>-4</td>
+<td>Data acquisition took longer than allowed</td>
+</tr>
+<tr class="row-even"><td>-8</td>
+<td>The template has been deleted during detection.</td>
+</tr>
+<tr class="row-odd"><td>-10</td>
+<td>New element could not be added as the maximum storage capacity of load carriers, regions of interest or template has been exceeded</td>
+</tr>
+<tr class="row-even"><td>-11</td>
+<td>Sensor not connected, not supported or not ready</td>
+</tr>
+<tr class="row-odd"><td>-200</td>
+<td>Fatal internal error</td>
+</tr>
+<tr class="row-even"><td>-301</td>
+<td>More than one item model provided to the <code class="docutils literal notranslate"><span class="pre">compute_grasps</span></code> service</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>The maximum storage capacity of load carriers, regions of interest or templates has been reached</td>
+</tr>
+<tr class="row-even"><td>11</td>
+<td>An existent persistent model was overwritten by the call to <code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code> or <code class="docutils literal notranslate"><span class="pre">set_region_of_interest</span></code></td>
+</tr>
+<tr class="row-odd"><td>100</td>
+<td>The requested load carriers were not detected in the scene</td>
+</tr>
+<tr class="row-even"><td>101</td>
+<td>No valid surfaces or grasps were found in the scene</td>
+</tr>
+<tr class="row-odd"><td>102</td>
+<td>The detected load carrier is empty</td>
+</tr>
+<tr class="row-even"><td>103</td>
+<td>All computed grasps are in collision with the load carrier</td>
+</tr>
+<tr class="row-odd"><td>112</td>
+<td>Rejected detections of one or more clusters, because min_cluster_coverage was not reached.</td>
+</tr>
+<tr class="row-even"><td>300</td>
+<td>A valid <code class="docutils literal notranslate"><span class="pre">robot_pose</span></code> was provided as argument but it is not required</td>
+</tr>
+<tr class="row-odd"><td>999</td>
+<td>Additional hints for application development</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="boxpick.html" class="btn btn-neutral float-right" title="BoxPick" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tagdetect.html" class="btn btn-neutral" title="TagDetect" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Options</span>
+      en
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Languages</dt>
+        
+          
+          <dd><a href="../en/itempick.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/itempick.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="../../v23.10/index.html">v23.10</a></dd>
+          
+            <dd><a href="../../v24.01/index.html">v24.01</a></dd>
+          
+            <dd><a href="../../v24.04/index.html">v24.04</a></dd>
+          
+            <dd><a href="../../v24.07/index.html">v24.07</a></dd>
+          
+            <dd><a href="../../v24.10/index.html">v24.10</a></dd>
+          
+            <dd><a href="../../v25.01/index.html">v25.01</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'25.01.1',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.js"></script>
+      <script type="text/javascript" src="_static/sphinx_tabs/tabs.js"></script>
+      <script type="text/javascript" src="_static/contentui.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

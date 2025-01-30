@@ -1,0 +1,337 @@
+Fehlerbehebung
+
+LED-Farben
+
+Während des Boot-Vorgangs wechselt die LED mehrmals die Farbe, um die
+verschiedenen Boot-Phasen anzuzeigen:
+
+LED-Farbcodes      LED-Farbe  Boot-Vorgang  Weiß  Stromversorgung OK
+Blau  Normaler Boot-Vorgang  Grün  Boot-Vorgang abgeschlossen,
+rc_visard NG einsatzbereit
+
+Die LED dient ferner dazu, Probleme oder Fehlerzustände zu
+signalisieren, um den Benutzer im Rahmen der Problembehandlung zu
+unterstützen.
+
+LED-Farbcodes      LED-Farbe  Problem oder Fehlerzustand  Aus  Der
+Sensor wird nicht mit Strom versorgt.  Kurzes rotes Blinken alle fünf
+Sekunden  Keine Netzwerkkonnektivität  Rot  Ein Prozess wurde beendet
+und kann nicht neu gestartet werden.  Gelb  Temperaturwarnung
+(Gehäusetemperatur liegt über 60 °C)
+
+Probleme mit der Hardware
+
+LED leuchtet nicht
+
+Der
+
+rc_visard NG
+
+ fährt nicht hoch.
+
+Vergewissern Sie sich, dass alle Kabel ordentlich angeschlossen und
+gesichert sind.
+
+Vergewissern Sie sich, dass eine geeignete Gleichstromquelle (18–30 V)
+mit korrekter Polarität an den in der Spezifikation der
+Steckerbelegung\:(Abschnitt \ref{hardware_spec:tab-power-pin-
+assignments}) mit Stromzufuhr und Masse gekennzeichneten Pins
+angeschlossen ist. Wird der Sensor außerhalb des angegebenen
+Spannungsbereichs, mit Wechselstrom oder mit umgekehrter Polarität
+betrieben, oder ist er an ein Versorgungsnetz angeschlossen, in dem
+Spannungsspitzen auftreten, kann dies zu dauerhaften Hardware-Schäden
+führen.
+
+LED leuchtet gelb, obwohl der Sensor anscheinend normal funktioniert
+
+Dies kann auf eine erhöhte Gehäusetemperatur hinweisen. Der Sensor ist
+ggf. so montiert, dass die Luft die Kühlrippen nicht ungehindert
+umströmen kann.
+
+Reinigen Sie die Kühlrippen und das Gehäuse.
+
+Stellen Sie sicher, dass in alle Richtungen um die Kühlrippen 10 cm
+Platz sind, damit die konvektive Kühlung ordentlich funktioniert.
+
+Vergewissern Sie sich, dass die Umgebungstemperatur der Spezifikation
+entspricht.
+
+Der Sensor kann die Verarbeitungsgeschwindigkeit drosseln wenn die
+Kühlung nicht ausreicht oder die Umgebungstemperatur außerhalb des
+zugelassenen Bereichs liegt.
+
+Probleme mit der Zuverlässigkeit und/oder mechanische Schäden
+
+Dies kann darauf hinweisen, dass die Umgebungsbedingungen
+(Vibrationen, Erschütterungen, Schwingungen und Temperatur) außerhalb
+der
+
+entsprechenden Spezifikationen
+
+ liegen.
+
+Wird der rc_visard NG außerhalb der angegebenen Umgebungsbedingungen
+betrieben, kann dies zu Schäden am Gerät und zum Erlöschen der
+Garantie führen.
+
+Stromschlag bei Berührung des Sensors
+
+Dies deutet auf einen elektrischen Defekt im Sensor, in der
+Verkabelung, im Netzteil oder im angrenzenden System hin.
+
+Schalten Sie das System unverzüglich aus, ziehen Sie alle Kabel und
+lassen Sie die Einrichtung des Geräts durch einen qualifizierten
+Elektriker überprüfen.
+
+Vergewissern Sie sich, dass das Sensorgehäuse ordentlich geerdet ist.
+Prüfen Sie auf große Erdschleifen.
+
+Probleme mit der Konnektivität
+
+LED blinkt alle 5 Sekunden rot
+
+Wenn die LED alle fünf Sekunden kurz rot blinkt, kann der
+
+rc_visard NG
+
+ keine Netzwerkverbindung herstellen.
+
+Überprüfen Sie, ob das Netzwerkkabel ordentlich mit dem rc_visard NG
+und dem Netzwerk verbunden ist.
+
+Ist kein Problem erkennbar, tauschen Sie das Ethernet-Kabel aus.
+
+Die Kamera wird vom GigE Vision-Client oder vom rcdiscover-gui-Tool
+nicht erkannt
+
+Überprüfen Sie, ob die LED an der Gerätefront des rc_visard NG alle
+fünf Sekunden kurz blinkt (überprüfen Sie das Kabel, wenn dies der
+Fall ist).
+
+Vergewissern Sie sich, dass der rc_visard NG an das gleiche Subnetz
+angeschlossen ist (der Discovery-Mechanismus nutzt Broadcasts, die
+nicht über verschiedene Subnetze funktionieren).
+
+Die Web GUI kann nicht aufgerufen werden
+
+Vergewissern Sie sich, dass der rc_visard NG eingeschaltet und an das
+gleiche Subnetz wie der Host-Computer angeschlossen ist.
+
+Überprüfen Sie, ob die LED an der Gerätefront des rc_visard NG alle
+fünf Sekunden kurz blinkt (überprüfen Sie das Kabel, wenn dies der
+Fall ist).
+
+Überprüfen Sie, ob die rcdiscover-gui den Sensor erkennt. Gibt das
+Tool an, dass der rc_visard NG nicht erreichbar ist, ist die
+Netzwerkkonfiguration\:(Abschnitt \ref{installation:sect-network-
+configuration}) des rc_visard NG fehlerhaft.
+
+Wird der rc_visard NG als unerreichbar angegeben, versuchen Sie, einen
+Doppelklick auf den Geräteeintrag zu machen, um die Web GUI in einem
+Browser zu öffnen.
+
+Funktioniert das nicht, versuchen Sie, die vom rc_visard NG gemeldete
+IP-Adresse direkt als Zieladresse in den Browser einzugeben.
+
+Zu viele Web-GUI-Instanzen gleichzeitig geöffnet
+
+Die Web GUI verbraucht Verarbeitungsressourcen des
+
+rc_visard NG
+
+, um die zu übertragenden Bilder zu komprimieren und die regelmäßig
+vom Browser zusammengestellten Statistiken auszugeben. Werden
+gleichzeitig mehrere Instanzen der Web GUI auf einem oder mehreren
+Rechnern geöffnet, so kann die Leistung des
+
+rc_visard NG
+
+ stark abnehmen. Die Web GUI ist für Konfigurations- und
+Validierungszwecke gedacht, nicht jedoch, um den
+
+rc_visard NG
+
+ dauerhaft zu überwachen.
+
+Probleme mit den Kamerabildern
+
+Kamerabild ist zu hell
+
+Wenn die Kamera im manuellen Belichtungsmodus arbeitet, versuchen Sie,
+die Belichtungszeit zu verkürzen (siehe Parameter, Abschnitt
+\ref{stereo_camera:sect-cam-params}) oder
+
+schalten Sie auf automatische Belichtung um (siehe Parameter,
+Abschnitt \ref{stereo_camera:sect-cam-params}).
+
+Kamerabild ist zu dunkel
+
+Wenn die Kamera im manuellen Belichtungsmodus arbeitet, versuchen Sie,
+die Belichtungszeit zu verlängern (siehe Parameter, Abschnitt
+\ref{stereo_camera:sect-cam-params}) oder
+
+schalten Sie auf automatische Belichtung um (siehe Parameter,
+Abschnitt \ref{stereo_camera:sect-cam-params}).
+
+Kamerabild rauscht zu stark
+
+Große Gain-Faktoren verursachen ein Bildrauschen mit hoher Amplitude.
+Wollen Sie das Bildrauschen verringern,
+
+verwenden Sie eine zusätzliche Lichtquelle, um die Lichtintensität der
+Aufnahme zu erhöhen, oder
+
+stellen Sie eine größere maximale Autobelichtungszeit ein (siehe
+Parameter, Abschnitt \ref{stereo_camera:sect-cam-params}).
+
+Kamerabild ist unscharf
+
+Überprüfen Sie, ob das Objekt zu nahe an der Linse liegt, und erhöhen
+Sie bei Bedarf den Abstand zwischen dem Objekt und der Linse.
+
+Überprüfen Sie, ob die Kameralinsen verschmutzt sind, und reinigen Sie
+diese bei Bedarf.
+
+Trifft keiner der vorstehenden Punkte zu, kann es sein, dass ein
+schweres Hardware-Problem vorliegt. Bitte wenden Sie sich an den
+Support\:(Abschnitt \ref{contact:sect-contact}).
+
+Kamerabild ist verschwommen
+
+Schnelle Bewegungen können in Kombination mit langen Belichtungszeiten
+zu Unschärfe führen. Um Bewegungsunschärfe zu verringern,
+
+verringern Sie die Bewegungsgeschwindigkeit der Kamera,
+
+verringern Sie die Bewegungsgeschwindigkeit von Objekten im Sichtfeld
+der Kamera oder
+
+verkürzen Sie die Belichtungszeit der Kameras (siehe Parameter,
+Abschnitt \ref{stereo_camera:sect-cam-params}).
+
+Kamerabild ist verzerrt
+
+Überprüfen Sie, ob die Linsen verschmutzt sind, und reinigen Sie diese
+bei Bedarf (siehe Reinigung der Kameralinsen, Abschnitt
+\ref{maintenance:sect-lens-cleaning}).
+
+Trifft keiner der vorstehenden Punkte zu, kann es sein, dass ein
+schweres Hardware-Problem vorliegt. Bitte wenden Sie sich an den
+Support\:(Abschnitt \ref{contact:sect-contact}).
+
+Bildwiederholrate ist zu niedrig
+
+Erhöhen Sie die Bildwiederholrate gemäß den Anweisungen in
+Parameter\:(Abschnitt \ref{stereo_camera:sect-cam-params}).
+
+Die maximale Bildwiederholrate der Kameras beträgt 25 Hz.
+
+Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern
+
+Die folgenden Hinweise gelten auch für Fehler- und Konfidenzbilder, da
+sie direkt mit den Disparitätsbildern zusammenhängen.
+
+Disparitätsbild spärlich befüllt oder leer
+
+Überprüfen Sie, ob die Kamerabilder gut belichtet und scharf sind.
+Befolgen Sie bei Bedarf die Anweisungen in Probleme mit den
+Kamerabildern\:(Abschnitt \ref{troubleshooting:sect-camera-issues}).
+
+Überprüfen Sie, ob die Szene genügend Textur hat (siehe Stereo-
+Matching, Abschnitt \ref{stereo_matching:sect-stereo-matching}) und
+installieren Sie bei Bedarf einen Musterprojektor.
+
+Senken Sie den Minimalen Abstand\:(Abschnitt \ref{stereo_matching
+:sect-disp-image-parameters}).
+
+Erhöhen Sie den Maximalen Abstand\:(Abschnitt \ref{stereo_matching
+:sect-disp-image-parameters}).
+
+Überprüfen Sie, ob das Objekt zu nahe an der Kamera liegt. Beachten
+Sie die unterschiedlichen Tiefenmessbereiche der Kameravarianten.
+
+Senken Sie die Minimale Konfidenz\:(Abschnitt \ref{stereo_matching
+:sect-disp-image-parameters}).
+
+Erhöhen Sie den Maximalen Fehler\:(Abschnitt \ref{stereo_matching
+:sect-disp-image-parameters}).
+
+Wählen Sie eine geringere Qualität des Disparitätsbilds\:(Abschnitt
+\ref{stereo_matching:sect-disp-image-parameters}). Disparitätsbilder
+mit einer geringeren Auflösung sind in der Regel nicht so spärlich
+befüllt.
+
+Überprüfen Sie die Kalibrierung der Kameras und führen Sie bei Bedarf
+eine Neukalibrierung durch (siehe Kamerakalibrierung, Abschnitt
+\ref{camera_calibration:sect-camera-calibration}).
+
+Bildwiederholrate der Disparitätsbilder ist zu niedrig
+
+Überprüfen und erhöhen Sie die Bildwiederholrate der Kamerabilder
+(siehe Parameter, Abschnitt \ref{stereo_camera:sect-cam-params}). Die
+Bildwiederholrate der Disparitätsbilder kann nicht größer sein als die
+Bildwiederholrate der Kamerabilder.
+
+Wählen Sie eine geringere Qualität des Disparitätsbilds\:(Abschnitt
+\ref{stereo_matching:sect-disp-image-parameters}).
+
+Erhöhen Sie den Minimalen Abstand\:(Abschnitt \ref{stereo_matching
+:sect-disp-image-parameters}) so viel wie für die Applikation möglich.
+
+Disparitätsbild zeigt keine nahe liegenden Objekte
+
+Überprüfen Sie, ob das Objekt zu nahe an der Linse liegt. Beachten Sie
+die unterschiedlichen Tiefenmessbereiche der Kameravarianten.
+
+Senken Sie den Minimalen Abstand\:(Abschnitt \ref{stereo_matching
+:sect-disp-image-parameters}).
+
+Disparitätsbild zeigt keine weit entfernten Objekte
+
+Erhöhen Sie den Maximalen Abstand\:(Abschnitt \ref{stereo_matching
+:sect-disp-image-parameters}).
+
+Erhöhen Sie den Maximalen Fehler\:(Abschnitt \ref{stereo_matching
+:sect-disp-image-parameters}).
+
+Senken Sie die Minimale Konfidenz\:(Abschnitt \ref{stereo_matching
+:sect-disp-image-parameters}).
+
+Disparitätsbild rauscht zu stark
+
+Erhöhen Sie den Segmentierungswert\:(Abschnitt \ref{stereo_matching
+:sect-disp-image-parameters}).
+
+Erhöhen Sie den Füllen-Wert\:(Abschnitt \ref{stereo_matching:sect-
+disp-image-parameters}).
+
+Disparitätswerte oder resultierende Tiefenwerte sind zu ungenau
+
+Verringern Sie den Abstand zwischen der Kamera und der Szene. Der
+Tiefenmessfehler nimmt quadratisch mit dem Abstand zu den Kameras zu.
+
+Überprüfen Sie, ob die Szene wiederkehrende Muster enthält und
+entfernen Sie diese bei Bedarf. Diese könnten falsche
+Disparitätsmessungen verursachen.
+
+Disparitätsbild ist zu glatt
+
+Senken Sie den Füllen-Wert\:(Abschnitt \ref{stereo_matching:sect-disp-
+image-parameters}).
+
+Disparitätsbild zeigt keine feinen Strukturen
+
+Senken Sie den Segmentierungswert\:(Abschnitt \ref{stereo_matching
+:sect-disp-image-parameters}).
+
+Senken Sie den Füllen-Wert\:(Abschnitt \ref{stereo_matching:sect-disp-
+image-parameters}).
+
+Probleme mit GigE Vision/GenICam
+
+Keine Bilder
+
+Überprüfen Sie, ob die Bildkomponenten aktiviert sind. Siehe
+ComponentSelector und ComponentEnable in Wichtige Parameter der
+GenICam-Schnittstelle\:(Abschnitt \ref{gigevision:sect-genicam-
+params}).

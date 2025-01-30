@@ -1,0 +1,363 @@
+
+.. include:: global_rst.glb
+
+.. _sect-roi:
+
+RoiDB
+=====
+
+.. index:: ! RoiDB
+   single: ROI
+   single: BoxPick; region of interest
+   single: ItemPick; region of interest
+   single: SilhouetteMatch; region of interest
+
+.. only:: rc_cube or rc_visard_ng
+
+   .. index::
+      single: CADMatch; region of interest
+
+   .. |3droimodules| replace:: |cadm_module|, |pick_modules|
+
+.. only:: rc_visard
+
+   .. |3droimodules| replace:: |pick_modules|
+
+Introduction
+------------
+
+The RoiDB module (region of interest database module) allows the global definition of 2D and 3D regions of interest, 
+which can then be used in many detection modules. The ROIs are available for all
+modules supporting 2D or 3D ROIs on the |rc_xxx|.
+
+.. only:: rc_cube
+
+   .. note::
+   
+      This module is global on the |rc_cube|. Changes to its settings or parameters affect
+      every camera pipeline running on the |rc_cube|.
+
+The RoiDB module is a base module which is available on every |rc_xxx|.
+
+3D ROIs can be used in |3droimodules|. 2D ROIs can be used in :ref:`sect-silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`,
+and :ref:`sect-loadcarrier`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier})`.
+
+.. tabularcolumns:: |l|L|
+.. _tab-roi-spec:
+.. csv-table:: Specifications of the RoiDB module
+
+    "Supported ROI types",    "2D, 3D"
+    "Supported ROI geometries",    "2D ROI: rectangle, 3D ROI: box, sphere"
+    "Max. number of ROIs",   "2D: 100, 3D: 100"
+    "ROIs available in",   "2D: :ref:`sect-silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`, :ref:`sect-loadcarrier`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier})`, 3D: |3droimodules|"
+    "Supported reference frames", "camera, external" 
+
+.. _sect-roi-definition:
+
+Region of interest
+------------------
+
+A region of interest (ROI) defines a volume in space (3D region of interest, ``region_of_interest``),
+or a rectangular region in the left camera image (2D region of interest, ``region_of_interest_2d``) which is of interest for
+a specific user-application.
+
+A ROI can narrow the volume where a load carrier is searched for, or select a volume
+which only contains items to be detected and/or grasped.
+Processing times can significantly decrease when using a ROI.
+
+3D regions of interest of the following types (``type``) are supported:
+
+ - ``BOX``, with dimensions ``box.x``, ``box.y``, ``box.z``.
+ - ``SPHERE``, with radius ``sphere.radius``.
+
+The user can specify the 3D region of interest ``pose`` in the ``camera`` or the ``external`` coordinate system.
+``External`` can only be chosen if a 
+:doc:`handeye_calibration`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})` is available. 
+When the sensor is robot mounted, and the region of interest is defined in the external frame, the current 
+robot pose must be given to every detect service call that uses this region of interest. 
+
+A 2D ROI is defined as a rectangular part of the left camera image, and can be set via the 
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+or the |rcxxx| :ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})` on the page
+*Regions of Interest* under *Database*.
+The |webgui| offers an easy-to-use selection tool.
+Each ROI must have a unique name to address a specific 2D ROI.
+
+In the |restapi|, a 2D ROI is defined by the following values:
+
+- ``id``: Unique name of the region of interest
+- ``offset_x``, ``offset_y``: offset in pixels along the x-axis and y-axis from the top-left corner of the image, respectively
+- ``width``, ``height``: width and height in pixels
+
+The |rcxxx| can persistently store up to 100 different 3D regions of interest and the same number of 2D regions of interest.
+The configuration of regions of interest is normally performed offline, during
+the set up of the desired application.
+This can be done via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` 
+of RoiDB module, or in 
+the |rcxxx| :ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})` on the page
+*Regions of Interest* under *Database*.
+
+.. Note::
+  The configured regions of interest
+  are persistent even over firmware updates and rollbacks.
+
+.. _sect-loadcarrier-db-dependencies:
+
+Interaction with other modules
+------------------------------
+
+Internally, the RoiDB module depends on, and interacts with other on-board
+modules as listed below.
+
+.. _sect-loadcarrier-hand-eye-dep:
+
+Hand-eye calibration
+^^^^^^^^^^^^^^^^^^^^
+
+In case the camera has been calibrated to a robot, the pose of a 3D ROI
+can be provided in the robot coordinate frame by setting the corresponding
+``pose_frame`` argument.
+
+Two different ``pose_frame`` values can be chosen:
+
+1. **Camera frame** (``camera``).
+   The ROI pose is provided in the camera frame,
+   and no prior knowledge about the pose of the camera in the environment is required.
+   This means that the configured load carriers move with the camera.
+   It is the user's responsibility to update the configured poses
+   if the camera frame moves (e.g. with a robot-mounted camera).
+
+2. **External frame** (``external``).
+   The ROI pose is provided in the external frame,
+   configured by the user during the hand-eye calibration process.
+   The module relies on the on-board 
+   :doc:`Hand-eye calibration module<handeye_calibration>`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`
+   to retrieve the sensor mounting (static or robot mounted) and
+   the hand-eye transformation.
+
+.. Note::
+   If no hand-eye calibration is available, all ``pose_frame`` values should be set to ``camera``.
+
+All ``pose_frame`` values that are not ``camera`` or ``external`` are rejected.
+
+.. _sect-roi-services:
+
+Services
+--------
+
+.. index::
+   single: RoiDB; services
+
+The RoiDB module is called ``rc_roi_db`` in the |rest-api| and is represented in the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})` under 
+:menuselection:`Database --> Regions of Interest`.
+The user can explore and call the RoiDB module's services,
+e.g. for development and testing, using the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |webgui|.
+
+The RoiDB module offers the following services.
+
+.. _expl-roi-srv-set-roi:
+
+``set_region_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a 3D region of interest on the |rc_xxx|.
+   All configured 3D regions of interest are persistent over firmware updates and rollbacks.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/nodes/rc_roi_db/services/set_region_of_interest
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Details for the definition of the ``region_of_interest`` type are given in 
+            :ref:`sect-roi-definition`:latex:`\:(Section \ref{roi:sect-roi-definition})`.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_set_region_of_interest_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_set_region_of_interest_response.txt
+
+.. _expl-roi-srv-set-roi-2d:
+
+``set_region_of_interest_2d``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a 2D region of interest on the |rc_xxx|.
+   All configured 2D regions of interest are persistent over firmware updates and rollbacks.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/nodes/rc_roi_db/services/set_region_of_interest_2d
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Details for the definition of the ``region_of_interest_2d`` type are given in 
+            :ref:`sect-roi-definition`:latex:`\:(Section \ref{roi:sect-roi-definition})`.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_set_region_of_interest_2d_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_set_region_of_interest_2d_response.txt
+
+
+.. _expl-roi-srv-get-roi:
+
+``get_regions_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured 3D regions of interest with the requested ``region_of_interest_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/nodes/rc_roi_db/services/get_regions_of_interest
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            If no ``region_of_interest_ids`` are provided, all configured 3D regions of interest are returned.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_get_regions_of_interest_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_get_regions_of_interest_response.txt
+
+.. _expl-roi-srv-get-roi-2d:
+
+``get_regions_of_interest_2d``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured 2D regions of interest with the requested ``region_of_interest_2d_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/nodes/rc_roi_db/services/get_regions_of_interest_2d
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            If no ``region_of_interest_2d_ids`` are provided, all configured 2D regions of interest are returned.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_get_regions_of_interest_2d_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_get_regions_of_interest_2d_response.txt
+
+.. _expl-roi-srv-delete-roi:
+
+``delete_regions_of_interest``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured 3D regions of interest with the requested ``region_of_interest_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/nodes/rc_roi_db/services/delete_regions_of_interest
+
+      .. tabs::
+
+         .. tab:: **Request**
+         
+            All regions of interest to be deleted must be explicitly stated in ``region_of_interest_ids``.
+   
+            .. include:: _gen/nodes/services/rc_load_carrier_delete_regions_of_interest_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_delete_regions_of_interest_response.txt
+
+.. _expl-roi-srv-delete-roi-2d:
+
+``delete_regions_of_interest_2d``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured 2D regions of interest with the requested ``region_of_interest_2d_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/nodes/rc_roi_db/services/delete_regions_of_interest_2d
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            All 2D regions of interest to be deleted must be explicitly stated in ``region_of_interest_2d_ids``.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_delete_regions_of_interest_2d_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_delete_regions_of_interest_2d_response.txt
+
+
+.. _sect-roi-return-codes:
+
+Return codes
+------------
+
+.. index::
+   pair: RoiDB; return codes
+
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common codes:
+
+.. tabularcolumns:: |c|L|
+.. _tab-roi-return-codes:
+.. csv-table:: Return codes of the RoiDB module's services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+    "-10",  "New element could not be added as the maximum storage capacity of regions of interest has been exceeded"
+    "10",   "The maximum storage capacity of regions of interest has been reached"
+    "11",  "An existent persistent model was overwritten by the call to ``set_region_of_interest`` or ``set_region_of_interest_2d``"

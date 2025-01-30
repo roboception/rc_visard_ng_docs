@@ -1,0 +1,2737 @@
+SilhouetteMatch
+
+Einführung
+
+Das SilhouetteMatch-Modul ist ein optionales Modul, welches intern auf
+dem
+
+rc_visard NG
+
+ läuft,  und benötigt eine eigene
+
+Lizenz
+
+, welche erworben werden muss.
+
+Das Modul erkennt Objekte, indem eine vordefinierte Silhouette
+("Template") mit Kanten im Bild verglichen wird.
+
+Das SilhouetteMatch Modul kann Objekte in zwei verschiedenen Szenarien
+erkennen:
+
+   Mit kalibrierter Basisebene
+
+   : Die Objekte befinden sich auf einer gemeinsamen Basisebene, die
+   vor der Objekterkennung kalibriert werden muss, und die Objekte
+   haben prägnante Kanten auf einer gemeinsamen Ebene, welche parallel
+   zu der Basisebene ist.
+
+   Mit Objektebenenerkennung
+
+   : Die Objekte können sich auf verschiedenen, vorab unbekannten
+   Ebenen befinden, falls die Objekte eine planare Oberfläche haben
+   und ihre Konturen gut in den Kamerabildern sichtbar sind (z.B.
+   gestapelte flache Objekte).
+
+Templates für die Objekterkennung können erstellt werden, indem eine
+DXF Datei hochgeladen und die Objekthöhe angegeben wird. Die korrekte
+Skalierung und Einheit der Konturen wird aus der DXF Datei extrahiert.
+Falls die DXF Datei keine Einheit enthält, muss der Nutzer die
+korrekte Einheit angeben. Wenn die Außenkontur des Objekts in der DXF
+Datei geschlossen ist, wird automatisch ein 3D Kollisionsmodell
+erstellt, indem die Kontur auf die Objekthöhe extrudiert wird. Dieses
+Modell wird dann zur Kollisionsprüfung und 3D-Visualisierung
+verwendet. Das Hochladen der DXF Datei kann in der Web GUI über
+guilabel:*+ Neues Template erstellen* im Abschnitt
+
+SilhouetteMatch Templates und Greifpunkte
+
+ auf der Module ‣ SilhouetteMatch oder Datenbank ‣ Templates Seite
+erfolgen.
+
+Roboception bietet hierfür auch einen Template-Generierungsservice auf
+ihrer
+
+Website
+
+ an, auf der der Benutzer CAD-Daten oder mit dem System aufgenommene
+Daten hochladen kann, um Templates generieren zu lassen.
+
+Templates bestehen aus den prägnanten Kanten eines Objekts. Die Kanten
+des Templates werden mit den erkannten Kanten im linken und rechten
+Kamerabild abgeglichen, wobei die Größe der Objekte und deren Abstand
+zur Kamera mit einbezogen wird. Die Posen der erkannten Objekte werden
+zurückgegeben und können beispielsweise benutzt werden, um die Objekte
+zu greifen.
+
+Das SilhouetteMatch-Modul bietet:
+
+eine intuitiv gestaltete Bedienoberfläche für Inbetriebnahme,
+Konfiguration und Test auf der rc_visard NG Web GUI\:(Abschnitt
+\ref{webgui:sect-web-gui})
+
+eine REST-API-Schnittstelle\:(Abschnitt \ref{rest_api:sect-rest-api})
+und eine KUKA Ethernet KRL Schnittstelle\:(Abschnitt \ref{eki:sect-
+eki})
+
+die Möglichkeit, sogenannte Regions of Interest (ROIs) zu definieren,
+um relevante Teilbereiche des Kamerabilds auszuwählen (siehe Setzen
+einer Region of Interest, Abschnitt \ref{silhouettematch:sect-
+silhouettematch-roi})
+
+eine integrierte Load Carrier Erkennung (siehe LoadCarrier, Abschnitt
+\ref{loadcarrier:sect-loadcarrier}), um in Bin-Picking-Anwendungen
+("Griff in die Kiste") Greifpunkte nur für Objekte in dem erkannten
+Load Carrier zu berechnen
+
+die Speicherung von bis zu 50 Templates
+
+die Definition von bis zu 50 Greifpunkten für jedes Template über eine
+interaktive Visualisierung in der Web GUI
+
+eine Kollisionsprüfung zwischen Greifer und Load Carrier, der
+kalibrierten Basisebene, anderen erkannten Objekten, und/oder der
+Punktwolke
+
+die Unterstützung von sowohl statisch montierten als auch
+robotergeführten Kameras. Optional kann es mit der Hand-Auge-
+Kalibrierung (Abschnitt \ref{handeye_calibration:sect-handeye-
+calibration}) kombiniert werden, um Greifposen in einem
+benutzerdefinierten externen Koordinatensystem zu liefern
+
+Auswahl einer Strategie zum Sortieren der erkannten Objekte und
+zurückgelieferten Greifpunkte
+
+eine 3D Visualisierung des Detektionsergebnisses mit Greifpunkten und
+einer Greiferanimation in der Web GUI
+
+Taugliche Objekte
+
+Das SilhouetteMatch-Modul ist für Objekte ausgelegt, die prägnante
+Kanten auf einer Ebene besitzen, welche parallel zu der Ebene ist, auf
+der die Objekte liegen. Das trifft beispielsweise auf flache, nicht-
+transparente Objekte zu, wie gefräste, lasergeschnittene oder
+wasserstrahlgeschnittene Teile. Komplexere Objekte können auch erkannt
+werden, solange sie prägnante Kanten auf einer Ebene besitzen, z.B.
+ein gedrucktes Muster auf einer ebenen Fläche.
+
+Falls die Objekte nicht auf einer gemeinsamen Ebene liegen oder die
+Basisebene nicht vorab kalibriert werden kann, brauchen die Objekte
+eine planare Oberfläche und ihre Konturen müssen gut im linken und
+rechten Kamerabild sichtbar sein. Weiterhin müssen die Templates für
+diese Objekte eine geschlossene Außenkontur haben.
+
+Taugliche Szene
+
+Eine für das SilhouetteMatch-Modul taugliche Szene muss folgende
+Bedingungen erfüllen:
+
+Die zu erkennenden Objekte müssen, wie oben beschrieben, tauglich für
+das SilhouetteMatch-Modul sein.
+
+Nur Objekte, die zum selben Template gehören, dürfen gleichzeitig
+sichtbar sein (sortenrein). Falls auch andere Objekte sichtbar sind,
+muss eine passende Region of Interest (ROI) festgelegt werden.
+
+Im Falle einer kalibrierten Basisebene: Die Verkippung der Basisebene
+zur Blickrichtung der Kamera darf 10 Grad nicht übersteigen.
+
+Im Falle von verschiedenen oder unbekannten Basisebenen: Die
+Verkippung der planaren Oberfläche der Objekte zur Blickrichtung der
+Kamera darf 25 Grad nicht übersteigen.
+
+Die Objekte sind weder teilweise noch komplett verdeckt.
+
+Alle sichtbaren Objekte liegen richtig herum.
+
+Die Objektkanten, welche abgeglichen werden sollen, sind sowohl im
+linken als auch im rechten Kamerabild zu sehen.
+
+Kalibrierung der Basisebene
+
+Falls alle Objekte auf einer gemeinsamen Ebene liegen, die vorab
+bekannt ist, sollte diese Ebene kalibriert werden, bevor die
+Objekterkennung gestartet wird. Hierbei wird die Distanz und der
+Winkel der Ebene, auf welcher die Objekte liegen, gemessen und
+persistent auf dem
+
+rc_visard NG
+
+ gespeichert.
+
+Durch die Trennung der Kalibrierung der Basisebene von der
+eigentlichen Objekterkennung werden beispielsweise Szenarien
+ermöglicht, in denen die Basisebene zeitweise verdeckt ist. Darüber
+hinaus wird die Berechnungszeit der Objekterkennung für Szenarien
+verringert, in denen die Basisebene für eine gewisse Zeit fixiert ist
+-- die Basisebene muss in diesem Fall nicht fortlaufend neu detektiert
+werden.
+
+Die Kalibrierung der Basisebene kann mit drei unterschiedlichen
+Verfahren durchgeführt werden, auf die im Folgenden näher eingegangen
+wird:
+
+AprilTag-basiert
+
+Stereo-basiert
+
+Manuell
+
+Die Kalibrierung ist erfolgreich, solange der Normalenvektor der
+Basisebene höchstens 10 Grad gegen die Blickrichtung der Kamera
+verkippt ist. Eine erfolgreiche Kalibrierung wird persistent auf dem
+
+rc_visard NG
+
+ gespeichert, bis sie entweder gelöscht wird oder eine neue
+Kalibrierung durchgeführt wird.
+
+Bemerkung: Um Datenschutzproblemen entgegenzuwirken, wird die
+  Visualisierung der Kalibrierung der Basisebene nach einem Neustart
+  des
+
+  rc_visard NG
+
+   verschwommen dargestellt.
+
+In Szenarien, in denen die Basisebene nicht direkt kalibriert werden
+kann, ist es auch möglich, zu einer zur Basisebene parallel liegenden
+Ebene zu kalibrieren. In diesem Fall kann der Parameter "offset"
+benutzt werden, um die geschätzte Ebene auf die eigentliche Basisebene
+zu verschieben. Der Parameter "offset" gibt die Distanz in Metern an,
+um welche die geschätzte Ebene in Richtung der Kamera verschoben wird.
+
+In der REST-API ist eine Ebene durch eine Normale ("normal") und einen
+Abstand ("distance") definiert. "normal" ist ein normalisierter
+3-Vektor, welcher die Normale der Ebene spezifiziert. Die Normale
+zeigt immer von der Kamera weg. "distance" repräsentiert den Abstand
+der Ebene von der Kamera in Richtung der Normale. "normal" und
+"distance" können auch als a, b, c, bzw. d der Ebenengleichung
+interpretiert werden:
+
+   ax + by + cz + d = 0
+
+AprilTag-basierte Kalibrierung der Basisebene
+
+Die AprilTag-Erkennung (siehe
+
+TagDetect
+
+) wird benutzt, um AprilTags in der Szene zu finden und eine Ebene
+durch diese zu legen. Mindestens drei AprilTags müssen so auf der
+Basisebene platziert werden, dass sie im linken und rechten Kamerabild
+zu sehen sind. Die AprilTags sollten ein möglichst großes Dreieck
+aufspannen. Je größer das Dreieck ist, desto höher wird die
+Genauigkeit der Schätzung der Basisebene. Diese Methode sollte benutzt
+werden, wenn die Basisebene untexturiert und kein externer Projektor
+mit Zufallsmuster angeschlossen ist. Diese Kalibriermethode ist sowohl
+über die
+
+REST-API-Schnittstelle
+
+ als auch über die
+
+rc_visard NG
+
+ Web GUI verfügbar.
+
+Stereo-basierte Kalibrierung der Basisebene
+
+Die 3D-Punktwolke, welche vom Stereo-Matching-Modul berechnet wird,
+wird benutzt um eine Ebene in den 3D-Punkten zu finden. Die Region of
+Interest (ROI) sollte für diese Methode deshalb so gewählt werden,
+dass nur die relevante Basisebene eingeschlossen wird. Der Parameter
+"plane_preference" erlaubt es auszuwählen, ob die zur Kamera am
+nächsten gelegene oder die von der Kamera am weitesten entfernte Ebene
+als Basisebene benutzt wird. Die am nächsten gelegene Ebene kann in
+Szenarien ausgewählt werden, in denen die Basisebene vollständig von
+Objekten verdeckt wird oder für die Kalibrierung nicht erreichbar ist.
+Diese Methode sollte benutzt werden, wenn die Basisebene texturiert
+ist oder ein Projektor mit Zufallsmuster angeschlossen ist. Diese
+Kalibriermethode ist sowohl über die
+
+REST-API-Schnittstelle
+
+ als auch über die
+
+rc_visard NG
+
+ Web GUI verfügbar.
+
+Manuelle Kalibrierung der Basisebene
+
+Die Basisebene kann manuell gesetzt werden, falls die Parameter
+bekannt sind -- beispielsweise von einer vorangegangenen Kalibrierung.
+Diese Kalibriermethode ist nur über die
+
+REST-API-Schnittstelle
+
+ und nicht über die
+
+rc_visard NG
+
+ Web GUI verfügbar.
+
+Setzen einer Region of Interest
+
+Falls Objekte nur in einem Teil des Sichtfelds der Kamera erkannt
+werden sollen, kann eine 2D Region of Interest (ROI) gesetzt werden,
+wie in
+
+Region of Interest
+
+ beschrieben wird.
+
+Setzen von Greifpunkten
+
+Um das SilhouetteMatch-Modul direkt in einer Roboteranwendung zu
+nutzen, können für jedes Template bis zu 50 Greifpunkte definiert
+werden. Ein Greifpunkt repräsentiert die gewünschte Position und
+Orientierung des Roboter-TCPs (Tool Center Point), mit der das Objekt
+gegriffen werden kann (siehe
+
+Abb. 29
+
+).
+
+
+Jeder Greifpunkt enthält eine "id", die eindeutig über alle
+Greifpunkte eines Objekt-Templates sein muss, die ID des Templates
+("template_id"), zu dem der Greifpunkt hinzugefügt wird, und die
+Greifpose ("pose") im Koordinatensystem des Templates. Greifpunkte
+können über die
+
+REST-API-Schnittstelle
+
+, oder über die interaktive Visualisierung in der Web GUI definiert
+werden. Zudem kann einem Greifpunkt eine Priorität (von -2 für sehr
+niedrig bis 2 für sehr hoch) zugewiesen werden. Prioritäten können
+Roboteranwendungen vereinfachen, oder die Rechenzeit der
+Kollisionsprüfung verkürzen, wenn der Parameter
+"only_highest_priority_grasp" aktiviert ist. In diesem Fall endet die
+Kollisionsprüfung, wenn Greifpunkte mit der höchsten Priorität
+gefunden sind. Weiterhin können Greifpunkte unterschiedlichen Greifern
+zugewiesen werden, indem die ID des Greifers ("gripper_id")
+spezifiziert wird. Dieser Greifer wird dann anstelle des Greifers,
+welcher im "detect_object" Service definiert ist, für die
+Kollisionsprüfung des zugehörigen Greifpunkts verwendet.
+
+Wird ein Greifpunkt auf einem symmetrischen Objekt definiert, werden
+alle Greifpunkte, die zu diesem symmetrisch sind, automatisch im
+"detect_object" Service des SilhouetteMatch Moduls mit berücksichtigt.
+Symmetrische Greifpunkte zu einem gegebenen Greifpunkt können mittels
+des "get_symmetric_grasps" Services abgefragt werden und in der Web
+GUI visualisiert werden.
+
+Benutzer können ebenfalls Replikationen eines Greifpunktes um eine
+selbst-definierte Achse definieren. Eine Replikation generiert mehrere
+Greifpunkte und sorgt dafür, dass Benutzer nicht zu viele Greifpunkte
+manuell setzen müssen. Der Ursprung der Replikation ist als
+Koordinatensystem im Objektkoordinatensystem definiert und die x-Achse
+dieses Koordinatensystems entspricht der Replikationsachse. Der
+Greifpunkt wird repliziert, indem er ausgehend von seiner
+ursprünglichen Pose um diese x-Achse gedreht wird. Die Replikation
+erfolgt in "step_x_deg"-Grad Schritten. Der Bereich wird durch die
+minimalen und maximalen Endpunkte "min_x_deg" und "max_x_deg"
+bestimmt. Der minimale (maximale) Endpunkt muss nicht-positiv (nicht-
+negativ) sein.
+
+Setzen von Greifpunkten in der Web GUI
+
+Die
+
+rc_visard NG
+
+ Web GUI bietet eine interaktive und intuitive Möglichkeit,
+Greifpunkte für Objekt-Templates zu setzen. Im ersten Schritt muss das
+Objekt-Template auf den
+
+rc_visard NG
+
+ hochgeladen werden. Das kann über die Web GUI in einer beliebigen
+Kamerapipeline unter Module ‣ SilhouetteMatch erfolgen, indem im
+Abschnitt
+
+Templates und Greifpunkte
+
+ auf + Neues Template hinzufügen geklickt wird, oder unter Datenbank ‣
+Templates im Abschnitt
+
+SilhouetteMatch Templates und Greifpunkte
+
+. Wenn der Upload abgeschlossen ist, erscheint ein Fenster mit einer
+3D-Visualisierung des Templates, in dem Greifpunkte hinzugefügt oder
+existierende Greifpunkte bearbeitet werden können. Dasselbe Fenster
+erscheint, wenn ein vorhandenes Template bearbeitet wird. Wenn das
+Template ein Kollisionsmodell oder ein Visualisierungsmodell enthält,
+wird dieses Modell ebenfalls angezeigt.
+
+Dieses Fenster bietet zwei Möglichkeiten, um Greifpunkte zu setzen:
+
+Greifpunkte manuell hinzufügen: Durch Klicken auf das + Symbol wird
+ein neuer Greifpunkt im Ursprung des Templates angelegt. Diesem
+Greifpunkt kann ein eindeutiger Name gegeben werden, der seiner ID
+entspricht. Die gewünschte Pose des Greifpunkts im Koordinatensystem
+des Templates kann in den Feldern für Position und Roll/Pitch/Yaw
+eingegeben werden. Die Greifpunkte können frei platziert werden, auch
+außerhalb oder innerhalb des Templates, und werden mit ihrer
+Orientierung zur Überprüfung in der Visualisierung veranschaulicht.
+
+Greifpunkte interaktiv hinzufügen: Greifpunkte können interaktiv zu
+einem Template hinzugefügt werden, indem zuerst auf den Button
+Greifpunkt hinzufügen oben rechts in der Visualisierung und
+anschließend auf den gewünschten Punkt auf dem Template geklickt wird.
+Wenn ein 3D-Modell angezeigt wird, wird der Greifpunkt an die
+Oberfläche des Modells angeheftet, andernfalls an die Template-
+Oberfläche. Die Orientierung des Greifpunkts entspricht einem
+rechtshändigen Koordinatensystem, sodass die z-Achse senkrecht auf der
+Template-Oberfläche steht und in das Template hinein gerichtet ist.
+Die Position und Orientierung des Greifpunkts im Koordinatensystem des
+Templates ist auf der rechten Seite angezeigt. Die Position und
+Orientierung des Greifpunkts kann auch interaktiv verändert werden.
+Für den Fall, dass An Oberfläche anheften in der Visualisierung
+deaktiviert ist (das ist der Standardwert), kann der Greifpunkt in
+allen drei Dimensionen frei verschoben und gedreht werden, indem in
+der Visualisierung auf Greifpunkt bewegen geklickt wird und der
+Greifpunkt dann entlang der Achse zur gewünschten Position verschoben
+wird. Die Orientierung des Greifpunkts  kann ebenfalls interaktiv
+verändert werden, indem die Achse mit der Maus rotiert wird. Wenn An
+Oberfläche anheften nicht aktiv ist, kann der Greifpunkt nur auf der
+Objektoberfläche verschoben und rotiert werden.
+
+Benutzer können auch eine Greifpunktpriorität festlegen, indem sie den
+Schieberegler Priorität ändern. Ein dedizierter Greifer kann im
+Dropdown-Feld Greifer ausgewählt werden.
+
+Durch Aktivieren des Kontrollkästchens Replizieren können Benutzer den
+Greifpunkt um eine benutzerdefinierte Achse replizieren. Die
+Replikationsachse und die generierten Greifpunkte werden visualisiert.
+Die Lage und Ausrichtung der Replikationsachse relativ zum
+Objektkoordinatensystem kann interaktiv angepasst werden, indem im
+Visualisierungsmenü auf Replikationsachse bewegen geklickt und die
+Achse an die gewünschte Position und Ausrichtung gezogen wird. Die
+Greifpunkte werden innerhalb des angegebenen Drehbereichs mit der
+ausgewählten Schrittgröße repliziert. Benutzer können eine
+Visualisierung die replizierten Greifpunkte durchlaufen, indem sie die
+Leiste unter Durchlaufen n repl. Greifpunkte im Abschnitt
+Ansichtsoptionen des Visualisierungsmenüs ziehen. Wenn für den
+Greifpunkt ein Greifer ausgewählt ist oder im Visualisierungsmenü ein
+Greifer ausgewählt wurde, wird der Greifer auch am aktuell
+ausgewählten Greifpunkt angezeigt.
+
+Wenn das Template Symmetrien hat, können die Greifpunkte, die
+symmetrisch zum definierten Greifpunkt sind, zusammen mit ihren
+Replikationen (sofern definiert) durch Aktivieren von ... Symmetrien
+im Abschnitt Ansichtsoptionen des Visualisierungsmenüs angezeigt
+werden. Visualisierungen der symmetrischen Greifpunkte können
+ebenfalls durchlaufen werden, indem die Leiste unter Durchlaufe n
+symm. Greifpunkte bewegt wird.
+
+Setzen von Greifpunkten über die REST-API
+
+Greifpunkte können über die
+
+REST-API-Schnittstelle
+
+ mithilfe des "set_grasp" oder "set_all_grasps" Services gesetzt
+werden (siehe
+
+Interne Services
+
+). Ein Greifpunkt besteht aus der "id", die eindeutig über alle
+Greifpunkte eines Objekt-Templates sein muss, der ID des Templates
+("template_id"), zu dem der Greifpunkt hinzugefügt wird, und der
+Greifpose ("pose"). Die Pose ist im Koordinatensystem des Templates
+angegeben und besteht aus einer Position ("position") in Metern und
+einer Orientierung ("orientation") als Quaternion. Ein dedizierter
+Greifer kann durch Setzen des Feldes "gripper_id" angegeben werden.
+Die "priority" wird durch einen ganzzahligen Wert angegeben, der von
+-2 für sehr niedrig bis 2 für sehr hoch reicht. Der
+Replikationsursprung ist als eine Transformation im Koordinatensystem
+des Objekts definiert und die x-Achse der Transformation entspricht
+der Replikationsachse. Der Replikationsbereich wird durch die Felder
+"min_x_deg" und "max_x_deg" und die Schrittweite "step_x_deg"
+gesteuert.
+
+Setzen der bevorzugten TCP-Orientierung
+
+Das SilhouetteMatch-Modul berechnet die Erreichbarkeit von
+Greifpunkten basierend auf der bevorzugten Orientierung des TCPs. Die
+bevorzugte Orientierung kann über den Service
+"set_preferred_orientation" oder über die
+
+SilhouetteMatch
+
+-Seite in der Web GUI gesetzt werden. Die resultierende Richtung der
+z-Achse des TCP wird genutzt, um Greifpunkte zu verwerfen, die der
+Greifer nicht erreichen kann. Weiterhin kann die bevorzugte
+Orientierung genutzt werden, um die erreichbaren Greifpunkte zu
+sortieren, indem die entsprechende Sortierstrategie ausgewählt wird.
+
+Die bevorzugte TCP-Orientierung kann im Kamerakoordinatensystem oder
+im externen Koordinatensystem gesetzt werden, wenn eine Hand-Auge-
+Kalibrierung verfügbar ist. Wenn die bevorzugte TCP-Orientierung im
+externen Koordinatensystem definiert ist, und die Kamera am Roboter
+montiert ist, muss bei jedem Aufruf der Objekterkennung die aktuelle
+Roboterpose angegeben werden. Wenn keine bevorzugte TCP-Orientierung
+gesetzt wird, wird die Orientierung der linken Kamera (siehe
+
+Coordinate frames
+
+ ) als die bevorzugte TCP-Orientierung genutzt.
+
+Setzen der Sortierstrategie
+
+Die vom "detect_object" Service zurückgelieferten Objekte und
+Greifpunkte werden gemäß einer Sortierstrategie sortiert, die vom
+Nutzer gewählt werden kann. Folgende Sortierstrategien sind verfügbar
+und können über die
+
+Web GUI
+
+ oder über den "set_sorting_strategies" Service gesetzt werden:
+
+preferred_orientation: Objekte und Greifpunkte mit der geringsten
+Rotationsänderung zwischen ihrer Orientierung und der bevorzugten TCP-
+Orientierung werden zuerst zurückgeliefert.
+
+direction: Objekte und Greifpunkte mit dem kleinsten Abstand entlang
+der gesetzten Richtung vector im angegebenen Referenzkoordinatensystem
+pose_frame werden zuerst zurückgeliefert.
+
+distance_to_point: Objekte und Greifpunkte mit dem kleinsten oder
+größten (falls farthest_first auf true gesetzt ist) Abstand von einem
+gesetzten Sortierpunkt point im angegebenen Referenzkoordinatensystem
+pose_frame werden zuerst zurückgeliefert.
+
+Wenn keine Sortierstrategie gesetzt ist, oder die Standard-
+Sortierstrategie in der Web GUI ausgewählt ist, geschieht die
+Sortierung der Greifpunkte basierend auf einer Kombination von
+"preferred_orientation" und dem kleinsten Abstand entlang der z-Achse
+der bevorzugten TCP-Orientierung von der Kamera.
+
+Objekterkennung
+
+Um eine Objekterkennung durchzuführen, müssen im Allgemeinen die
+folgenden Serviceargumente an das SilhouetteMatch-Modul übergeben
+werden:
+
+das Template des Objekts, welches in der Szene erkannt werden soll
+
+das Koordinatensystem, in dem die Posen der detektierten Objekte
+zurückgegeben werden sollen (siehe Hand-Auge-Kalibrierung, Abschnitt
+\ref{silhouettematch:sect-silhouettematch-hand-eye-calib})
+
+Optional können auch folgende Serviceargumente an das SilhouetteMatch-
+Modul übergeben werden:
+
+Ein Flag object_plane_detection, welches bestimmt, ob die
+Oberflächenebene der Objekte für die Erkennung verwendet werden soll
+anstelle einer kalibrierten Basisebene.
+
+ein Versatz offset, falls Objekte nicht direkt auf der Basisebene
+liegen, sondern auf einer zu dieser parallelen Ebene. Der Versatz
+bezeichnet die Distanz beider Ebenen in Richtung der Kamera. Wenn
+dieser Wert nicht gesetzt wird, wird ein Versatz von 0 angenommen. Der
+Versatz darf nicht gesetzt werden, wenn object_plane_detection true
+ist.
+
+die ID des Load Carriers, der die zu detektierenden Objekte enthält
+
+die ID der Region of Interest, innerhalb der nach dem Load Carrier
+gesucht wird, oder -- falls kein Load Carrier angegeben ist -- die
+Region of Interest, innerhalb der Objekte erkannt werden sollen. Wenn
+keine ROI gesetzt wird, werden Objekte im gesamten Kamerabild gesucht.
+
+die aktuelle Roboterpose, wenn die Kamera am Roboter montiert ist und
+als Koordinatensystem external gewählt wurde, oder die bevorzugte TCP-
+Orientierung im externen Koordinatensystem angegeben ist
+
+Informationen für die Kollisionsprüfung: Die ID des Greifers, um die
+Kollisionsprüfung zu aktivieren, und optional ein Greif-Offset, der
+die Vorgreifposition definiert. Details zur Kollisionsprüfung sind in
+CollisionCheck\:(Abschnitt \ref{silhouettematch:sect-silhouettematch-
+collision-check-dep}) gegeben.
+
+Wenn "object_plane_detection" nicht true ist, können Objekte erst nach
+einer erfolgreichen Kalibrierung der Basisebene erkannt werden. Es
+muss sichergestellt werden, dass sich Position und Orientierung der
+Basisebene zwischen Kalibrierung und Objekterkennung nicht ändern.
+Anderenfalls muss die Kalibrierung erneuert werden.
+
+Wenn "object_plane_detection" auf true gesetzt ist, ist eine
+Kalibrierung der Basisebene nicht nötig und eine ggf. existierende
+Kalibrierung wird ignoriert. Während der Erkennung wird die Szene in
+planare Flächen unterteilt und das Matching der Templatekanten wird
+für jede dieser Ebenen durchgeführt, solange sie nicht mehr als 25° in
+Bezug auf die Sichtachse der Kamera verkippt ist, und solange ihre
+Größe ausreichend ist für das gewählte Template. Wenn ein Match
+gefunden wird, wird dessen Position und Orientierung durch Kanten im
+Kamerabild und durch die Punktwolke innerhalb der Außenkontur des
+Templates verfeinert. Aus diesem Grund muss die Außenkontur des
+Templates geschlossen und die Oberfläche des Objekts planar sein.
+
+Im
+
+Ausprobieren
+
+-Abschnitt der Seite
+
+SilhouetteMatch
+
+ der Web GUI kann die Objektdetektion ausprobiert werden. Verschiedene
+Bild-Streams können ausgewählt werden, um Zwischenergebnisse und die
+finalen Matches anzuzeigen (siehe
+
+Abb. 30
+
+).
+
+   Das
+
+   "Template"
+
+    Bild zeigt das zu erkennende Template in Rot mit den Greifpunkten
+   (siehe
+
+   Setzen von Greifpunkten
+
+   ) in Grün. Das Template wird verformt dargestellt, passend zu
+   Abstand und Verkippung der kalibrierten Basisebene, oder - falls
+   "object_plane_detection" auf true gesetzt war, der höchsten
+   erkannten Ebene. Die entsprechende Ebene ist in Dunkelblau
+   dargestellt.
+
+   Das
+
+   "Zwischenergebnis"
+
+    Bild zeigt die Kanten im linken Bild, die für die Suche nach
+   Matches verwendet wurden, in Hellblau. Die gewählte Region of
+   Interest wird als petrolfarbenes Rechteck dargestellt. Eine blau
+   schattierte Fläche auf der linken Seite markiert den Teil des
+   linken Kamerabilds, welcher nicht mit dem rechten Kamerabild
+   überlappt. In diesem Bereich können keine Objekte erkannt werden.
+   Wenn die Objektebenenerkennung verwendet wurde
+   ("object_plane_detection" ist true), zeigt dieses Bild auch die
+   erkannten planaren Cluster in der Szene. Cluster, die nicht für das
+   Matching verwendet wurden, weil sie zu klein oder zu stark geneigt
+   sind, werden mit einem Streifenmuster dargestellt.
+
+   Das
+
+   "Zwischenergebnis rechts"
+
+    Bild zeigt die Kanten im rechten Bild, die für die Suche nach
+   Matches verwendet wurden, in Hellblau. Die gewählte Region of
+   Interest wird als petrolfarbenes Rechteck dargestellt. Eine blau
+   schattierte Fläche auf der rechten Seite markiert den Teil des
+   rechten Kamerabilds, welcher nicht mit dem linken Kamerabild
+   überlappt. In diesem Bereich können keine Objekte erkannt werden.
+
+   Das
+
+   "Ergebnis"
+
+    Bild zeigt das Detektionsergebnis. Die Kanten, die zur
+   Verfeinerung der Match Posen genutzt wurden, werden in hellem Blau
+   und erkannte Objekte ("instances") in Rot visualisiert. Blaue
+   Punkte markieren jeweils den Ursprung der detektierten Objekte, wie
+   im Template festgelegt. Kollisionsfreie Greifpunkte sind als grüne
+   Punkte dargestellt, ungeprüfte Greifpunkte als gelbe Punkte, und
+   kollidierende Greifpunkte werden als rote Punkte visualisiert.
+
+
+Die Posen der Objektursprünge werden im gewählten Koordinatensystem
+als Liste ("instances") zurückgegeben. Falls die kalibrierte
+Basisebene für die Erkennung genutzt wurde ("object_plane_detection"
+nicht oder false gesetzt), wird die Orientierung der erkannten Objekte
+mit mit der Normalen der Basisebene ausgerichtet. Andernfalls ist die
+Orientierung der Objekte an der Normalen der Ebene ausgerichtet, die
+in die zugehörigen Objektpunkte in der 3D Punktwolke eingepasst wurde.
+
+Wenn das ausgewählte Template auch Greifpunkte hat, dann wird
+zusätzlich zu den erkannten Objekten auch eine Liste von Greifpunkten
+("grasps") für alle erkannten Objekte zurückgegeben. Die Posen der
+Greifpunkte sind im gewünschten Koordinatensystem angegeben und die
+Liste ist gemäß der gewählten Sortierstrategie sortiert (siehe
+
+Setzen der Sortierstrategie
+
+). Die erkannten Objekte und die Greifpunkte können über ihre UUIDs
+einander zugeordnet werden.
+
+Falls das Template eine kontinuierliche Rotationssymmetrie aufweist
+(z.B. zylindrische Objekte), besitzen alle Ergebnisposen die gleiche
+Orientierung. Weiterhin werden alle Symmetrien eines Greifpunkts auf
+Erreichbarkeit und Kollisionsfreiheit geprüft, und anschließend nur
+der jeweilige beste gemäß der gewählten Sortierstrategie
+zurückgeliefert.
+
+Für Objekte mit einer diskreten Symmetrie (z.B. prismatische Objekte),
+werden alle kollisionsfreien Symmetrien jedes Greifpunkts, die
+entsprechend der gesetzten bevorzugten TCP-Orientierung erreichbar
+sind, zurückgeliefert, und gemäß der gewählten Sortierstrategie
+sortiert.
+
+Die Detektionsergebnisse und Berechnungszeiten werden durch
+Laufzeitparameter beeinflusst, welche weiter unten aufgezählt und
+beschrieben werden. Unsachgemäße Parameterwerte können zu
+Zeitüberschreitungen im Detektionsprozess des SilhouetteMatch-Moduls
+führen.
+
+Wechselwirkung mit anderen Modulen
+
+Die folgenden auf dem
+
+rc_visard NG
+
+ laufenden Module liefern Daten für das SilhouetteMatch-Modul oder
+haben Einfluss auf die Datenverarbeitung.
+
+Bemerkung: Jede Konfigurationsänderung dieser Module kann direkte
+  Auswirkungen auf die Qualität oder das Leistungsverhalten des
+  SilhouetteMatch- Moduls haben.
+
+Stereokamera und Stereo-Matching
+
+Das SilhouetteMatch-Modul verarbeitet intern die rektifizierten Bilder
+des
+
+Kamera
+
+-Moduls ("rc_camera"). Es sollte deshalb auf eine passende
+Belichtungszeit geachtet werden, um optimale Ergebnisse zu erhalten.
+
+Für die Kalibrierung der Basisebene mit der Stereo-Methode, für die
+Load Carrier Erkennung, für die automatische Objektebenenerkennung und
+für die Kollisionsprüfung mit der Punktwolke wird das Disparitätsbild
+des
+
+Stereo-Matching
+
+-Moduls ("rc_stereomatching") verarbeitet.
+
+Für das Erkennen von Objekten mit einer kalibrierten Basisebene, ohne
+Load Carrier und ohne Kollisionsprüfung mit der Punktwolke sollte das
+Stereo-Matching-Modul nicht parallel zum SilhouetteMatch-Modul
+ausgeführt werden, da die Laufzeit der Objekterkennung sonst negativ
+beeinflusst wird.
+
+Für beste Ergebnisse wird empfohlen,
+
+Glättung
+
+  für
+
+Stereo-Matching
+
+ zu aktivieren.
+
+IOControl und Projektor-Kontrolle
+
+Wenn der
+
+rc_visard NG
+
+ in Verbindung mit einem externen Musterprojektor und dem Modul
+
+IOControl und Projektor-Kontrolle
+
+ ("rc_iocontrol") betrieben wird, sollte der Projektor für die
+stereobasierte Kalibrierung der Basisebene, für die automatische
+Objektebenenerkennung und für die Kollisionsprüfung mit der Punktwolke
+benutzt werden.
+
+Das projizierte Muster darf während der Objektdetektion nicht im
+linken oder rechten Kamerabild sichtbar sein, da es den
+Detektionsvorgang behindert. Daher wird empfohlen, den Projektor an
+GPIO Out 1 anzuschließen und den Aufnahmemodus des Stereokamera-Moduls
+auf "SingleFrameOut1" zu setzen (siehe
+
+Stereomatching-Parameter
+
+), damit bei jedem Aufnahme-Trigger ein Bild mit und ohne
+Projektormuster aufgenommen wird.
+
+Alternativ kann der verwendete digitale Ausgang in den Betriebsmodus
+"ExposureAlternateActive" geschaltet werden (siehe
+
+Beschreibung der Laufzeitparameter
+
+).
+
+In beiden Fällen sollte die Belichtungszeitregelung ("exp_auto_mode")
+auf "AdaptiveOut1" gesetzt werden, um die Belichtung beider Bilder zu
+optimieren (siehe
+
+Stereokamera-Parameter
+
+).
+
+Hand-Auge-Kalibrierung
+
+Wenn die Kamera zu einem Roboter kalibriert ist, kann das
+SilhouetteMatch-Modul die Ergebnisposen automatisch im
+Roboterkoordinatensystem liefern. Für die
+
+Services
+
+ des SilhouetteMatch-Moduls kann das Referenzkoordinatensystem aller
+Posen über das Argument "pose_frame" angegeben werden.
+
+Es kann zwischen den folgenden zwei Werten für "pose_frame" gewählt
+werden:
+
+Kamera-Koordinatensystem (camera): Alle Posen und Ebenenparameter
+werden im Kamera-Koordinatensystem angegeben.
+
+Benutzerdefiniertes externes Koordinatensystem (external): Alle Posen
+und Ebenenparameter sind im sogenannten externen Koordinatensystem
+angegeben, welches vom Nutzer während der Hand-Auge-Kalibrierung
+gewählt wurde. In diesem Fall bezieht das SilhouetteMatch-Modul alle
+notwendigen Informationen über die Kameramontage und die kalibrierte
+Hand-Auge-Transformation automatisch vom internen Modul Hand-Auge-
+Kalibrierung\:(Abschnitt \ref{handeye_calibration:sect-handeye-
+calibration}). Für den Fall einer robotergeführten Kamera ist vom
+Nutzer zusätzlich die jeweils aktuelle Roboterpose robot_pose
+anzugeben.
+
+Zulässige Werte zur Angabe des Referenzkoordinatensystems sind
+"camera" und "external". Andere Werte werden als ungültig
+zurückgewiesen.
+
+Bemerkung: Wurde keine Hand-Auge-Kalibrierung durchgeführt, muss als
+  Referenzkoordinatensystem "pose_frame" immer "camera" angegeben
+  werden.
+
+Bemerkung: Wird die Hand-Auge-Kalibrierung nach einer Kalibrierung
+  der Basisebene verändert, wird die Kalibrierung der Basisebene als
+  ungültig markiert und muss erneuert werden.
+
+Für den Fall einer robotergeführten Kamera ist es abhängig von
+"pose_frame", der bevorzugten TCP-Orientierung und der Sortierrichtung
+bzw. des Sortierpunktes nötig, zusätzlich die aktuelle Roboterpose
+("robot_pose") zur Verfügung zu stellen:
+
+Wenn external als pose_frame ausgewählt ist, ist die Angabe der
+Roboterpose obligatorisch.
+
+Wenn die bevorzugte TCP-Orientierung in external definiert ist, ist
+die Angabe der Roboterpose obligatorisch.
+
+Wenn die Sortierrichtung in external definiert ist, ist die Angabe der
+Roboterpose obligatorisch.
+
+Wenn der Sortierpunkt für die Abstandssortierung in external definiert
+ist, ist die Angabe der Roboterpose obligatorisch.
+
+In allen anderen Fällen ist die Angabe der Roboterpose optional.
+
+Wenn die aktuelle Roboterpose während der Kalibrierung der Basisebene
+angegeben wird, wird sie persistent auf dem
+
+rc_visard NG
+
+ gespeichert. Falls für die Services "get_base_plane_calibration" oder
+"detect_objects" die dann aktuelle Roboterpose ebenfalls angegeben
+wird, wird die Basisebene automatisch zu der neuen Roboterpose
+transformiert. Das erlaubt dem Benutzer, die Roboterpose (und damit
+die Pose der Kamera) zwischen Kalibrierung der Basisebene und
+Objekterkennung zu verändern.
+
+Bemerkung: Eine Objekterkennung kann nur durchgeführt werden, wenn
+  die Verkippung der Basisebene zur Sichtachse der Kamera ein 10-Grad-
+  Limit nicht übersteigt.
+
+LoadCarrier
+
+Das SilhouetteMatch Modul nutzt die Funktionalität zur Load Carrier
+Erkennung aus dem
+
+LoadCarrier
+
+ Modul ("rc_load_carrier") mit den Laufzeitparametern, die für dieses
+Modul festgelegt wurden. Wenn sich jedoch mehrere Load Carrier in der
+Szene befinden, die zu der angegebenen Load Carrier ID passen, wird
+nur einer davon zurückgeliefert. In diesem Fall sollte eine Region of
+Interest gesetzt werden, um sicherzustellen, dass immer derselbe Load
+Carrier für das SilhouetteMatch Modul verwendet wird.
+
+CollisionCheck
+
+Die Kollisionsprüfung kann für die Greifpunktberechnung des
+SilhouetteMatch-Moduls aktiviert werden, indem das
+"collision_detection" Argument an den "detect_object" Service
+übergeben wird. Es enthält die ID des benutzten Greifers und optional
+einen Greif-Offset. Der Greifer muss im GripperDB Modul definiert
+werden (siehe
+
+Erstellen eines Greifers
+
+) und Details über die Kollisionsprüfung werden in
+
+Integrierte Kollisionsprüfung in anderen Modulen
+
+ gegeben.
+
+Alternativ können Greifpunkten individuell Greifer IDs zugewiesen
+werden, und die Kollisionsprüfung kann für alle Greifpunkte mit einer
+Greifer ID über den Laufzeitparameter "check_collisions" eingeschaltet
+werden.
+
+Zusätzlich wird auf Kollisionen zwischen dem Greifer und der
+kalibrierten Basisebene geprüft, wenn der Laufzeitparameter
+"check_collisions_with_base_plane" auf true gesetzt ist. Wenn das
+ausgewählte Template ein Kollisionsmodell enthält und der
+Laufzeitparameter "check_collisions_with_matches" true ist, wird
+außerdem auch auf Kollisionen zwischen dem Greifer und den anderen
+detektierten Objekten (nicht begrenzt auf die Anzahl
+"max_number_of_detected_objects") geprüft, wobei das Objekt, auf dem
+sich der jeweilige Greifpunkt befindet, von der Prüfung ausgenommen
+ist.
+
+Wenn der Laufzeitparameter "check_collisions_with_point_cloud" auf
+true gesetzt ist, werden auch Kollisionen zwischen dem Greifer und
+einer wasserdichten Version der Punktwolke geprüft. Wenn diese
+Funktionalität in Kombination mit Sauggreifern genutzt wird, muss
+sichergestellt werden, dass sich der TCP außerhalb der
+Greifergeometrie befindet, oder dass die Greifpunkte oberhalb der
+Objektoberfläche definiert sind. Andernfalls wird für jeden Greifpunkt
+eine Kollision zwischen Greifer und Punktwolke erkannt.
+
+Wenn der Laufzeitparameter "check_collisions_during_retraction" auf
+true gesetzt ist, und ein Load Carrier sowie ein Greif-Offset
+angegeben wurden, wird jeder Greifpunkt auf Kollisionen zwischen dem
+Objekt im Greifer und den Wänden des Load Carriers während der
+Entnahme geprüft. Die Prüfung findet auf der gesamten linearen
+Trajektorie von der Greifposition bis zurück zur Vorgreifposition
+statt.
+
+Wenn die Kollisionsprüfung aktiviert ist, werden nur Greifpunkte
+zurückgeliefert, die kollisionsfrei sind, oder die nicht auf
+Kollisionen geprüft werden konnten (z.B. weil kein Greifer angegeben
+wurde). In der Ergebnis-Visualisierung oben auf der
+
+SilhouetteMatch
+
+-Seite der Web GUI werden kollisionsfreie Greifpunkte grün
+dargestellt, ungeprüfte Greifpunkte gelb und kollidierende Greifpunkte
+rot. Die erkannten Objekte, die bei der Kollisionsprüfung betrachtet
+werden, werden mit roten Kanten visualisiert.
+
+Die Laufzeitparameter des CollisionCheck-Moduls beeinflussen die
+Kollisionserkennung wie in
+
+CollisionCheck-Parameter
+
+ beschrieben.
+
+Parameter
+
+Das SilhouetteMatch-Modul wird in der REST-API als
+"rc_silhouettematch" bezeichnet und in der
+
+Web GUI
+
+  unter Module ‣ SilhouetteMatch dargestellt. Der Benutzer kann die
+Parameter entweder dort oder über die
+
+REST-API-Schnittstelle
+
+ ändern.
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter:
+
+Laufzeitparameter des rc_silhouettematch-Moduls              Name  Typ
+Min.  Max.  Default  Beschreibung  check_collisions  bool  false  true
+false  Gibt an, ob Kollisionen geprüft werden sollen, wenn ein Greifer
+für einen Greifpunkt definiert wurde
+check_collisions_-during_retraction  bool  false  true  false  Gibt
+an, ob Kollisionen zwischen dem Objekt im Greifer und dem Load Carrier
+während der Entnahme geprüft werden  check_collisions_with_-base_plane
+bool  false  true  true  Gibt an, ob Kollisionen zwischen Greifer und
+der Basisebene geprüft werden  check_collisions_with_matches  bool
+false  true  true  Gibt an, ob Kollisionen zwischen Greifer und
+anderen Matches geprüft werden  check_collisions_with_-point_cloud
+bool  false  true  false  Gibt an, ob Kollisionen zwischen Greifer und
+der Punktwolke geprüft werden  edge_sensitivity  float64  0.1  1.0
+0.7  Empfindlichkeit der Kantenerkennung  match_max_distance  float64
+0.1  10.0  3.0  Der maximale tolerierte Abstand zwischen dem Template
+und den detektierten Kanten im Bild in Pixeln  match_percentile
+float64  0.7  1.0  0.8  Der Anteil der Template-Pixel, die innerhalb
+der maximalen Matchingdistanz liegen müssen, um ein Objekt erfolgreich
+zu detektieren  max_number_of_detected_objects  int32  1  20  10
+Maximale Anzahl der zu detektierenden Objekte
+only_highest_priority_grasps  bool  false  true  false  Falls
+aktiviert werden nur Greifpunkte der höchsten Priorität zurückgegeben.
+point_cloud_enhancement  string  -  -  Off  Art der Verbesserung der
+Punktwolke mit der Basisebene: [Off, ReplaceBright]  quality  string
+-  -  High  Quality: [Low, Medium, High]
+
+Beschreibung der Laufzeitparameter
+
+Die Laufzeitparameter werden zeilenweise auf der SilhouetteMatch-Seite
+in der Web GUI dargestellt. Im folgenden wird der Name des Parameters
+in der Web GUI in Klammern hinter dem eigentlichen Parameternamen
+angegeben. Die Parameter sind in derselben Reihenfolge wie in der Web
+GUI aufgelistet:
+
+max_number_of_detected_objects (Maximale Objektanzahl)
+
+      Dieser Parameter gibt an, wie viele Objekte maximal in der Szene
+      erkannt werden sollen. Falls mehr als die angegebene Zahl an
+      Objekten gefunden wurden, werden nur die am besten zur gewählten
+      Sortierstrategie passenden Ergebnisse zurückgeliefert.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?max_number_of_detected_objects=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?max_number_of_detected_objects=<value>
+
+quality (Qualität)
+
+      Die Objekterkennung kann auf Bildern mit unterschiedlicher
+      Auflösung durchgeführt werden: "High" (
+
+      Hoch
+
+      , volle Auflösung), "Medium" (
+
+      Mittel
+
+      , halbe Auflösung) oder "Low" (
+
+      Niedrig
+
+      , Viertel-Auflösung). Je niedriger die Auflösung ist, desto
+      niedriger ist die Berechnungszeit der Objekterkennung, aber
+      desto weniger Objektdetails sind erkennbar.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?quality=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?quality=<value>
+
+match_max_distance (Maximale Matchingdistanz)
+
+      Dieser Parameter gibt den maximal tolerierten Abstand zwischen
+      dem Template und den detektierten Kanten im Bild in Pixeln an.
+      Falls das Objekt durch das Template nicht exakt genug
+      beschrieben wird, wird es möglicherweise nicht erkannt, wenn
+      dieser Wert zu klein ist. Höhere Werte können jedoch im Fall von
+      komplexen Szenen und bei ähnlichen Objekten zu Fehldetektionen
+      führen, und auch die Berechnungszeit erhöhen.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?match_max_distance=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?match_max_distance=<value>
+
+match_percentile (Matching Perzentil)
+
+      Dieser Parameter kontrolliert, wie strikt der Detektionsprozess
+      sein soll. Das Matching Perzentil gibt den Anteil der Template-
+      Pixel an, die innerhalb der maximalen Matchingdistanz liegen
+      müssen, um ein Objekt erfolgreich zu detektieren. Je höher der
+      Wert, desto exakter muss ein Match sein, um als gültig angesehen
+      zu werden.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?match_percentile=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?match_percentile=<value>
+
+edge_sensitivity (Kantenempfindlichkeit)
+
+      Der Parameter beeinflusst, wie viele Kanten im linken und
+      rechten Kamerabild gefunden werden. Umso größer dieser Parameter
+      gewählt wird, umso mehr Kanten werden für die Erkennung benutzt.
+      Eine große Anzahl von Kanten im Bild kann die Erkennung
+      verlangsamen. Es muss sichergestellt werden, dass die Kanten der
+      zu erkennenden Objekte sowohl im linken als auch im rechten
+      Kamerabild detektiert werden.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?edge_sensitivity=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?edge_sensitivity=<value>
+
+only_highest_priority_grasps (Nur Greifpunkte höchster Priorität)
+
+   Wenn dieser Parameter auf *true* gesetzt ist, werden ausschließlich
+   Greifpunkte der höchsten Priorität zurückgegeben. Sofern die
+   Kollisionsprüfung aktiviert ist, werden ausschließlich
+   kollisionsfreie Greifpunkt der höchstmöglichen Priorität
+   zurückgegeben. Dadurch kann Rechenzeit gespart und die Anzahl der
+   applikationsseitig zu verarbeitenden Greifpunkte reduziert werden.
+
+   Ohne Kollisionsprüfung werden nur Greifpunkt der höchsten Priorität
+   zurückgegeben.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?only_highest_priority_grasps=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?only_highest_priority_grasps=<value>
+
+check_collisions (Kollisionsprüfung)
+
+      Wenn diese Option aktiv ist, wird die Kollisionsprüfung für alle
+      Greifpunkte durchgeführt, denen eine Greifer ID zugewiesen
+      wurde, auch wenn kein Standardgreifer im "detect_object" Service
+      gesetzt wurde. Wenn ein Load Carrier verwendet wird, wird die
+      Kollisionsprüfung immer zwischen dem Greifer und dem Load
+      Carrier durchgeführt. Kollisionen mit der Punktwolke oder
+      anderen Matches werden nur geprüft, wenn die zugehörigen
+      Laufzeitparameter aktiv sind.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?check_collisions=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?check_collisions=<value>
+
+check_collisions_with_base_plane (Kollisionsprüfung mit Basisebene)
+
+      Dieser Parameter wird nur beachtet, wenn die Kollisionsprüfung
+      durch Übergabe eines Greifers an den "detect_object" Service
+      oder durch Setzen des Parameters "check_collisions" aktiviert
+      ist. Wenn "check_collisions_with_base_plane" auf true gesetzt
+      ist, werden alle Greifpunkte auf Kollisionen zwischen dem
+      Greifer und der kalibrierten Basisebene geprüft. Nur
+      Greifpunkte, bei denen der Greifer nicht in Kollision mit der
+      Basisebene wäre, werden zurückgeliefert.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?check_collisions_with_base_plane=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?check_collisions_with_base_plane=<value>
+
+check_collisions_with_matches (Kollisionsprüfung mit Matches)
+
+      Dieser Parameter wird nur beachtet, wenn die Kollisionsprüfung
+      durch Übergabe eines Greifers an den "detect_object" Service
+      oder durch Setzen des Parameters "check_collisions" aktiviert
+      ist. Wenn "check_collisions_with_matches" auf true gesetzt ist
+      und die Kollisionsprüfung durch Übergabe eines Greifers an den
+      "detect_object" Service aktiviert ist, werden alle Greifpunkte
+      auf Kollisionen zwischen dem Greifer und den anderen
+      detektierten Objekten (nicht begrenzt auf die Anzahl
+      "max_number_of_detected_objects") geprüft. Nur Greifpunkte, bei
+      denen der Greifer nicht in Kollision mit anderen detektierten
+      Objekten wäre, werden zurückgeliefert.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?check_collisions_with_matches=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?check_collisions_with_matches=<value>
+
+check_collisions_with_point_cloud (Kollisionsprüfung mit Punktwolke)
+
+      Dieser Parameter wird nur beachtet, wenn die Kollisionsprüfung
+      durch Übergabe eines Greifers an den "detect_object" Service
+      oder durch Setzen des Parameters "check_collisions" aktiviert
+      ist. Wenn "check_collisions_with_point_cloud" auf true gesetzt
+      ist, werden alle Greifpunkte auf Kollisionen zwischen dem
+      Greifer und einer wasserdichten Version der Punktwolke geprüft.
+      Nur Greifpunkte, bei denen der Greifer nicht in Kollision mit
+      dieser Punktwolke wäre, werden zurückgeliefert.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?check_collisions_with_point_cloud=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?check_collisions_with_point_cloud=<value>
+
+point_cloud_enhancement (Verbesserung mit Basisebene)
+
+      Dieser Parameter wird nur beachtet, wenn
+      "check_collisions_with_point_cloud" auf true gesetzt ist und die
+      Detektion ohne Objektebenenerkennung ("object_plane_detection"
+      ist false) ausgelöst wurde. Standardmäßig ist
+      "point_cloud_enhancement" auf "Off" (
+
+      Aus
+
+      ) gesetzt. Wenn "point_cloud_enhancement" auf "ReplaceBright" (
+
+      Helle Bildpunkte ersetzen
+
+      ) gesetzt wird, wird die kalibrierte Basisebene verwendet, um
+      die Punktwolke für die Kollisionsprüfung zu verbessern. Dazu
+      werden Punkte, die zu hellen Pixeln im Bild oder in der
+      gewählten 2D Region of Interest gehören, auf den Tiefenwert der
+      kalibrierten Basisebene gesetzt. Dieser Parameter sollte genutzt
+      werden, wenn dunkle Objekten auf texturlosem, hellem Untergrund
+      liegen, z.B. auf einem Lichttisch.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?point_cloud_enhancement=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?point_cloud_enhancement=<value>
+
+check_collisions_during_retraction (Kollisionsprüfung während
+Entnahme)
+
+      Dieser Parameter wird nur beachtet, wenn die Kollisionsprüfung
+      durch Übergabe eines Greifers an den "detect_object" Service
+      oder durch Setzen des Parameters "check_collisions" aktiviert
+      ist. Wenn "check_collisions_during_retraction" auf true gesetzt
+      ist und ein Load Carrier sowie ein Greif-Offset angegeben
+      wurden, wird jeder Greifpunkt auf Kollisionen zwischen dem
+      Objekt im Greifer und den Wänden des Load Carriers während der
+      Entnahme geprüft. Die Prüfung findet auf der gesamten linearen
+      Trajektorie von der Greifposition bis zurück zur
+      Vorgreifposition statt. Es werden nur kollisionsfreie
+      Greifpunkte zurückgeliefert.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_silhouettematch/parameters?check_collisions_during_retraction=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/parameters?check_collisions_during_retraction=<value>
+
+Statuswerte
+
+Dieses Modul meldet folgende Statuswerte.
+
+Statuswerte des rc_silhouettematch-Moduls      Name  Beschreibung
+data_acquisition_time  Zeit in Sekunden, für die beim letzten Aufruf
+auf Bilddaten gewartet werden musste  last_timestamp_processed
+Zeitstempel des letzten verarbeiteten Bilddatensatzes
+load_carrier_detection_time  Berechnungszeit für die letzte Load
+Carrier Detektion in Sekunden  ``processing_time`  Berechnungszeit für
+die letzte Detektion (einschließlich Load Carrier Detektion) in
+Sekunden
+
+Services
+
+Die angebotenen Services des "rc_silhouettematch"-Moduls können
+mithilfe der
+
+REST-API-Schnittstelle
+
+ oder der
+
+rc_visard NG
+
+
+Web GUI
+
+ ausprobiert und getestet werden.
+
+Das SilhouetteMatch-Modul bietet folgende Services.
+
+detect_object
+
+   führt eine Objekterkennung durch, wie in
+
+   Objekterkennung
+
+    beschrieben. Der Service gibt die Posen aller gefundenen
+   Objektinstanzen zurück.
+
+   Details
+
+   Das Zeitverhalten dieses Services garantiert, dass nur Bilddaten
+   zur Erkennung benutzt werden, welche nach dem Anfragezeitpunkt
+   generiert wurden.
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/detect_object
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/detect_object
+
+   Request
+
+   Obligatorische Serviceargumente:
+
+      "object_id" in "object_to_detect": ID des Templates, welches
+      erkannt werden soll.
+
+      "pose_frame": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+   Potentiell obligatorische Serviceargumente:
+
+      "robot_pose": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+   Optionale Serviceargumente:
+
+      "object_plane_detection": false wenn Objekte auf einer
+      kalibrierten Basisebene liegen, true wenn die Objekte planare
+      Oberflächen haben und die Basisebene unbekannt ist oder die
+      Objekte auf mehreren verschiedenen Ebenen liegen, z.B. auf
+      Stapeln.
+
+      "offset": Versatz in Metern, um welche die Basisebene in
+      Richtung der Kamera verschoben werden soll.
+
+      "load_carrier_id": ID des Load Carriers, welcher die zu
+      erkennenden Objekte enthält.
+
+      "collision_detection": siehe
+
+      Integrierte Kollisionsprüfung in anderen Modulen
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "collision_detection": {
+            "gripper_id": "string",
+            "pre_grasp_offset": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "load_carrier_id": "string",
+          "object_plane_detection": "bool",
+          "object_to_detect": {
+            "object_id": "string",
+            "region_of_interest_2d_id": "string"
+          },
+          "offset": "float64",
+          "pose_frame": "string",
+          "robot_pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          }
+        }
+      }
+
+   Response
+
+   Die maximale Anzahl der zurückgegebenen Instanzen kann über den
+   "max_number_of_detected_objects"-Parameter kontrolliert werden.
+
+   "object_id": ID des erkannten Templates.
+
+   "instances": Liste der erkannten Objektinstanzen, sortiert gemäß
+   der gewählten Sortierstrategie.
+
+   "grasps": Liste von Greifpunkten auf den erkannten Objekten. Die
+   Greifpunkte sind gemäß der gewählten Sortierstrategie sortiert. Die
+   "instance_uuid" gibt eine Referenz auf das detektierte Objekt in
+   "instances" an, zu dem dieser Greifpunkt gehört. Die Liste der
+   Greifpunkte wird auf die 100 besten Greifpunkte gekürzt, falls mehr
+   erreichbare Greifpunkte gefunden werden. Jeder Greifpunkt enthält
+   ein Flag "collision_checked" und das Feld "gripper_id" (siehe
+
+   Integrierte Kollisionsprüfung in anderen Modulen
+
+   ).
+
+   "load_carriers": Liste der erkannten Load Carrier (Behälter).
+
+   "timestamp": Zeitstempel des Bildes, das für die Erkennung benutzt
+   wurde.
+
+   "return_code": enthält mögliche Warnungen oder Fehlercodes und
+   Nachrichten.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "detect_object",
+        "response": {
+          "grasps": [
+            {
+              "collision_checked": "bool",
+              "gripper_id": "string",
+              "id": "string",
+              "instance_uuid": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "priority": "int8",
+              "timestamp": {
+                "nsec": "int32",
+                "sec": "int32"
+              },
+              "uuid": "string"
+            }
+          ],
+          "instances": [
+            {
+              "grasp_uuids": [
+                "string"
+              ],
+              "id": "string",
+              "object_id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "timestamp": {
+                "nsec": "int32",
+                "sec": "int32"
+              },
+              "uuid": "string"
+            }
+          ],
+          "load_carriers": [
+            {
+              "height_open_side": "float64",
+              "id": "string",
+              "inner_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "outer_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "overfilled": "bool",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "rim_ledge": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "rim_step_height": "float64",
+              "rim_thickness": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "object_id": "string",
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          },
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          }
+        }
+      }
+
+calibrate_base_plane
+
+   führt die Kalibrierung der Basisebene durch, wie in
+
+   Kalibrierung der Basisebene
+
+    beschrieben.
+
+   Details
+
+   Eine erfolgreiche Kalibrierung der Basisebene wird persistent auf
+   dem
+
+   rc_visard NG
+
+    gespeichert und vom Service zurückgegeben. Die Kalibrierung ist
+   dauerhaft -- auch über Firmware-Updates und -Wiederherstellungen
+   hinweg -- gespeichert.
+
+   Das Zeitverhalten dieses Services garantiert, dass nur Bilddaten
+   zur Erkennung benutzt werden, welche nach dem Anfragezeitpunkt
+   generiert wurden.
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/calibrate_base_plane
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/calibrate_base_plane
+
+   Request
+
+   Obligatorische Serviceargumente:
+
+      "plane_estimation_method": Methode der Kalibrierung der
+      Basisebene. Gültige Werte sind "STEREO", "APRILTAG", "MANUAL".
+
+      "pose_frame": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+   Potentiell obligatorische Serviceargumente:
+
+      "plane" wenn für "plane_estimation_method" "MANUAL" gewählt ist:
+      Die Ebene, welche als Basisebene gesetzt wird.
+
+      "robot_pose": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+      "region_of_interest_2d_id": ID der Region of Interest für die
+      Kalibrierung der Basisebene.
+
+   Optionale Serviceargumente:
+
+      "offset": Versatz in Metern, um welchen die geschätzte Ebene in
+      Richtung der Kamera verschoben wird.
+
+      "plane_preference" in "stereo": Ob die der Kamera am nächsten
+      ("CLOSEST") gelegene oder die am weitesten entfernte
+      ("FARTHEST") Ebene als Basisebene benutzt wird. Diese Option
+      kann nur gesetzt werden, falls "plane_estimation_method" auf
+      "STEREO" gesetzt ist. Valide Werte sind "CLOSEST" und
+      "FARTHEST". Falls der Wert nicht gesetzt ist, wird "FARTHEST"
+      verwendet.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "offset": "float64",
+          "plane": {
+            "distance": "float64",
+            "normal": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "plane_estimation_method": "string",
+          "pose_frame": "string",
+          "region_of_interest_2d_id": "string",
+          "robot_pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "stereo": {
+            "plane_preference": "string"
+          }
+        }
+      }
+
+   Response
+
+   "plane": kalibrierte Basisebene.
+
+   "timestamp": Zeitstempel des Bildes, das für die Kalibrierung
+   benutzt wurde.
+
+   "return_code": enthält mögliche Warnungen oder Fehlercodes und
+   Nachrichten.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "calibrate_base_plane",
+        "response": {
+          "plane": {
+            "distance": "float64",
+            "normal": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose_frame": "string"
+          },
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          },
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          }
+        }
+      }
+
+get_base_plane_calibration
+
+   gibt die derzeitige Kalibrierung der Basisebene zurück.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_base_plane_calibration
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_base_plane_calibration
+
+   Request
+
+   Obligatorische Serviceargumente:
+
+      "pose_frame": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+   Potentiell obligatorische Serviceargumente:
+
+      "robot_pose": siehe
+
+      Hand-Auge-Kalibrierung
+
+      .
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "pose_frame": "string",
+          "robot_pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          }
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_base_plane_calibration",
+        "response": {
+          "plane": {
+            "distance": "float64",
+            "normal": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose_frame": "string"
+          },
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_base_plane_calibration
+
+   löscht die derzeitige Kalibrierung der Basisebene.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/delete_base_plane_calibration
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/delete_base_plane_calibration
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "delete_base_plane_calibration",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_preferred_orientation
+
+   speichert die bevorzugte TCP-Orientierung zum Berechnen der
+   Erreichbarkeit der Greifpunkte, die zur Filterung und optional zur
+   Sortierung der vom "detect_object" Service zurückgelieferten
+   Greifpunkte verwendet wird (siehe
+
+   Setzen der bevorzugten TCP-Orientierung
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/set_preferred_orientation
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_preferred_orientation
+
+   Request
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose_frame": "string"
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_preferred_orientation",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_preferred_orientation
+
+   gibt die bevorzugte TCP-Orientierung zurück, die für die Filterung
+   und optional zur Sortierung der vom "detect_object" Service
+   zurückgelieferten Greifpunkte verwendet wird (siehe
+
+   Setzen der bevorzugten TCP-Orientierung
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_preferred_orientation
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_preferred_orientation
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_preferred_orientation",
+        "response": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose_frame": "string",
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_sorting_strategies
+
+   speichert die gewählte Strategie zur Sortierung der erkannten
+   Objekte und Greifpunkte, die vom "detect_object" Service
+   zurückgeliefert werden (siehe
+
+   Objekterkennung
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/set_sorting_strategies
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_sorting_strategies
+
+   Request
+
+   Nur eine Sortierstrategie darf einen Gewichtswert "weight" größer
+   als 0 haben. Wenn alle Werte für "weight" auf 0 gesetzt sind, wird
+   die Standardsortierstrategie verwendet.
+
+   Wenn der Wert "weight" für "direction" gesetzt ist, muss "vector"
+   den Richtungsvektor enthalten und "pose_frame" auf "camera" oder
+   "external" gesetzt sein.
+
+   Wenn der Wert "weight" für "distance_to_point" gesetzt ist, muss
+   "point" den Sortierpunkt enthalten und "pose_frame" auf "camera"
+   oder "external" gesetzt sein.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "direction": {
+            "pose_frame": "string",
+            "vector": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "weight": "float64"
+          },
+          "distance_to_point": {
+            "farthest_first": "bool",
+            "point": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose_frame": "string",
+            "weight": "float64"
+          },
+          "preferred_orientation": {
+            "weight": "float64"
+          }
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_sorting_strategies",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_sorting_strategies
+
+   gibt die gewählte Sortierstrategie zurück, die zur Sortierung der
+   vom "detect_object" Service zurückgelieferten Objekte und
+   Greifpunkte verwendet wird (siehe
+
+   Objekterkennung
+
+   ).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_sorting_strategies
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_sorting_strategies
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Wenn alle Werte für "weight" 0 sind, wird die
+   Standardsortierstrategie verwendet.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_sorting_strategies",
+        "response": {
+          "direction": {
+            "pose_frame": "string",
+            "vector": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "weight": "float64"
+          },
+          "distance_to_point": {
+            "farthest_first": "bool",
+            "point": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose_frame": "string",
+            "weight": "float64"
+          },
+          "preferred_orientation": {
+            "weight": "float64"
+          },
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+reset_defaults
+
+   stellt die Werkseinstellungen der Parameter und die bevorzugte TCP-
+   Orientierung sowie die Sortierstrategie dieses Moduls wieder her
+   und wendet sie an („factory reset“). Dies betrifft nicht die
+   konfigurierten Templates und die Kalibrierung der Basisebene.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/reset_defaults
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/reset_defaults
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Interne Services
+
+Die folgenden Services für die Konfiguration von Greifpunkten können
+sich in Zukunft ohne weitere Ankündigung ändern. Es wird empfohlen,
+das Setzen, Abrufen und Löschen von Greifpunkten über die Web GUI
+vorzunehmen.
+
+set_grasp
+
+   speichert einen Greifpunkt für das angegebene Template auf dem
+
+   rc_visard NG
+
+   . Alle Greifpunkte sind dauerhaft gespeichert, auch über Firmware-
+   Updates und -Wiederherstellungen hinweg.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/set_grasp
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_grasp
+
+   Request
+
+   Die Definition des Typs "grasp" wird in
+
+   Setzen von Greifpunkten
+
+    beschrieben.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "grasp": {
+            "gripper_id": "string",
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "priority": "int8",
+            "replication": {
+              "max_x_deg": "float64",
+              "min_x_deg": "float64",
+              "origin": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "step_x_deg": "float64"
+            },
+            "template_id": "string"
+          }
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_grasp",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_all_grasps
+
+   Ersetzt die gesamte Liste von Greifpunkten auf dem
+
+   rc_visard NG
+
+    für das angegebene Template.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/set_all_grasps
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/set_all_grasps
+
+   Request
+
+   Die Definition des Typs "grasp" wird in
+
+   Setzen von Greifpunkten
+
+    beschrieben.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "grasps": [
+            {
+              "gripper_id": "string",
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "priority": "int8",
+              "replication": {
+                "max_x_deg": "float64",
+                "min_x_deg": "float64",
+                "origin": {
+                  "orientation": {
+                    "w": "float64",
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  },
+                  "position": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  }
+                },
+                "step_x_deg": "float64"
+              },
+              "template_id": "string"
+            }
+          ],
+          "template_id": "string"
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_all_grasps",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_grasps
+
+   gibt alle definierten Greifpunkte mit den angegebenen IDs
+   ("grasp_ids") zurück, die zu den Templates mit den angegebenen
+   "template_ids" gehören.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_grasps
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_grasps
+
+   Request
+
+   Wenn keine "grasp_ids" angegeben werden, werden alle Greifpunkte zu
+   den angegebenen "template_ids" zurückgeliefert. Wenn keine
+   "template_ids" angegeben werden, werden alle Greifpunkte mit den
+   geforderten "grasp_ids" zurückgeliefert. Wenn gar keine IDs
+   angegeben werden, werden alle gespeicherten Greifpunkte
+   zurückgeliefert.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "grasp_ids": [
+            "string"
+          ],
+          "template_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_grasps",
+        "response": {
+          "grasps": [
+            {
+              "gripper_id": "string",
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "priority": "int8",
+              "replication": {
+                "max_x_deg": "float64",
+                "min_x_deg": "float64",
+                "origin": {
+                  "orientation": {
+                    "w": "float64",
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  },
+                  "position": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  }
+                },
+                "step_x_deg": "float64"
+              },
+              "template_id": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_grasps
+
+   löscht alle Greifpunkte mit den angegebenen "grasp_ids", die zu den
+   Templates mit den angegebenen "template_ids" gehören.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/delete_grasps
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/delete_grasps
+
+   Request
+
+   Wenn keine "grasp_ids" angegeben werden, werden alle Greifpunkte
+   gelöscht, die zu den Templates mit den angegebenen "template_ids"
+   gehören. Die Liste "template_ids" darf nicht leer sein.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "grasp_ids": [
+            "string"
+          ],
+          "template_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "delete_grasps",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_symmetric_grasps
+
+   gibt alle Greifpunkte zurück, die symmetrisch zum angegebenen
+   Greifpunkt sind.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_symmetric_grasps
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_silhouettematch/services/get_symmetric_grasps
+
+   Request
+
+   Die Definition des Typs "grasp" wird in
+
+   Setzen von Greifpunkten
+
+    beschrieben.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "grasp": {
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "replication": {
+              "max_x_deg": "float64",
+              "min_x_deg": "float64",
+              "origin": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "step_x_deg": "float64"
+            },
+            "template_id": "string"
+          }
+        }
+      }
+
+   Response
+
+   Der erste Greifpunkt in der Rückgabeliste ist derselbe, der dem
+   Service übergeben wurde. Wenn das Template keine exakte Symmetrie
+   hat, wird nur der übergebene Greifpunkt zurückgeliefert. Wenn das
+   Template eine kontinuierliche Symmetrie hat (z.B. ein zylindrisches
+   Objekt), werden nur 12 gleichverteilte Greifpunkte zurückgeliefert.
+
+   Die Definition des Typs "grasp" wird in
+
+   Setzen von Greifpunkten
+
+    beschrieben.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_symmetric_grasps",
+        "response": {
+          "grasps": [
+            {
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "replication": {
+                "max_x_deg": "float64",
+                "min_x_deg": "float64",
+                "origin": {
+                  "orientation": {
+                    "w": "float64",
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  },
+                  "position": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  }
+                },
+                "step_x_deg": "float64"
+              },
+              "template_id": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Rückgabecodes
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von "0" quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind.
+
+Rückgabecodes und Warnungen der Services des SilhouetteMatch-Moduls
+Code  Beschreibung  0  Erfolgreich  -1  Ungültige(s) Argument(e)  -3
+Ein interner Timeout ist aufgetreten, beispielsweise während der
+Objekterkennung.  -4  Die maximal erlaubte Zeitspanne für die interne
+Akquise der Bilddaten wurde überschritten.  -7  Daten konnten nicht in
+den persistenten Speicher geschrieben oder vom persistenten Speicher
+gelesen werden.  -8  Das Modul befindet sich in einem Zustand, in
+welchem dieser Service nicht aufgerufen werden kann. Beispielsweise
+kann detect_object nicht aufgerufen werden, solange keine Kalibrierung
+der Basisebene durchgeführt wurde.  -10  Das neue Element konnte nicht
+hinzugefügt werden, da die maximal speicherbare Anzahl an ROIs oder
+Templates überschritten wurde.  -100  Ein interner Fehler ist
+aufgetreten.  -101  Die Erkennung der Basisebene schlug fehl.  -102
+Die Hand-Auge-Kalibrierung hat sich seit der letzten Kalibrierung der
+Basisebene verändert.  -104  Die Verkippung zwischen der Basisebene
+und der Sichtachse der Kamera überschreitet das 10-Grad-Limit.  10
+Die maximale Anzahl an ROIs oder Templates wurde erreicht.  11  Ein
+bestehendes Element wurde überschrieben.  100  Die angefragten Load
+Carrier wurden in der Szene nicht gefunden.  101  Keiner der
+Greifpunkte ist erreichbar.  102  Der detektierte Load Carrier ist
+leer.  103  Alle berechneten Greifpunkte sind in Kollision.  107  Die
+Basisebene wurde nicht zur aktuellen Kamerapose transformiert, z.B.
+weil keine Roboterpose während der Kalibrierung der Basisebene
+angegeben wurde.  108  Das Template ist überholt.  109  Die Ebene für
+die Objekterkennung passt nicht zum Load Carrier, z.B. liegen die
+Objekte unterhalb des Load Carrier Bodens.  111  Die Pose des
+Detektionsergebnisses konnte nicht mit der Punktwolke verfeinert
+werden, da die Außenkontur des Templates nicht geschlossen ist.  113
+Kein Greifer für die Kollisionsprüfung gefunden.  114
+Kollisionsprüfung während Entnahme wurde nicht durchgeführt, z.B. weil
+kein Load Carrier oder kein Greif-Offset angegeben wurden.  151  Das
+Objekt-Template hat eine kontinuierliche Symmetrie.  999  Zusätzliche
+Hinweise für die Anwendungsentwicklung
+
+Template API
+
+Für den Upload, Download, das Auflisten und Löschen von Templates
+werden spezielle REST-API-Endpunkte zur Verfügung gestellt. Templates
+können auch über die Web GUI hoch- und runtergeladen werden. Die
+Templates beinhalten die Greifpunkte, falls Greifpunkte konfiguriert
+wurden. Bis zu 50 Templates können gleichzeitig auf dem
+
+rc_visard NG
+
+ gespeichert werden.
+
+GET /templates/rc_silhouettematch
+
+   listet alle rc_silhouettematch-Templates auf.
+
+   Musteranfrage
+
+      GET /api/v2/templates/rc_silhouettematch HTTP/1.1
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "id": "string"
+        }
+      ]
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabewert: Array der
+      Templates)
+
+      404 Not Found -- Modul nicht gefunden
+
+   Referenzierte Datenmodelle:
+      Template\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-template})
+
+GET /templates/rc_silhouettematch/{id}
+
+   ruft ein rc_silhouettematch-Template ab. Falls der angefragte
+   Content-Typ application/octet-stream ist, wird das Template als
+   Datei zurückgegeben.
+
+   Musteranfrage
+
+      GET /api/v2/templates/rc_silhouettematch/<id> HTTP/1.1
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "id": "string"
+      }
+
+   Parameter:
+      id (string) -- ID des Templates (obligatorisch)
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson application
+      /octet-stream
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabewert: Template)
+
+      404 Not Found -- Modul oder Template wurden nicht gefunden.
+
+   Referenzierte Datenmodelle:
+      Template\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-template})
+
+PUT /templates/rc_silhouettematch/{id}
+
+   erstellt oder aktualisiert ein rc_silhouettematch-Template.
+
+   Musteranfrage
+
+      PUT /api/v2/templates/rc_silhouettematch/<id> HTTP/1.1
+      Accept: multipart/form-data application/json
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "id": "string"
+      }
+
+   Parameter:
+      id (string) -- ID des Templates (obligatorisch)
+
+   Formularparameter:
+      file -- Template-Datei oder DXF-Datei (obligatorisch)
+
+      object_height -- Objekthöhe in Metern, benötigt bei DXF-Upload
+      (optional)
+
+      units -- Einheit für DXF Datei falls nicht in Datei enthalten
+      (mögliche Werte: mm, cm, m, in, ft) (optional)
+
+   Anfrage-Header:
+      Accept -- multipart/form-data application/json
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabewert: Template)
+
+      400 Bad Request -- Template ist ungültig oder die maximale Zahl
+      an Templates wurde erreicht.
+
+      403 Forbidden -- Verboten, z.B. weil keine gültige Lizenz für
+      das SilhouetteMatch-Modul vorliegt.
+
+      404 Not Found -- Modul oder Template wurden nicht gefunden.
+
+      413 Request Entity Too Large -- Template ist zu groß.
+
+   Referenzierte Datenmodelle:
+      Template\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-template})
+
+DELETE /templates/rc_silhouettematch/{id}
+
+   entfernt ein rc_silhouettematch-Template.
+
+   Musteranfrage
+
+      DELETE /api/v2/templates/rc_silhouettematch/<id> HTTP/1.1
+      Accept: application/json application/ubjson
+
+   Parameter:
+      id (string) -- ID des Templates (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- application/json application/ubjson
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+      403 Forbidden -- Verboten, z.B. weil keine gültige Lizenz für
+      das SilhouetteMatch-Modul vorliegt.
+
+      404 Not Found -- Modul oder Template wurden nicht gefunden.

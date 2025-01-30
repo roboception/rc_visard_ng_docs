@@ -1,0 +1,31 @@
+OPC UA interface
+
+The
+
+rc_visard NG
+
+ also offers an optional OPC UA interface running on TCP port 4840.
+The OPC UA server can be activated via a separate
+
+license
+
+ .
+
+The OPC UA server provides access to parameters and services of all
+available software modules analogous to the REST-API. To browse the
+OPC UA Address Space use e.g. the freely available
+
+UAExpert GUI client
+
+.
+
+The OPC UA server uses the "DataTypeDefinition" attribute (available
+in OPC UA version 1.04) for custom datatypes and also uses methods and
+variable length arrays. Please check if your OPC UA client supports
+this.
+
+Please contact
+
+support@roboception.de
+
+ if you are interested in using the OPC UA server.

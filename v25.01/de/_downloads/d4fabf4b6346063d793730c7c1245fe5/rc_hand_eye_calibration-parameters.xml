@@ -1,0 +1,56 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="1"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_hand_eye_calibration" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/grid_height/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/grid_width/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/robot_mounted/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/tag_ids/@value" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/tcp_offset/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/tcp_rotation_axis/@value" Type="INT"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/parameters/grid_height/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_height/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_height/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_height/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_width/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_width/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_width/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_width/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/robot_mounted/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/robot_mounted/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/robot_mounted/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/robot_mounted/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/tag_ids/@value" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/tag_ids/@default" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/tag_ids/@min" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/tag_ids/@max" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/tcp_offset/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/tcp_offset/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/tcp_offset/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/tcp_offset/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/tcp_rotation_axis/@value" Type="INT"/>
+      <ELEMENT Tag="res/parameters/tcp_rotation_axis/@default" Type="INT"/>
+      <ELEMENT Tag="res/parameters/tcp_rotation_axis/@min" Type="INT"/>
+      <ELEMENT Tag="res/parameters/tcp_rotation_axis/@max" Type="INT"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

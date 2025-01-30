@@ -1,0 +1,1770 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Datentyp-Definitionen &mdash; rc_visard NG 25.01.1
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/contentui.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard NG 25.01.1
+ Dokumentation" href="index.html"/>
+        <link rel="up" title="REST-API-Schnittstelle" href="rest_api.html"/>
+        <link rel="next" title="Swagger UI" href="rest_api_swagger_ui.html"/>
+        <link rel="prev" title="System und Logs" href="rest_api_syslogs.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard NG
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                25.01
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="disposal.html">Informationen zur Entsorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Aufspüren von <em>rc_visard NG</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host-Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werksseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Messprinzipien</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereovision</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="camera_modules.html">3D-Kamera-Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html">Kamera</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#rectification">Rektifizierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#viewing-and-downloading-images">Anzeigen und Herunterladen von Bildern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_matching.html">Stereo-Matching</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#viewing-and-downloading-images-and-point-clouds">Anzeigen und Herunterladen von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_matching.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="detection_modules.html">Detektions- und Messmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="measure.html">Measure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#measuring-depth">Tiefe messen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">LoadCarrier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Erkennung von Load Carriern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Füllstandserkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-reading">Tagerkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag-Wiedererkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html">ItemPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="boxpick.html">BoxPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#detection-of-items">Erkennung von Rechtecken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#boxpick-template-api">BoxPick Template API“</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cadmatch.html">CADMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-pose-priors">Setzen von Posenvorgaben</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#template-api">Template API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration_modules.html">Konfigurationsmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Kameramontage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking">Kollisionsprüfung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html">IOControl und Projektor-Kontrolle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database_modules.html">Datenbankmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier_db.html">LoadCarrierDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-definition">Load Carrier Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-compartments">Load Carrier Abteile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">RoiDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gripper_db.html">GripperDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#setting-a-gripper">Erstellen eines Greifers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#cad-element-api">CAD-Greiferelement API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Web GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#accessing-the-web-gui">Zugriff auf die Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#exploring-the-web-gui">Kennenlernen der Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#web-gui-access-control">Web GUI Zugriffskontrolle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-camera-images">Herunterladen von Kamerabildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Herunterladen von Tiefenbildern und Punktwolken</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_userspace.html">UserSpace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#example-applications">Beispielanwendungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Fehlerbehebung</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC Bilddatenschnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC Servicedefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Beispielclient</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#setting-time-manually">Manuelles Setzen der Zeit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userspace.html">UserSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configuration">Konfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="userspace.html#configure-userspace-via-the-webgui">Konfiguration des UserSpace über die Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configure-http-proxy">HTTP Proxy konfigurieren</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#view-running-applications">Anzeige laufender Apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#network-access-to-userspace-applications">Netzwerkzugriff auf die UserSpace Anwendungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#restrictions">Einschränkungen</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Backup der Einstellungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard NG</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#pose-formats">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_rt.html">Rotationsmatrix und Translationsvektor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-rotation-matrix-to-quaternion">Umrechnung von Rotationsmatrizen in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-quaternion-to-rotation-matrix">Umrechnung von Quaternionen in Rotationsmatrizen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_abb.html">ABB Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fanuc.html">FANUC XYZ-WPR Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-fanuc-wpr-to-quaternion">Umrechnung von FANUC-WPR in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-quaternion-to-fanuc-wpr">Umrechnung von Quaternionen in FANUC-WPR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_franka_emika.html">Franka Emika Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-transformation-matrix-to-quaternion">Umrechnung von Transformation in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-rotation-xyz-to-quaternion">Umrechnung von Rotation-XYZ in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-and-translation-to-transformation">Umrechnung von Quaternion und Translation in Transformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-to-rotation-xyz">Umrechnung von Quaternion in Rotation-XYZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#pose-representation-in-racecom-messages-and-state-machines">Posenrepräsentation in RaceCom Messages und Statemachines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fruitcore_horst.html">Fruitcore HORST Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kawasaki.html">Kawasaki XYZ-OAT Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-kawasaki-oat-to-quaternion">Umrechnung von Kawasaki-OAT in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-quaternion-to-kawasaki-oat">Umrechnung von Quaternionen in Kawasaki-OAT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kuka.html">KUKA XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-kuka-abc-to-quaternion">Umrechnung von KUKA-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-quaternion-to-kuka-abc">Umrechnung von Quaternionen in KUKA-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_mitsubishi.html">Mitsubishi XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-mitsubishi-abc-to-quaternion">Umrechnung von Mitsubishi-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-quaternion-to-mitsubishi-abc">Umrechnung von Quaternionen in Mitsubishi-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_ur.html">Universal Robots Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-angle-axis-format-to-quaternion">Umrechnung vom Angle-Axis Format in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-quaternion-to-angle-axis-format">Umrechnung von Quaternionen ins Angle-Axis Format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_yaskawa.html">Yaskawa Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-yaskawa-rx-ry-rz-to-quaternion">Umrechnung von Yaskawa Rx, Ry, Rz in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-quaternion-to-yaskawa-rx-ry-rz">Umrechnung von Quaternionen in Yaskawa Rx, Ry, Rz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard NG</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">rc_visard NG</a> &gt;</li>
+        
+          <li><a href="interfaces.html">Schnittstellen</a> &gt;</li>
+        
+          <li><a href="rest_api.html">REST-API-Schnittstelle</a> &gt;</li>
+        
+      <li>Datentyp-Definitionen</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="data-type-definitions">
+<span id="sect-rest-datamodel"></span><h1>Datentyp-Definitionen<a class="headerlink" href="#data-type-definitions" title="Link zu dieser Überschrift">¶</a></h1>
+<p id="index-0">Die REST-API definiert folgende Datenmodelle, die verwendet werden, um auf die <a class="reference internal" href="rest_api_general.html#sect-rest-resources-and-methods"><span class="std std-ref">verfügbaren Ressourcen</span></a>  zuzugreifen oder diese zu ändern, entweder als benötigte Attribute/Parameter oder als Rückgabewerte.</p>
+<dl class="docutils" id="sect-rest-datamodel-dns">
+<dt>DNS:</dt>
+<dd><p class="first">DNS-Server Einstellungen.</p>
+<p>Ein Objekt des Typs DNS besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>dns_servers</strong> (string-Array)</li>
+<li><strong>manual_dns_servers</strong> (string-Array)</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;dns_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;manual_dns_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>DNS-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-dns"><span class="std std-ref">SysInfo</span></a> enthalten und werden für folgende Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_syslogs.html#get--system-dns" title="GET /system/dns"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/system/dns</span></code></a></li>
+<li><a class="reference internal" href="rest_api_syslogs.html#put--system-dns" title="PUT /system/dns"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/system/dns</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-firmwareinfo">
+<dt>FirmwareInfo:</dt>
+<dd><p class="first">Informationen zu aktuell aktiven und inaktiven Firmware-Images und dazu, welches Image für den Boot-Vorgang verwendet wird.</p>
+<p>Ein Objekt des Typs FirmwareInfo besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>active_image</strong> (<a class="reference internal" href="#sect-rest-datamodel-imageinfo"><span class="std std-ref">ImageInfo</span></a>): siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-imageinfo"><span class="std std-ref">ImageInfo</span></a>.</li>
+<li><strong>fallback_booted</strong> (boolean): TRUE, wenn das gewünschte Image nicht hochgefahren werden konnte und ein Fallback auf das zuvor genutzte Image vorgenommen wurde.</li>
+<li><strong>inactive_image</strong> (<a class="reference internal" href="#sect-rest-datamodel-imageinfo"><span class="std std-ref">ImageInfo</span></a>): siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-imageinfo"><span class="std std-ref">ImageInfo</span></a>.</li>
+<li><strong>next_boot_image</strong> (string): Firmware-Image, das beim nächsten Neustart geladen wird (entweder <code class="docutils literal notranslate"><span class="pre">active_image</span></code> oder <code class="docutils literal notranslate"><span class="pre">inactive_image</span></code>).</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;active_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;fallback_booted&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;inactive_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;next_boot_image&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>FirmwareInfo-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-sysinfo"><span class="std std-ref">SysInfo</span></a> enthalten und werden für folgende Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_syslogs.html#get--system-rollback" title="GET /system/rollback"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/system/rollback</span></code></a></li>
+<li><a class="reference internal" href="rest_api_syslogs.html#get--system-update" title="GET /system/update"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/system/update</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-gripperelement">
+<dt>GripperElement:</dt>
+<dd><p class="first">CAD-Greiferelement</p>
+<p>Ein Objekt des Typs GripperElement besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>id</strong> (string): Eindeutiger Name des Elements</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>GripperElement-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="gripper_db.html#get--cad-gripper_elements" title="GET /cad/gripper_elements"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/cad/gripper_elements</span></code></a></li>
+<li><a class="reference internal" href="gripper_db.html#get--cad-gripper_elements-id" title="GET /cad/gripper_elements/{id}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/cad/gripper_elements/{id}</span></code></a></li>
+<li><a class="reference internal" href="gripper_db.html#put--cad-gripper_elements-id" title="PUT /cad/gripper_elements/{id}"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/cad/gripper_elements/{id}</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-hostport">
+<dt>HostPort:</dt>
+<dd><p class="first">Auf dem Host verfügbarer Port</p>
+<p>Ein Objekt des Typs HostPort besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>port</strong> (integer)</li>
+<li><strong>protocol</strong> (string)</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">HostPort-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-userspacecontainer"><span class="std std-ref">UserSpaceContainer</span></a> enthalten.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-imageinfo">
+<dt>ImageInfo:</dt>
+<dd><p class="first">Informationen zu einem bestimmten Firmware-Image.</p>
+<p>Ein Objekt des Typs ImageInfo besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>image_version</strong> (string): Image-Version.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">ImageInfo-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-firmwareinfo"><span class="std std-ref">FirmwareInfo</span></a> enthalten.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-licensecomponentconstraint">
+<dt>LicenseComponentConstraint:</dt>
+<dd><p class="first">Einschränkungen für die Modul-Version.</p>
+<p>Ein Objekt des Typs LicenseComponentConstraint besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>max_version</strong> (string) - optionale höchste unterstützte Version (exclusive)</li>
+<li><strong>min_version</strong> (string) - optionale minimale unterstützte Version (inclusive)</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;max_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;min_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">LicenseComponentConstraint-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-licenseconstraints"><span class="std std-ref">LicenseConstraints</span></a> enthalten.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-licensecomponents">
+<dt>LicenseComponents:</dt>
+<dd><p class="first">Liste der Lizenzstatus-Angaben der einzelnen Softwaremodule: Der zugehörige Statusindikator ist auf TRUE gesetzt, wenn das entsprechende Modul mit einer installierten Softwarelizenz entsperrt ist.</p>
+<p>Ein Objekt des Typs LicenseComponents besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>hand_eye_calibration</strong> (boolean): Modul zur Hand-Auge-Kalibrierung.</li>
+<li><strong>rectification</strong> (boolean): Modul zur Bildrektifizierung.</li>
+<li><strong>stereo</strong> (boolean): Stereo-Matching-Modul.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;hand_eye_calibration&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;rectification&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;stereo&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">LicenseComponents-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-licenseinfo"><span class="std std-ref">LicenseInfo</span></a> enthalten.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-licenseconstraints">
+<dt>LicenseConstraints:</dt>
+<dd><p class="first">Versionseinschränkungen für Module.</p>
+<p>Ein Objekt des Typs LicenseConstraints besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>image_version</strong> (<a class="reference internal" href="#sect-rest-datamodel-licensecomponentconstraint"><span class="std std-ref">LicenseComponentConstraint</span></a>) - siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-licensecomponentconstraint"><span class="std std-ref">LicenseComponentConstraint</span></a></li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;max_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;min_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">LicenseConstraints-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-licenseinfo"><span class="std std-ref">LicenseInfo</span></a> enthalten.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-licenseinfo">
+<dt>LicenseInfo:</dt>
+<dd><p class="first">Informationen zur aktuell auf dem Gerät angewandten Softwarelizenz.</p>
+<p>Ein Objekt des Typs LicenseInfo besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>components</strong> (<a class="reference internal" href="#sect-rest-datamodel-licensecomponents"><span class="std std-ref">LicenseComponents</span></a>): siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-licensecomponents"><span class="std std-ref">LicenseComponents</span></a>.</li>
+<li><strong>components_constraints</strong> (<a class="reference internal" href="#sect-rest-datamodel-licenseconstraints"><span class="std std-ref">LicenseConstraints</span></a>) - siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-licenseconstraints"><span class="std std-ref">LicenseConstraints</span></a></li>
+<li><strong>valid</strong> (boolean): Angabe, ob eine Lizenz gültig ist oder nicht.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;components&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;hand_eye_calibration&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;rectification&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;stereo&quot;</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;components_constraints&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;max_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;min_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;valid&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>LicenseInfo-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_syslogs.html#get--system-license" title="GET /system/license"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/system/license</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-log">
+<dt>Log:</dt>
+<dd><p class="first">Inhalt einer bestimmten Logdatei im JSON-Format.</p>
+<p>Ein Objekt des Typs Log besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>date</strong> (float): UNIX-Uhrzeit, zu der das Log zuletzt geändert wurde.</li>
+<li><strong>log</strong> (<a class="reference internal" href="#sect-rest-datamodel-logentry"><span class="std std-ref">LogEntry</span></a>-Array): die eigentlichen Logeinträge.</li>
+<li><strong>name</strong> (string): Name der Logdatei.</li>
+<li><strong>size</strong> (Integer): Größe der Logdatei in Bytes.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;log&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Log-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_syslogs.html#get--logs-log" title="GET /logs/{log}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/logs/{log}</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-logentry">
+<dt>LogEntry:</dt>
+<dd><p class="first">Darstellung eines einzelnen Logeintrags in einer Logdatei.</p>
+<p>Ein Objekt des Typs LogEntry besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>component</strong> (string): Name des Moduls, das diesen Eintrag angelegt hat.</li>
+<li><strong>level</strong> (string): Logstufe (mögliche Werte: <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>, <code class="docutils literal notranslate"><span class="pre">INFO</span></code>, <code class="docutils literal notranslate"><span class="pre">WARN</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> oder <code class="docutils literal notranslate"><span class="pre">FATAL</span></code>)</li>
+<li><strong>message</strong> (string): eigentliche Lognachricht.</li>
+<li><strong>timestamp</strong> (float): UNIX-Uhrzeit des Logeintrags.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">LogEntry-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-log"><span class="std std-ref">Log</span></a> enthalten.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-loginfo">
+<dt>LogInfo:</dt>
+<dd><p class="first">Informationen zu einer bestimmten Logdatei.</p>
+<p>Ein Objekt des Typs LogInfo besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>date</strong> (float): UNIX-Uhrzeit, zu der das Log zuletzt geändert wurde.</li>
+<li><strong>name</strong> (string): Name der Logdatei.</li>
+<li><strong>size</strong> (Integer): Größe der Logdatei in Bytes.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>LogInfo-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_syslogs.html#get--logs" title="GET /logs"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/logs</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-manualdnsservers">
+<dt>ManualDNSServers:</dt>
+<dd><p class="first">Liste der manuellen DNS-Server.</p>
+<p>Ein Objekt des Typs ManualDNSServers besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>manual_dns_servers</strong> (string-Array)</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;manual_dns_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>ManualDNSServers-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_syslogs.html#put--system-dns" title="PUT /system/dns"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/system/dns</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-manualntpservers">
+<dt>ManualNTPServers:</dt>
+<dd><p class="first">Liste der manuellen NTP-Server.</p>
+<p>Ein Objekt des Typs ManualNTPServers besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>manual_ntp_servers</strong> (string-Array)</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;manual_ntp_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>ManualNTPServers-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_syslogs.html#put--system-ntp" title="PUT /system/ntp"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/system/ntp</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-ntp">
+<dt>NTP:</dt>
+<dd><p class="first">Status der NTP-Zeitsynchronisierung.</p>
+<p>Ein Objekt des Typs NTP besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>enabled</strong> (boolean) - NTP ist eingeschaltet</li>
+<li><strong>manual_ntp_servers</strong> (string-Array)</li>
+<li><strong>offset</strong> (string): von NTP gemeldeter Zeit-Offset</li>
+<li><strong>selected_ntp_servers</strong> (string-Array)</li>
+<li><strong>synchronized</strong> (boolean): synchronisiert mit dem NTP-Server.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;manual_ntp_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;selected_ntp_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;synchronized&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>NTP-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-sysinfo"><span class="std std-ref">SysInfo</span></a> enthalten und werden für folgende Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_syslogs.html#get--system-ntp" title="GET /system/ntp"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/system/ntp</span></code></a></li>
+<li><a class="reference internal" href="rest_api_syslogs.html#put--system-ntp" title="PUT /system/ntp"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/system/ntp</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-networkinfo">
+<dt>NetworkInfo:</dt>
+<dd><p class="first">Aktuelle Netzwerk Konfiguration.</p>
+<p>Ein Objekt des Typs NetworkInfo besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>current_method</strong> (string) - Methode mit der die aktuellen Einstellungen gesetzt wurden (mögliche Werte: <code class="docutils literal notranslate"><span class="pre">INIT</span></code>, <code class="docutils literal notranslate"><span class="pre">LinkLocal</span></code>, <code class="docutils literal notranslate"><span class="pre">DHCP</span></code>, <code class="docutils literal notranslate"><span class="pre">PersistentIP</span></code>, <code class="docutils literal notranslate"><span class="pre">TemporaryIP</span></code>)</li>
+<li><strong>default_gateway</strong> (string) - aktueller Default Gateway</li>
+<li><strong>ip_address</strong> (string) - aktuelle IP-Adresse</li>
+<li><strong>settings</strong> (<a class="reference internal" href="#sect-rest-datamodel-networksettings"><span class="std std-ref">NetworkSettings</span></a>) - siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-networksettings"><span class="std std-ref">NetworkSettings</span></a></li>
+<li><strong>subnet_mask</strong> (string) - aktuelle Subnetzmaske</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;current_method&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;default_gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;ip_address&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;dhcp_enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;persistent_default_gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;persistent_ip_address&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;persistent_ip_enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;persistent_subnet_mask&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;subnet_mask&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>NetworkInfo-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-sysinfo"><span class="std std-ref">SysInfo</span></a> enthalten und werden für folgende Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_syslogs.html#get--system-network" title="GET /system/network"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/system/network</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-networksettings">
+<dt>NetworkSettings:</dt>
+<dd><p class="first">Aktuelle Netzwerk Einstellungen.</p>
+<p>Ein Objekt des Typs NetworkSettings besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>dhcp_enabled</strong> (boolean) - DHCP eingeschaltet</li>
+<li><strong>persistent_default_gateway</strong> (string) - Persistenter Default Gateway</li>
+<li><strong>persistent_ip_address</strong> (string) - Persistente IP-Adresse</li>
+<li><strong>persistent_ip_enabled</strong> (boolean) - Persistente IP aktiviert</li>
+<li><strong>persistent_subnet_mask</strong> (string) - Persistente Subnetzmaske</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;dhcp_enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;persistent_default_gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;persistent_ip_address&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;persistent_ip_enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;persistent_subnet_mask&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>NetworkSettings-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-networkinfo"><span class="std std-ref">NetworkInfo</span></a> enthalten und werden für folgende Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_syslogs.html#get--system-network-settings" title="GET /system/network/settings"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/system/network/settings</span></code></a></li>
+<li><a class="reference internal" href="rest_api_syslogs.html#put--system-network-settings" title="PUT /system/network/settings"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/system/network/settings</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-nodeinfo">
+<dt>NodeInfo:</dt>
+<dd><p class="first">Beschreibung eines auf dem Gerät laufenden Softwaremoduls.</p>
+<p>Ein Objekt des Typs NodeInfo besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>name</strong> (string): Name des Moduls.</li>
+<li><strong>parameters</strong> (string-Array): Liste der Laufzeitparameter des Moduls.</li>
+<li><strong>services</strong> (string-Array): Liste der von diesem Modul angebotenen Services.</li>
+<li><strong>status</strong> (string): Status des Moduls (mögliche Werte: <code class="docutils literal notranslate"><span class="pre">unknown</span></code>, <code class="docutils literal notranslate"><span class="pre">down</span></code>, <code class="docutils literal notranslate"><span class="pre">idle</span></code> oder <code class="docutils literal notranslate"><span class="pre">running</span></code>).</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;services&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;string&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>NodeInfo-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_nodes.html#get--nodes" title="GET /nodes"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/nodes</span></code></a></li>
+<li><a class="reference internal" href="rest_api_nodes.html#get--nodes-node" title="GET /nodes/{node}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/nodes/{node}</span></code></a></li>
+<li><a class="reference internal" href="rest_api_nodes.html#get--pipelines-pipeline-nodes" title="GET /pipelines/{pipeline}/nodes"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/pipelines/{pipeline}/nodes</span></code></a></li>
+<li><a class="reference internal" href="rest_api_nodes.html#get--pipelines-pipeline-nodes-node" title="GET /pipelines/{pipeline}/nodes/{node}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/pipelines/{pipeline}/nodes/{node}</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-nodestatus">
+<dt>NodeStatus:</dt>
+<dd><p class="first">Detaillierter aktueller Status des Moduls, einschließlich Laufzeitstatistik.</p>
+<p>Ein Objekt des Typs NodeStatus besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>status</strong> (string): Status des Moduls (mögliche Werte: <code class="docutils literal notranslate"><span class="pre">unknown</span></code>, <code class="docutils literal notranslate"><span class="pre">down</span></code>, <code class="docutils literal notranslate"><span class="pre">idle</span></code> oder <code class="docutils literal notranslate"><span class="pre">running</span></code>).</li>
+<li><strong>timestamp</strong> (float): UNIX-Uhrzeit, zu der die Werte zuletzt aktualisiert wurden.</li>
+<li><strong>values</strong> (object): Dictionary (Schlüssel-Werte-Auflistung) mit den aktuellen Statuswerten/Statistiken des Moduls.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;values&quot;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>NodeStatus-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_nodes.html#get--nodes-node-status" title="GET /nodes/{node}/status"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/nodes/{node}/status</span></code></a></li>
+<li><a class="reference internal" href="rest_api_nodes.html#get--pipelines-pipeline-nodes-node-status" title="GET /pipelines/{pipeline}/nodes/{node}/status"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/pipelines/{pipeline}/nodes/{node}/status</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-parameter">
+<dt>Parameter:</dt>
+<dd><p class="first">Darstellung der Laufzeitparameter eines Moduls: Der Datentyp des Werts („value“) eines Parameters (und damit der Datentyp der Felder „min“, „max“ und „default“) lässt sich vom Feld „type“ ableiten und kann ein primitiver Datentyp sein.</p>
+<p>Ein Objekt des Typs Parameter besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>default</strong> (Typ nicht definiert): ab Werk voreingestellter Wert des Parameters.</li>
+<li><strong>description</strong> (string): Beschreibung des Parameters.</li>
+<li><strong>max</strong> (Typ nicht definiert): Höchstwert, der diesem Parameter zugewiesen werden kann.</li>
+<li><strong>min</strong> (Typ nicht definiert): Mindestwert, der diesem Parameter zugewiesen werden kann.</li>
+<li><strong>name</strong> (string): Name des Parameters.</li>
+<li><strong>type</strong> (string): als Zeichenfolge dargestellter primitiver Datentyp des Parameters (mögliche Werte: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, <code class="docutils literal notranslate"><span class="pre">int8</span></code>, <code class="docutils literal notranslate"><span class="pre">uint8</span></code>, <code class="docutils literal notranslate"><span class="pre">int16</span></code>, <code class="docutils literal notranslate"><span class="pre">uint16</span></code>, <code class="docutils literal notranslate"><span class="pre">int32</span></code>, <code class="docutils literal notranslate"><span class="pre">uint32</span></code>, <code class="docutils literal notranslate"><span class="pre">int64</span></code>, <code class="docutils literal notranslate"><span class="pre">uint64</span></code>, <code class="docutils literal notranslate"><span class="pre">float32</span></code>, <code class="docutils literal notranslate"><span class="pre">float64</span></code> oder <code class="docutils literal notranslate"><span class="pre">string</span></code>).</li>
+<li><strong>value</strong> (Typ nicht definiert): aktueller Wert des Parameters.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;default&quot;</span><span class="p">:</span> <span class="p">{},</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="p">{},</span>
+  <span class="nt">&quot;min&quot;</span><span class="p">:</span> <span class="p">{},</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Parameter-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_nodes.html#get--pipelines-pipeline-nodes-node-parameters" title="GET /pipelines/{pipeline}/nodes/{node}/parameters"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/pipelines/{pipeline}/nodes/{node}/parameters</span></code></a></li>
+<li><a class="reference internal" href="rest_api_nodes.html#put--pipelines-pipeline-nodes-node-parameters" title="PUT /pipelines/{pipeline}/nodes/{node}/parameters"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/pipelines/{pipeline}/nodes/{node}/parameters</span></code></a></li>
+<li><a class="reference internal" href="rest_api_nodes.html#get--pipelines-pipeline-nodes-node-parameters-param" title="GET /pipelines/{pipeline}/nodes/{node}/parameters/{param}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/pipelines/{pipeline}/nodes/{node}/parameters/{param}</span></code></a></li>
+<li><a class="reference internal" href="rest_api_nodes.html#put--pipelines-pipeline-nodes-node-parameters-param" title="PUT /pipelines/{pipeline}/nodes/{node}/parameters/{param}"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/pipelines/{pipeline}/nodes/{node}/parameters/{param}</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-parameternamevalue">
+<dt>ParameterNameValue:</dt>
+<dd><p class="first">Parametername und -wert. Der Typ des Parameterwerts (Felder ‚value‘ und ‚min‘, ‚max‘, ‚default‘) ist durch das Feld ‚type‘ angegeben und kann einer der eingebauten primitiven Datentypen sein.</p>
+<p>Ein Objekt des Typs ParameterNameValue besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>name</strong> (string): Name des Parameters.</li>
+<li><strong>value</strong> (Typ nicht definiert): aktueller Wert des Parameters.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>ParameterNameValue-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_nodes.html#put--pipelines-pipeline-nodes-node-parameters" title="PUT /pipelines/{pipeline}/nodes/{node}/parameters"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/pipelines/{pipeline}/nodes/{node}/parameters</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-parametervalue">
+<dt>ParameterValue:</dt>
+<dd><p class="first">Parameterwert. Der Typ des Parameterwerts (Felder ‚value‘ und ‚min‘, ‚max‘, ‚default‘) ist durch das Feld ‚type‘ angegeben und kann einer der eingebauten primitiven Datentypen sein.</p>
+<p>Ein Objekt des Typs ParameterValue besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>value</strong> (Typ nicht definiert): aktueller Wert des Parameters.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>ParameterValue-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_nodes.html#put--pipelines-pipeline-nodes-node-parameters-param" title="PUT /pipelines/{pipeline}/nodes/{node}/parameters/{param}"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/pipelines/{pipeline}/nodes/{node}/parameters/{param}</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-proxysettings">
+<dt>ProxySettings:</dt>
+<dd><p class="first">HTTP Proxy Einstellungen für das Pullen von Container-Images und Git Repositories</p>
+<p>Ein Objekt des Typs ProxySettings besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>http_proxy</strong> (string) - HTTP proxy</li>
+<li><strong>https_proxy</strong> (string) - HTTPS proxy</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;http_proxy&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;https_proxy&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>ProxySettings-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-userspace"><span class="std std-ref">UserSpace</span></a> enthalten und werden für folgende Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">userspace/proxy</span></code></li>
+<li><a class="reference internal" href="rest_api_userspace.html#get--userspace-proxy" title="GET /userspace/proxy"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/userspace/proxy</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-ptpstatus">
+<dt>PtpStatus:</dt>
+<dd><p class="first">Status der PTP-Zeitsynchronisierung gemäß IEEE&nbsp;1588.</p>
+<p>Ein Objekt des Typs PtpStatus besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>master_ip</strong> (string): IP-Adresse des Haupttaktgebers.</li>
+<li><strong>offset</strong> (float): zeitlicher Versatz zum Haupttaktgeber in Sekunden.</li>
+<li><strong>offset_dev</strong> (float): Standardabweichung des zeitlichen Versatzes zum Haupttaktgeber in Sekunden.</li>
+<li><strong>offset_mean</strong> (float): mittlere Zeitverschiebung in Sekunden zum Haupttaktgeber.</li>
+<li><strong>state</strong> (string): PTP-Zustand (mögliche Werte: <code class="docutils literal notranslate"><span class="pre">off</span></code>, <code class="docutils literal notranslate"><span class="pre">unknown</span></code>, <code class="docutils literal notranslate"><span class="pre">INITIALIZING</span></code>, <code class="docutils literal notranslate"><span class="pre">FAULTY</span></code>, <code class="docutils literal notranslate"><span class="pre">DISABLED</span></code>, <code class="docutils literal notranslate"><span class="pre">LISTENING</span></code>, <code class="docutils literal notranslate"><span class="pre">PASSIVE</span></code>, <code class="docutils literal notranslate"><span class="pre">UNCALIBRATED</span></code> oder <code class="docutils literal notranslate"><span class="pre">SLAVE</span></code>).</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;master_ip&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;offset_dev&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;offset_mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">PtpStatus-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-sysinfo"><span class="std std-ref">SysInfo</span></a> enthalten.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-service">
+<dt>Service:</dt>
+<dd><p class="first">Darstellung eines von einem Modul angebotenen Services.</p>
+<p>Ein Objekt des Typs Service besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>args</strong> (<a class="reference internal" href="#sect-rest-datamodel-serviceargs"><span class="std std-ref">ServiceArgs</span></a>): siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-serviceargs"><span class="std std-ref">ServiceArgs</span></a>.</li>
+<li><strong>description</strong> (string): Kurzbeschreibung des Services.</li>
+<li><strong>name</strong> (string): Name des Services.</li>
+<li><strong>response</strong> (<a class="reference internal" href="#sect-rest-datamodel-serviceresponse"><span class="std std-ref">ServiceResponse</span></a>): siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-serviceresponse"><span class="std std-ref">ServiceResponse</span></a>.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{},</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Service-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_nodes.html#get--nodes-node-services" title="GET /nodes/{node}/services"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/nodes/{node}/services</span></code></a></li>
+<li><a class="reference internal" href="rest_api_nodes.html#get--nodes-node-services-service" title="GET /nodes/{node}/services/{service}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/nodes/{node}/services/{service}</span></code></a></li>
+<li><a class="reference internal" href="rest_api_nodes.html#put--nodes-node-services-service" title="PUT /nodes/{node}/services/{service}"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/nodes/{node}/services/{service}</span></code></a></li>
+<li><a class="reference internal" href="rest_api_nodes.html#get--pipelines-pipeline-nodes-node-services" title="GET /pipelines/{pipeline}/nodes/{node}/services"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/pipelines/{pipeline}/nodes/{node}/services</span></code></a></li>
+<li><a class="reference internal" href="rest_api_nodes.html#get--pipelines-pipeline-nodes-node-services-service" title="GET /pipelines/{pipeline}/nodes/{node}/services/{service}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/pipelines/{pipeline}/nodes/{node}/services/{service}</span></code></a></li>
+<li><a class="reference internal" href="rest_api_nodes.html#put--pipelines-pipeline-nodes-node-services-service" title="PUT /pipelines/{pipeline}/nodes/{node}/services/{service}"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/pipelines/{pipeline}/nodes/{node}/services/{service}</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-serviceargs">
+<dt>ServiceArgs:</dt>
+<dd><p class="first">Argumente, die für den Aufruf eines Services benötigt werden: Diese Argumente werden in der Regel in einem (verschachtelten) Dictionary (Schlüssel-Werte-Auflistung) dargestellt. Der genaue Inhalt dieses Dictionarys hängt vom jeweiligen Modul und vom Serviceaufruf ab.</p>
+<p class="last">ServiceArg-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-service"><span class="std std-ref">Service</span></a> enthalten.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-serviceresponse">
+<dt>ServiceResponse:</dt>
+<dd><p class="first">Die von dem Serviceaufruf zurückgegebene Antwort: Die Antwort wird in der Regel in einem (verschachtelten) Dictionary (Schlüssel-Werte-Auflistung) dargestellt. Der genaue Inhalt dieses Dictionarys hängt vom jeweiligen Modul und von dem Serviceaufruf ab.</p>
+<p class="last">ServiceResponse-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-service"><span class="std std-ref">Service</span></a> enthalten.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-sysinfo">
+<dt>SysInfo:</dt>
+<dd><p class="first">Systeminformationen über das Gerät.</p>
+<p>Ein Objekt des Typs SysInfo besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>dns</strong> (<a class="reference internal" href="#sect-rest-datamodel-dns"><span class="std std-ref">DNS</span></a>): siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-dns"><span class="std std-ref">DNS</span></a>.</li>
+<li><strong>firmware</strong> (<a class="reference internal" href="#sect-rest-datamodel-firmwareinfo"><span class="std std-ref">FirmwareInfo</span></a>): siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-firmwareinfo"><span class="std std-ref">FirmwareInfo</span></a>.</li>
+<li><strong>hostname</strong> (string): Host-Name.</li>
+<li><strong>link_speed</strong> (Integer): Ethernet-Verbindungsgeschwindigkeit in Mb/Sekunde.</li>
+<li><strong>mac</strong> (string): MAC-Adresse.</li>
+<li><strong>network</strong> (<a class="reference internal" href="#sect-rest-datamodel-networkinfo"><span class="std std-ref">NetworkInfo</span></a>): siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-networkinfo"><span class="std std-ref">NetworkInfo</span></a></li>
+<li><strong>dns</strong> (<a class="reference internal" href="#sect-rest-datamodel-dns"><span class="std std-ref">NTP</span></a>): siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-ntp"><span class="std std-ref">NTP</span></a>.</li>
+<li><strong>ptp_status</strong> (<a class="reference internal" href="#sect-rest-datamodel-ptpstatus"><span class="std std-ref">PtpStatus</span></a>): siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-ptpstatus"><span class="std std-ref">PtpStatus</span></a>.</li>
+<li><strong>ready</strong> (boolean): Das System ist vollständig hochgefahren und betriebsbereit.</li>
+<li><strong>serial</strong> (string): Seriennummer des Geräts.</li>
+<li><strong>time</strong> (float): Systemzeit als UNIX-Zeitstempel.</li>
+<li><strong>ui_lock</strong> (<a class="reference internal" href="#sect-rest-datamodel-uilock"><span class="std std-ref">UILock</span></a>): siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-uilock"><span class="std std-ref">UILock</span></a></li>
+<li><strong>uptime</strong> (float):  Betriebszeit in Sekunden.</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;dns&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;dns_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;string&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;manual_dns_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;string&quot;</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;firmware&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;active_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;fallback_booted&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;inactive_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;next_boot_image&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;hostname&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;link_speed&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;mac&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;network&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;current_method&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;default_gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ip_address&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;dhcp_enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="nt">&quot;persistent_default_gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;persistent_ip_address&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;persistent_ip_enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="nt">&quot;persistent_subnet_mask&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;subnet_mask&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;ntp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;manual_ntp_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;string&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;selected_ntp_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;string&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;synchronized&quot;</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;ptp_status&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;master_ip&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;offset_dev&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;offset_mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;ready&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;serial&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;time&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;ui_lock&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">false</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;uptime&quot;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>SysInfo-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_syslogs.html#get--system" title="GET /system"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/system</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-template">
+<dt>Template:</dt>
+<dd><p class="first">Template für die Erkennung</p>
+<p>Ein Objekt des Typs Template besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>id</strong> (string): Eindeutiger Name des Templates</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Template-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="boxpick.html#get--templates-rc_boxpick" title="GET /templates/rc_boxpick"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/templates/rc_boxpick</span></code></a></li>
+<li><a class="reference internal" href="boxpick.html#get--templates-rc_boxpick-id" title="GET /templates/rc_boxpick/{id}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/templates/rc_boxpick/{id}</span></code></a></li>
+<li><a class="reference internal" href="boxpick.html#put--templates-rc_boxpick-id" title="PUT /templates/rc_boxpick/{id}"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/templates/rc_boxpick/{id}</span></code></a></li>
+<li><a class="reference internal" href="cadmatch.html#get--templates-rc_cadmatch" title="GET /templates/rc_cadmatch"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/templates/rc_cadmatch</span></code></a></li>
+<li><a class="reference internal" href="cadmatch.html#get--templates-rc_cadmatch-id" title="GET /templates/rc_cadmatch/{id}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/templates/rc_cadmatch/{id}</span></code></a></li>
+<li><a class="reference internal" href="cadmatch.html#put--templates-rc_cadmatch-id" title="PUT /templates/rc_cadmatch/{id}"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/templates/rc_cadmatch/{id}</span></code></a></li>
+<li><a class="reference internal" href="silhouettematch.html#get--templates-rc_silhouettematch" title="GET /templates/rc_silhouettematch"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/templates/rc_silhouettematch</span></code></a></li>
+<li><a class="reference internal" href="silhouettematch.html#get--templates-rc_silhouettematch-id" title="GET /templates/rc_silhouettematch/{id}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/templates/rc_silhouettematch/{id}</span></code></a></li>
+<li><a class="reference internal" href="silhouettematch.html#put--templates-rc_silhouettematch-id" title="PUT /templates/rc_silhouettematch/{id}"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/templates/rc_silhouettematch/{id}</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-uilock">
+<dt>UILock:</dt>
+<dd><p class="first">UI Lock Status.</p>
+<p>Ein Objekt des Typs UILock besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>enabled</strong> (boolean)</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>UILock-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-sysinfo"><span class="std std-ref">SysInfo</span></a> enthalten und werden für folgende Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_syslogs.html#get--system-ui_lock" title="GET /system/ui_lock"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/system/ui_lock</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-userspace">
+<dt>UserSpace:</dt>
+<dd><p class="first">UserSpace Information</p>
+<p>Ein Objekt des Typs UserSpace besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>apps</strong> (<a class="reference internal" href="#sect-rest-datamodel-userspaceapp"><span class="std std-ref">UserSpaceApp</span></a>-Array): die UserSpace Apps.</li>
+<li><strong>available</strong> (boolean) - UserSpace verfügbar</li>
+<li><strong>enabled</strong> (boolean) - UserSpace eingeschaltet</li>
+<li><strong>settings</strong> (<a class="reference internal" href="#sect-rest-datamodel-proxysettings"><span class="std std-ref">ProxySettings</span></a>) - siehe Beschreibung von <a class="reference internal" href="#sect-rest-datamodel-proxysettings"><span class="std std-ref">ProxySettings</span></a></li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;apps&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;containers&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;health&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;host_ports&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+              <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+              <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+            <span class="p">}</span>
+          <span class="p">],</span>
+          <span class="nt">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;vendor&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;health&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;host_ports&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+              <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+              <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+            <span class="p">}</span>
+          <span class="p">],</span>
+          <span class="nt">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;vendor&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+        <span class="p">}</span>
+      <span class="p">],</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;containers&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;health&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;host_ports&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+              <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+              <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+            <span class="p">}</span>
+          <span class="p">],</span>
+          <span class="nt">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;vendor&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;health&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;host_ports&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+              <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+              <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+              <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+            <span class="p">}</span>
+          <span class="p">],</span>
+          <span class="nt">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;vendor&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+        <span class="p">}</span>
+      <span class="p">],</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;available&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;proxy&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;http_proxy&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;https_proxy&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>UserSpace-Objekte werden in folgenden Anfragen verwendet:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="rest_api_userspace.html#get--userspace" title="GET /userspace"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/userspace</span></code></a></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-userspaceapp">
+<dt>UserSpaceApp:</dt>
+<dd><p class="first">UserSpace app</p>
+<p>Ein Objekt des Typs UserSpaceApp besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>containers</strong> (<a class="reference internal" href="#sect-rest-datamodel-userspacecontainer"><span class="std std-ref">UserSpaceContainer</span></a>-Array) - Container in dieser App</li>
+<li><strong>name</strong> (string): Name der App.</li>
+<li><strong>type</strong> (string): Typ der App (mögliche Werte: <code class="docutils literal notranslate"><span class="pre">container</span></code>, <code class="docutils literal notranslate"><span class="pre">compose</span></code>).</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;containers&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;health&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;host_ports&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+          <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+          <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+        <span class="p">}</span>
+      <span class="p">],</span>
+      <span class="nt">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;vendor&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;health&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;host_ports&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+          <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+          <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+          <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+        <span class="p">}</span>
+      <span class="p">],</span>
+      <span class="nt">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;vendor&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">UserSpaceApp-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-userspace"><span class="std std-ref">UserSpace</span></a> enthalten.</p>
+</dd>
+</dl>
+<dl class="docutils" id="sect-rest-datamodel-userspacecontainer">
+<dt>UserSpaceContainer:</dt>
+<dd><p class="first">Container</p>
+<p>Ein Objekt des Typs UserSpaceContainer besitzt folgende Eigenschaften:</p>
+<ul class="simple">
+<li><strong>description</strong> (string) - Wert des Labels org.opencontainers.image.description</li>
+<li><strong>health</strong> (string): Health (Gesundheit) des Containers (falls der Container einen Health-Check hat) (mögliche Werte: <code class="docutils literal notranslate"><span class="pre">starting</span></code>, <code class="docutils literal notranslate"><span class="pre">healthy</span></code> oder <code class="docutils literal notranslate"><span class="pre">unhealthy</span></code>).</li>
+<li><strong>host_ports</strong> (<a class="reference internal" href="#sect-rest-datamodel-hostport"><span class="std std-ref">HostPort</span></a>-Array): auf dem Host verfügbare Ports</li>
+<li><strong>image</strong> (string) - Container Image Tag (oder ID, falls nicht getagged)</li>
+<li><strong>name</strong> (string): Name des Containers.</li>
+<li><strong>status</strong> (string): Status des Containers (mögliche Werte: <code class="docutils literal notranslate"><span class="pre">restarting</span></code>, <code class="docutils literal notranslate"><span class="pre">running</span></code>, <code class="docutils literal notranslate"><span class="pre">paused</span></code> oder <code class="docutils literal notranslate"><span class="pre">exited</span></code>).</li>
+<li><strong>title</strong> (string) - Wert des Labels org.opencontainers.image.title</li>
+<li><strong>url</strong> (string) - Wert des Labels org.opencontainers.image.url</li>
+<li><strong>vendor</strong> (string) - Wert des Labels org.opencontainers.image.vendor</li>
+<li><strong>version</strong> (string) - Wert des Labels org.opencontainers.image.version</li>
+</ul>
+<p><strong>Musterobjekt</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;health&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;host_ports&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="nt">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;vendor&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="last">UserSpaceContainer-Objekte sind in <a class="reference internal" href="#sect-rest-datamodel-userspaceapp"><span class="std std-ref">UserSpaceApp</span></a> enthalten.</p>
+</dd>
+</dl>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rest_api_swagger_ui.html" class="btn btn-neutral float-right" title="Swagger UI" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rest_api_syslogs.html" class="btn btn-neutral" title="System und Logs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2023, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../en/rest_api_datamodel.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/rest_api_datamodel.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v23.10/index.html">v23.10</a></dd>
+          
+            <dd><a href="../../v24.01/index.html">v24.01</a></dd>
+          
+            <dd><a href="../../v24.04/index.html">v24.04</a></dd>
+          
+            <dd><a href="../../v24.07/index.html">v24.07</a></dd>
+          
+            <dd><a href="../../v24.10/index.html">v24.10</a></dd>
+          
+            <dd><a href="../../v25.01/index.html">v25.01</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'25.01.1',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="_static/contentui.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

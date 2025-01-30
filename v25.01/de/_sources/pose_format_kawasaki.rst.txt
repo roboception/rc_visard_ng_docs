@@ -1,0 +1,60 @@
+Kawasaki XYZ-OAT Format
+
+Das Posenformat, welches von Kawasaki Robotern benutzt wird, besteht
+aus einer Position XYZ in Millimetern und einer Orientierung OAT,
+welche durch drei Winkel in Grad angegeben wird. O rotiert um die
+z-Achse, A rotiert um die gedrehte y-Achse und T rotiert um die
+gedrehte z-Achse. Die Rotationsreihenfolge ist z-y'-z'' (d.h. z-y-z)
+und wird berechnet durch r_z(O) r_y(A) r_z(T).
+
+Umrechnung von Kawasaki-OAT in Quaternionen
+
+Zur Umrechnung von OAT Winkeln in Grad in eine Quaternion
+q=(\begin{array}{cccc}x & y & z & w\end{array}) werden zunächst alle
+Winkel in das Bogenmaß umgerechnet durch
+
+   O_r = O \frac{\pi}{180} \text{,} \\ A_r = A \frac{\pi}{180}
+   \text{,} \\ T_r = T \frac{\pi}{180} \text{,} \\
+
+und damit wird die Quaternion berechnet durch
+
+   x = \cos{(O_r/2)}\sin{(A_r/2)}\sin{(T_r/2)} -
+   \sin{(O_r/2)}\sin{(A_r/2)}\cos{(T_r/2)} \text{,} \\ y =
+   \cos{(O_r/2)}\sin{(A_r/2)}\cos{(T_r/2)} +
+   \sin{(O_r/2)}\sin{(A_r/2)}\sin{(T_r/2)} \text{,} \\ z =
+   \sin{(O_r/2)}\cos{(A_r/2)}\cos{(T_r/2)} +
+   \cos{(O_r/2)}\cos{(A_r/2)}\sin{(T_r/2)} \text{,} \\ w =
+   \cos{(O_r/2)}\cos{(A_r/2)}\cos{(T_r/2)} -
+   \sin{(O_r/2)}\cos{(A_r/2)}\sin{(T_r/2)} \text{.}
+
+Umrechnung von Quaternionen in Kawasaki-OAT
+
+Die Umrechnung von einer Quaternion q=(\begin{array}{cccc}x & y & z &
+w\end{array}) mit ||q||=1 in OAT Winkel in Grad kann wie folgt
+durchgeführt werden.
+
+Wenn x = 0
+
+und
+
+ y = 0 ist die Umrechnung
+
+   O &= \text{atan}_2{(2(z - w), 2(z + w))} \frac{180}{\pi} \\ A &=
+   \text{acos}{(w^2 + z^2)} \frac{180}{\pi} \\ T &= \text{atan}_2{(2(z
+   + w), 2(w - z))} \frac{180}{\pi}
+
+Wenn z = 0
+
+und
+
+ w = 0 ist die Umrechnung
+
+   O &= \text{atan}_2{(2(y - x), 2(x + y))} \frac{180}{\pi} \\ A &=
+   \text{acos}{(-1.0)} \frac{180}{\pi} \\ T &= \text{atan}_2{(2(y +
+   x), 2(y - x))} \frac{180}{\pi}
+
+In allen anderen Fällen ist die Umrechnung
+
+   O &= \text{atan}_2{(2(yz - wx), 2(xz + wy))} \frac{180}{\pi} \\ A
+   &= \text{acos}{(w^2 - x^2 - y^2 + z^2)} \frac{180}{\pi} \\ T &=
+   \text{atan}_2{(2(yz + wx), 2(wy - xz))} \frac{180}{\pi}

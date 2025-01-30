@@ -1,0 +1,970 @@
+System and logs
+
+The following resources and requests expose the
+
+rc_visard NG
+
+'s system-level API. They enable
+
+   access to log files (system-wide or module-specific)
+
+   access to information about the device and run-time statistics such
+   as date, MAC address, clock-time synchronization status, and
+   available resources;
+
+   management of installed software licenses; and
+
+   the rc_visard NG to be updated with a new firmware image.
+
+GET /logs
+
+   Get list of available log files.
+
+   Template request
+
+      GET /api/v2/logs HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "date": 1503060035.0625782,
+          "name": "rcsense-api.log",
+          "size": 730
+        },
+        {
+          "date": 1503060035.741574,
+          "name": "stereo.log",
+          "size": 39024
+        },
+        {
+          "date": 1503060044.0475223,
+          "name": "camera.log",
+          "size": 1091
+        }
+      ]
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns array of LogInfo)
+
+   Referenced Data Models:
+      LogInfo\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      loginfo})
+
+GET /logs/{log}
+
+   Get a log file. Content type of response depends on parameter
+   'format'.
+
+   Template request
+
+      GET /api/v2/logs/<log>?format=<format>&limit=<limit> HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "date": 1581609251.8168414,
+        "log": [
+          {
+            "component": "rc_gev_server",
+            "level": "INFO",
+            "message": "Application from IP 10.0.1.7 registered with control access.",
+            "timestamp": 1581609249.61
+          },
+          {
+            "component": "rc_gev_server",
+            "level": "INFO",
+            "message": "Application from IP 10.0.1.7 deregistered.",
+            "timestamp": 1581609249.739
+          },
+          {
+            "component": "rc_gev_server",
+            "level": "INFO",
+            "message": "Application from IP 10.0.1.7 registered with control access.",
+            "timestamp": 1581609250.94
+          },
+          {
+            "component": "rc_gev_server",
+            "level": "INFO",
+            "message": "Application from IP 10.0.1.7 deregistered.",
+            "timestamp": 1581609251.819
+          }
+        ],
+        "name": "gev.log",
+        "size": 42112
+      }
+
+   Parameters:
+      log (string) -- name of the log file (required)
+
+   Query Parameters:
+      format (string) -- return log as JSON or raw (one of json, raw;
+      default: json) (optional)
+
+      limit (integer) -- limit to last x lines in JSON format
+      (default: 100) (optional)
+
+   Response Headers:
+      Content-Type -- text/plain application/json
+
+   Status Codes:
+      200 OK -- successful operation (returns Log)
+
+      404 Not Found -- log not found
+
+   Referenced Data Models:
+      Log\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-log})
+
+GET /system
+
+   Get system information on sensor.
+
+   Template request
+
+      GET /api/v2/system HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "dns": {
+          "dns_servers": [
+            "10.0.0.1",
+            "1.1.1.1"
+          ],
+          "manual_dns_servers": [
+            "1.1.1.1"
+          ]
+        },
+        "firmware": {
+          "active_image": {
+            "image_version": "rc_visard_v1.1.0"
+          },
+          "fallback_booted": true,
+          "inactive_image": {
+            "image_version": "rc_visard_v1.0.0"
+          },
+          "next_boot_image": "active_image"
+        },
+        "hostname": "rc-visard-ng-1421823000987",
+        "link_speed": 1000,
+        "mac": "00:14:2D:2B:D8:AB",
+        "ntp": {
+          "enabled": true,
+          "manual_ntp_servers": [
+            "10.0.0.1"
+          ],
+          "offset": -3.2666e-05,
+          "selected_ntp_servers": [
+            "10.0.0.1"
+          ],
+          "synchronized": true
+        },
+        "ptp_status": {
+          "master_ip": "",
+          "offset": 0,
+          "offset_dev": 0,
+          "offset_mean": 0,
+          "state": "off"
+        },
+        "ready": true,
+        "serial": "1421823000987",
+        "time": 1504080462.641875,
+        "uptime": 65457.42
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns SysInfo)
+
+   Referenced Data Models:
+      SysInfo\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      sysinfo})
+
+GET /system/backup
+
+   Get backup.
+
+   Template request
+
+      GET /api/v2/system/backup?pipelines=<pipelines>&load_carriers=<load_carriers>&regions_of_interest=<regions_of_interest>&grippers=<grippers> HTTP/1.1
+
+   Query Parameters:
+      pipelines (boolean) -- backup pipelines with node settings, i.e.
+      parameters and preferred_orientation (default: True) (optional)
+
+      load_carriers (boolean) -- backup load_carriers (default: True)
+      (optional)
+
+      regions_of_interest (boolean) -- backup regions_of_interest
+      (default: True) (optional)
+
+      grippers (boolean) -- backup grippers (default: True) (optional)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+POST /system/backup
+
+   Restore backup.
+
+   Template request
+
+      POST /api/v2/system/backup HTTP/1.1
+      Accept: application/json application/ubjson
+
+      {}
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "return_code": {
+          "message": "backup restored",
+          "value": 0
+        },
+        "warnings": []
+      }
+
+   Request JSON Object:
+      backup (object) -- backup data as json object (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+GET /system/ca_certificates
+
+   Get ca-certificates.
+
+   Template request
+
+      GET /api/v2/system/ca_certificates HTTP/1.1
+
+   Response Headers:
+      Content-Type -- application/json
+
+   Status Codes:
+      200 OK -- successful operation
+
+GET /system/ca_certificates/{id}
+
+   Get ca-certificate file or details.
+
+   Template request
+
+      GET /api/v2/system/ca_certificates/<id> HTTP/1.1
+
+   Parameters:
+      id (string) -- ID/filename without extension (required)
+
+   Response Headers:
+      Content-Type -- application/json application/octet-stream
+
+   Status Codes:
+      200 OK -- successful operation
+
+      404 Not Found -- crt file not found
+
+PUT /system/ca_certificates/{id}
+
+   Create or update a crt file.
+
+   Template request
+
+      PUT /api/v2/system/ca_certificates/<id> HTTP/1.1
+      Accept: multipart/form-data application/json
+
+   Parameters:
+      id (string) -- ID/filename without extension (required)
+
+   Form Parameters:
+      file -- crt file (required)
+
+   Request Headers:
+      Accept -- multipart/form-data application/json
+
+   Response Headers:
+      Content-Type -- application/json
+
+   Status Codes:
+      200 OK -- successful operation
+
+      400 Bad Request -- crt is not valid or max number of elements
+      reached
+
+      413 Request Entity Too Large -- File too large
+
+DELETE /system/ca_certificates/{id}
+
+   Remove a crt file.
+
+   Template request
+
+      DELETE /api/v2/system/ca_certificates/<id> HTTP/1.1
+      Accept: application/json
+
+   Parameters:
+      id (string) -- ID/filename without extension (required)
+
+   Request Headers:
+      Accept -- application/json
+
+   Response Headers:
+      Content-Type -- application/json
+
+   Status Codes:
+      200 OK -- successful operation
+
+      404 Not Found -- element not found
+
+GET /system/dns
+
+   Get DNS settings.
+
+   Template request
+
+      GET /api/v2/system/dns HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "dns": {
+          "dns_servers": [
+            "10.0.0.1",
+            "1.1.1.1"
+          ],
+          "manual_dns_servers": [
+            "1.1.1.1"
+          ]
+        }
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns DNS)
+
+   Referenced Data Models:
+      DNS\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-dns})
+
+PUT /system/dns
+
+   Set manual DNS servers.
+
+   Template request
+
+      PUT /api/v2/system/dns HTTP/1.1
+      Accept: application/json application/ubjson
+
+      {}
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "dns": {
+          "dns_servers": [
+            "10.0.0.1",
+            "1.1.1.1"
+          ],
+          "manual_dns_servers": [
+            "1.1.1.1"
+          ]
+        }
+      }
+
+   Request JSON Object:
+      manual_dns_servers (ManualDNSServers) -- Manual DNS servers
+      (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns DNS)
+
+      400 Bad Request -- invalid/missing arguments
+
+   Referenced Data Models:
+      ManualDNSServers\:(Section \ref{rest_api_datamodel:sect-rest-
+      datamodel-manualdnsservers})
+
+      DNS\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-dns})
+
+GET /system/license
+
+   Get information about licenses installed on sensor.
+
+   Template request
+
+      GET /api/v2/system/license HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "components": {
+          "calibration": true,
+          "hand_eye_calibration": true,
+          "rectification": true,
+          "self_calibration": true,
+          "stereo": true
+        },
+        "valid": true
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns LicenseInfo)
+
+   Referenced Data Models:
+      LicenseInfo\:(Section \ref{rest_api_datamodel:sect-rest-
+      datamodel-licenseinfo})
+
+POST /system/license
+
+   Update license on sensor with a license file.
+
+   Template request
+
+      POST /api/v2/system/license HTTP/1.1
+      Accept: multipart/form-data
+
+   Form Parameters:
+      file -- license file (required)
+
+   Request Headers:
+      Accept -- multipart/form-data
+
+   Status Codes:
+      200 OK -- successful operation
+
+      400 Bad Request -- not a valid license
+
+GET /system/max_power_test
+
+   Get last max power test result.
+
+   Template request
+
+      GET /api/v2/system/max_power_test HTTP/1.1
+
+   Response Headers:
+      Content-Type -- application/json
+
+   Status Codes:
+      200 OK -- successful operation
+
+POST /system/max_power_test
+
+   Run max power test. Fully load GPU (and CPU) to consume max power
+   for 10 seconds to test the power supply. WARNING: The system might
+   not return a response due to immediate reboot if the power supply
+   is insufficient.
+
+   Template request
+
+      POST /api/v2/system/max_power_test?nocpu=<nocpu> HTTP/1.1
+
+   Query Parameters:
+      nocpu (boolean) -- Don't run CPU workers and only load the GPU.
+      (optional)
+
+   Response Headers:
+      Content-Type -- application/json
+
+   Status Codes:
+      200 OK -- Test finished. See return_code for result.
+
+      400 Bad Request -- Test already running.
+
+GET /system/network
+
+   Get current network configuration.
+
+   Template request
+
+      GET /api/v2/system/network HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "current_method": "DHCP",
+        "default_gateway": "10.0.3.254",
+        "ip_address": "10.0.1.41",
+        "settings": {
+          "dhcp_enabled": true,
+          "persistent_default_gateway": "",
+          "persistent_ip_address": "192.168.0.10",
+          "persistent_ip_enabled": false,
+          "persistent_subnet_mask": "255.255.255.0"
+        },
+        "subnet_mask": "255.255.252.0"
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns NetworkInfo)
+
+   Referenced Data Models:
+      NetworkInfo\:(Section \ref{rest_api_datamodel:sect-rest-
+      datamodel-networkinfo})
+
+GET /system/network/settings
+
+   Get current network settings.
+
+   Template request
+
+      GET /api/v2/system/network/settings HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "dhcp_enabled": true,
+        "persistent_default_gateway": "",
+        "persistent_ip_address": "192.168.0.10",
+        "persistent_ip_enabled": false,
+        "persistent_subnet_mask": "255.255.255.0"
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns NetworkSettings)
+
+   Referenced Data Models:
+      NetworkSettings\:(Section \ref{rest_api_datamodel:sect-rest-
+      datamodel-networksettings})
+
+PUT /system/network/settings
+
+   Set current network settings.
+
+   Template request
+
+      PUT /api/v2/system/network/settings HTTP/1.1
+      Accept: application/json application/ubjson
+
+      {}
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "dhcp_enabled": true,
+        "persistent_default_gateway": "",
+        "persistent_ip_address": "192.168.0.10",
+        "persistent_ip_enabled": false,
+        "persistent_subnet_mask": "255.255.255.0"
+      }
+
+   Request JSON Object:
+      settings (NetworkSettings) -- network settings to apply
+      (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns NetworkSettings)
+
+      400 Bad Request -- invalid/missing arguments
+
+      403 Forbidden -- Changing network settings forbidden because
+      this is locked by a running GigE Vision application.
+
+   Referenced Data Models:
+      NetworkSettings\:(Section \ref{rest_api_datamodel:sect-rest-
+      datamodel-networksettings})
+
+GET /system/ntp
+
+   Get NTP settings.
+
+   Template request
+
+      GET /api/v2/system/ntp HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "ntp": {
+          "enabled": true,
+          "manual_ntp_servers": [
+            "10.0.0.1"
+          ],
+          "offset": -3.2666e-05,
+          "selected_ntp_servers": [
+            "10.0.0.1"
+          ],
+          "synchronized": true
+        }
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns NTP)
+
+   Referenced Data Models:
+      NTP\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-ntp})
+
+PUT /system/ntp
+
+   Set manual NTP servers.
+
+   Template request
+
+      PUT /api/v2/system/ntp HTTP/1.1
+      Accept: application/json application/ubjson
+
+      {}
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "ntp": {
+          "enabled": true,
+          "manual_ntp_servers": [
+            "10.0.0.1"
+          ],
+          "offset": -3.2666e-05,
+          "selected_ntp_servers": [
+            "10.0.0.1"
+          ],
+          "synchronized": true
+        }
+      }
+
+   Request JSON Object:
+      manual_ntp_servers (ManualNTPServers) -- Manual NTP servers
+      (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns NTP)
+
+      400 Bad Request -- invalid/missing arguments
+
+   Referenced Data Models:
+      ManualNTPServers\:(Section \ref{rest_api_datamodel:sect-rest-
+      datamodel-manualntpservers})
+
+      NTP\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-ntp})
+
+PUT /system/reboot
+
+   Reboot the device.
+
+   Template request
+
+      PUT /api/v2/system/reboot HTTP/1.1
+
+   Status Codes:
+      200 OK -- successful operation
+
+GET /system/rollback
+
+   Get information about currently active and inactive firmware/system
+   images on device.
+
+   Template request
+
+      GET /api/v2/system/rollback HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "active_image": {
+          "image_version": "rc_visard_ng_v22.10.0"
+        },
+        "fallback_booted": false,
+        "inactive_image": {
+          "image_version": "rc_visard_ng_v22.10.0"
+        },
+        "next_boot_image": "active_image"
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns FirmwareInfo)
+
+   Referenced Data Models:
+      FirmwareInfo\:(Section \ref{rest_api_datamodel:sect-rest-
+      datamodel-firmwareinfo})
+
+PUT /system/rollback
+
+   Rollback to previous firmware version (inactive system image).
+
+   Template request
+
+      PUT /api/v2/system/rollback HTTP/1.1
+
+   Status Codes:
+      200 OK -- successful operation
+
+      400 Bad Request -- already set to use inactive partition on next
+      boot
+
+      500 Internal Server Error -- internal error
+
+GET /system/time
+
+   Get system time in UTC as string with format "YYYY-MM-DD hh:mm:ss"
+
+   Template request
+
+      GET /api/v2/system/time HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "utc": "2023-10-05 08:35:26"
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+PUT /system/time
+
+   Set system time in UTC as string with format "YYYY-MM-DD hh:mm:ss"
+
+   Template request
+
+      PUT /api/v2/system/time?utc=<utc> HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "utc": "2023-10-05 08:35:26"
+      }
+
+   Query Parameters:
+      utc (string) -- Time in UTC as string with format "YYYY-MM-DD
+      hh:mm:ss" (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+      400 Bad Request -- invalid/missing arguments
+
+      403 Forbidden -- Changing time forbidden because time is
+      synchronized via NTP or PTP.
+
+GET /system/ui_lock
+
+   Get UI lock status.
+
+   Template request
+
+      GET /api/v2/system/ui_lock HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "enabled": false
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns UILock)
+
+   Referenced Data Models:
+      UILock\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      uilock})
+
+DELETE /system/ui_lock
+
+   Remove UI lock.
+
+   Template request
+
+      DELETE /api/v2/system/ui_lock HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "enabled": false,
+        "valid": false
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+POST /system/ui_lock
+
+   Verify or set UI lock.
+
+   Template request
+
+      POST /api/v2/system/ui_lock?hash=<hash>&set=<set> HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "enabled": true,
+        "valid": true
+      }
+
+   Query Parameters:
+      hash (string) -- hash of the UI lock password (required)
+
+      set (boolean) -- set new hash instead of veryfing (optional)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+GET /system/update
+
+   Get information about currently active and inactive firmware/system
+   images on device.
+
+   Template request
+
+      GET /api/v2/system/update HTTP/1.1
+
+   Sample response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "active_image": {
+          "image_version": "rc_visard_ng_v22.10.0"
+        },
+        "fallback_booted": false,
+        "inactive_image": {
+          "image_version": "rc_visard_ng_v22.10.0"
+        },
+        "next_boot_image": "active_image"
+      }
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns FirmwareInfo)
+
+   Referenced Data Models:
+      FirmwareInfo\:(Section \ref{rest_api_datamodel:sect-rest-
+      datamodel-firmwareinfo})
+
+POST /system/update
+
+   Update firmware/system image with a mender artifact. Reboot is
+   required afterwards in order to activate updated firmware version.
+
+   Template request
+
+      POST /api/v2/system/update HTTP/1.1
+      Accept: multipart/form-data
+
+   Form Parameters:
+      file -- mender artifact file (required)
+
+   Request Headers:
+      Accept -- multipart/form-data
+
+   Status Codes:
+      200 OK -- successful operation
+
+      400 Bad Request -- client error, e.g. no valid mender artifact

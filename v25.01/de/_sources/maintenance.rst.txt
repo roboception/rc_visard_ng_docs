@@ -1,0 +1,481 @@
+Wartung
+
+Warnung: Das Gehäuse des
+
+  rc_visard NG
+
+   muss für Wartungsarbeiten nicht geöffnet werden. Das unbefugte
+  Öffnen des Produkts führt zum Erlöschen der Garantie.
+
+Reinigung der Kameralinsen
+
+Glaslinsen sind mit einer Anti-Reflex-Beschichtung versehen, um
+Spiegelungen zu verringern. Bei der Reinigung der Linsen ist besonders
+vorsichtig vorzugehen. Mit einer weichen Linsenbürste lassen sich
+Staub und Schmutzpartikel entfernen. Anschließend kann die Linse mit
+einem Tuch in kreisenden Bewegungen abgewischt werden: Dabei ist ein
+Spezialreinigungstuch aus Mikrofaser zu verwenden, um Kratzer zu
+vermeiden, die die Leistung des Sensors beeinträchtigen können.
+Hartnäckiger Schmutz lässt sich mit hochreinem Isopropanol oder einer
+für beschichtete Linsen geeigneten Reinigungslösung (z.B. „Uvex
+Clear“-Produkte) entfernen.
+
+Kamerakalibrierung
+
+Die Kameras werden ab Werk kalibriert. Unter normalen
+Betriebsbedingungen bleibt die Kalibrierung für die Lebensdauer des
+Sensors erhalten. Wenn der
+
+rc_visard NG
+
+ einer starken mechanischen Belastung ausgesetzt wird, wenn er
+beispielsweise fallen gelassen wird, können sich die Parameter der
+Kamera jedoch leicht verändern. In diesem Fall lässt sich die
+Kalibrierung über die Web GUI überprüfen und bei Bedarf neu
+durchführen (siehe
+
+Kamerakalibrierung
+
+).
+
+Backup der Einstellungen
+
+Der
+
+rc_visard NG
+
+ bietet die Möglichkeit, die aktuellen Einstellungen als Backup oder
+zum Übertragen auf einen anderen
+
+rc_visard
+
+ oder
+
+rc_cube
+
+ herunterzuladen.
+
+Die aktuellen Einstellungen des
+
+rc_visard NG
+
+ können über die
+
+Web GUI
+
+ auf der Seite
+
+System
+
+ im Abschnitt
+
+rc_visard NG
+
+
+Einstellungen
+
+ heruntergeladen werden, oder über die
+
+REST-API-Schnittstelle
+
+ des
+
+rc_visard NG
+
+ mit Hilfe des Aufrufs
+
+GET /system/backup
+
+.
+
+Beim Herunterladen des Backups kann der Nutzer entscheiden, welche
+Einstellungen das Backup enthalten soll:
+
+nodes: die Einstellungen aller Module (Parameter, bevorzugte TCP-
+Orientierungen und Sortierstrategien)
+
+load_carriers: die erstellten Load Carrier
+
+regions_of_interest: die erstellten 2D und 3D Regions of Interest
+
+grippers: die erstellten Greifer (ohne CAD Elemente)
+
+Das zurückgelieferte Backup sollte als .json-Datei gespeichert werden.
+
+Die Templates der SilhouetteMatch und CADMatch Module sind nicht im
+Backup enthalten, aber können manuell über die REST-API oder die Web
+GUI heruntergeladen werden (siehe
+
+Template API
+
+ und
+
+Template API
+
+).
+
+Ein Backup kann auf dem
+
+rc_visard NG
+
+ über die
+
+Web GUI
+
+ auf der Seite
+
+System
+
+ im Abschnitt
+
+rc_visard NG
+
+
+Einstellungen
+
+ eingespielt werden, indem die Backup .json-Datei hochgeladen wird. In
+der
+
+Web GUI
+
+ werden die im Backup enthaltenen Einstellungen  angezeigt und können
+für das Einspielen ausgewählt werden. Der zugehörige Aufruf der
+
+REST-API-Schnittstelle
+
+ ist
+
+POST /system/backup
+
+.
+
+Warnung: Wenn ein Backup von Load Carriern eingespielt wird, gehen
+  alle bestehenden Load Carrier auf dem
+
+  rc_visard NG
+
+   verloren und werden durch die Load Carrier im Backup ersetzt. Das
+  gleiche trifft auf das Einspielen von Greifern und Regions of
+  Interest zu.
+
+Wenn ein Backup eingespielt wird, werden nur die Einstellungen
+gesetzt, die für den jeweiligen
+
+rc_visard NG
+
+ zutreffend sind. Parameter für Module, die nicht existieren oder
+keine gültige Lizenz haben, werden ignoriert. Wenn ein Backup nur
+teilweise eingespielt werden konnte, wird der Benutzer über Warnungen
+darüber informiert.
+
+Aktualisierung der Firmware
+
+Angaben zur aktuellen Firmware-Version sind auf der Seite System ‣
+Firmware & Lizenz in der
+
+Web GUI
+
+ angegeben. Diese Informationen lassen sich mithilfe einer
+
+GET /system
+
+-Anfrage über die die
+
+REST-API-Schnittstelle
+
+ des
+
+rc_visard NG
+
+ abrufen. Die Aktualisierung der Firmware kann entweder über die Web
+GUI oder über die REST-API vorgenommen werden.
+
+Warnung: Ausgehend von einer Firmware-Version älter als 21.07 werden
+  alle konfigurierten Parameter der Softwaremodule nach einem
+  Firmware- Update auf die Werkseinstellungen zurückgesetzt. Nur beim
+  Update ausgehend von Version 21.07 oder höher bleiben die zuletzt
+  gespeicherten Parameter erhalten. Bevor das Update vorgenommen wird,
+  sollten daher alle Einstellungen (über die
+
+  REST-API-Schnittstelle
+
+  ) abgefragt und in der Anwendung oder auf dem Client-PC gesichert
+  werden.Folgende Einstellungen sind davon ausgeschlossen und bleiben
+  auch nach einem Firmware-Update erhalten:
+
+  die Netzwerkkonfiguration des rc_visard NG, samt der ggf. vergebenen
+  festen IP-Adresse und des benutzerdefinierten Gerätenamens,
+
+  das letzte Ergebnis der Hand-Auge-Kalibrierung\:(Abschnitt
+  \ref{handeye_calibration:sect-handeye-calibration}), was bedeutet,
+  dass der rc_visard NG nicht neu zum Roboter kalibriert werden muss,
+  es sei denn, die Montage wurde verändert, und
+
+  das letzte Ergebnis der Kamerakalibrierung\:(Abschnitt
+  \ref{camera_calibration:sect-camera-calibration}), was bedeutet,
+  dass die Stereokamera des rc_visard nicht neu kalibriert werden
+  muss.
+
+Schritt 1: Download der neuesten Firmware
+   Firmware-Updates werden in Form einer Mender-Artefakt-Datei
+   bereitgestellt, die an ihrem ".mender"-Suffix erkennbar ist.
+
+   Ist ein neues Firmware-Update für den
+
+   rc_visard NG
+
+    erhältlich, kann die Datei von der Roboception-Homepage (
+
+   https://www.roboception.com/download
+
+   ) auf den lokalen Rechner heruntergeladen werden.
+
+   Warnung: Stellen Sie sicher, dass die hochzuladende Firmware-
+     Version noch innerhalb des Software-Wartungszeitraums Ihres
+
+     rc_visard NG
+
+      liegt. Sie können die Firmware-Versionsbeschränkungen auf der
+     Web GUI des
+
+     rc_visard NG
+
+      unter System ‣ Firmware & Lizenz einsehen. Sollte die neueste
+     Firmware-Version den Software-Wartungszeitraums überschreiten,
+     muss eine neue Lizenz erworben werden, um eine neuere Firmware
+     nutzen zu können.
+
+Schritt 2: Hochladen der Update-Datei
+   Soll das Update über die REST-API des
+
+   rc_visard NG
+
+    vorgenommen werden, kann der Benutzer auf die Anfrage
+
+   POST /system/update
+
+    zurückgreifen.
+
+   Um die Firmware über die Web GUI zu aktualisieren, muss auf der
+   Seite System ‣ Firmware & License die Schaltfläche "
+
+   rc_visard NG
+
+    Update hochladen" betätigt werden. Nachdem die gewünschte Update-
+   Image-Datei (Dateierweiterung ".mender") aus dem lokalen
+   Dateisystem ausgewählt und geöffnet wurde, startet das Update.
+
+   Je nach Netzwerkarchitektur und Konfiguration kann das Hochladen
+   mehrere Minuten in Anspruch nehmen. Während das Update über die Web
+   GUI läuft, zeigt ein Statusbalken an, wie weit das Update bereits
+   vorangeschritten ist.
+
+   Bemerkung: Je nach Webbrowser kann es vorkommen, dass der
+     angezeigte Statusbalken den Abschluss des Updates zu früh angibt.
+     Es empfiehlt sich, zu warten, bis sich ein
+     Benachrichtigungsfenster öffnet, das das Ende des Updatevorgangs
+     anzeigt. Insgesamt ist mit einer Update-Dauer von mindestens fünf
+     Minuten zu rechnen.
+
+   Warnung: Die Webbrowser-Registerkarte, die die Web GUI enthält,
+     darf weder geschlossen noch aktualisiert werden, da der Update-
+     Vorgang anderenfalls unterbrochen wird. Ist dies der Fall, muss
+     der Update-Vorgang neu gestartet werden.
+
+Schritt 3: Neustart des
+rc_visard NG
+
+   Um ein Firmware-Update auf den
+
+   rc_visard NG
+
+    aufzuspielen, muss nach dem Upload der neuen Image-Datei ein
+   Neustart vorgenommen werden.
+
+   Bemerkung: Die neue Firmware-Version wird in die inaktive
+     Partition des
+
+     rc_visard NG
+
+      hochgeladen. Erst nach dem Neustart wird die inaktive Partition
+     aktiviert und die aktive Partition deaktiviert. Kann das
+     aktualisierte Firmware-Image nicht geladen werden, bleibt diese
+     Partition des
+
+     rc_visard NG
+
+      inaktiv und es wird automatisch die zuvor installierte Firmware-
+     Version von der aktiven Partition verwendet.
+
+   Über die REST-API lässt sich der Neustart mittels der Anfrage
+
+   PUT /system/reboot
+
+    vornehmen.
+
+   Nachdem die neue Firmware über die Web GUI hochgeladen wurde,
+   öffnet sich ein Benachrichtigungsfenster, in dem der Benutzer
+   aufgefordert wird, das Gerät sofort neu zu starten oder aber den
+   Neustart zu verschieben. Soll der
+
+   rc_visard NG
+
+    zu einem späteren Zeitpunkt neu gestartet werden, kann dies über
+   die Schaltfläche
+
+   Neustart
+
+    auf der Web GUI-Seite
+
+   System
+
+    vorgenommen werden.
+
+Schritt 4: Bestätigung des Firmware-Updates
+   Nach dem Neustart des
+
+   rc_visard NG
+
+    ist die Versionsnummer des derzeit aktiven Firmware-Images zu
+   überprüfen, sodass sichergestellt ist, dass das aktualisierte Image
+   erfolgreich geladen wurde. Dies kann entweder über die Web GUI auf
+   der Seite System ‣ Firmware & Lizenz oder über die REST-API mittels
+   der Anfrage
+
+   GET /system/update
+
+    vorgenommen werden.
+
+   Kann das Firmware-Update nicht erfolgreich aufgespielt werden, ist
+   der Roboception-Support zu kontaktieren.
+
+Wiederherstellung der vorherigen Firmware-Version
+
+Nach einem erfolgreichen Firmware-Update wird das vorherige Firmware-
+Image auf der inaktiven Partition des
+
+rc_visard NG
+
+ hinterlegt und kann von dort bei Bedarf wiederhergestellt werden.
+Dieses Verfahren wird auch als
+
+Rollback
+
+ bezeichnet.
+
+Bemerkung: Es wird dringend empfohlen, die neueste Firmware-Version
+  zu verwenden, die von Roboception zur Verfügung gestellt wurde. Auf
+  das Rollback sollte nur dann zurückgegriffen werden, wenn es mit der
+  aktualisierten Firmware-Version große Probleme gibt.
+
+Die Rollback-Funktion kann lediglich über die
+
+REST-API-Schnittstelle
+
+ des
+
+rc_visard NG
+
+ aufgerufen werden – mithilfe der Anfrage
+
+PUT /system/rollback
+
+. Die Anfrage kann entweder mit einem HTTP-kompatiblen Client oder,
+wie in
+
+Swagger UI
+
+ beschrieben, über einen Webbrowser ausgelöst werden. Wie beim Update-
+Prozess ist es auch beim Rollback nötig, das Gerät im Anschluss neu zu
+starten, um die wiederhergestellte Firmware-Version zu laden.
+
+Neustart des rc_visard NG
+
+Nach einem Firmware-Update oder einem Software-Rollback muss der
+
+rc_visard NG
+
+ neu gestartet werden. Der Neustart lässt sich entweder
+programmgesteuert mithilfe der Anforderung
+
+PUT /system/reboot
+
+ über die
+
+REST-API-Schnittstelle
+
+ des
+
+rc_visard NG
+
+ oder manuell auf der Seite
+
+System
+
+ der
+
+Web GUI
+
+ vornehmen.
+
+Der Neustart ist abgeschlossen, wenn die LED wieder grün leuchtet.
+
+Aktualisierung der Softwarelizenz
+
+Lizenzen, die von Roboception zur Aktivierung zusätzlicher Funktionen
+erworben werden, können über die Seite System ‣ Firmware & Lizenz der
+
+Web GUI
+
+ installiert werden. Der
+
+rc_visard NG
+
+ muss neu gestartet werden, um die Lizenz nutzen zu können.
+
+Download der Logdateien
+
+Während des Betriebs dokumentiert der
+
+rc_visard NG
+
+ wichtige Informationen, Hinweise und Fehler in sogenannten
+Logdateien. Zeigt der
+
+rc_visard NG
+
+ ein unerwartetes oder fehlerhaftes Verhalten, kann mithilfe der
+Logdateien nach der Fehlerursache geforscht werden. Logeinträge lassen
+sich über die Seite System ‣ Logs auf der
+
+Web GUI
+
+  ansehen und filtern. Wird der Support kontaktiert (
+
+Kontakt
+
+), sind die Logdateien sehr hilfreich, um Probleme aufzuspüren. Um
+diese als tar.gz-Datei herunterzuladen, ist der Button Alle Logs
+herunterladen auf der Seite System ‣ Logs der Web GUI unter
+
+System
+
+ zu klicken.
+
+Die Logs sind nicht nur über die Web GUI, sondern auch über die
+
+REST-API-Schnittstelle
+
+ des
+
+rc_visard NG
+
+ zugänglich. Hierfür können die Anfragen des Typs
+
+GET /logs
+
+ und
+
+GET /logs/{log}
+
+ verwendet werden.

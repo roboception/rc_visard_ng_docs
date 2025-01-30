@@ -1,0 +1,366 @@
+
+.. include:: global_rst.glb
+
+.. _sect-loadcarrier-db:
+
+LoadCarrierDB
+=============
+
+.. index:: ! LoadCarrierDB
+   single: load carrier model
+   pair: BoxPick; load carrier
+   pair: ItemPick; load carrier
+   pair: SilhouetteMatch; load carrier
+
+.. only:: rc_cube or rc_visard_ng
+
+   .. index::
+      single: CADMatch; load carrier
+
+Introduction
+------------
+
+The LoadCarrierDB module (Load carrier database module) allows the global definition of load carriers, 
+which can then be used in many detection modules. The specified load carriers are available for all
+modules supporting load carriers on the |rc_xxx|.
+
+.. only:: rc_cube
+
+   .. note::
+   
+      This module is global on the |rc_cube|. Changes to its settings or parameters affect
+      every camera pipeline running on the |rc_cube|.
+
+The LoadCarrierDB module is a base module which is available on every |rc_xxx|.
+
+.. tabularcolumns:: |l|L|
+.. _tab-lc-spec:
+.. csv-table:: Specifications of the LoadCarrierDB module 
+
+    "Supported load carrier types",    "4-sided or 3-sided"
+    "Supported rim types",             "solid rim, stepped rim or ledged rim"
+    "Min. load carrier dimensions",    "0.1 m x 0.1 m x 0.05 m"
+    "Max. load carrier dimensions",    "2 m x 2 m x 2 m"
+    "Max. number of load carriers",   "50"
+    "Load carriers available in",   "|pick_modules| and |match_modules|"
+    "Supported pose types", "no pose, orientation prior, exact pose"
+    "Supported reference frames", "camera, external"
+
+.. _sect-loadcarrier-definition:
+
+Load carrier definition
+-----------------------
+
+.. index::
+   pair: load carrier; definition
+   pair: load carrier; rim
+   pair: load carrier; dimensions
+   pair: load carrier; inner volume
+   pair: load carrier; pose
+   pair: load carrier; orientation prior
+
+A load carrier (bin) is a container with four walls, a floor and a rectangular rim,
+which can contain objects. It can be used to limit the volume in which to search
+for objects or grasp points. 
+
+A load carrier is defined by its ``outer_dimensions`` and ``inner_dimensions``.
+The maximum ``outer_dimensions`` are 2.0 meters in every dimension.
+
+The origin of the load carrier reference frame is in the center of the load carrier's
+*outer* box and its z axis is perpendicular to the load carrier's floor
+pointing outwards (see :numref:`fig-loadcarrier-load-carrier`).
+
+.. _fig-loadcarrier-load-carrier:
+.. figure:: images/itempick_load_carrier_reference.*
+   :width: 100%
+   :align: center
+
+   Load carrier with reference frame and inner and outer dimensions
+
+.. Note::
+  Typically, outer and inner dimensions of a load carrier are available in the
+  specifications of the load carrier manufacturer.
+
+The inner volume of the load carrier is defined by its inner dimensions, but includes a region 
+of 10 cm height above the load carrier, so that also items protruding from the load carrier 
+are considered for detection or grasp computation. Furthermore, an additional
+``crop_distance`` is subtracted from the inner volume in every dimension, which acts as a safety margin and can 
+be configured as run-time parameter in the LoadCarrier module (see :ref:`sect-loadcarrier-parameters`:latex:`, Section 
+\ref{loadcarrier:sect-loadcarrier-parameters}`).
+:numref:`fig-loadcarrier-inside-volume` visualizes the inner volume of a load carrier. Only 
+points which are inside this volume are considered for detections.
+
+.. _fig-loadcarrier-inside-volume:
+.. figure:: images/load_carrier_inside_volume.*
+  :width: 50%
+  :align: center
+
+  Visualization of the inner volume of a load carrier. Only 
+  points which are inside this volume are considered for detections. 
+
+Since the load carrier detection
+is based on the detection of the load carrier's rim, the rim geometry must be specified if it
+cannot be determined from the difference between outer and inner dimensions. A load carrier with a stepped rim can be defined by setting a ``rim_thickness``. The rim
+thickness gives the thickness of the outer part of the rim in the x and y direction.
+When a rim thickness is given, an optional ``rim_step_height`` can also be
+specified, which gives the height of the step between the outer and the inner part of the rim.
+When the step height is given, it will also be considered during collision checking
+(see :doc:`collisioncheck`:latex:`, Section \ref{collisioncheck:sect-collision}`). Examples of load
+carriers with stepped rims are shown in :numref:`fig-loadcarrier-load-carrier-rim-types` A, B.
+In addition to the ``rim_thickness`` and ``rim_step_height`` the ``rim_ledge`` can be specified 
+for defining load carriers whose inner rim protrudes into the interior of the load carrier, such as pallet cages.
+The ``rim_ledge`` gives the thickness of the inner part of the rim in the x and y direction.
+An example of a load carrier with a ledged rim is shown in :numref:`fig-loadcarrier-load-carrier-rim-types` C.
+
+.. _fig-loadcarrier-load-carrier-rim-types:
+.. figure:: images/rim_types.*
+   :width: 100%
+   :align: center
+
+   Examples of load carriers with stepped rim (A, B) or ledged rim (C)
+
+The different rim types are applicable to both, standard 4-sided and 3-sided load carriers. For a
+3-sided load carrier, the ``type`` must be ``THREE_SIDED``. If the type is set to ``STANDARD`` or
+left empty, a 4-sided load carrier is specified. A 3-sided load carrier has one side that is lower 
+than the other three sides. This ``height_open_side`` is measured from the outer bottom of the load carrier. The open side is at the negative
+y-axis of the load carrier's coordinate system. Examples of the two load carrier types are given
+in :numref:`fig-loadcarrier-load-carrier-types`. The height of the lower side is only considered during 
+collision checking and not required for the detection of the load carrier.
+
+.. _fig-loadcarrier-load-carrier-types:
+.. figure:: images/lc_types.*
+   :width: 100%
+   :align: center
+
+   Examples of a standard 4-sided load carrier (A) and a 3-sided load carrier (B)
+
+A load carrier can be specified with a full 3D ``pose`` consisting of a ``position`` and
+an ``orientation`` quaternion, given in a ``pose_frame``. Based on the given ``pose_type``
+this pose is either used as an orientation prior (``pose_type`` is ``ORIENTATION_PRIOR`` or empty),
+or as the exact pose of the load carrier (``pose_type`` is ``EXACT_POSE``).
+
+In case the pose serves as orientation prior, the detected load carrier pose is guaranteed
+to have the minimum rotation with respect to the load carrier's prior pose. This pose type 
+is useful for detecting tilted load carriers and for resolving the orientation ambiguity in
+the x and y direction caused by the symmetry of the load carrier model.
+
+In case the pose type is set to ``EXACT_POSE``, no load carrier detection will be performed on the scene data,
+but the given pose will be used in exactly the same way as if the load carrier is detected at 
+that pose. This pose type is especially useful in cases where load carriers do not change their positions
+and/or are hard to detect (e.g. because their rim is too thin or the material is too shiny).
+
+The |rcxxx| can persistently store up to 50 different
+load carrier models, each one identified by a different ``id``.
+The configuration of a load carrier model is normally performed offline,
+during the set up the desired application.
+This can be done via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or in the |rcxxx| |webgui|.
+
+.. Note::
+  The configured load carrier models
+  are persistent even over firmware updates and rollbacks.
+
+
+.. _sect-loadcarrier-compartment:
+
+Load carrier compartments
+-------------------------
+
+.. index::
+   pair: load carrier; compartment
+
+Some detection modules can make use of a ``load_carrier_compartment`` to further limit the volume for the detection,
+for example :ref:`ItemPick's compute_grasps service<expl-itempick-srv-compute-grasps>`:latex:`\:(see \ref{itempick:expl-itempick-srv-compute-grasps})`.
+A load carrier compartment is a box whose ``pose`` is defined as the transformation from the load carrier reference frame to the compartment 
+reference frame, which is located in the center of the compartment box (see :numref:`fig-loadcarrier-compartment`).
+The load carrier compartment is defined for each detection call separately and is not part of the load carrier definition in the
+LoadCarrierDB module.
+
+.. _fig-loadcarrier-compartment:
+.. figure:: images/itempick_load_carrier_compartment.*
+   :width: 100%
+   :align: center
+
+   Sample compartment inside a load carrier. The coordinate frame shown in the image is the
+   reference frame of the compartment.
+
+The compartment volume is intersected with the load carrier inner volume to compute the volume for the detection. 
+If this intersection should also contain the 10 cm region above the load carrier, the height of the compartment box
+must be increased accordingly.
+
+.. _sect-loadcarrier-db-dependencies:
+
+Interaction with other modules
+------------------------------
+
+Internally, the LoadCarrierDB module depends on, and interacts with other on-board
+modules as listed below.
+
+.. _sect-loadcarrier-hand-eye-dep:
+
+Hand-eye calibration
+^^^^^^^^^^^^^^^^^^^^
+
+In case the camera has been calibrated to a robot, the load carrier's exact pose
+or orientation prior can be provided in the robot coordinate frame by setting the corresponding
+``pose_frame`` argument to ``external``.
+
+Two different ``pose_frame`` values can be chosen:
+
+1. **Camera frame** (``camera``).
+   The load carrier pose or orientation prior is provided in the camera frame,
+   and no prior knowledge about the pose of the camera in the environment is required.
+   This means that the configured load carriers move with the camera.
+   It is the user's responsibility to update the configured poses
+   if the camera frame moves (e.g. with a robot-mounted camera).
+
+2. **External frame** (``external``).
+   The load carrier pose or orientation prior is provided in the external frame,
+   configured by the user during the hand-eye calibration process.
+   The module relies on the on-board 
+   :doc:`Hand-eye calibration module<handeye_calibration>`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`
+   to retrieve the sensor mounting (static or robot mounted) and
+   the hand-eye transformation.
+
+.. Note::
+   If no hand-eye calibration is available, all ``pose_frame`` values should be set to ``camera``.
+
+All ``pose_frame`` values that are not ``camera`` or ``external`` are rejected.
+
+.. _sect-loadcarrier-services:
+
+Services
+--------
+
+.. index::
+   single: LoadCarrierDB; services
+
+The LoadCarrierDB module is called ``rc_load_carrier_db`` in the |rest-api| and is represented in the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})` under 
+:menuselection:`Database --> Load Carriers`.
+The user can explore and call the LoadCarrierDB module's services,
+e.g. for development and testing, using the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |webgui|.
+
+The LoadCarrierDB module offers the following services.
+
+.. _expl-loadcarrier-db-srv-set-lc:
+
+``set_load_carrier``
+^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a load carrier on the |rc_xxx|.
+   All configured load carriers are persistent over firmware updates and rollbacks.
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/nodes/rc_load_carrier_db/services/set_load_carrier
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Details for the definition of the ``load_carrier`` type are given in 
+            :ref:`sect-loadcarrier-definition`:latex:`\:(Section \ref{loadcarrier_db:sect-loadcarrier-definition})`.
+
+            The field ``type`` is optional and accepts ``STANDARD`` and ``THREE_SIDED``.
+
+            The field ``pose_type`` is optional and accepts ``NO_POSE``, ``EXACT_POSE`` and ``ORIENTATION_PRIOR``.
+
+            .. include:: _gen/nodes/services/rc_load_carrier_set_load_carrier_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_set_load_carrier_response.txt
+
+.. _expl-loadcarrier-db-srv-get-lc:
+
+``get_load_carriers``
+^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured load carriers with the requested ``load_carrier_ids``.
+   If no ``load_carrier_ids`` are provided, all configured load carriers are returned.
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/nodes/rc_load_carrier_db/services/get_load_carriers
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_get_load_carriers_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_get_load_carriers_response.txt
+
+      
+
+.. _expl-loadcarrier-db-srv-delete-lc:
+
+``delete_load_carriers``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured load carriers with the requested ``load_carrier_ids``.
+   All load carriers to be deleted must be explicitly stated in ``load_carrier_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+         
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/nodes/rc_load_carrier_db/services/delete_load_carriers
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_delete_load_carriers_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_load_carrier_delete_load_carriers_response.txt
+
+
+.. _sect-loadcarrier-db-return-codes:
+
+Return codes
+------------
+
+.. index::
+   pair: LoadCarrierDB; return codes
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common codes:
+
+.. tabularcolumns:: |c|L|
+.. _tab-loadcarrier-return-codes:
+.. csv-table:: Return codes of the LoadCarrierDB module's services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+    "-10",  "New element could not be added as the maximum storage capacity of load carriers has been exceeded"
+    "10",   "The maximum storage capacity of load carriers has been reached"
+    "11",  "An existent persistent model was overwritten by the call to ``set_load_carrier``"
+    
