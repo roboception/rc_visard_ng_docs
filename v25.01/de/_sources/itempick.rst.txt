@@ -5,10 +5,10 @@ Einführung
 Das ItemPick Modul liefert eine gebrauchsfertige Perzeptionslösung, um
 robotische Pick-and-Place-Anwendungen zu realisieren. ItemPick
 detektiert ebene Oberflächen unbekannter Objekte für die
-Positionierung eines Sauggreifers. :cubeonly:>>`<<ItemPickAI ist ein
-Upgrade von ItemPick und nutzt neuronale Netze, um Objekte einer
-bestimmten Objektkategorie zu segmentieren und orientierte und
-objektzentrierte Greifpunkte für Sauggreifer zu berechnen.
+Positionierung eines Sauggreifers. :cubeonly:>>`<<ItemPickAI nutzt
+neuronale Netze, um Objekte einer bestimmten Objektkategorie zu
+segmentieren und orientierte und objektzentrierte Greifpunkte für
+Sauggreifer zu berechnen.
 
 Darüber hinaus bietet das Modul:
 

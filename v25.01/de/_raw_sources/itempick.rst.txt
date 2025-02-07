@@ -21,7 +21,7 @@ Introduction
 
 The |itempick| module provides an out-of-the-box perception solution for robotic pick-and-place
 applications. ItemPick targets the detection of flat surfaces on unknown objects for picking
-with a suction gripper. :cubeonly:`ItemPickAI is an upgrade of ItemPick and uses neural networks to segment objects 
+with a suction gripper. :cubeonly:`ItemPickAI uses neural networks to segment objects 
 of a given object category and computes oriented and object-centered grasp points for suction grippers.`
 
 In addition, the module offers:

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Navigation modules &mdash; rc_visard NG 25.01.1
+  <title>Navigation modules &mdash; rc_visard NG 25.01.2
  documentation</title>
   
 
@@ -52,7 +52,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.01.1
+    <link rel="top" title="rc_visard NG 25.01.2
  documentation" href="index.html"/> 
 
   
@@ -576,27 +576,27 @@
 <p>The <em>rc_visard NG</em>’s navigation modules contain:</p>
 <ul class="simple">
 <li><dl class="first docutils">
-<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/dynamics.html" title="(in rc_visard v24.10)"><span>Sensor dynamics</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_dynamics</span></code>)</dt>
+<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/dynamics.html" title="(in rc_visard v25.01)"><span>Sensor dynamics</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_dynamics</span></code>)</dt>
 <dd>provides estimates of <em>rc_visard</em>’s dynamic state such as its pose,
 velocity, and acceleration. These states are transmitted
-as continuous data streams via the <a class="reference external" href="https://doc.rc-visard.com/latest/en/rc_dynamics.html" title="(in rc_visard v24.10)"><span class="xref std std-doc">rc_dynamics interface</span></a>.
+as continuous data streams via the <a class="reference external" href="https://doc.rc-visard.com/latest/en/rc_dynamics.html" title="(in rc_visard v25.01)"><span class="xref std std-doc">rc_dynamics interface</span></a>.
 For this purpose, the dynamics module manages and fuses data from the following individual
 subcomponents:<ul class="last">
 <li><dl class="first docutils">
-<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/stereo_visodo.html" title="(in rc_visard v24.10)"><span>Visual odometry</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_stereovisodo</span></code>)</dt>
+<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/stereo_visodo.html" title="(in rc_visard v25.01)"><span>Visual odometry</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_stereovisodo</span></code>)</dt>
 <dd>estimates the motion of the <em>rc_visard</em> device based on the motion of characteristic
 visual features in the left camera images.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/stereo_ins.html" title="(in rc_visard v24.10)"><span>Stereo INS</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_stereo_ins</span></code>)</dt>
+<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/stereo_ins.html" title="(in rc_visard v25.01)"><span>Stereo INS</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_stereo_ins</span></code>)</dt>
 <dd>combines visual odometry measurements with readings from the on-board
 Inertial Measurement Unit (IMU) to provide
 accurate and high-frequency state estimates in real time.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/slam.html" title="(in rc_visard v24.10)"><span>SLAM</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_slam</span></code>)</dt>
+<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/slam.html" title="(in rc_visard v25.01)"><span>SLAM</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_slam</span></code>)</dt>
 <dd>performs simultaneous localization and mapping for correcting
 accumulated poses. The <em>rc_visard</em>’s covered trajectory is offered via the
 <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>.</dd>
@@ -695,7 +695,7 @@ accumulated poses. The <em>rc_visard</em>’s covered trajectory is offered via 
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.01.1',
+            VERSION:'25.01.2',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

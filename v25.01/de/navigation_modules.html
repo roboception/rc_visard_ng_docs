@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Navigationsmodule &mdash; rc_visard NG 25.01.1
+  <title>Navigationsmodule &mdash; rc_visard NG 25.01.2
  Dokumentation</title>
   
 
@@ -52,7 +52,7 @@
         <link rel="index" title="Stichwortverzeichnis"
               href="genindex.html"/>
         <link rel="search" title="Suche" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.01.1
+    <link rel="top" title="rc_visard NG 25.01.2
  Dokumentation" href="index.html"/> 
 
   
@@ -576,20 +576,20 @@
 <p>Die Navigationsmodule des <em>rc_visard NG</em> umfassen:</p>
 <ul class="simple">
 <li><dl class="first docutils">
-<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/dynamics.html" title="(in rc_visard v24.10)"><span>Sensor dynamics</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_dynamics</span></code>)</dt>
-<dd>erstellt Schätzungen des dynamischen Zustands des <em>rc_visard</em>, d.h. seiner Pose, Geschwindigkeit und Beschleunigung. Diese Zustände werden als kontinuierliche Datenströme über die <a class="reference external" href="https://doc.rc-visard.com/latest/en/rc_dynamics.html" title="(in rc_visard v24.10)"><span class="xref std std-doc">rc_dynamics-Schnittstelle</span></a> übertragen. Zu diesem Zweck verwaltet und verknüpft das Dynamik-Modul Daten aus den folgenden Submodulen:<ul class="last">
+<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/dynamics.html" title="(in rc_visard v25.01)"><span>Sensor dynamics</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_dynamics</span></code>)</dt>
+<dd>erstellt Schätzungen des dynamischen Zustands des <em>rc_visard</em>, d.h. seiner Pose, Geschwindigkeit und Beschleunigung. Diese Zustände werden als kontinuierliche Datenströme über die <a class="reference external" href="https://doc.rc-visard.com/latest/en/rc_dynamics.html" title="(in rc_visard v25.01)"><span class="xref std std-doc">rc_dynamics-Schnittstelle</span></a> übertragen. Zu diesem Zweck verwaltet und verknüpft das Dynamik-Modul Daten aus den folgenden Submodulen:<ul class="last">
 <li><dl class="first docutils">
-<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/stereo_visodo.html" title="(in rc_visard v24.10)"><span>Visual odometry</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_stereovisodo</span></code>)</dt>
+<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/stereo_visodo.html" title="(in rc_visard v25.01)"><span>Visual odometry</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_stereovisodo</span></code>)</dt>
 <dd>schätzt die Bewegung des <em>rc_visard</em> anhand der Bewegungen charakteristischer Merkmale in den Bildern der linken Kamera.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/stereo_ins.html" title="(in rc_visard v24.10)"><span>Stereo INS</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_stereo_ins</span></code>)</dt>
+<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/stereo_ins.html" title="(in rc_visard v25.01)"><span>Stereo INS</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_stereo_ins</span></code>)</dt>
 <dd>kombiniert die per visueller Odometrie ermittelten Werte mit den Daten der integrierten inertialen Messeinheit (IMU), um auf dieser Grundlage akkurate und hochfrequente Echtzeit-Zustandsschätzungen bereitzustellen.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/slam.html" title="(in rc_visard v24.10)"><span>SLAM</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_slam</span></code>)</dt>
+<dt><a class="reference external" href="https://doc.rc-visard.com/latest/en/slam.html" title="(in rc_visard v25.01)"><span>SLAM</span></a> (<code class="docutils literal notranslate"><span class="pre">rc_slam</span></code>)</dt>
 <dd>übernimmt die simultane Lokalisierung und Kartenerstellung, um akkumulierte Posendaten zu korrigieren. Die Trajektorie des <em>rc_visard</em> lässt sich über die <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API-Schnittstelle</span></a> abfragen.</dd>
 </dl>
 </li>
@@ -686,7 +686,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.01.1',
+            VERSION:'25.01.2',
             LANGUAGE:'de',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>CADMatch &mdash; rc_visard NG 25.01.1
+  <title>CADMatch &mdash; rc_visard NG 25.01.2
  Dokumentation</title>
   
 
@@ -60,7 +60,7 @@
         <link rel="index" title="Stichwortverzeichnis"
               href="genindex.html"/>
         <link rel="search" title="Suche" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.01.1
+    <link rel="top" title="rc_visard NG 25.01.2
  Dokumentation" href="index.html"/>
         <link rel="up" title="Detektions- und Messmodule" href="detection_modules.html"/>
         <link rel="next" title="Konfigurationsmodule" href="configuration_modules.html"/>
@@ -634,7 +634,7 @@
 <div class="section" id="setting-the-preferred-orientation-of-the-tcp">
 <span id="sect-cadmatch-set-preferred-orientation"></span><h2>Setzen der bevorzugten TCP-Orientierung<a class="headerlink" href="#setting-the-preferred-orientation-of-the-tcp" title="Link zu dieser Überschrift">¶</a></h2>
 <p id="index-3">Das CADMatch-Modul berechnet die Erreichbarkeit von Greifpunkten basierend auf der bevorzugten Orientierung des TCPs. Die bevorzugte Orientierung kann über den Service <code class="docutils literal notranslate"><span class="pre">set_preferred_orientation</span></code> oder über die <em>CADMatch</em>-Seite in der Web GUI gesetzt werden. Die bevorzugten Orientierung des TCPs wird genutzt, um Greifpunkte zu verwerfen, die der Greifer nicht erreichen kann, und kann auch zur Sortierung der Greifpunkte genutzt werden.</p>
-<p>Die bevorzugte TCP-Orientierung kann im Kamerakoordinatensystem oder im externen Koordinatensystem gesetzt werden, wenn eine Hand-Auge-Kalibrierung verfügbar ist. Wenn die bevorzugte TCP-Orientierung im externen Koordinatensystem definiert ist, und der Sensor am Roboter montiert ist, muss bei jedem Aufruf der Objekterkennung die aktuelle Roboterpose angegeben werden. Wenn keine bevorzugte TCP-Orientierung gesetzt wird, wird die Orientierung der linken Kamera (siehe <a class="reference external" href="https://doc.rc-visard.com/latest/en/hardware_spec.html#sect-coordinate-frames" title="(in rc_visard v24.10)"><span>Coordinate frames</span></a> ) als die bevorzugte TCP-Orientierung genutzt.</p>
+<p>Die bevorzugte TCP-Orientierung kann im Kamerakoordinatensystem oder im externen Koordinatensystem gesetzt werden, wenn eine Hand-Auge-Kalibrierung verfügbar ist. Wenn die bevorzugte TCP-Orientierung im externen Koordinatensystem definiert ist, und der Sensor am Roboter montiert ist, muss bei jedem Aufruf der Objekterkennung die aktuelle Roboterpose angegeben werden. Wenn keine bevorzugte TCP-Orientierung gesetzt wird, wird die Orientierung der linken Kamera (siehe <a class="reference external" href="https://doc.rc-visard.com/latest/en/hardware_spec.html#sect-coordinate-frames" title="(in rc_visard v25.01)"><span>Coordinate frames</span></a> ) als die bevorzugte TCP-Orientierung genutzt.</p>
 </div>
 <div class="section" id="setting-the-sorting-strategies">
 <span id="sect-cadmatch-set-sorting-strategies"></span><h2>Setzen der Sortierstrategie<a class="headerlink" href="#setting-the-sorting-strategies" title="Link zu dieser Überschrift">¶</a></h2>
@@ -3224,7 +3224,7 @@ Dieser Service hat keine Argumente.</div>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.01.1',
+            VERSION:'25.01.2',
             LANGUAGE:'de',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
