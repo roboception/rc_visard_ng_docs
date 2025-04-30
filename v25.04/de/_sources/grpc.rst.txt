@@ -1,0 +1,201 @@
+gRPC Bilddatenschnittstelle
+
+Die gRPC Bilddatenschnittstelle ist eine Alternative zur
+
+GigE Vision / GenICam Schnittstelle
+
+ zum Streamen von Kamerabildern und synchronisierten Bilddaten (z.B.
+linkes Kamerabild und das dazugehörige Disparitätsbild).
+
+gRPC
+
+ ist ein System zur Interprozesskommunikation über Rechnergrenzen
+hinweg, welches auch das Streamen von Daten unterstützt. Es benutzt
+
+Protocol Buffers
+
+ (siehe
+
+https://developers.google.com/protocol-buffers/
+
+) als Beschreibungssprache und zur Datenserialisierung. Eine
+Einführung und mehr Details zu gRPC sind auf der offiziellen Webseite
+verfügbar (
+
+https://grpc.io/
+
+).
+
+Die Vorteile der gRPC Schnittstelle gegenüber GigE Vision sind:
+
+   Es ist in eigenen Programmen einfacher zu benutzen als GigE Vision.
+
+   Es gibt gRPC Unterstützung für sehr viele Programmiersprachen
+   (siehe https://grpc.io/).
+
+   Die Kommunikation basiert auf TCP statt auf UDP und funktioniert
+   deshalb besser über weniger stabile Netzwerke wie z.B. WLAN.
+
+Die Nachteile der gRPC Schnittstelle im Vergleich zu GigE Vision sind:
+
+   Es unterstützt nicht das Ändern von Parametern. Allerdings können
+   alle Parameter über die REST-API-Schnittstelle\:(Abschnitt
+   \ref{rest_api:sect-rest-api}) geändert werden.
+
+   Es ist keine Standard-Bildverarbeitungsschnittstelle wie z.B. GigE
+   Vision.
+
+Der
+
+rc_visard NG
+
+ bietet synchronisierte Bilddaten über gRPC Serverstreams auf Port
+50051 an.
+
+Die Kommunikation wird gestartet indem eine "ImageSetRequest"
+Nachricht an den Server geschickt wird. Die Nachricht enthält die
+Information über angeforderte Bilder, d.h. linkes, rechtes,
+Disparitäts-, Konfidenz- oder Fehlerbild, die separat an- und
+abgeschaltet werden können.
+
+Nach dem Empfangen der Anfrage sendet der Server kontinuierlich
+"ImageSet" Nachrichten, welche alle angeforderten Bilder mit allen
+Parametern enthalten, die notwendig sind, um die Bilder zu
+interpretieren. Die Bilder in einer "ImageSet" Nachricht sind
+synchronisiert, d.h. sie sind alle zum selben Zeitpunkt aufgenommen.
+Die einzige Ausnahme von dieser Regel besteht, wenn der
+
+out1_mode
+
+ auf "AlternateExposureActive" gesetzt ist. In diesem Fall werden die
+Kamera- und Disparitätsbilder um 40 ms versetzt aufgenommen, sodass
+GPIO Out1 auf
+
+aus
+
+ (LOW) steht, wenn das linke und rechte Bild aufgenommen werden, und
+auf
+
+an
+
+ (HIGH) für das Disparitäts-, Konfidenz- und Fehlerbild. Dies ist
+sinnvoll, wenn ein Musterprojektor genutzt wird, da der Projektor dann
+bei der Aufnahme des linken und rechten Bildes aus ist und für das
+Disparitätsbild an, wodurch die Kamerabilder ungestört sind, aber das
+Disparitätsbild deutlich dichter und genauer wird.
+
+Das Streamen von Bildern wird beendet, sobald der Client die
+Verbindung schließt.
+
+gRPC Servicedefinition
+
+   syntax = "proto3";
+
+   message Time
+   {
+     int32 sec = 1; ///< Seconds
+     int32 nsec = 2; ///< Nanoseconds
+   }
+
+   message Gpios
+   {
+     uint32 inputs  = 1; ///< bitmask of available inputs
+     uint32 outputs = 2; ///< bitmask of available outputs
+     uint32 values  = 3; ///< bitmask of GPIO values
+   }
+
+   message Image
+   {
+     Time timestamp           = 1; ///< Acquisition timestamp of the image
+     uint32 height            = 2; ///< image height (number of rows)
+     uint32 width             = 3; ///< image width (number of columns)
+     float focal_length       = 4; ///< focal length in pixels
+     float principal_point_u  = 5; ///< horizontal position of the principal point
+     float principal_point_v  = 6; ///< vertical position of the principal point
+     string encoding          = 7; ///< Encoding of pixels ["mono8", "mono16", "rgb8"]
+     bool is_bigendian        = 8; ///< is data bigendian, (in our case false)
+     uint32 step              = 9; ///< full row length in bytes
+     bytes data               = 10; ///< actual matrix data, size is (step * height)
+     Gpios gpios              = 11; ///< GPIOs as of acquisition timestamp
+     float exposure_time      = 12; ///< exposure time in seconds
+     float gain               = 13; ///< gain factor in decibel
+     float noise              = 14; ///< noise
+     float out1_reduction     = 16; ///< Fraction of reduction (0.0 - 1.0) of exposure time for images with GPIO Out1=Low in exp_auto_mode=AdaptiveOut1
+     float brightness         = 17; ///< Current brightness of the image as value between 0 and 1
+   }
+
+   message DisparityImage
+   {
+     Time timestamp           = 1; ///< Acquisition timestamp of the image
+     float scale              = 2; ///< scale factor
+     float offset             = 3; ///< offset in pixels (in our case 0)
+     float invalid_data_value = 4; ///< value used to mark pixels as invalid (in our case 0)
+     float baseline           = 5; ///< baseline in meters
+     float delta_d            = 6; ///< Smallest allowed disparity increment. The smallest achievable depth range resolution is delta_Z = (Z^2/image.focal_length*baseline)*delta_d.
+     Image image              = 7; ///< disparity image
+   }
+
+   message Mesh
+   {
+     Time timestamp           = 1; ///< Acquisition timestamp of disparity image from which the mesh is computed
+     string format            = 2; ///< currently only "ply" is supported
+     bytes data               = 3; ///< actual mesh data
+   }
+
+   message ImageSet
+   {
+     Time timestamp             = 1;
+     Image left                 = 2;
+     Image right                = 3;
+     DisparityImage disparity   = 4;
+     Image disparity_error      = 5;
+     Image confidence           = 6;
+     Mesh mesh                  = 7;
+   }
+
+   message MeshOptions
+   {
+     uint32 max_points            = 1; ///< limit maximum number of points, zero means default (up to 3.1MP), minimum is 1000
+     enum BinningMethod {
+       AVERAGE = 0;                    ///< average over all points in bin
+       MIN_DEPTH = 1;                  ///< use point with minimum depth (i.e. closest to camera) in bin
+     }
+     BinningMethod binning_method = 2; ///< method used for binning if limited by max_points
+     bool watertight              = 3; ///< connect all edges and fill all holes, e.g. for collision checking
+     bool textured                = 4; ///< add texture information to mesh
+   }
+
+   message ImageSetRequest
+   {
+     bool left_enabled            = 1;
+     bool right_enabled           = 2;
+     bool disparity_enabled       = 3;
+     bool disparity_error_enabled = 4;
+     bool confidence_enabled      = 5;
+     bool mesh_enabled            = 6;
+     MeshOptions mesh_options     = 7;
+     bool color                   = 8; ///< send left/right image as color (rgb8) images
+   }
+
+   service ImageInterface
+   {
+     // A server-to-client streaming RPC.
+     rpc StreamImageSets(ImageSetRequest) returns (stream ImageSet) {}
+   }
+
+Umwandlung von Bild-Streams
+
+Zur Umwandlung von Disparitätsbildern in Punktwolken dient die
+Beschreibung im Kapitel
+
+GigE Vision / GenICam Schnittstelle
+
+.
+
+Beispielclient
+
+Ein einfacher C++ Client kann von
+
+https://github.com/roboception/grpc_image_client_example
+
+ heruntergeladen werden.

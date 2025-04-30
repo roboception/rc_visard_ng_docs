@@ -1,0 +1,66 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="1"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_stereocalib" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/exp_control/@value" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/exp_max/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/exp_value/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/gain_value/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/grid_height/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/grid_width/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/mirror_visualization/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/snap/@value" Type="REAL"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/parameters/exp_control/@value" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/exp_control/@default" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/exp_control/@min" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/exp_control/@max" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/exp_max/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_max/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_max/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_max/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_value/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_value/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_value/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/exp_value/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/gain_value/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/gain_value/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/gain_value/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/gain_value/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_height/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_height/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_height/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_height/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_width/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_width/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_width/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grid_width/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/mirror_visualization/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/mirror_visualization/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/mirror_visualization/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/mirror_visualization/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/snap/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/snap/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/snap/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/snap/@max" Type="REAL"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

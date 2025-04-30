@@ -1,0 +1,9 @@
+Camera module
+
+The camera module is a base module which is available on every
+
+rc_visard NG
+
+ and is responsible for image acquisition and rectification. It
+provides various parameters, e.g. to control exposure and frame rate.
+

@@ -1,0 +1,375 @@
+Installation
+
+Warnung: Vor Installation des Gerätes müssen die Hinweise zur
+
+  Sicherheit
+
+   des
+
+  rc_visard NG
+
+   gelesen und verstanden werden.
+
+Für den Anschluss an ein Computernetzwerk verfügt der
+
+rc_visard NG
+
+ über eine Gigabit-Ethernet-Schnittstelle. Die gesamte Kommunikation
+mit dem Gerät wird über diese Schnittstelle abgewickelt. Der
+
+rc_visard NG
+
+ besitzt zudem eine eigene Prozessierungseinheit, welche nach dem
+Starten des Geräts eine gewisse Zeit für den Boot-Vorgang benötigt.
+
+Softwarelizenz
+
+Jeder
+
+rc_visard NG
+
+ wird mit einer vorinstallierten Lizenzdatei zur Lizenzierung und zum
+Schutz der installierten Softwarepakete ausgeliefert. Die Lizenz ist
+an den spezifischen
+
+rc_visard NG
+
+ gebunden und kann nicht auf andere Geräte übertragen oder mit diesen
+verwendet werden.
+
+Die Funktionalität des
+
+rc_visard NG
+
+ kann jederzeit durch ein
+
+Upgrade der Lizenz
+
+ erweitert werden -- zum Beispiel für zusätzlich erhältliche,
+optionale Softwaremodule.
+
+Bemerkung: Der
+
+  rc_visard NG
+
+   muss neu gestartet werden, sobald die Softwarelizenz geändert
+  wurde.
+
+Bemerkung: Der Status der Softwarelizenz kann über die verschiedenen
+  Schnittstellen des
+
+  rc_visard NG
+
+   abgefragt werden, zum Beispiel über die Seite System ‣ Firmware &
+  Lizenz in der
+
+  Web GUI
+
+  .
+
+Einschalten
+
+Bemerkung: Vergewissern Sie sich,
+
+  bevor
+
+   Sie die Stromzufuhr einschalten, dass der M12-Stromanschluss am
+
+  rc_visard NG
+
+   sicher befestigt ist.
+
+Sobald der
+
+rc_visard NG
+
+ an den Strom angeschlossen ist, schaltet sich die LED an der
+Gerätefront ein. Während des Boot-Vorgangs ändert sich die Farbe der
+LED, bis sie schließlich grün leuchtet. Dies bedeutet, dass alle
+Prozesse laufen und der
+
+rc_visard NG
+
+ einsatzbereit ist.
+
+Ist kein Netzwerkkabel angeschlossen bzw. das Netzwerk nicht
+ordnungsgemäß konfiguriert, blinkt die LED alle fünf Sekunden rot. In
+diesem Fall muss die Netzwerkkonfiguration des Geräts überprüft
+werden. Für nähere Informationen zu den LED-Farbcodes siehe
+
+LED-Farben
+
+.
+
+Aufspüren von rc_visard NG-Geräten
+
+Roboception-
+
+rc_visard NG
+
+-Geräte, die eingeschaltet und mit dem lokalen Netzwerk oder direkt
+mit einem Computer verbunden sind, können über den Discover-
+Mechanismus von GigE Vision® ausfindig gemacht werden.
+
+Das Open-Source-Tool "rcdiscover-gui" kann für Windows und Linux
+kostenlos heruntergeladen werden:
+
+https://github.com/roboception/rcdiscover/releases
+
+. Dieses Tool besteht für Windows 7, 10 und 11 aus einer einzigen
+ausführbaren Datei, die ohne Installation direkt ausgeführt werden
+kann. Für Linux ist ein Installationspaket für Ubuntu erhältlich.
+
+Nach dem Start wird jedes verfügbare GigE Vision®-Gerät, und damit
+auch jeder verfügbare
+
+rc_visard NG
+
+, mit seinem Namen, seiner Seriennummer, der aktuellen IP-Adresse und
+der eindeutigen MAC-Adresse aufgelistet. Das Discovery-Tool findet
+alle Geräte, die sich über globale Broadcasts erreichen lassen. Es
+kann vorkommen, dass falsch konfigurierte Geräte aufgeführt werden,
+die anderen Subnetzen als dem des Computers angehören. Ein Häkchen im
+Discovery-Tool gibt an, ob ein Gerät richtig konfiguriert und damit
+auch über einen Webbrowser erreichbar ist.
+
+
+Wurde das Gerät erfolgreich gefunden, öffnet sich nach einem
+Doppelklick auf den Geräteeintrag die
+
+Web GUI
+
+ des Geräts im Standard-Browser des Betriebssystems. Wir empfehlen,
+Google Chrome oder Mozilla Firefox als Webbrowser zu verwenden.
+
+Zurücksetzen der Konfiguration
+
+Ein falsch konfiguriertes Gerät lässt sich über die Schaltfläche
+
+Reset rc_visard
+
+ im Discovery-Tool zurücksetzen. Der Rücksetzmechanismus ist jedoch
+nur in den ersten beiden Minuten nach dem Gerätestart verfügbar. Daher
+kann es sein, dass der
+
+rc_visard NG
+
+ neu gestartet werden muss, um seine Konfiguration zurückzusetzen.
+
+
+Wird ein
+
+rc_visard NG
+
+ trotz falscher Konfiguration vom Discovery-Mechanismus erkannt, kann
+er aus der
+
+rc_visard
+
+-Dropdown-Liste gewählt werden. Anderenfalls kann die auf dem
+
+rc_visard NG
+
+ aufgedruckte MAC-Adresse manuell im vorgesehenen Feld eingegeben
+werden.
+
+Nach Eingabe der MAC-Adresse kann aus vier Optionen gewählt werden:
+
+Reset Parameters: Setzt alle Parameter des rc_visard NG, die über die
+Web GUI\ (Abschnitt \ref{webgui:sect-web-gui}) konfiguriert werden
+können (z.B. Bildwiederholrate), zurück.
+
+Reset Network: Setzt die Netzwerkeinstellungen und den
+benutzerdefinierten Namen zurück.
+
+Reset All: Setzt sowohl die rc_visard NG-Parameter als auch die
+Netzwerkeinstellungen und den benutzerdefinierten Namen zurück.
+
+Switch Partitions: Ermöglicht es, einen Rollback vorzunehmen, siehe
+Wiederherstellung der vorherigen Firmware-Version\:(Abschnitt
+\ref{maintenance:sect-restoring-the-previous-firmware-version}).
+
+Wird die LED weiß und das Gerät neu gestartet, war der Reset
+erfolgreich. Ist keine Reaktion erkennbar, war möglicherweise das
+zweiminütige Zeitfenster abgelaufen, sodass das Gerät neu gestartet
+werden muss.
+
+Bemerkung: Der Rücksetzmechanismus ist nur in den ersten beiden
+  Minuten nach dem Gerätestart verfügbar.
+
+Netzwerkkonfiguration
+
+Für die Kommunikation mit anderen Netzwerkgeräten muss dem
+
+rc_visard NG
+
+ eine Internet-Protokoll-Adresse (
+
+IP
+
+) zugewiesen werden. Jede IP-Adresse darf innerhalb des lokalen
+Netzwerks nur einmal vergeben werden. Sie kann entweder manuell
+mittels einer durch den Nutzer zugewiesenen persistenten (d.h.
+statischen) IP-Adresse festgelegt oder automatisch per
+
+DHCP
+
+ zugewiesen werden. Ist keine der Methoden verfügbar oder aktiviert,
+greift der
+
+rc_visard NG
+
+ auf eine
+
+Link-Local
+
+-Adresse zurück.
+
+Nach dem
+
+GigE Vision
+
+®-Standard wird die Konfiguration der IP-Adresse in folgender
+Priorität und Reihenfolge durchgeführt:
+
+   Persistente IP (falls aktiviert)
+
+   DHCP (falls aktiviert)
+
+   Link-Local
+
+
+Zur Konfiguration der Netzwerkeinstellungen und IP-Adresse des
+
+rc_visard NG
+
+ stehen folgende Möglichkeiten zur Verfügung:
+
+   die Seite System ‣ Netzwerk der rc_visard NG-Web GUI -- falls diese
+   im lokalen Netzwerk bereits erreichbar ist, siehe Web
+   GUI\:(Abschnitt \ref{webgui:sect-web-gui})
+
+   alle Konfigurationsprogramme, welche mit GigE Vision® 2.0
+   kompatibel sind, oder das Roboception Kommandozeilenprogramm
+   gc_config. Üblicherweise wird nach dem Start dieser Programme das
+   Netzwerk nach allen verfügbaren GigE Vision®-Sensoren durchsucht.
+   Alle rc_visard NG-Geräte können über ihre Seriennummer und MAC-
+   Adresse, die beide auf dem Gerät aufgedruckt sind, eindeutig
+   identifiziert werden.
+
+   das Roboception rcdiscover-gui-Tool, welches temporäre Änderungen
+   oder das vollständige Zurücksetzen der Netzwerkkonfiguration des
+   rc_visard NG erlaubt, siehe Aufspüren von rc_visard NG-
+   Geräten\:(Abschnitt \ref{installation:sect-discovery-of-rcvisard-
+   devices})
+
+Bemerkung: Das Kommandozeilenprogramm "gc_config" ist Bestandteil
+  der Roboception Open-Source-Bibliothek "rc_genicam_api", welche
+  kostenlos für Windows und Linux von folgender Seite heruntergeladen
+  werden kann:
+
+  http://www.roboception.com/download
+
+  .
+
+Host-Name
+
+Der Host-Name des
+
+rc_visard NG
+
+ basiert auf dessen Seriennummer, welche auf dem Gerät aufgedruckt
+ist, und lautet "rc-visard-ng-<serial number>".
+
+Automatische Konfiguration (werksseitige Voreinstellung)
+
+Für die Zuweisung von IP-Adressen wird bevorzugt auf
+
+DHCP
+
+ zugegriffen. Ist DHCP (werksseitige Voreinstellung auf dem
+
+rc_visard NG
+
+) aktiviert, versucht das Gerät, wann immer das Netzwerkkabel
+eingesteckt wird, einen DHCP-Server zu kontaktieren. Ist ein DHCP-
+Server im Netzwerk verfügbar, wird die IP-Adresse automatisch
+konfiguriert.
+
+In einigen Netzwerken ist der DHCP-Server so konfiguriert, dass
+lediglich bekannte Geräte akzeptiert werden. In diesem Fall muss die
+auf dem Gerät aufgedruckte „Media Access Control“-Adresse, kurz
+
+MAC-Adresse
+
+, im DHCP-Server konfiguriert werden. Zudem ist der ebenfalls
+aufgedruckte Host-Name des
+
+rc_visard NG
+
+ im Domain Name Server
+
+DNS
+
+ einzustellen. Sowohl die MAC-Adresse als auch der Host-Name sind zu
+Konfigurationszwecken an den Netzwerkadministrator zu übermitteln.
+
+Kann der
+
+rc_visard NG
+
+ nicht innerhalb von 15 Sekunden nach dem Einschalten bzw. dem
+Einstecken des Netzwerkkabels Kontakt zu einem DHCP-Server aufbauen,
+versucht er, sich selbst eine eindeutige IP-Adresse zuzuweisen. Dieser
+Prozess heißt
+
+Link-Local
+
+. Diese Option ist besonders nützlich, wenn der
+
+rc_visard NG
+
+ direkt an einen Computer angeschlossen werden soll. In diesem Fall
+muss auch der Computer mit einer Link-Local-Adresse konfiguriert sein.
+Bei manchen Betriebssystemen wie Windows 10 ist Link-Local bereits
+standardmäßig als Fallback eingestellt. Bei der Arbeit mit anderen
+Betriebssystemen, wie z.B. Linux, muss die Link-Local-Adresse direkt
+im Netzwerkmanager konfiguriert werden.
+
+Manuelle Konfiguration
+
+In einigen Fällen kann es nützlich sein, manuell eine persistente,
+d.h. statische IP-Adresse einzurichten. Diese wird auf dem
+
+rc_visard NG
+
+ gespeichert und beim Systemstart bzw. beim Verbindungswiederaufbau
+zugewiesen. Bitte stellen Sie sicher, dass die Einstellungen der IP-
+Adresse, der Subnetz-Maske und des Default-Gateway keine Konflikte im
+Netzwerk verursachen.
+
+Warnung: Die IP-Adresse muss eindeutig sein und innerhalb des
+  Gültigkeitsbereichs des lokalen Netzwerks liegen. Zudem muss die
+  Subnetz-Maske dem lokalen Netzwerk entsprechen, da anderenfalls
+  möglicherweise nicht auf den
+
+  rc_visard NG
+
+   zugegriffen werden kann. Dieses Problem lässt sich vermeiden, indem
+  die unter
+
+  Automatische Konfiguration (werksseitige Voreinstellung)
+
+   beschriebene automatische Konfiguration genutzt wird.
+
+Kann die gewählte IP-Adresse nicht zugewiesen werden, zum Beispiel
+weil ein anderes Gerät im lokalen Netzwerk diese bereits verwendet,
+wird auf die automatische IP-Konfiguration mittels
+
+DHCP
+
+ (falls aktiviert) oder
+
+Link-Local
+
+ zurückgegriffen.

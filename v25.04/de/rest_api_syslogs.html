@@ -1,0 +1,2098 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>System und Logs &mdash; rc_visard NG 25.04.2
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/contentui.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard NG 25.04.2
+ Dokumentation" href="index.html"/>
+        <link rel="up" title="Allgemeine Struktur der Programmierschnittstelle (API)" href="rest_api_general.html"/>
+        <link rel="next" title="Datentyp-Definitionen" href="rest_api_datamodel.html"/>
+        <link rel="prev" title="UserSpace" href="rest_api_userspace.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard NG
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                25.04
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="disposal.html">Informationen zur Entsorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Aufspüren von <em>rc_visard NG</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host-Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werksseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Messprinzipien</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereovision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_general.html">Allgemeine Informationen zu 3D Daten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="camera.html">Kamera Modul</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rectification.html">Rektifizierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="downloading_images.html">Anzeigen und Herunterladen von Bildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html">Parameter, Statuswerte und Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="detection_modules.html">Detektions- und Messmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="measure.html">Measure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#measuring-depth">Tiefe messen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">LoadCarrier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Erkennung von Load Carriern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Füllstandserkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-reading">Tagerkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag-Wiedererkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html">ItemPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="boxpick.html">BoxPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#detection-of-items">Erkennung von Rechtecken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#boxpick-template-api">BoxPick Template API“</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cadmatch.html">CADMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-pose-priors">Setzen von Posenvorgaben</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#template-api">Template API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration_modules.html">Konfigurationsmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Kameramontage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking">Kollisionsprüfung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html">IOControl und Projektor-Kontrolle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database_modules.html">Datenbankmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier_db.html">LoadCarrierDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-definition">Load Carrier Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-compartments">Load Carrier Abteile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">RoiDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gripper_db.html">GripperDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#setting-a-gripper">Erstellen eines Greifers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#cad-element-api">CAD-Greiferelement API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Web GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#accessing-the-web-gui">Zugriff auf die Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#exploring-the-web-gui">Kennenlernen der Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#web-gui-access-control">Web GUI Zugriffskontrolle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-camera-images">Herunterladen von Kamerabildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Herunterladen von Tiefenbildern und Punktwolken</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_userspace.html">UserSpace</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#example-applications">Beispielanwendungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Fehlerbehebung</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC Bilddatenschnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC Servicedefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Beispielclient</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#setting-time-manually">Manuelles Setzen der Zeit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userspace.html">UserSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configuration">Konfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="userspace.html#configure-userspace-via-the-webgui">Konfiguration des UserSpace über die Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configure-http-proxy">HTTP Proxy konfigurieren</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#view-running-applications">Anzeige laufender Apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#network-access-to-userspace-applications">Netzwerkzugriff auf die UserSpace Anwendungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#restrictions">Einschränkungen</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Backup der Einstellungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard NG</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#pose-formats">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_rt.html">Rotationsmatrix und Translationsvektor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-rotation-matrix-to-quaternion">Umrechnung von Rotationsmatrizen in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-quaternion-to-rotation-matrix">Umrechnung von Quaternionen in Rotationsmatrizen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_abb.html">ABB Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fanuc.html">FANUC XYZ-WPR Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-fanuc-wpr-to-quaternion">Umrechnung von FANUC-WPR in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-quaternion-to-fanuc-wpr">Umrechnung von Quaternionen in FANUC-WPR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_franka_emika.html">Franka Emika Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-transformation-matrix-to-quaternion">Umrechnung von Transformation in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-rotation-xyz-to-quaternion">Umrechnung von Rotation-XYZ in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-and-translation-to-transformation">Umrechnung von Quaternion und Translation in Transformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-to-rotation-xyz">Umrechnung von Quaternion in Rotation-XYZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#pose-representation-in-racecom-messages-and-state-machines">Posenrepräsentation in RaceCom Messages und Statemachines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fruitcore_horst.html">Fruitcore HORST Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kawasaki.html">Kawasaki XYZ-OAT Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-kawasaki-oat-to-quaternion">Umrechnung von Kawasaki-OAT in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-quaternion-to-kawasaki-oat">Umrechnung von Quaternionen in Kawasaki-OAT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kuka.html">KUKA XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-kuka-abc-to-quaternion">Umrechnung von KUKA-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-quaternion-to-kuka-abc">Umrechnung von Quaternionen in KUKA-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_mitsubishi.html">Mitsubishi XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-mitsubishi-abc-to-quaternion">Umrechnung von Mitsubishi-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-quaternion-to-mitsubishi-abc">Umrechnung von Quaternionen in Mitsubishi-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_ur.html">Universal Robots Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-angle-axis-format-to-quaternion">Umrechnung vom Angle-Axis Format in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-quaternion-to-angle-axis-format">Umrechnung von Quaternionen ins Angle-Axis Format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_yaskawa.html">Yaskawa Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-yaskawa-rx-ry-rz-to-quaternion">Umrechnung von Yaskawa Rx, Ry, Rz in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-quaternion-to-yaskawa-rx-ry-rz">Umrechnung von Quaternionen in Yaskawa Rx, Ry, Rz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard NG</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">rc_visard NG</a> &gt;</li>
+        
+          <li><a href="interfaces.html">Schnittstellen</a> &gt;</li>
+        
+          <li><a href="rest_api.html">REST-API-Schnittstelle</a> &gt;</li>
+        
+          <li><a href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a> &gt;</li>
+        
+      <li>System und Logs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="system-and-logs">
+<span id="sect-rest-api-syslogs"></span><h1>System und Logs<a class="headerlink" href="#system-and-logs" title="Link zu dieser Überschrift">¶</a></h1>
+<p id="index-0">Die folgenden Ressourcen und Anfragen sind für die System-Level-API des <em>rc_visard NG</em> verfügbar. Sie ermöglichen Folgendes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Zugriff auf Logdateien (systemweit oder modulspezifisch),</li>
+<li>Abruf von Informationen zum Gerät und zur Laufzeitstatistik, wie Datum, MAC-Adresse, Uhrzeitsynchronisierungsstatus und verfügbare Ressourcen,</li>
+<li>Verwaltung installierter Softwarelizenzen, und</li>
+<li>Aktualisierung des Firmware-Images des <em>rc_visard NG</em>.</li>
+</ul>
+</div></blockquote>
+<span class="target" id="sect-rest-get-logs"><span id="sect-rest-logs"></span></span><dl class="get">
+<dt id="get--logs">
+<code class="descname">GET </code><code class="descname">/logs</code><a class="headerlink" href="#get--logs" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf einer Liste aller verfügbaren Logdateien.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/logs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mf">1503060035.0625782</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rcsense-api.log&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">730</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mf">1503060035.741574</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stereo.log&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">39024</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mf">1503060044.0475223</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;camera.log&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">1091</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: LogInfo-Array)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-loginfo"><span class="std std-ref">LogInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-logs-log"></span><dl class="get">
+<dt id="get--logs-log">
+<code class="descname">GET </code><code class="descname">/logs/{log}</code><a class="headerlink" href="#get--logs-log" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf einer Logdatei: Die Art des Inhalts der Antwort richtet sich nach dem <cite>format</cite>-Parameter.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/logs/&lt;log&gt;?format=&lt;format&gt;&amp;limit=&lt;limit&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="mf">1581609251.8168414</span><span class="p">,</span>
+  <span class="nt">&quot;log&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_gev_server&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Application from IP 10.0.1.7 registered with control access.&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1581609249.61</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_gev_server&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Application from IP 10.0.1.7 deregistered.&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1581609249.739</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_gev_server&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Application from IP 10.0.1.7 registered with control access.&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1581609250.94</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;component&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_gev_server&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Application from IP 10.0.1.7 deregistered.&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;timestamp&quot;</span><span class="p">:</span> <span class="mf">1581609251.819</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;gev.log&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">42112</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>log</strong> (<em>string</em>) – Name der Logdatei <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Anfrageparameter:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>format</strong> (<em>string</em>) – Rückgabe des Logs im JSON- oder Rohdatenformat (mögliche Werte: <code class="docutils literal notranslate"><span class="pre">json</span></code> oder <code class="docutils literal notranslate"><span class="pre">raw</span></code>; Voreinstellung: <code class="docutils literal notranslate"><span class="pre">json</span></code>) <em>(optional)</em></li>
+<li><strong>limit</strong> (<em>integer</em>) – Beschränkung auf die letzten x Zeilen im JSON-Format (Voreinstellung: <code class="docutils literal notranslate"><span class="pre">100</span></code>) <em>(optional)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – text/plain application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: Log)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Log nicht gefunden</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-log"><span class="std std-ref">Log</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system"><span id="sect-rest-system"></span></span><dl class="get">
+<dt id="get--system">
+<code class="descname">GET </code><code class="descname">/system</code><a class="headerlink" href="#get--system" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf von Systeminformationen zum Sensor.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;dns&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;dns_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;1.1.1.1&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;manual_dns_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;1.1.1.1&quot;</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;firmware&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;active_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_visard_v1.1.0&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;fallback_booted&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;inactive_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_visard_v1.0.0&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;next_boot_image&quot;</span><span class="p">:</span> <span class="s2">&quot;active_image&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;hostname&quot;</span><span class="p">:</span> <span class="s2">&quot;rc-visard-ng-1421823000987&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;link_speed&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+  <span class="nt">&quot;mac&quot;</span><span class="p">:</span> <span class="s2">&quot;00:14:2D:2B:D8:AB&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;ntp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;manual_ntp_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;10.0.0.1&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mf">-3.2666e-05</span><span class="p">,</span>
+    <span class="nt">&quot;selected_ntp_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;10.0.0.1&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;synchronized&quot;</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;ptp_status&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;master_ip&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;offset_dev&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;offset_mean&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;off&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;ready&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;serial&quot;</span><span class="p">:</span> <span class="s2">&quot;1421823000987&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;time&quot;</span><span class="p">:</span> <span class="mf">1504080462.641875</span><span class="p">,</span>
+  <span class="nt">&quot;uptime&quot;</span><span class="p">:</span> <span class="mf">65457.42</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: SysInfo)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-sysinfo"><span class="std std-ref">SysInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-backup"></span><dl class="get">
+<dt id="get--system-backup">
+<code class="descname">GET </code><code class="descname">/system/backup</code><a class="headerlink" href="#get--system-backup" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf eines Backups der Einstellungen.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/backup?pipelines=&lt;pipelines&gt;&amp;load_carriers=&lt;load_carriers&gt;&amp;regions_of_interest=&lt;regions_of_interest&gt;&amp;grippers=&lt;grippers&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Anfrageparameter:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>pipelines</strong> (<em>boolean</em>) – Backup der Pipelines mit Moduleinstellungen, d.h. Parameter und bevorzugte TCP-Orientierung (Standardwert: <code class="docutils literal notranslate"><span class="pre">True</span></code>) <em>(optional)</em></li>
+<li><strong>load_carriers</strong> (<em>boolean</em>) – Backup der Load Carrier (Standardwert: <code class="docutils literal notranslate"><span class="pre">True</span></code>) <em>(optional)</em></li>
+<li><strong>regions_of_interest</strong> (<em>boolean</em>) – Backup der Regions of Interest (Standardwert: <code class="docutils literal notranslate"><span class="pre">True</span></code>) <em>(optional)</em></li>
+<li><strong>grippers</strong> (<em>boolean</em>) – Backup der Greifer (Standardwert: <code class="docutils literal notranslate"><span class="pre">True</span></code>) <em>(optional)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-post-system-backup"></span><dl class="post">
+<dt id="post--system-backup">
+<code class="descname">POST </code><code class="descname">/system/backup</code><a class="headerlink" href="#post--system-backup" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Backup einspielen.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/api/v2/system/backup</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json application/ubjson</span>
+
+{}
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;backup restored&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;warnings&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>backup</strong> (<em>object</em>) – Backup-Daten als json-Objekt <em>(erforderlich)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-ca-certificates"></span><dl class="get">
+<dt id="get--system-ca_certificates">
+<code class="descname">GET </code><code class="descname">/system/ca_certificates</code><a class="headerlink" href="#get--system-ca_certificates" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf der CA Zertifikate.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/ca_certificates</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-ca-certificates-id"></span><dl class="get">
+<dt id="get--system-ca_certificates-id">
+<code class="descname">GET </code><code class="descname">/system/ca_certificates/{id}</code><a class="headerlink" href="#get--system-ca_certificates-id" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf der CA-Zertifikatsdatei oder ihrer Details.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/ca_certificates/&lt;id&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> (<em>string</em>) – ID/Dateiname ohne Endung <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/octet-stream</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – crt Datei nicht gefunden</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-put-system-ca-certificates-id"></span><dl class="put">
+<dt id="put--system-ca_certificates-id">
+<code class="descname">PUT </code><code class="descname">/system/ca_certificates/{id}</code><a class="headerlink" href="#put--system-ca_certificates-id" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Erstellen oder updaten einer crt Datei.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v2/system/ca_certificates/&lt;id&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">multipart/form-data application/json</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> (<em>string</em>) – ID/Dateiname ohne Endung <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Formularparameter:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>file</strong> – crt Datei <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – Multipart/Formulardaten application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – crt ist nicht gültig oder maximale Anzahl Elemente erreicht</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.14">413 Request Entity Too Large</a> – Datei zu groß</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-delete-system-ca-certificates-id"></span><dl class="delete">
+<dt id="delete--system-ca_certificates-id">
+<code class="descname">DELETE </code><code class="descname">/system/ca_certificates/{id}</code><a class="headerlink" href="#delete--system-ca_certificates-id" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Löschen einer crt Datei.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">DELETE</span> <span class="nn">/api/v2/system/ca_certificates/&lt;id&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> (<em>string</em>) – ID/Dateiname ohne Endung <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Element nicht gefunden</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-dns"></span><dl class="get">
+<dt id="get--system-dns">
+<code class="descname">GET </code><code class="descname">/system/dns</code><a class="headerlink" href="#get--system-dns" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abfragen der DNS-Server Einstellungen.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/dns</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;dns&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;dns_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;1.1.1.1&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;manual_dns_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;1.1.1.1&quot;</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: DNS)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-dns"><span class="std std-ref">DNS</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-put-system-dns"></span><dl class="put">
+<dt id="put--system-dns">
+<code class="descname">PUT </code><code class="descname">/system/dns</code><a class="headerlink" href="#put--system-dns" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Setze manuelle DNS-Server.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v2/system/dns</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json application/ubjson</span>
+
+{}
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;dns&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;dns_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;10.0.0.1&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;1.1.1.1&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;manual_dns_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;1.1.1.1&quot;</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>manual_dns_servers</strong> (<em>ManualDNSServers</em>) – Manuelle DNS-Server <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: DNS)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – ungültige/fehlende Argumente</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-manualdnsservers"><span class="std std-ref">ManualDNSServers</span></a></li>
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-dns"><span class="std std-ref">DNS</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-license"></span><dl class="get">
+<dt id="get--system-license">
+<code class="descname">GET </code><code class="descname">/system/license</code><a class="headerlink" href="#get--system-license" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf von Informationen zu den auf dem Sensor installierten Lizenzen.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/license</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;components&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;calibration&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;hand_eye_calibration&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;rectification&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;self_calibration&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;stereo&quot;</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;valid&quot;</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: LicenseInfo)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-licenseinfo"><span class="std std-ref">LicenseInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-post-system-license"></span><dl class="post">
+<dt id="post--system-license">
+<code class="descname">POST </code><code class="descname">/system/license</code><a class="headerlink" href="#post--system-license" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Aktualisierung der auf dem Sensor installierten Lizenz mithilfe einer Lizenzdatei.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/api/v2/system/license</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">multipart/form-data</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Formularparameter:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>file</strong> – Lizenzdatei <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – Multipart/Formulardaten</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Keine gültige Lizenz</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-max-power-test"></span><dl class="get">
+<dt id="get--system-max_power_test">
+<code class="descname">GET </code><code class="descname">/system/max_power_test</code><a class="headerlink" href="#get--system-max_power_test" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf des letzten Maximalleistungstests.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/max_power_test</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-post-system-max-power-test"></span><dl class="post">
+<dt id="post--system-max_power_test">
+<code class="descname">POST </code><code class="descname">/system/max_power_test</code><a class="headerlink" href="#post--system-max_power_test" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Ausführen des Maximalleistungstests. Führt eine maximale Belastung der GPU (und CPU) durch, damit 10 Sekunden lang maximale Leistung verbraucht wird, um die Stromversorgung zu testen. WARNUNG: Das System gibt aufgrund eines sofortigen Neustarts möglicherweise keine Antwort zurück, wenn die Stromversorgung nicht ausreicht.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/api/v2/system/max_power_test?nocpu=&lt;nocpu&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Anfrageparameter:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>nocpu</strong> (<em>boolean</em>) – Nur die GPU belasten, keine CPU Worker ausführen <em>(optional)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Test abgeschlossen. Siehe return_code für das Ergebnis.</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Test läuft bereits.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-network"></span><dl class="get">
+<dt id="get--system-network">
+<code class="descname">GET </code><code class="descname">/system/network</code><a class="headerlink" href="#get--system-network" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf der aktuellen Netzwerk Konfiguration.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/network</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;current_method&quot;</span><span class="p">:</span> <span class="s2">&quot;DHCP&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;default_gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.3.254&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;ip_address&quot;</span><span class="p">:</span> <span class="s2">&quot;10.0.1.41&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;dhcp_enabled&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;persistent_default_gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;persistent_ip_address&quot;</span><span class="p">:</span> <span class="s2">&quot;192.168.0.10&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;persistent_ip_enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;persistent_subnet_mask&quot;</span><span class="p">:</span> <span class="s2">&quot;255.255.255.0&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;subnet_mask&quot;</span><span class="p">:</span> <span class="s2">&quot;255.255.252.0&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: NetworkInfo)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-networkinfo"><span class="std std-ref">NetworkInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-network-settings"></span><dl class="get">
+<dt id="get--system-network-settings">
+<code class="descname">GET </code><code class="descname">/system/network/settings</code><a class="headerlink" href="#get--system-network-settings" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf der aktuellen Netzwerkeinstellungen.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/network/settings</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;dhcp_enabled&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;persistent_default_gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;persistent_ip_address&quot;</span><span class="p">:</span> <span class="s2">&quot;192.168.0.10&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;persistent_ip_enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;persistent_subnet_mask&quot;</span><span class="p">:</span> <span class="s2">&quot;255.255.255.0&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: NetworkSettings)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-networksettings"><span class="std std-ref">NetworkSettings</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-put-system-network-settings"></span><dl class="put">
+<dt id="put--system-network-settings">
+<code class="descname">PUT </code><code class="descname">/system/network/settings</code><a class="headerlink" href="#put--system-network-settings" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Setzen der aktuellen Netzwerkeinstellungen.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v2/system/network/settings</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json application/ubjson</span>
+
+{}
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;dhcp_enabled&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;persistent_default_gateway&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;persistent_ip_address&quot;</span><span class="p">:</span> <span class="s2">&quot;192.168.0.10&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;persistent_ip_enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;persistent_subnet_mask&quot;</span><span class="p">:</span> <span class="s2">&quot;255.255.255.0&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>settings</strong> (<em>NetworkSettings</em>) – Anzuwendende Netzwerkeinstellungen <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: NetworkSettings)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – ungültige/fehlende Argumente</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a> – Das Ändern der Netzwerkeinstellungen ist nicht erlaubt, da eine laufende GigE Vision-Applikation diese sperrt.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-networksettings"><span class="std std-ref">NetworkSettings</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-ntp"></span><dl class="get">
+<dt id="get--system-ntp">
+<code class="descname">GET </code><code class="descname">/system/ntp</code><a class="headerlink" href="#get--system-ntp" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abfragen der NTP Einstellungen.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/ntp</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;ntp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;manual_ntp_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;10.0.0.1&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mf">-3.2666e-05</span><span class="p">,</span>
+    <span class="nt">&quot;selected_ntp_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;10.0.0.1&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;synchronized&quot;</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: NTP)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-ntp"><span class="std std-ref">NTP</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-put-system-ntp"></span><dl class="put">
+<dt id="put--system-ntp">
+<code class="descname">PUT </code><code class="descname">/system/ntp</code><a class="headerlink" href="#put--system-ntp" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Setze manuelle NTP-Server.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v2/system/ntp</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json application/ubjson</span>
+
+{}
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;ntp&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;manual_ntp_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;10.0.0.1&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mf">-3.2666e-05</span><span class="p">,</span>
+    <span class="nt">&quot;selected_ntp_servers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;10.0.0.1&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;synchronized&quot;</span><span class="p">:</span> <span class="kc">true</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Request JSON Object:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>manual_ntp_servers</strong> (<em>ManualNTPServers</em>) – Manuelle NTP-Server <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: NTP)</em></li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – ungültige/fehlende Argumente</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-manualntpservers"><span class="std std-ref">ManualNTPServers</span></a></li>
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-ntp"><span class="std std-ref">NTP</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-put-system-reboot"></span><dl class="put">
+<dt id="put--system-reboot">
+<code class="descname">PUT </code><code class="descname">/system/reboot</code><a class="headerlink" href="#put--system-reboot" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Neustart des Geräts.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v2/system/reboot</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-rollback"></span><dl class="get">
+<dt id="get--system-rollback">
+<code class="descname">GET </code><code class="descname">/system/rollback</code><a class="headerlink" href="#get--system-rollback" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf von Informationen zu Firmware/System-Images, die aktuell auf dem Gerät aktiv oder inaktiv sind.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/rollback</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;active_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_visard_ng_v22.10.0&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;fallback_booted&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;inactive_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_visard_ng_v22.10.0&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;next_boot_image&quot;</span><span class="p">:</span> <span class="s2">&quot;active_image&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: FirmwareInfo)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-firmwareinfo"><span class="std std-ref">FirmwareInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-put-system-rollback"></span><dl class="put">
+<dt id="put--system-rollback">
+<code class="descname">PUT </code><code class="descname">/system/rollback</code><a class="headerlink" href="#put--system-rollback" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Rollback auf vorherige Firmware-Version (inaktives System-Image).</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v2/system/rollback</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Bereits auf die Verwendung der inaktiven Partition beim nächsten Boot-Vorgang gesetzt.</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.5.1">500 Internal Server Error</a> – Interner Fehler</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-time"></span><dl class="get">
+<dt id="get--system-time">
+<code class="descname">GET </code><code class="descname">/system/time</code><a class="headerlink" href="#get--system-time" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abfrage der Systemzeit in UTC als String mit dem Format „YYYY-MM-DD hh:mm:ss“</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/time</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;utc&quot;</span><span class="p">:</span> <span class="s2">&quot;2023-10-05 08:35:26&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-put-system-time"></span><dl class="put">
+<dt id="put--system-time">
+<code class="descname">PUT </code><code class="descname">/system/time</code><a class="headerlink" href="#put--system-time" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Setzen der Systemzeit in UTC als String mit dem Format „YYYY-MM-DD hh:mm:ss“</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v2/system/time?utc=&lt;utc&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;utc&quot;</span><span class="p">:</span> <span class="s2">&quot;2023-10-05 08:35:26&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Anfrageparameter:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>utc</strong> (<em>string</em>) – Zeit in UTC als String mit dem Format „YYYY-MM-DD hh:mm:ss“ (obligatorisch)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – ungültige/fehlende Argumente</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a> – Ändern der Zeit nicht erlaubt, da Zeitsynchronisation via NTP oder PTP aktiv ist.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-ui-lock"></span><dl class="get">
+<dt id="get--system-ui_lock">
+<code class="descname">GET </code><code class="descname">/system/ui_lock</code><a class="headerlink" href="#get--system-ui_lock" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf des UI Lock Status</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/ui_lock</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: UILock)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-uilock"><span class="std std-ref">UILock</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-delete-system-ui-lock"></span><dl class="delete">
+<dt id="delete--system-ui_lock">
+<code class="descname">DELETE </code><code class="descname">/system/ui_lock</code><a class="headerlink" href="#delete--system-ui_lock" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>UI Lock entfernen.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">DELETE</span> <span class="nn">/api/v2/system/ui_lock</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;valid&quot;</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-post-system-ui-lock"></span><dl class="post">
+<dt id="post--system-ui_lock">
+<code class="descname">POST </code><code class="descname">/system/ui_lock</code><a class="headerlink" href="#post--system-ui_lock" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Verifizieren oder Setzen des UI Locks.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/api/v2/system/ui_lock?hash=&lt;hash&gt;&amp;set=&lt;set&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;valid&quot;</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Anfrageparameter:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>hash</strong> (<em>string</em>) – Hash des UI Lock Passworts <em>(obligatorisch)</em></li>
+<li><strong>set</strong> (<em>boolean</em>) – neuen Hash setzen anstatt zu verifizieren <em>(optional)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-system-update"></span><dl class="get">
+<dt id="get--system-update">
+<code class="descname">GET </code><code class="descname">/system/update</code><a class="headerlink" href="#get--system-update" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Abruf von Informationen zu Firmware/System-Images, die aktuell auf dem Gerät aktiv oder inaktiv sind.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/system/update</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Beispielantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;active_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_visard_ng_v22.10.0&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;fallback_booted&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nt">&quot;inactive_image&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;image_version&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_visard_ng_v22.10.0&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;next_boot_image&quot;</span><span class="p">:</span> <span class="s2">&quot;active_image&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Antwort-Headers:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung <em>(Rückgabe: FirmwareInfo)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Referenzierte Datenmodelle:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="rest_api_datamodel.html#sect-rest-datamodel-firmwareinfo"><span class="std std-ref">FirmwareInfo</span></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-post-system-update"></span><dl class="post">
+<dt id="post--system-update">
+<code class="descname">POST </code><code class="descname">/system/update</code><a class="headerlink" href="#post--system-update" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Aktualisierung des Firmware/System-Images mit einer Mender-Artefakt-Datei: Um die aktualisierte Firmware zu aktivieren, ist anschließend ein Neustart erforderlich.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/api/v2/system/update</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">multipart/form-data</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Formularparameter:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>file</strong> – Mender-Artefakt-Datei <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – Multipart/Formulardaten</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1">400 Bad Request</a> – Client-Fehler, z.B. kein gültiges Mender-Artefakt</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="rest_api_datamodel.html" class="btn btn-neutral float-right" title="Datentyp-Definitionen" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rest_api_userspace.html" class="btn btn-neutral" title="UserSpace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2025, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../en/rest_api_syslogs.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/rest_api_syslogs.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v23.10/index.html">v23.10</a></dd>
+          
+            <dd><a href="../../v24.01/index.html">v24.01</a></dd>
+          
+            <dd><a href="../../v24.04/index.html">v24.04</a></dd>
+          
+            <dd><a href="../../v24.07/index.html">v24.07</a></dd>
+          
+            <dd><a href="../../v24.10/index.html">v24.10</a></dd>
+          
+            <dd><a href="../../v25.01/index.html">v25.01</a></dd>
+          
+            <dd><a href="../../v25.04/index.html">v25.04</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'25.04.2',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="_static/contentui.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

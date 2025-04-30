@@ -1,0 +1,291 @@
+Zivid Modul
+
+Das zivid Modul ist ein Basismodul, das auf jedem
+
+rc_visard NG
+
+ verfügbar ist und liefert Disparitäts-, Konfidenz- und Fehlerbilder
+einer angeschlossenen
+
+zivid
+
+ Structured Light Kamera. Es läuft nur in Kamera-Pipelines vom Typ
+"zivid".
+
+Benutzerdefinierte Voreinstellungen
+
+Die
+
+zivid
+
+-Kamera verfügt über zahlreiche vorkonfigurierte Einstellungen zur
+Bildaufnahme, sogenannte Presets.
+
+Die mit der
+
+zivid
+
+-Kamera mitgelieferten 3D-Voreinstellungen umfassen sowohl 2D- als
+auch 3D-Einstellungen und ermöglichen die gleichzeitige Erfassung von
+Farbbildern und Tiefendaten. Die 2D-Bildeinstellungen werden jedoch
+ignoriert. Stattdessen wird das 2D-Bild mit der in "rc_camera"
+gewählten Voreinstellung aufgenommen (siehe
+
+Benutzerdefinierte Voreinstellungen
+
+). Die 3D-Voreinstellungen sind nach Anwendungsanforderungen
+kategorisiert, z.B.
+
+Consumer Goods
+
+,
+
+Manufacturing
+
+ usw.
+
+Benutzer können mit der Software
+
+Zivid Studio
+
+ (
+
+https://www.zivid.com/zivid-studio-software
+
+) auch eigene 3D-Presets erstellen und als .yml-Dateien speichern.
+Diese Preset-Dateien können auf der Seite
+
+Tiefenbild
+
+ der Web GUI auf den
+
+rc_cube
+
+ hochgeladen werden. Benutzerdefinierte Presets können dann wie die
+vordefinierten Presets über den Laufzeitparameter "preset_name" für
+die Tiefenbildaufnahme ausgewählt werden. Soll das im
+benutzerdefinierten 3D-Preset enthaltene 2D-Preset verwendet werden,
+muss dieses ebenfalls als 2D-Preset hochgeladen und als "preset_name"
+in "rc_camera" ausgewählt werden.
+
+Parameter
+
+Das zivid Modul wird in der REST-API als "rc_zivid" bezeichnet und in
+der
+
+Web GUI
+
+ auf der Seite
+
+Tiefenbild
+
+ in der gewünschten Pipeline dargestellt, wenn eine
+
+zivid
+
+ Kamera an der entsprechenden Pipeline angeschlossen ist. Der Benutzer
+kann die zivid Parameter entweder dort oder über die REST-API (
+
+REST-API-Schnittstelle
+
+) ändern.
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter:
+
+Laufzeitparameter des rc_zivid Moduls              Name  Typ  Min.
+Max.  Default  Beschreibung  acquisition_mode  string  -  -
+SingleFrame  Aufnahmemodus: [Continuous, SingleFrame]  maxdepth
+float64  0.3  100.0  100.0  Maximaler Abstand in Metern  mindepth
+float64  0.3  100.0  0.3  Minimaler Abstand in Metern  preset_name
+string  -  -  -  Name der Voreinstellung
+
+Beschreibung der Laufzeitparameter
+
+Jeder Laufzeitparameter ist durch eine eigene Zeile auf der Seite
+
+Tiefenbild
+
+ der Web GUI repräsentiert. Der Web GUI-Name des Parameters ist in
+Klammern hinter dem Namen des Parameters angegeben und die Parameter
+werden in der Reihenfolge, in der sie in der Web GUI erscheinen,
+aufgelistet:
+
+acquisition_mode (Aufnahmemodus)
+
+      Dieser Parameter bestimmt den Aufnahmemodus der 3D-Tiefenbilder.
+      Der Aufnahmemodus kann auf
+
+      Kontinuierlich
+
+       ("Continuous") oder
+
+      Einzelbild
+
+       ("SingleFrame") gestellt werden. Letzteres ist der
+      Standardwert, wobei ein Tiefenbild bei jedem Klick auf den
+      Aufnehmen-Knopf oder beim Aufruf des Services
+      "rc_zivid/acquisition_trigger" (siehe
+
+      Services des rc_zivid Moduls
+
+      ) aufgenommen wird. Im Modus
+
+      Kontinuierlich
+
+       ("Continuous") werden Tiefenbilder kontinuierlich aufgenommen,
+      wenn auch der 2D Bildaufnahmemodus auf
+
+      Kontinuierlich
+
+       ("Continuous") gestellt ist. Andernfalls werden Tiefenbilder
+      nur aufgenommen, wenn eine 2D Bildaufnahme ausgelöst wird.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_zivid/parameters/parameters?acquisition_mode=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_zivid/parameters?acquisition_mode=<value>
+
+preset_name (Voreinstellung)
+
+   Mit diesem Parameter kann eine Voreinstellung für die 3D-
+   Bildaufnahme ausgewählt werden. Die Voreinstellung kann eine der
+   vorkonfigurierten
+
+   zivid
+
+   -Voreinstellungen sein, die vom
+
+   zivid
+
+   -Modell abhängen und vom angeschlossenen Gerät gelesen werden, oder
+   eine benutzerdefinierte Voreinstellung, die auf den
+
+   rc_cube
+
+    hochgeladen wurde (siehe
+
+   Benutzerdefinierte Voreinstellungen
+
+   ).
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_zivid/parameters?preset_name=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_zivid/parameters?preset_name=<value>
+
+Statuswerte
+
+Das "rc_zivid" Modul meldet die folgenden Statuswerte:
+
+Die Statuswerte des rc_zivid-Moduls      Name  Beschreibung  fps
+Aktuelle Bildwiederholrate der Disparitäts-, Fehler- und
+Konfidenzbilder in Hertz. Dieser Wert wird unter der Bildvorschau in
+der Web GUI als FPS (Hz) angezeigt.  height  Höhe der Disparitäts-,
+Fehler- und Konfidenzbilder in Pixeln. Dieser Wert wird unter der
+Bildvorschau in der Web GUI als zweiter Teil von Auflösung (px)
+angezeigt.  last_timestamp_grabbed  Zeitstempel des letzten
+aufgenommenen Tiefenbilds  latency  Aktuelle Bildwiederholrate der
+Disparitäts-, Fehler- und Konfidenzbilder in Hertz. Dieser Wert wird
+unter der Bildvorschau in der Web GUI als FPS (Hz) angezeigt.  width
+Breite der Disparitäts-, Fehler- und Konfidenzbilder in Pixeln. Dieser
+Wert wird unter der Bildvorschau in der Web GUI als erster Teil von
+Auflösung (px) angezeigt.
+
+Services des rc_zivid Moduls
+
+Das >>``<<rc_zivid` Modul bietet folgende Services.
+
+acquisition_trigger
+
+   signalisiert dem Modul, ein Tiefenbild aufzunehmen, falls
+   "acquisition_mode" auf "SingleFrame" (*Einzelbild*) eingestellt
+   ist.
+
+   Details
+
+   Es wird ein Fehler zurückgegeben, falls "acquisition_mode" auf
+   "Continuous" (*Kontinuierlich*) eingestellt ist.
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_zivid/services/acquisition_trigger
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_zivid/services/acquisition_trigger
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Mögliche Rückgabewerte sind in der Tabelle unten aufgeführt.
+
+   Mögliche Rückgabewerte des acquisition_trigger Serviceaufrufs.
+   Code  Beschreibung  0  Erfolgreich  -8  Triggern ist nur im
+   Einzelbild-Modus möglich.  101  Triggern wird ignoriert, da bereits
+   ein anderer Triggeraufruf stattfindet.  102  Triggern wird
+   ignoriert, da keine Empfänger registriert sind.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "acquisition_trigger",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+reset_defaults`
+
+   stellt die Werkseinstellungen der Parameter dieses Moduls wieder
+   her und wendet sie an („factory reset“).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_zivid/services/reset_defaults
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_zivid/services/reset_defaults
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

@@ -1,0 +1,45 @@
+REST-API-Schnittstelle
+
+Neben der
+
+GenICam-Schnittstelle
+
+ bietet der
+
+rc_visard NG
+
+ eine umfassende RESTful-Web-Schnittstelle (REST-API), auf die jeder
+HTTP-Client und jede HTTP-Bibliothek zugreifen kann. Während die
+meisten Parameter, Services und Funktionen auch über die
+benutzerfreundliche
+
+Web GUI
+
+ zugänglich sind, dient die REST-API eher als Maschine-Maschine-
+Schnittstelle für folgende programmgesteuerte Aufgaben:
+
+Setzen und Abrufen der Laufzeitparameter der Softwaremodule, z.B. der
+Stereokamera oder von Bildverarbeitungsmodulen,
+
+Aufrufen von Services, z.B. zum Starten und Stoppen einzelner
+Softwaremodule, oder zum Nutzen spezieller Funktionen, wie der Hand-
+Auge-Kalibrierung,
+
+Abruf des aktuellen Systemstatus und des Status einzelner
+Softwaremodule, sowie
+
+Aktualisierung der Firmware des rc_visard NG oder seiner Lizenz.
+
+Bemerkung: In der REST-API des
+
+  rc_visard NG
+
+   bezeichnet der Begriff
+
+  Node
+
+   ein Softwaremodul, das gewisse algorithmische Funktionen bündelt
+  und eine ganzheitliche Benutzeroberfläche (Parameter, Services,
+  aktueller Status) besitzt. Beispiele für solche Module sind das
+  Stereo-Matching-Modul oder das Modul zur Hand-Auge-Kalibrierung.
+

@@ -1,0 +1,243 @@
+.. include:: global_rst.glb
+
+Pipeline type *zivid*
+=====================
+
+.. _sect-zivid-camera-user-defined-presets:
+
+User-defined presets
+--------------------
+
+The |zivid| camera comes with multiple pre-configured settings for capturing images, so-called presets.
+The 2D presets are tailored specifically for 2D image captures, focusing on settings like resolution, exposure time, 
+brightness, and gain. They are optimized for applications requiring detailed color or monochrome images.
+
+Users can also create own 2D presets using the *Zivid Studio* software (https://www.zivid.com/zivid-studio-software)
+and save them as .yml files. These preset files can be uploaded to the |rc_cube| on the *Camera* page of the |webgui|.
+User-defined presets can then be selected for image acquisition in the same way as the pre-defined presets via the 
+``preset_name`` run-time parameter. Also 3D presets including 2D settings can be uploaded and used as 2D preset. In this case,
+only the 2D settings will be applied.
+
+.. _sect-zivid-camera-parameters:
+
+Parameters
+----------
+
+The camera module on an pipeline of type ``zivid`` is called ``rc_camera`` and is represented by the
+*Camera* page in the desired pipeline in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+The user can change the camera parameters there, or directly via the |rest-api|
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`) or GigE Vision
+(:ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_camera_rc_cube_zivid.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the |webgui|'s *Camera* page. The name in the
+|webgui| is given in brackets behind the parameter name and the parameters are listed in the order
+they appear in the |webgui|.
+
+.. _expl-camera-acquisition-mode:
+
+.. index::
+   pair: zivid; image acquisition mode
+
+``acquisition_mode`` (*Acquisition Mode*)
+'''''''''''''''''''''''''''''''''''''''''
+   This parameter determines the acquisition mode of the 2D camera images.
+   In ``Continuous`` mode, the camera will 
+   acquire images at the specified frame rate ``fps``. In ``Trigger`` mode, images are only 
+   acquired when the camera receives a software trigger signal, either by clicking on the :guilabel:`Acquire` button in the 
+   |webgui|, or by calling the ``rc_camera/acquisition_trigger`` service 
+   (see :ref:`sect-cam-services`:latex:`\:(Section \ref{stereo_camera:sect-cam-services})`).
+
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?acquisition_mode=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?acquisition_mode=<value>
+
+.. index::
+   pair: camera; frame rate
+   see: fps; frame rate
+
+``fps`` (*FPS (Hz)*)
+''''''''''''''''''''
+   This value is the camera's frame rate (fps, frames per second),
+   which determines the upper frequency at which camera images
+   can be acquired.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?fps=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?fps=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?fps=<value>
+
+.. _expl-camera-preset_name:
+
+.. index::
+   pair: zivid; preset name
+
+``preset_name`` (*Preset Name*)
+'''''''''''''''''''''''''''''''
+   This parameter allows to select a preset for 2D image acquisition. The preset can be any of the |zivid|'s 
+   pre-configured presets which depend on the |zivid| model and are read from the connected device, or
+   a user-defined preset that has been uploaded to the |rc_cube| 
+   (:ref:`sect-zivid-camera-user-defined-presets`:latex:`, Section \ref{zivid_camera:sect-zivid-camera-user-defined-presets}`).
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+          
+         .. code-block:: bash
+            
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?preset_name=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?preset_name=<value>
+
+.. _sect-zivid-camera-status-values:
+
+Status values
+-------------
+
+The ``rc_camera`` module of a ``zivid`` pipeline reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_camera`` module's status values
+   :header:  Name, Description
+
+   "``baseline``","Internally assumed stereo baseline :math:`t` in meters for disparity image computation"
+   "``brightness``","Current brightness of the image as value between 0 and 1"
+   "``color``","0 for monochrome cameras, 1 for color cameras"
+   "``exp``","Current exposure time in seconds. This value is shown below the image preview in the |webgui| as *Exposure (ms)*."
+   "``focal``","Focal length factor normalized to an image width of 1"
+   "``fps``","Current frame rate of the camera images in Hertz. This value is shown in the |webgui| below the image preview as *FPS (Hz)*."
+   "``height``","Height of the camera image in pixels. This value is shown in the |webgui| below the image preview as the second part of *Resolution (px)*."
+   "``last_timestamp_grabbed``", "Timestamp of the last image acquired"
+   "``test``","0 for live images and 1 for test images"
+   "``width``","Width of the camera image in pixels. This value is shown in the |webgui| below the image preview as the first part of *Resolution (px)*."
+
+.. _sect-zivid-camera-services:
+
+Services
+--------
+
+In a pipeline of type ``zivid`` the ``rc_camera`` module offers the following services.
+
+``acquisition_trigger``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers an image acquisition when ``acquisition_mode`` is set to ``Trigger``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/acquisition_trigger
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_camera/services/acquisition_trigger
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_camera_rc_cube_zivid_acquisition_trigger_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_camera_rc_cube_zivid_acquisition_trigger_response.txt
+
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/reset_defaults
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_camera/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_camera_rc_cube_zivid_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_camera_rc_cube_zivid_reset_defaults_response.txt
+

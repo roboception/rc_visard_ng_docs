@@ -1,0 +1,1177 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>LoadCarrierDB &mdash; rc_visard NG 25.04.2
+ documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/sphinx_tabs/tabs.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/contentui.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rc_visard NG 25.04.2
+ documentation" href="index.html"/>
+        <link rel="up" title="Database modules" href="database_modules.html"/>
+        <link rel="next" title="RoiDB" href="roi.html"/>
+        <link rel="prev" title="Database modules" href="database_modules.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard NG
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                25.04
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Applicable standards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Approvals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="disposal.html">Information on disposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">General warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Intended use</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Scope of delivery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technical specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Environmental and operating conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Power-supply specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Wiring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanical interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Power up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Discovery of <em>rc_visard NG</em> devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Resetting configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Network configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatic configuration (factory default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manual configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Measurement principles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereo vision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_general.html">General information on 3D data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#computing-disparity-images">Computing disparity images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#computing-depth-images-and-point-clouds">Computing depth images and point clouds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#confidence-and-error-images">Confidence and error images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Software modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="camera.html">Camera module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rectification.html">Rectification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="downloading_images.html">Viewing and downloading images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html">Parameters, status values and services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="detection_modules.html">Detection &amp; Measure modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="measure.html">Measure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#measuring-depth">Measuring Depth</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">LoadCarrier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Detection of load carriers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Detection of filling level</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-reading">Tag reading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#pose-estimation">Pose estimation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag re-identification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-eye calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html">ItemPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#computation-of-grasps">Computation of grasps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="boxpick.html">BoxPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#detection-of-items">Detection of items</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#computation-of-grasps">Computation of grasps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#return-codes">Return codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#boxpick-template-api">BoxPick Template API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Base-plane calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setting a region of interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setting of grasp points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-sorting-strategies">Setting the sorting strategies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Detection of objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Internal services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Return codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cadmatch.html">CADMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-grasp-points">Setting of grasp points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-pose-priors">Setting of pose priors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-sorting-strategies">Setting the sorting strategies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#detection-of-objects">Detection of objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#internal-services">Internal services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#return-codes">Return codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#template-api">Template API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration_modules.html">Configuration modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html">Hand-eye calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Calibration interfaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Camera mounting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Calibration routine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking">Collision checking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html">Camera calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#self-calibration">Self-calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#calibration-process">Calibration process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html">IO and Projector Control</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="database_modules.html">Database modules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">LoadCarrierDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load-carrier-definition">Load carrier definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load-carrier-compartments">Load carrier compartments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">RoiDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gripper_db.html">GripperDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#setting-a-gripper">Setting a gripper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#return-codes">Return codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#cad-element-api">CAD element API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Web GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#accessing-the-web-gui">Accessing the Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#exploring-the-web-gui">Exploring the Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#web-gui-access-control">Web GUI access control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-camera-images">Downloading camera images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Downloading depth images and point clouds</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">General API structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Available resources and requests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Nodes, parameters, and services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_userspace.html">UserSpace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System and logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Data type definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Ethernet connection configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Generic XML structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Return code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Request XML structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Response XML structure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI XML configuration files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#example-applications">Example applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC image stream interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Example client</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#setting-time-manually">Setting time manually</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userspace.html">UserSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="userspace.html#configure-userspace-via-the-webgui">Configure UserSpace via the Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configure-http-proxy">Configure HTTP proxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#view-running-applications">View running applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#network-access-to-userspace-applications">Network access to UserSpace applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#interfaces">Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#restrictions">Restrictions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Lens cleaning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Camera calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Creating and restoring backups of settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Rebooting the <em>rc_visard NG</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Connectivity kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Wiring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Power connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Power supplies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Spare parts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Hardware issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Connectivity issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Camera-image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Depth/Disparity, error, and confidence image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">GigE Vision/GenICam issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#pose-formats">Pose formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_rt.html">Rotation matrix and translation vector</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-rotation-matrix-to-quaternion">Conversion from rotation matrix to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-quaternion-to-rotation-matrix">Conversion from quaternion to rotation matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_abb.html">ABB pose format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fanuc.html">FANUC XYZ-WPR format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-fanuc-wpr-to-quaternion">Conversion from FANUC-WPR to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-quaternion-to-fanuc-wpr">Conversion from quaternion to FANUC-WPR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_franka_emika.html">Franka Emika Pose Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-transformation-matrix-to-quaternion">Conversion from transformation matrix to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-rotation-xyz-to-quaternion">Conversion from Rotation-XYZ to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-and-translation-to-transformation">Conversion from quaternion and translation to transformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-to-rotation-xyz">Conversion from quaternion to Rotation-XYZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#pose-representation-in-racecom-messages-and-state-machines">Pose representation in RaceCom messages and state machines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fruitcore_horst.html">Fruitcore HORST pose format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kawasaki.html">Kawasaki XYZ-OAT format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-kawasaki-oat-to-quaternion">Conversion from Kawasaki-OAT to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-quaternion-to-kawasaki-oat">Conversion from quaternion to Kawasaki-OAT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kuka.html">KUKA XYZ-ABC format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-kuka-abc-to-quaternion">Conversion from KUKA-ABC to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-quaternion-to-kuka-abc">Conversion from quaternion to KUKA-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_mitsubishi.html">Mitsubishi XYZ-ABC format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-mitsubishi-abc-to-quaternion">Conversion from Mitsubishi-ABC to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-quaternion-to-mitsubishi-abc">Conversion from quaternion to Mitsubishi-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_ur.html">Universal Robots pose format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-angle-axis-format-to-quaternion">Conversion from angle-axis format to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-quaternion-to-angle-axis-format">Conversion from quaternion to angle-axis format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_yaskawa.html">Yaskawa Pose Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-yaskawa-rx-ry-rz-to-quaternion">Conversion from Yaskawa Rx, Ry, Rz to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-quaternion-to-yaskawa-rx-ry-rz">Conversion from quaternion to Yaskawa Rx, Ry, Rz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard NG</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">rc_visard NG</a> &gt;</li>
+        
+          <li><a href="modules.html">Software modules</a> &gt;</li>
+        
+          <li><a href="database_modules.html">Database modules</a> &gt;</li>
+        
+      <li>LoadCarrierDB</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="loadcarrierdb">
+<span id="sect-loadcarrier-db"></span><h1>LoadCarrierDB<a class="headerlink" href="#loadcarrierdb" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<span id="index-1"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The LoadCarrierDB module (Load carrier database module) allows the global definition of load carriers,
+which can then be used in many detection modules. The specified load carriers are available for all
+modules supporting load carriers on the <em>rc_visard NG</em>.</p>
+<p>The LoadCarrierDB module is a base module which is available on every <em>rc_visard NG</em>.</p>
+<span id="tab-lc-spec"></span><table border="1" class="docutils" id="id1">
+<caption><span class="caption-number">Table 50 </span><span class="caption-text">Specifications of the LoadCarrierDB module</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Supported load carrier types</td>
+<td>4-sided or 3-sided</td>
+</tr>
+<tr class="row-even"><td>Supported rim types</td>
+<td>solid rim, stepped rim or ledged rim</td>
+</tr>
+<tr class="row-odd"><td>Min. load carrier dimensions</td>
+<td>0.1 m x 0.1 m x 0.05 m</td>
+</tr>
+<tr class="row-even"><td>Max. load carrier dimensions</td>
+<td>2 m x 2 m x 2 m</td>
+</tr>
+<tr class="row-odd"><td>Max. number of load carriers</td>
+<td>50</td>
+</tr>
+<tr class="row-even"><td>Load carriers available in</td>
+<td><a class="reference internal" href="itempick.html#sect-itempick"><span class="std std-ref">ItemPick</span></a> and <a class="reference internal" href="boxpick.html#sect-boxpick"><span class="std std-ref">BoxPick</span></a> and <a class="reference internal" href="cadmatch.html"><span class="doc">CADMatch</span></a> und <a class="reference internal" href="silhouettematch.html"><span class="doc">SilhouetteMatch</span></a></td>
+</tr>
+<tr class="row-odd"><td>Supported pose types</td>
+<td>no pose, orientation prior, exact pose</td>
+</tr>
+<tr class="row-even"><td>Supported reference frames</td>
+<td>camera, external</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="load-carrier-definition">
+<span id="sect-loadcarrier-definition"></span><h2>Load carrier definition<a class="headerlink" href="#load-carrier-definition" title="Permalink to this headline">¶</a></h2>
+<p id="index-2">A load carrier (bin) is a container with four walls, a floor and a rectangular rim,
+which can contain objects. It can be used to limit the volume in which to search
+for objects or grasp points.</p>
+<p>A load carrier is defined by its <code class="docutils literal notranslate"><span class="pre">outer_dimensions</span></code> and <code class="docutils literal notranslate"><span class="pre">inner_dimensions</span></code>.
+The maximum <code class="docutils literal notranslate"><span class="pre">outer_dimensions</span></code> are 2.0 meters in every dimension.</p>
+<p>The origin of the load carrier reference frame is in the center of the load carrier’s
+<em>outer</em> box and its z axis is perpendicular to the load carrier’s floor
+pointing outwards (see <a class="reference internal" href="#fig-loadcarrier-load-carrier"><span class="std std-numref">Fig. 50</span></a>).</p>
+<div class="figure align-center" id="id2">
+<span id="fig-loadcarrier-load-carrier"></span><a class="reference internal image-reference" href="_images/itempick_load_carrier_reference.svg"><img alt="_images/itempick_load_carrier_reference.svg" src="_images/itempick_load_carrier_reference.svg" width="100%" /></a>
+<p class="caption"><span class="caption-number">Fig. 50 </span><span class="caption-text">Load carrier with reference frame and inner and outer dimensions</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Typically, outer and inner dimensions of a load carrier are available in the
+specifications of the load carrier manufacturer.</p>
+</div>
+<p>The inner volume of the load carrier is defined by its inner dimensions, but includes a region
+of 10 cm height above the load carrier, so that also items protruding from the load carrier
+are considered for detection or grasp computation. Furthermore, an additional
+<code class="docutils literal notranslate"><span class="pre">crop_distance</span></code> is subtracted from the inner volume in every dimension, which acts as a safety margin and can
+be configured as run-time parameter in the LoadCarrier module (see <a class="reference internal" href="loadcarrier.html#sect-loadcarrier-parameters"><span class="std std-ref">Parameters</span></a>).
+<a class="reference internal" href="#fig-loadcarrier-inside-volume"><span class="std std-numref">Fig. 51</span></a> visualizes the inner volume of a load carrier. Only
+points which are inside this volume are considered for detections.</p>
+<div class="figure align-center" id="id3">
+<span id="fig-loadcarrier-inside-volume"></span><a class="reference internal image-reference" href="_images/load_carrier_inside_volume.svg"><img alt="_images/load_carrier_inside_volume.svg" src="_images/load_carrier_inside_volume.svg" width="50%" /></a>
+<p class="caption"><span class="caption-number">Fig. 51 </span><span class="caption-text">Visualization of the inner volume of a load carrier. Only
+points which are inside this volume are considered for detections.</span></p>
+</div>
+<p>Since the load carrier detection
+is based on the detection of the load carrier’s rim, the rim geometry must be specified if it
+cannot be determined from the difference between outer and inner dimensions. A load carrier with a stepped rim can be defined by setting a <code class="docutils literal notranslate"><span class="pre">rim_thickness</span></code>. The rim
+thickness gives the thickness of the outer part of the rim in the x and y direction.
+When a rim thickness is given, an optional <code class="docutils literal notranslate"><span class="pre">rim_step_height</span></code> can also be
+specified, which gives the height of the step between the outer and the inner part of the rim.
+When the step height is given, it will also be considered during collision checking
+(see <a class="reference internal" href="collisioncheck.html"><span class="doc">CollisionCheck</span></a>). Examples of load
+carriers with stepped rims are shown in <a class="reference internal" href="#fig-loadcarrier-load-carrier-rim-types"><span class="std std-numref">Fig. 52</span></a> A, B.
+In addition to the <code class="docutils literal notranslate"><span class="pre">rim_thickness</span></code> and <code class="docutils literal notranslate"><span class="pre">rim_step_height</span></code> the <code class="docutils literal notranslate"><span class="pre">rim_ledge</span></code> can be specified
+for defining load carriers whose inner rim protrudes into the interior of the load carrier, such as pallet cages.
+The <code class="docutils literal notranslate"><span class="pre">rim_ledge</span></code> gives the thickness of the inner part of the rim in the x and y direction.
+An example of a load carrier with a ledged rim is shown in <a class="reference internal" href="#fig-loadcarrier-load-carrier-rim-types"><span class="std std-numref">Fig. 52</span></a> C.</p>
+<div class="figure align-center" id="id4">
+<span id="fig-loadcarrier-load-carrier-rim-types"></span><a class="reference internal image-reference" href="_images/rim_types.svg"><img alt="_images/rim_types.svg" src="_images/rim_types.svg" width="100%" /></a>
+<p class="caption"><span class="caption-number">Fig. 52 </span><span class="caption-text">Examples of load carriers with stepped rim (A, B) or ledged rim (C)</span></p>
+</div>
+<p>The different rim types are applicable to both, standard 4-sided and 3-sided load carriers. For a
+3-sided load carrier, the <code class="docutils literal notranslate"><span class="pre">type</span></code> must be <code class="docutils literal notranslate"><span class="pre">THREE_SIDED</span></code>. If the type is set to <code class="docutils literal notranslate"><span class="pre">STANDARD</span></code> or
+left empty, a 4-sided load carrier is specified. A 3-sided load carrier has one side that is lower
+than the other three sides. This <code class="docutils literal notranslate"><span class="pre">height_open_side</span></code> is measured from the outer bottom of the load carrier. The open side is at the negative
+y-axis of the load carrier’s coordinate system. Examples of the two load carrier types are given
+in <a class="reference internal" href="#fig-loadcarrier-load-carrier-types"><span class="std std-numref">Fig. 53</span></a>. The height of the lower side is only considered during
+collision checking and not required for the detection of the load carrier.</p>
+<div class="figure align-center" id="id5">
+<span id="fig-loadcarrier-load-carrier-types"></span><a class="reference internal image-reference" href="_images/lc_types.svg"><img alt="_images/lc_types.svg" src="_images/lc_types.svg" width="100%" /></a>
+<p class="caption"><span class="caption-number">Fig. 53 </span><span class="caption-text">Examples of a standard 4-sided load carrier (A) and a 3-sided load carrier (B)</span></p>
+</div>
+<p>A load carrier can be specified with a full 3D <code class="docutils literal notranslate"><span class="pre">pose</span></code> consisting of a <code class="docutils literal notranslate"><span class="pre">position</span></code> and
+an <code class="docutils literal notranslate"><span class="pre">orientation</span></code> quaternion, given in a <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code>. Based on the given <code class="docutils literal notranslate"><span class="pre">pose_type</span></code>
+this pose is either used as an orientation prior (<code class="docutils literal notranslate"><span class="pre">pose_type</span></code> is <code class="docutils literal notranslate"><span class="pre">ORIENTATION_PRIOR</span></code> or empty),
+or as the exact pose of the load carrier (<code class="docutils literal notranslate"><span class="pre">pose_type</span></code> is <code class="docutils literal notranslate"><span class="pre">EXACT_POSE</span></code>).</p>
+<p>In case the pose serves as orientation prior, the detected load carrier pose is guaranteed
+to have the minimum rotation with respect to the load carrier’s prior pose. This pose type
+is useful for detecting tilted load carriers and for resolving the orientation ambiguity in
+the x and y direction caused by the symmetry of the load carrier model.</p>
+<p>In case the pose type is set to <code class="docutils literal notranslate"><span class="pre">EXACT_POSE</span></code>, no load carrier detection will be performed on the scene data,
+but the given pose will be used in exactly the same way as if the load carrier is detected at
+that pose. This pose type is especially useful in cases where load carriers do not change their positions
+and/or are hard to detect (e.g. because their rim is too thin or the material is too shiny).</p>
+<p>The <em>rc_visard NG</em> can persistently store up to 50 different
+load carrier models, each one identified by a different <code class="docutils literal notranslate"><span class="pre">id</span></code>.
+The configuration of a load carrier model is normally performed offline,
+during the set up the desired application.
+This can be done via the <a class="reference internal" href="rest_api.html"><span class="doc">REST-API interface</span></a> or in the <em>rc_visard NG</em> Web GUI.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The configured load carrier models
+are persistent even over firmware updates and rollbacks.</p>
+</div>
+</div>
+<div class="section" id="load-carrier-compartments">
+<span id="sect-loadcarrier-compartment"></span><h2>Load carrier compartments<a class="headerlink" href="#load-carrier-compartments" title="Permalink to this headline">¶</a></h2>
+<p id="index-3">Some detection modules can make use of a <code class="docutils literal notranslate"><span class="pre">load_carrier_compartment</span></code> to further limit the volume for the detection,
+for example <a class="reference internal" href="itempick.html#expl-itempick-srv-compute-grasps"><span class="std std-ref">ItemPick’s compute_grasps service</span></a>.
+A load carrier compartment is a box whose <code class="docutils literal notranslate"><span class="pre">pose</span></code> is defined as the transformation from the load carrier reference frame to the compartment
+reference frame, which is located in the center of the compartment box (see <a class="reference internal" href="#fig-loadcarrier-compartment"><span class="std std-numref">Fig. 54</span></a>).
+The load carrier compartment is defined for each detection call separately and is not part of the load carrier definition in the
+LoadCarrierDB module.</p>
+<div class="figure align-center" id="id6">
+<span id="fig-loadcarrier-compartment"></span><a class="reference internal image-reference" href="_images/itempick_load_carrier_compartment.svg"><img alt="_images/itempick_load_carrier_compartment.svg" src="_images/itempick_load_carrier_compartment.svg" width="100%" /></a>
+<p class="caption"><span class="caption-number">Fig. 54 </span><span class="caption-text">Sample compartment inside a load carrier. The coordinate frame shown in the image is the
+reference frame of the compartment.</span></p>
+</div>
+<p>The compartment volume is intersected with the load carrier inner volume to compute the volume for the detection.
+If this intersection should also contain the 10 cm region above the load carrier, the height of the compartment box
+must be increased accordingly.</p>
+</div>
+<div class="section" id="interaction-with-other-modules">
+<span id="sect-loadcarrier-db-dependencies"></span><h2>Interaction with other modules<a class="headerlink" href="#interaction-with-other-modules" title="Permalink to this headline">¶</a></h2>
+<p>Internally, the LoadCarrierDB module depends on, and interacts with other on-board
+modules as listed below.</p>
+<div class="section" id="hand-eye-calibration">
+<span id="sect-loadcarrierdb-hand-eye-dep"></span><h3>Hand-eye calibration<a class="headerlink" href="#hand-eye-calibration" title="Permalink to this headline">¶</a></h3>
+<p>In case the camera has been calibrated to a robot, the load carrier’s exact pose
+or orientation prior can be provided in the robot coordinate frame by setting the corresponding
+<code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> argument to <code class="docutils literal notranslate"><span class="pre">external</span></code>.</p>
+<p>Two different <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> values can be chosen:</p>
+<ol class="arabic simple">
+<li><strong>Camera frame</strong> (<code class="docutils literal notranslate"><span class="pre">camera</span></code>).
+The load carrier pose or orientation prior is provided in the camera frame,
+and no prior knowledge about the pose of the camera in the environment is required.
+This means that the configured load carriers move with the camera.
+It is the user’s responsibility to update the configured poses
+if the camera frame moves (e.g. with a robot-mounted camera).</li>
+<li><strong>External frame</strong> (<code class="docutils literal notranslate"><span class="pre">external</span></code>).
+The load carrier pose or orientation prior is provided in the external frame,
+configured by the user during the hand-eye calibration process.
+The module relies on the on-board
+<a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-eye calibration module</span></a>
+to retrieve the sensor mounting (static or robot mounted) and
+the hand-eye transformation.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If no hand-eye calibration is available, all <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> values should be set to <code class="docutils literal notranslate"><span class="pre">camera</span></code>.</p>
+</div>
+<p>All <code class="docutils literal notranslate"><span class="pre">pose_frame</span></code> values that are not <code class="docutils literal notranslate"><span class="pre">camera</span></code> or <code class="docutils literal notranslate"><span class="pre">external</span></code> are rejected.</p>
+</div>
+</div>
+<div class="section" id="services">
+<span id="sect-loadcarrierdb-services"></span><h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<p id="index-4">The LoadCarrierDB module is called <code class="docutils literal notranslate"><span class="pre">rc_load_carrier_db</span></code> in the REST-API and is represented in the
+<a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> under
+<span class="menuselection">Database ‣ Load Carriers</span>.
+The user can explore and call the LoadCarrierDB module’s services,
+e.g. for development and testing, using the
+<a class="reference internal" href="rest_api.html"><span class="doc">REST-API interface</span></a> or
+the Web GUI.</p>
+<p>The LoadCarrierDB module offers the following services.</p>
+<div class="section" id="set-load-carrier">
+<span id="expl-loadcarrier-db-srv-set-lc"></span><h3><code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code><a class="headerlink" href="#set-load-carrier" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Persistently stores a load carrier on the <em>rc_visard NG</em>.
+All configured load carriers are persistent over firmware updates and rollbacks.</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>This service can be called as follows.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/nodes/rc_load_carrier_db/services/set_load_carrier
+</pre></div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-0-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-0-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-0-0 active docutils container">
+<p>Details for the definition of the <code class="docutils literal notranslate"><span class="pre">load_carrier</span></code> type are given in
+<a class="reference internal" href="#sect-loadcarrier-definition"><span class="std std-ref">Load carrier definition</span></a>.</p>
+<p>The field <code class="docutils literal notranslate"><span class="pre">type</span></code> is optional and accepts <code class="docutils literal notranslate"><span class="pre">STANDARD</span></code> and <code class="docutils literal notranslate"><span class="pre">THREE_SIDED</span></code>.</p>
+<p>The field <code class="docutils literal notranslate"><span class="pre">pose_type</span></code> is optional and accepts <code class="docutils literal notranslate"><span class="pre">NO_POSE</span></code>, <code class="docutils literal notranslate"><span class="pre">EXACT_POSE</span></code> and <code class="docutils literal notranslate"><span class="pre">ORIENTATION_PRIOR</span></code>.</p>
+<p>The definition for the request arguments with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;load_carrier&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;height_open_side&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;inner_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;outer_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;pose_type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;rim_ledge&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;rim_step_height&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;rim_thickness&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-0-1 docutils container">
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;set_load_carrier&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="get-load-carriers">
+<span id="expl-loadcarrier-db-srv-get-lc"></span><h3><code class="docutils literal notranslate"><span class="pre">get_load_carriers</span></code><a class="headerlink" href="#get-load-carriers" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Returns the configured load carriers with the requested <code class="docutils literal notranslate"><span class="pre">load_carrier_ids</span></code>.
+If no <code class="docutils literal notranslate"><span class="pre">load_carrier_ids</span></code> are provided, all configured load carriers are returned.</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>This service can be called as follows.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/nodes/rc_load_carrier_db/services/get_load_carriers
+</pre></div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-1-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-1-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-1-0 active docutils container">
+<p>The definition for the request arguments with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;load_carrier_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;string&quot;</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-1-1 docutils container">
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;get_load_carriers&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;load_carriers&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;height_open_side&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;inner_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;outer_dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;pose&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;orientation&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;w&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;position&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;z&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;pose_type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;rim_ledge&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;rim_step_height&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;rim_thickness&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;float64&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="delete-load-carriers">
+<span id="expl-loadcarrier-db-srv-delete-lc"></span><h3><code class="docutils literal notranslate"><span class="pre">delete_load_carriers</span></code><a class="headerlink" href="#delete-load-carriers" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Deletes the configured load carriers with the requested <code class="docutils literal notranslate"><span class="pre">load_carrier_ids</span></code>.
+All load carriers to be deleted must be explicitly stated in <code class="docutils literal notranslate"><span class="pre">load_carrier_ids</span></code>.</p>
+<p class="toggle-header"><strong>Details</strong></p>
+<div class="toggle-content docutils container">
+<p>This service can be called as follows.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PUT http://&lt;host&gt;/api/v2/nodes/rc_load_carrier_db/services/delete_load_carriers
+</pre></div>
+</div>
+<div class="sphinx-tabs docutils container">
+<div class="ui top attached tabular menu sphinx-menu docutils container">
+<div class="active item sphinx-data-tab-2-0 docutils container">
+<div class="docutils container">
+<strong>Request</strong></div>
+</div>
+<div class="item sphinx-data-tab-2-1 docutils container">
+<div class="docutils container">
+<strong>Response</strong></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-2-0 active docutils container">
+<p>The definition for the request arguments with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;load_carrier_ids&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;string&quot;</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-2-1 docutils container">
+<p>The definition for the response with corresponding datatypes is:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;delete_load_carriers&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;response&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="return-codes">
+<span id="sect-loadcarrier-db-return-codes"></span><h2>Return codes<a class="headerlink" href="#return-codes" title="Permalink to this headline">¶</a></h2>
+<p id="index-5">Each service response contains a <code class="docutils literal notranslate"><span class="pre">return_code</span></code>,
+which consists of a <code class="docutils literal notranslate"><span class="pre">value</span></code> plus an optional <code class="docutils literal notranslate"><span class="pre">message</span></code>.
+A successful service returns with a <code class="docutils literal notranslate"><span class="pre">return_code</span></code> value of <code class="docutils literal notranslate"><span class="pre">0</span></code>.
+Negative <code class="docutils literal notranslate"><span class="pre">return_code</span></code> values indicate that the service failed.
+Positive <code class="docutils literal notranslate"><span class="pre">return_code</span></code> values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple <code class="docutils literal notranslate"><span class="pre">return_code</span></code> values,
+but all messages are appended in the <code class="docutils literal notranslate"><span class="pre">return_code</span></code> message.</p>
+<p>The following table contains a list of common codes:</p>
+<span id="tab-loadcarrierdb-return-codes"></span><table border="1" class="docutils" id="id7">
+<caption><span class="caption-number">Table 51 </span><span class="caption-text">Return codes of the LoadCarrierDB module’s services</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Code</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>Success</td>
+</tr>
+<tr class="row-odd"><td>-1</td>
+<td>An invalid argument was provided</td>
+</tr>
+<tr class="row-even"><td>-10</td>
+<td>New element could not be added as the maximum storage capacity of load carriers has been exceeded</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>The maximum storage capacity of load carriers has been reached</td>
+</tr>
+<tr class="row-even"><td>11</td>
+<td>An existent persistent model was overwritten by the call to <code class="docutils literal notranslate"><span class="pre">set_load_carrier</span></code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="roi.html" class="btn btn-neutral float-right" title="RoiDB" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="database_modules.html" class="btn btn-neutral" title="Database modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2025, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Options</span>
+      en
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Languages</dt>
+        
+          
+          <dd><a href="../en/loadcarrier_db.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/loadcarrier_db.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="../../v23.10/index.html">v23.10</a></dd>
+          
+            <dd><a href="../../v24.01/index.html">v24.01</a></dd>
+          
+            <dd><a href="../../v24.04/index.html">v24.04</a></dd>
+          
+            <dd><a href="../../v24.07/index.html">v24.07</a></dd>
+          
+            <dd><a href="../../v24.10/index.html">v24.10</a></dd>
+          
+            <dd><a href="../../v25.01/index.html">v25.01</a></dd>
+          
+            <dd><a href="../../v25.04/index.html">v25.04</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'25.04.2',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.js"></script>
+      <script type="text/javascript" src="_static/sphinx_tabs/tabs.js"></script>
+      <script type="text/javascript" src="_static/contentui.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

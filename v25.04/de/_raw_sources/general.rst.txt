@@ -1,0 +1,204 @@
+.. include:: global_rst.glb
+
+.. _sect-general:
+
+Overview
+========
+
+.. only:: rc_cube
+
+
+    .. only:: roboception or schunk
+
+        The |rc_xxx| is a high-performance 3D-image-processing device. 
+        It enhances the computing capabilities of the |company| stereo camera |rc_visard| and
+        supports the |rc_viscore|, the Basler |blaze| camera in an RGB-D setup, the Basler |stereo_ace| camera and
+        the |zivid| camera.
+
+    .. only:: basler
+
+        The |rc_xxx| is a high-performance 3D-image-processing device. 
+        It enhances the computing capabilities of the |company| stereo camera |rc_visard| and
+        supports the Basler |blaze| camera in an RGB-D setup and the Basler |stereo_ace| camera.
+
+    .. only:: matrixvision
+
+        The |rc_xxx| is a high-performance 3D-image-processing device. 
+        It enhances the computing capabilities of the |company| stereo camera |rc_visard| and
+        supports the |rc_viscore|.
+
+    .. only:: roboception or basler
+
+        Information about the supported devices are provided in
+
+    .. only:: roboception
+
+        * |rc_visard|: https://doc.rc-visard.com
+        * |rc_viscore|: https://doc.rc-viscore.com
+        * |blaze|: https://www.baslerweb.com/en/products/cameras/3d-cameras/blaze-rgb-d.
+
+    .. only:: basler
+
+        * https://www.baslerweb.com/en/products/cameras/3d-cameras/.
+
+    .. NOTE:: Unless specified, the information provided in this manual applies to both the |rc_visard| 65 and |rc_visard| 160 
+        versions of the |company| |rc_visard| sensor, as well as the |rc_visard_ng|.
+
+    .. only:: roboception or schunk or basler
+
+        .. NOTE:: The term "blaze" used throughout the manual always refers to the Basler blaze camera in an RGB-D setup, i.e. the blaze
+            Time-of-Flight camera in combination with the Basler aceA1300 color camera.
+
+.. only:: rc_visard or rc_visard_ng
+
+    The 3D sensor |rc_xxx| is an IP54-protected :visardonly:`, self-registering` stereo-camera
+    with on-board computing capabilities.
+
+The |rc_xxx| provides real-time camera images and depth images, which can
+be used to compute 3D point clouds. Additionally, it provides
+confidence and error images as quality measures for each image acquisition.
+It offers an intuitive web UI (user interface) and a standardized
+GenICam interface, making it compatible with all major image processing
+libraries.
+
+With optionally available software modules the |rc_xxx| provides out-of-the-box solutions
+for object detection and robotic pick-and-place applications.
+
+.. only:: rc_cube
+
+    The |rc_cube| is offered in two versions: *rc_cube S* and *rc_cube I*.
+
+    .. only:: roboception or schunk
+
+        The *rc_cube S* is suitable for research, development and testing environments. It supports one |rc_visard| or one |zivid| camera 
+        without additional hardware. 
+        A separate 2.5Gbit switch (not part of the product scope) enables the support of two |rc_visard| devices at a time or allows to connect
+        an |rc_viscore|, or a Basler blaze, or a Basler Stereo ace device.
+
+        The *rc_cube I* is intended for operational use in an industrial environment. It supports four |rc_visard| or four |zivid| cameras, 
+        or two |rc_viscore| or Basler blaze or Basler Stereo ace devices without additional hardware.
+
+    .. only:: basler
+
+        The *rc_cube S* is suitable for research, development and testing environments. It supports one |rc_visard|
+        without additional hardware. 
+        A separate 2.5Gbit switch (not part of the product scope) enables the support of two |rc_visard| devices at a time or allows to connect
+        a Basler blaze, or a Basler Stereo ace device.
+
+        The *rc_cube I* is intended for operational use in an industrial environment. It supports four |rc_visard| cameras, 
+        or two Basler blaze or Basler Stereo ace devices without additional hardware.
+
+        .. figure:: images/cube_overview_basler.*
+            :width: 80 %
+            :align: center
+
+            Schematic representation of the |rc_cube| and the connected 3D cameras. 
+            Unless only a single |rc_visard| is connected to the *rc_cube S*, a separate 2.5Gbit switch is required.
+
+    .. only:: matrixvision
+
+        The *rc_cube S* is suitable for research, development and testing environments. It supports one |rc_visard| 
+        without additional hardware. 
+        A separate 2.5Gbit switch (not part of the product scope) enables the support of two |rc_visard| devices at a time or allows to connect
+        an |rc_viscore| device.
+
+        The *rc_cube I* is intended for operational use in an industrial environment. It supports four |rc_visard| cameras, 
+        or two |rc_viscore| devices without additional hardware.
+
+        .. figure:: images/cube_overview_mv.*
+            :width: 80 %
+            :align: center
+
+            Schematic representation of the |rc_cube| and the connected 3D cameras. 
+            Unless only a single |rc_visard| is connected to the *rc_cube S*, a separate 2.5Gbit switch is required.
+
+    .. only:: schunk
+
+        .. figure:: images/cube_overview_schunk.*
+            :width: 80 %
+            :align: center
+
+            Schematic representation of the |rc_cube| and the connected 3D cameras. 
+            Unless only a single |rc_visard| is connected to the *rc_cube S*, a separate 2.5Gbit switch is required.
+
+    .. only:: roboception
+
+        .. figure:: images/cube_overview.*
+            :width: 80 %
+            :align: center
+
+            Schematic representation of the |rc_cube| and the connected 3D cameras. 
+            Unless only a single |rc_visard| is connected to the *rc_cube S*, a separate 2.5Gbit switch is required.
+
+.. only:: rc_visard
+
+    The |rc_visard| also provides self-localization based on image and inertial data.
+    A mobile navigation solution can be established with the optional on-board SLAM module.
+
+    The |rc_visard| is offered with two different stereo baselines: The |rc_visard| 65
+    is optimally suited for mounting on robotic manipulators, whereas the |rc_visard| 160 can be 
+    employed as a navigation or as externally-fixed sensor.
+
+.. only:: rc_visard or rc_visard_ng
+
+    The |rc_xxx|'s intuitive calibration, configuration, and use enable 3D vision for everyone.
+
+    .. only:: roboception and rc_visard
+
+      .. figure:: images/sensor.png
+          :width: 40 %
+          :align: center
+
+          |rc_visard| 65 and |rc_visard| 160
+
+    .. only:: roboception and rc_visard_ng
+
+      .. figure:: images/sensor_ng.png
+          :width: 40 %
+          :align: center
+
+          |rc_visard_ng| 160
+
+    .. only:: matrixvision
+
+      .. figure:: images/sensor_mv.png
+          :width: 40 %
+          :align: center
+
+          |rc_visard| 65 and |rc_visard| 160
+
+    .. only:: basler
+    
+      .. figure:: images/sensor_basler.png
+          :width: 40 %
+          :align: center
+
+          |manufacturer| |rc_visard| 65 and |rc_visard| 160
+    
+    .. only:: schunk
+    
+      .. figure:: images/sensor_schunk.png
+          :width: 40 %
+          :align: center
+
+          |manufacturer| |rc_visard| 65 and |rc_visard| 160
+
+
+.. only:: rc_visard
+    
+    The terms "sensor," "|rc_visard| 65," and "|rc_visard| 160" used throughout the manual all refer to the |company| |rc_visard| family of self-registering cameras.
+    Installation and control for all sensors are exactly the same, and all use the same mounting base.
+
+    .. NOTE:: Unless specified, the information provided in this manual applies to both the |rc_visard| 65 and |rc_visard| 160 versions of the |company| |rc_visard| sensor.
+
+.. only:: rc_visard_ng
+    
+    The terms "sensor" and "|rc_xxx|" used throughout the manual all refer to the |company| |rc_visard_ng|.
+
+.. only:: rc_cube
+
+    .. NOTE:: Unless specified, the information provided in this manual applies to both the *rc_cube S* and *rc_cube I* versions of the |rc_cube|.
+
+.. NOTE:: This manual uses the metric system and mostly uses the units meter and
+   millimeter. Unless otherwise specified, all dimensions in technical drawings are
+   in millimeters.

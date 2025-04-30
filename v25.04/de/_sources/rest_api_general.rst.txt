@@ -1,0 +1,182 @@
+Allgemeine Struktur der Programmierschnittstelle (API)
+
+Der allgemeine
+
+Einstiegspunkt
+
+ zur Programmierschnittstelle (API) des
+
+rc_visard NG
+
+ ist "http://<host>/api/" wobei "<host>" entweder die IP-Adresse des
+Geräts ist oder sein dem jeweiligen DHCP-Server bekannter
+
+Host-Name
+
+ (siehe
+
+Netzwerkkonfiguration
+
+). Greift der Benutzer über einen Webbrowser auf diese Adresse zu,
+kann er die Programmierschnittstelle während der Laufzeit mithilfe der
+
+Swagger UI
+
+  erkunden und testen.
+
+Für die eigentlichen HTTP-Anfragen wird dem Einstiegspunkt der
+Programmierschnittstelle die
+
+aktuelle Version der Schnittstelle als Postfix angehangen
+
+, d.h. "http://<host>/api/v2". Alle Daten, die an die REST-API gesandt
+und von ihr empfangen werden, entsprechen dem JSON-Datenformat
+(JavaScript Object Notation). Die Programmierschnittstelle ist so
+gestaltet, dass der Benutzer die in
+
+Verfügbare Ressourcen und Anfragen
+
+ aufgelisteten sogenannten
+
+Ressourcen
+
+ über die folgenden HTTP-Anforderungen
+
+anlegen, abrufen, ändern und löschen
+
+ kann.
+
+    Anfragetyp  Beschreibung  GET  Zugriff auf eine oder mehrere
+Ressourcen und Rückgabe des Ergebnisses im JSON-Format  PUT  Änderung
+einer Ressource und Rückgabe der modifizierten Ressource im JSON-
+Format  DELETE  Löschen einer Ressource  POST  Upload einer Datei
+(z.B. einer Lizenz oder eines Firmware-Images)
+
+Je nach der Art der Anfrage und Datentyp können die
+
+Argumente
+
+ für HTTP-Anfragen als Teil des
+
+Pfads
+
+ (
+
+URI
+
+) zur Ressource, als
+
+Abfrage
+
+-Zeichenfolge, als
+
+Formulardaten
+
+ oder im
+
+Body
+
+ der Anfrage übertragen werden. Die folgenden Beispiele nutzen das
+Kommandozeilenprogramm
+
+curl
+
+, das für verschiedene Betriebssysteme verfügbar ist (siehe
+
+https://curl.haxx).se
+
+.
+
+Abruf des aktuellen Status eines Moduls, wobei sein Name im Pfad (URI)
+verschlüsselt ist  curl -X GET
+'http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching'
+
+Abruf einiger Parameterwerte eines Moduls über eine
+Abfragezeichenfolge  curl -X GET 'http://<host>/api/v2/pipelines/0/no
+des/rc_stereomatching/parameters?name=minconf&name=maxdepth'
+
+Setzen eines Modulparameters als JSON-formatierter Text im Body der
+Anfrage  curl -X PUT --header 'Content-Type: application/json' -d
+'[{"name": "mindepth", "value": 0.1}]'
+'http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters'
+
+Zur Beantwortung solcher Anfragen greift die Programmierschnittstelle
+des
+
+rc_visard NG
+
+ auf übliche Rückgabecodes zurück:
+
+    Statuscode  Beschreibung  200 OK  Die Anfrage war erfolgreich. Die
+Ressource wird im JSON-Format zurückgegeben.  400 Bad Request  Ein für
+die API-Anfrage benötigtes Attribut oder Argument fehlt oder ist
+ungültig.  404 Not Found  Auf eine Ressource konnte nicht zugegriffen
+werden. Möglicherweise kann die ID einer Ressource nicht gefunden
+werden.  403 Forbidden  Der Zugriff ist (vorübergehend) verboten.
+Möglicherweise sind einige Parameter gesperrt, während eine GigE
+Vision-Anwendung verbunden ist.  429 Too many requests  Die
+Übertragungsrate ist aufgrund einer zu hohen Anfragefrequenz begrenzt.
+
+Der folgende Eintrag zeigt eine Musterantwort auf eine erfolgreiche
+Anfrage, mit der Informationen zum "minconf"-Parameter des
+"rc_stereomatching"-Moduls angefordert werden:
+
+   HTTP/1.1 200 OK
+   Content-Type: application/json
+   Content-Length: 157
+
+   {
+       "name": "minconf",
+       "min": 0,
+       "default": 0,
+       "max": 1,
+       "value": 0,
+       "type": "float64",
+       "description": "Minimum confidence"
+   }
+
+Bemerkung: Das tatsächliche Verhalten, die zulässigen Anfragen und
+  die speziellen Rückgabecodes hängen in hohem Maße von der gewählten
+  Ressource, vom Kontext und von der Aktion ab. Siehe die
+
+  verfügbaren Ressourcen
+
+   des
+
+  rc_visard NG
+
+   und einzelnen Parameter und Services jedes
+
+  Softwaremoduls
+
+  .
+
+Verfügbare Ressourcen und Anfragen
+
+Die für die REST-API verfügbaren Ressourcen lassen sich in folgende
+Teilbereiche gliedern:
+
+/nodes  Zugriff auf die globalen Datenbankmodule \:(Abschnitt
+\ref{database_modules:sect-database-modules}) des rc_visard NG mit
+ihren Laufzeitzuständen, Parametern und angebotenen Services, um Daten
+zu speichern, die in  mehreren Modulen genutzt werden, z.B. Load
+Carrier, Greifer und Regions of Interest.
+
+/pipelines  Zugriff auf den Status und die Konfiguration der
+Kamerapipelines. Es gibt immer nur eine Pipeline mit der Nummer 0.
+
+/pipelines/0/nodes  Zugriff auf die 3D-Kamera-, Navigations-,
+Detektions- und Konfigurations-Softwaremodule \:(Abschnitt
+\ref{modules:sect-modules}) des rc_visard NG mit ihren jeweiligen
+Laufzeitzuständen, Parametern und verfügbaren Services.
+
+/templates  Zugriff auf die im rc_visard NG hinterlegten
+Objekttemplates.
+
+/system  Zugriff auf Systemzustand, Netzwerkkonfiguration,  und
+Verwaltung der Lizenzen sowie der Firmware-Updates.
+
+/userspace  Zugriff auf den UserSpace des rc_visard NG.
+
+/logs  Zugriff auf die im rc_visard NG hinterlegten Logdateien.
+

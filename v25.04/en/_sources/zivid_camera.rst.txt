@@ -1,0 +1,245 @@
+Pipeline type zivid
+
+User-defined presets
+
+The
+
+zivid
+
+ camera comes with multiple pre-configured settings for capturing
+images, so-called presets. The 2D presets are tailored specifically
+for 2D image captures, focusing on settings like resolution, exposure
+time, brightness, and gain. They are optimized for applications
+requiring detailed color or monochrome images.
+
+Users can also create own 2D presets using the
+
+Zivid Studio
+
+ software (
+
+https://www.zivid.com/zivid-studio-software
+
+) and save them as .yml files. These preset files can be uploaded to
+the
+
+rc_cube
+
+ on the
+
+Camera
+
+ page of the Web GUI. User-defined presets can then be selected for
+image acquisition in the same way as the pre-defined presets via the
+"preset_name" run-time parameter. Also 3D presets including 2D
+settings can be uploaded and used as 2D preset. In this case, only the
+2D settings will be applied.
+
+Parameters
+
+The camera module on an pipeline of type "zivid" is called "rc_camera"
+and is represented by the
+
+Camera
+
+ page in the desired pipeline in the
+
+Web GUI
+
+. The user can change the camera parameters there, or directly via the
+REST-API (
+
+REST-API interface
+
+) or GigE Vision (
+
+GigE Vision 2.0/GenICam image interface
+
+).
+
+Parameter overview
+
+This module offers the following run-time parameters:
+
+The rc_camera module's run-time parameters on a pipeline of type zivid
+Name  Type  Min  Max  Default  Description  acquisition_mode  string
+-  -  Trigger  Acquisition mode: [Continuous, Trigger]  fps  float64
+1.0  25.0  25.0  Frames per second in Hertz  preset_name  string  -  -
+-  Name of preset configuration
+
+Description of run-time parameters
+
+Each run-time parameter is represented by a row on the Web GUI's
+
+Camera
+
+ page. The name in the Web GUI is given in brackets behind the
+parameter name and the parameters are listed in the order they appear
+in the Web GUI.
+
+acquisition_mode (Acquisition Mode)
+
+   This parameter determines the acquisition mode of the 2D camera
+   images. In "Continuous" mode, the camera will acquire images at the
+   specified frame rate "fps". In "Trigger" mode, images are only
+   acquired when the camera receives a software trigger signal, either
+   by clicking on the Acquire button in the Web GUI, or by calling the
+   "rc_camera/acquisition_trigger" service (see
+
+   Services
+
+   ).
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?acquisition_mode=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?acquisition_mode=<value>
+
+fps (FPS (Hz))
+
+   This value is the camera's frame rate (fps, frames per second),
+   which determines the upper frequency at which camera images can be
+   acquired.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?fps=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?fps=<value>
+
+preset_name (Preset Name)
+
+   This parameter allows to select a preset for 2D image acquisition.
+   The preset can be any of the
+
+   zivid
+
+   's pre-configured presets which depend on the
+
+   zivid
+
+    model and are read from the connected device, or a user-defined
+   preset that has been uploaded to the
+
+   rc_cube
+
+    (
+
+   User-defined presets
+
+   ).
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?preset_name=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?preset_name=<value>
+
+Status values
+
+The "rc_camera" module of a "zivid" pipeline reports the following
+status values:
+
+The rc_camera module's status values      Name  Description  baseline
+Internally assumed stereo baseline t in meters for disparity image
+computation  brightness  Current brightness of the image as value
+between 0 and 1  color  0 for monochrome cameras, 1 for color cameras
+exp  Current exposure time in seconds. This value is shown below the
+image preview in the Web GUI as Exposure (ms).  focal  Focal length
+factor normalized to an image width of 1  fps  Current frame rate of
+the camera images in Hertz. This value is shown in the Web GUI below
+the image preview as FPS (Hz).  height  Height of the camera image in
+pixels. This value is shown in the Web GUI below the image preview as
+the second part of Resolution (px).  last_timestamp_grabbed  Timestamp
+of the last image acquired  test  0 for live images and 1 for test
+images  width  Width of the camera image in pixels. This value is
+shown in the Web GUI below the image preview as the first part of
+Resolution (px).
+
+Services
+
+In a pipeline of type "zivid" the "rc_camera" module offers the
+following services.
+
+acquisition_trigger
+
+   Triggers an image acquisition when "acquisition_mode" is set to
+   "Trigger".
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/acquisition_trigger
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/services/acquisition_trigger
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "acquisition_trigger",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+reset_defaults
+
+   Restores and applies the default values for this module's
+   parameters ("factory reset").
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/reset_defaults
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/services/reset_defaults
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

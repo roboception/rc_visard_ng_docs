@@ -1,0 +1,182 @@
+UserSpace
+
+The UserSpace enables users to deploy and manage containers running on
+the
+
+rc_visard NG
+
+. Standalone containers and docker-compose stacks are supported.
+
+Note: Familiarity with Docker containers is required.
+
+If available and enabled, the UserSpace can be accessed in the
+
+Web GUI
+
+ in the menu under
+
+UserSpace
+
+. This page shows the running apps and containers with their current
+state and health, in case a health-check is available. Each container
+lists the published ports. If their protocol is http or https, these
+containers can be accessed directly in the Web GUI.
+
+Configuration
+
+If the UserSpace is enabled for the first time, a user for the
+portainer UI needs to be created: In the
+
+Web GUI
+
+ navigate to
+
+UserSpace
+
+ and click on
+
+Manage UserSpace Apps
+
+. Then, register a user account for the administrator. It is required
+to complete this step within five minutes after booting the
+
+rc_visard NG
+
+.
+
+Note: The UserSpace is not enabled by default and can for security
+  reasons only be enabled/disabled or reset via the Web GUI by placing
+  the Roboception UserSpace Key QR code in front of the camera, for
+  security reasons.
+
+Configure UserSpace via the Web GUI
+
+To configure the UserSpace via the
+
+Web GUI
+
+, navigate to
+
+UserSpace
+
+ and click on Configure UserSpace.
+
+Print the Roboception UserSpace Key from
+
+here
+
+ or
+
+https://roboception.com/roboception-userspace-key/
+
+ and place it in front of the camera  so that it is completely visible
+in both, left and right camera images.
+
+Use the buttons to enable/disable or reset the UserSpace. Resetting
+will delete all containers, volumes, and the portainer configuration,
+including secrets and users, and cannot be undone.
+
+Configure HTTP proxy
+
+If your organization uses a proxy server to connect to the internet,
+you need to configure this proxy server for Docker and portainer in
+order to pull container images stored in container registries like
+Docker Hub and pull git repositories in portainer. These proxy
+settings apply only to Docker and portainer itself, not to the apps
+running in containers.
+
+Usually this also means that you need to trust the CA certificate of
+the proxy server in order to use HTTPS connections.
+
+Both can be configured via
+
+Web GUI
+
+ under
+
+UserSpace
+
+ and then Configure UserSpace.
+
+View running applications
+
+UserSpace information including running apps and their published ports
+can be queried via
+
+REST-API userspace endpoint
+
+ or viewed in the
+
+Web GUI
+
+ in the menu under
+
+UserSpace
+
+.
+
+Container labels "org.opencontainers.image.XXX" can be used to provide
+additional information to the API which is also shown in the Web GUI,
+see
+
+REST-API UserSpaceContainer definition
+
+.
+
+Network access to UserSpace applications
+
+To access containers via network, the container ports need to be
+published to host ports.
+
+If a container provides a web interface via http or https, use
+container labels to show a button in the Web GUI to open that
+directly:
+
+com.roboception.app.http: all exposed TCP ports use http
+
+com.roboception.app.https.port=1234,5678: comma separated list with
+https ports
+
+Interfaces
+
+Docker containers managed in the UserSpace can use the public
+interfaces of the
+
+rc_visard NG
+
+. In particular, Docker containers can access synchronized image sets
+via
+
+gRPC
+
+ and can call the
+
+REST-API interface
+
+. The
+
+rc_visard NG
+
+ (the host) can be accessed under the Docker bridge IP (in default
+Docker bridge network *172.17.0.1*).
+
+Restrictions
+
+Some restrictions for containers apply:
+
+Containers cannot be privileged.
+
+No access to the host network (a Docker bridge network is used
+instead).
+
+Only paths inside cloned git repositories with a docker-compose stack
+can be mounted, all other host paths cannot be mounted.
+
+Host devices cannot be accessed. This includes e.g. USB and GPU
+devices.
+
+Well known and internally used ports on the host cannot be bound. This
+includes ports below 1024, ports from 4200 to 4299 and the ports 2342,
+2343, 2344, 2345, 3956, 4840, 5353, 6379, 7000, 7001, 7002, 7003,
+9100, 9118, 9256, 9445, 9446, 11311, 22350, 22352, 50010, 50051,
+50052, 50053 and 50054.

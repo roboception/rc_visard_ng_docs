@@ -1,0 +1,62 @@
+.. include:: global_rst.glb
+
+.. _sect-kawasaki-format:
+
+Kawasaki XYZ-OAT format
+-----------------------
+
+The pose format that is used by Kawasaki robots consists of a position
+:math:`XYZ` in millimeters and an orientation :math:`OAT` that is given by three angles in
+degrees, with :math:`O` rotating around :math:`z` axis, :math:`A` rotating
+around the rotated :math:`y` axis and :math:`T` rotating around the rotated
+:math:`z` axis. The rotation convention is :math:`z`-:math:`y'`-:math:`z''`
+(i.e. :math:`z`-:math:`y`-:math:`z`) and computed by :math:`r_z(O) r_y(A)
+r_z(T)`.
+
+Conversion from Kawasaki-OAT to quaternion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from the :math:`OAT` angles in degrees to a quaternion
+:math:`q=(\begin{array}{cccc}x & y & z & w\end{array})` can be done by first
+converting all angles to radians
+
+.. math::
+   O_r = O \frac{\pi}{180} \text{,} \\
+   A_r = A \frac{\pi}{180} \text{,} \\
+   T_r = T \frac{\pi}{180} \text{,} \\
+
+and then calculating the quaternion with
+
+.. math::
+   x = \cos{(O_r/2)}\sin{(A_r/2)}\sin{(T_r/2)} - \sin{(O_r/2)}\sin{(A_r/2)}\cos{(T_r/2)} \text{,} \\
+   y = \cos{(O_r/2)}\sin{(A_r/2)}\cos{(T_r/2)} + \sin{(O_r/2)}\sin{(A_r/2)}\sin{(T_r/2)} \text{,} \\
+   z = \sin{(O_r/2)}\cos{(A_r/2)}\cos{(T_r/2)} + \cos{(O_r/2)}\cos{(A_r/2)}\sin{(T_r/2)} \text{,} \\
+   w = \cos{(O_r/2)}\cos{(A_r/2)}\cos{(T_r/2)} - \sin{(O_r/2)}\cos{(A_r/2)}\sin{(T_r/2)} \text{.}
+
+Conversion from quaternion to Kawasaki-OAT
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from a quaternion :math:`q=(\begin{array}{cccc}x & y & z &
+w\end{array})` with :math:`||q||=1` to the :math:`OAT` angles in degrees can
+be done as follows.
+
+If :math:`x = 0` **and** :math:`y = 0` the conversion is
+
+.. math::
+   O &= \text{atan}_2{(2(z - w), 2(z + w))} \frac{180}{\pi} \\
+   A &= \text{acos}{(w^2 + z^2)} \frac{180}{\pi} \\
+   T &= \text{atan}_2{(2(z + w), 2(w - z))} \frac{180}{\pi}
+
+If :math:`z = 0` **and** :math:`w = 0` the conversion is
+
+.. math::
+   O &= \text{atan}_2{(2(y - x), 2(x + y))} \frac{180}{\pi} \\
+   A &= \text{acos}{(-1.0)} \frac{180}{\pi} \\
+   T &= \text{atan}_2{(2(y + x), 2(y - x))} \frac{180}{\pi}
+
+In all other cases the conversion is
+
+.. math::
+   O &= \text{atan}_2{(2(yz - wx), 2(xz + wy))} \frac{180}{\pi} \\
+   A &= \text{acos}{(w^2 - x^2 - y^2 + z^2)} \frac{180}{\pi} \\
+   T &= \text{atan}_2{(2(yz + wx), 2(wy - xz))} \frac{180}{\pi}

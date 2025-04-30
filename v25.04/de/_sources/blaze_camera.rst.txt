@@ -1,0 +1,318 @@
+Pipelinetyp blaze
+
+Parameter
+
+Das Kamera-Modul auf einer Pipeline vom Typ "blaze" wird in der REST-
+API als "rc_camera" bezeichnet und in der
+
+Web GUI
+
+ auf der Seite
+
+Kamera
+
+ in der gewünschten Pipeline dargestellt. Der Benutzer kann die
+Stereo-Matching-Parameter entweder dort oder über die REST-API (
+
+REST-API-Schnittstelle
+
+) oder über GigE Vision (
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+) ändern.
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter:
+
+Statuswerte des rc_camera-Moduls für eine Pipeline vom Typ blaze
+Name  Typ  Min.  Max.  Default  Beschreibung  exp_auto  bool  false
+true  true  Umschalten zwischen automatischer und manueller Belichtung
+(veraltet, nutzen Sie stattdessen exp_control)  exp_auto_average_max
+float64  0.0  1.0  0.5  Maximaler Belichtungsmittelwert im Auto
+Belichtungsmodus  exp_auto_average_min  float64  0.0  1.0  0.0
+Minimaler Belichtungsmittelwert im Auto Belichtungsmodus
+exp_auto_mode  string  -  -  Normal  Modus für automatische
+Belichtung: [Normal]  exp_control  string  -  -  Auto  Art der
+Belichtungsregelung: [Manual, Auto]  exp_height  int32  0  960  0
+Höhe der Region für automatische Belichtung, 0 für das ganze Bild
+exp_max  float64  6.6e-05  0.018  0.018  Maximale Belichtungszeit in
+Sekunden im Auto Belichtungsmodus  exp_offset_x  int32  0  1280  0
+Erste Spalte der Region für automatische Belichtung  exp_offset_y
+int32  0  960  0  Erste Zeile der Belichtungsregion  exp_value  bool
+false  0.018  0.005  Manuelle Belichtungszeit in Sekunden im manuellen
+Belichtungsmodus  exp_width  int32  0  1280  0  Breite der Region für
+automatische Belichtung, 0 für das ganze Bild  fps  float64  1.0  25.0
+20.0  Bildwiederholrate in Hertz  gain_value  float64  0.0  18.0  0.0
+Verstärkung in Dezibel, wenn nicht im Auto Belichtungsmodus  wb_auto
+bool  false  true  true  Ein- und Ausschalten des manuellen
+Weißabgleichs (nur für Farbkameras)  wb_ratio_blue  float64  0.125
+8.0  1.0  Blau-zu-Grün-Verhältnis, falls wb_auto auf false gesetzt ist
+(nur für Farbkameras)  wb_ratio_red  float64  0.125  8.0  1.0  Rot-zu-
+Grün-Verhältnis, falls wb_auto auf false gesetzt ist (nur für
+Farbkameras)
+
+Beschreibung der Laufzeitparameter
+
+Jeder Laufzeitparameter ist durch eine eigene Zeile auf der Seite
+
+Tiefenbild
+
+ der Web GUI repräsentiert. Der Web GUI-Name des Parameters ist in
+Klammern hinter dem Namen des Parameters angegeben und die Parameter
+werden in der Reihenfolge, in der sie in der Web GUI erscheinen,
+aufgelistet.
+
+fps (Bildwiederholrate (Hz))
+
+   Dieser Wert bezeichnet die Bildwiederholrate der Kamera in Bildern
+   pro Sekunde und begrenzt zugleich die Frequenz, mit der
+   Tiefenbilder berechnet werden können. Die Bildwiederholrate
+   entspricht auch der Frequenz, mit welcher der
+
+   rc_visard NG
+
+    Bilder über GigE Vision bereitstellt. Wird diese Frequenz
+   verringert, reduziert sich auch die zur Übertragung der Bilder
+   benötigte Bandbreite des Netzwerks.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?fps=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?fps=<value>
+
+exp_max (Maximale Belichtungszeit)
+
+   Dieser Wert gibt die maximale Belichtungszeit im automatischen
+   Modus in Sekunden an. Die tatsächliche Belichtungszeit wird
+   automatisch angepasst, sodass das Bild korrekt belichtet wird. Sind
+   die Bilder trotz maximaler Belichtungszeit noch immer
+   unterbelichtet, erhöht der
+
+   rc_visard NG
+
+    schrittweise die Verstärkung, um die Helligkeit der Bilder zu
+   erhöhen. Es ist sinnvoll, die Belichtungszeit zu begrenzen, um die
+   bei schnellen Bewegungen auftretende Bildunschärfe zu vermeiden
+   oder zu verringern. Jedoch führt eine höhere Verstärkung auch zu
+   mehr Bildrauschen. Welcher Kompromiss der beste ist, hängt immer
+   auch von der Anwendung ab.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_max=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_max=<value>
+
+exp_auto_average_max (Maximale Helligkeit) und exp_auto_average_min
+(Minimale Helligkeit)
+
+   Die automatische Belichtungszeitsteuerung versucht die
+   Belichtungszeit und den Verstärkungsfaktor so einzustellen, dass
+   die mittlere Bildhelligkeit im Bild oder im
+
+   Bereich zur Regelung
+
+    zwischen der maximalen und minimalen Helligkeit liegt. Die
+   maximale Helligkeit wird benutzt, wenn keine Bildteile in der
+   Sättigung sind, d.h. keine Überbelichtung durch helle Oberflächen
+   oder Reflexionen vorhanden sind. Falls Sättigungen auftreten,
+   werden die Belichtungszeit und der Verstärkungsfaktor verringert,
+   aber nur bis zur eingestellten minimalen Helligkeit.
+
+   Der Parameter für die maximale Helligkeit hat Vorrang über den
+   Parameter der minimalen Helligkeit. Falls die minimale Helligkeit
+   größer als die maximale ist, versucht die automatische
+   Belichtungszeitsteuerung die mittlere Bildhelligkeit auf die
+   maximale Helligkeit zu setzen.
+
+   Die aktuelle Helligkeit wird in der Statuszeile unter den Bildern
+   angezeigt.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_auto_average_max|exp_auto_average_min>=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_auto_average_max|exp_auto_average_min>=<value>
+
+exp_offset_x, exp_offset_y, exp_width, exp_height (Bereich zur
+Regelung)
+
+   Diese Werte definieren eine rechteckige Region im linken
+   rektifizierten Bild, um den von der automatischen Belichtung
+   überwachten Bereich zu limitieren. Die Belichtungszeit und der
+   Verstärkungsfaktor werden so gewählt, dass die definierte Region
+   optimal belichtet wird. Dies kann zu Über- oder Unterbelichtung in
+   anderen Bildbereichen führen. Falls die Breite oder Höhe auf 0
+   gesetzt werden, dann wird das gesamte linke und rechte Bild von der
+   automatischen Belichtungsfunktion berücksichtigt. Dies ist die
+   Standardeinstellung.
+
+   Die Region wird in der Web GUI mit einem Rechteck im linken
+   rektifizierten Bild visualisiert. Sie kann über Slider oder direkt
+   im Bild mithilfe der Schaltfläche "Bereich im Bild auswählen"
+   verändert werden.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+exp_value (Belichtungszeit)
+
+      Dieser Wert gibt die Belichtungszeit im manuellen Modus in
+      Sekunden an. Diese Belichtungszeit wird konstant gehalten, auch
+      wenn die Bilder unterbelichtet sind.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_value=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_value=<value>
+
+gain_value (Verstärkungsfaktor (dB))
+
+   Dieser Wert gibt den Verstärkungsfaktor im manuellen Modus in
+   Dezibel an. Höhere Verstärkungswerte reduzieren die
+   Belichtungszeit, führen aber zu Rauschen.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gain_value=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?gain_value=<value>
+
+wb_auto (Weißabgleich Auto oder Manuell)
+
+   Dieser Wert kann auf *true* gesetzt werden, um den automatischen
+   Weißabgleich anzuschalten. Bei *false* kann das Verhältnis der
+   Farben manuell mit "wb_ratio_red" und "wb_ratio_blue" gesetzt
+   werden. "wb_ratio_red" und "wb_ratio_blue" werden auf die letzten
+   von der Automatik ermittelten Werte gesetzt, wenn diese
+   abgeschaltet wird. Der Weißabgleich ist bei monochromen Kameras
+   ohne Funktion und wird in diesem Fall in der Web GUI nicht
+   angezeigt.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?wb_auto=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?wb_auto=<value>
+
+wb_ratio_blue und wb_ratio_red (Blau | Grün and Rot | Grün)
+
+Mit diesen Werten kann das Verhältnis von Blau zu Grün bzw. Rot zu
+Grün für einen manuellen Weißabgleich gesetzt werden. Der Weißabgleich
+ist bei monochromen Kameras ohne Funktion und wird in diesem Fall in
+der Web GUI nicht angezeigt.
+
+Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+API Version 2
+
+   PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+API Version 1 (veraltet)
+
+   PUT http://<host>/api/v1/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+Die gleichen Parameter sind – mit leicht abweichenden Namen und
+teilweise mit anderen Einheiten oder Datentypen – auch über die
+GenICam-Schnittstelle verfügbar (siehe
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+).
+
+Statuswerte
+
+Das "rc_camera" Modul meldet folgende Statuswerte für eine Pipeline
+vom Typ "blaze".
+
+Statuswerte des rc_camera-Moduls für eine Pipeline vom Typ blaze
+Name  Beschreibung  baseline  Basisabstand t der Stereokamera in
+Metern  color  0 für monochrome Kameras, 1 für Farbkameras  exp
+Aktuelle Belichtungszeit in Sekunden. Dieser Wert wird unter der
+Bildvorschau in der Web GUI als Belichtung (ms) angezeigt.  focal
+Brennweitenfaktor, normalisiert auf eine Bildbreite von 1  fps
+Aktuelle Bildwiederholrate der Kamerabilder in Hertz. Dieser Wert wird
+unter der Bildvorschau in der Web GUI als FPS (Hz) angezeigt.  gain
+Aktueller Verstärkungsfaktor in Dezibel. Dieser Wert wird unter der
+Bildvorschau in der Web GUI als Verstärkung (dB) angezeigt.  height
+Höhe des Kamerabilds in Pixeln. Dieser Wert wird unter der
+Bildvorschau in der Web GUI als zweiter Teil von Auflösung (px)
+angezeigt.  width  Breite des Kamerabilds in Pixeln. Dieser Wert wird
+unter der Bildvorschau in der Web GUI als erster Teil von Auflösung
+(px) angezeigt.
+
+Services
+
+Das "rc_camera"-Modul bietet folgende Services für eine Pipeline vom
+Typ "blaze"
+
+reset_defaults
+
+   stellt die Werkseinstellungen der Parameter dieses Moduls wieder
+   her und wendet sie an („factory reset“).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/services/reset_defaults
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/services/reset_defaults
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

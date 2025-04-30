@@ -1,0 +1,89 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="64"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_load_carrier" Type="STRING"/>
+      <ELEMENT Tag="req/service/detect_filling_level" Type="STRING"/>
+      <ELEMENT Tag="req/args/filling_level_cell_count/@x" Type="INT"/>
+      <ELEMENT Tag="req/args/filling_level_cell_count/@y" Type="INT"/>
+      <ELEMENT Tag="req/args/load_carrier_ids/le" Type="STRING"/>
+      <ELEMENT Tag="req/args/pose_frame" Type="STRING"/>
+      <ELEMENT Tag="req/args/region_of_interest_2d_id" Type="STRING"/>
+      <ELEMENT Tag="req/args/region_of_interest_id" Type="STRING"/>
+      <ELEMENT Tag="req/args/robot_pose/@X" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@A" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@B" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@C" Type="REAL"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/load_carriers/le/cells_filling_levels/le/cell_position/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/cells_filling_levels/le/cell_position/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/cells_filling_levels/le/cell_position/@z" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/cells_filling_levels/le/cell_size/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/cells_filling_levels/le/cell_size/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/cells_filling_levels/le/coverage" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/cells_filling_levels/le/level_free_in_meters/@max" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/cells_filling_levels/le/level_free_in_meters/@mean" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/cells_filling_levels/le/level_free_in_meters/@min" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/cells_filling_levels/le/level_in_percent/@max" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/cells_filling_levels/le/level_in_percent/@mean" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/cells_filling_levels/le/level_in_percent/@min" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/filling_level_cell_count/@x" Type="INT"/>
+      <ELEMENT Tag="res/load_carriers/le/filling_level_cell_count/@y" Type="INT"/>
+      <ELEMENT Tag="res/load_carriers/le/height_open_side" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/id" Type="STRING"/>
+      <ELEMENT Tag="res/load_carriers/le/inner_dimensions/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/inner_dimensions/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/inner_dimensions/@z" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/outer_dimensions/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/outer_dimensions/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/outer_dimensions/@z" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overall_filling_level/@coverage" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overall_filling_level/cell_position/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overall_filling_level/cell_position/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overall_filling_level/cell_position/@z" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overall_filling_level/cell_size/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overall_filling_level/cell_size/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overall_filling_level/level_free_in_meters/@max" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overall_filling_level/level_free_in_meters/@mean" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overall_filling_level/level_free_in_meters/@min" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overall_filling_level/level_in_percent/@max" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overall_filling_level/level_in_percent/@mean" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overall_filling_level/level_in_percent/@min" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overfilled" Type="BOOL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@X" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@A" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@B" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@C" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose_frame" Type="STRING"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_ledge/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_ledge/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_step_height" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_thickness/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_thickness/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/type" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/timestamp/@sec" Type="INT"/>
+      <ELEMENT Tag="res/timestamp/@nsec" Type="INT"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

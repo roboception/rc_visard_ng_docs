@@ -1,0 +1,122 @@
+.. include:: global_rst.glb
+
+.. _sect-pipelines:
+
+.. index:: ! Camera pipelines
+
+Camera pipelines
+================
+
+The |rc_xxx| supports multiple cameras at the same time. For this, it offers up to four
+*camera pipelines* that can be configured by the user.
+
+A camera pipeline contains several software modules which are responsible for
+acquiring data of the camera connected to that pipeline, performing detections or 
+configuring modules used in this pipeline, e.g. by hand-eye calibration.
+
+.. only:: roboception or schunk
+
+   The |rc_xxx| supports cameras of type |rc_visard|, |rc_viscore|, |zivid|, |stereo_ace| and |blaze|. 
+   The type of the corresponding camera pipeline has to be configured to match
+   the connected device.
+
+.. only:: basler
+
+   The |rc_xxx| supports cameras of type |rc_visard|, |stereo_ace| and |blaze|. 
+   The type of the corresponding camera pipeline has to be configured to match
+   the connected device.
+
+.. only:: matrixvision
+
+   The |rc_xxx| supports cameras of type |rc_visard| and |rc_viscore|. 
+   The type of the corresponding camera pipeline has to be configured to match
+   the connected device.
+
+Configuration of camera pipelines
+---------------------------------
+
+The camera pipelines can be configured via the :doc:`webgui`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+under :menuselection:`System --> Camera Pipelines`. This page shows the running pipelines with their
+types and the connected devices.
+
+.. _fig-pipelines-running:
+.. figure:: images/webgui_pipelines.png
+   :width:  100 %
+   :align: center
+
+   Example of the *Camera Pipelines* page on an |rc_cube| with two running pipelines of type ``rc_visard``
+
+Clicking on :guilabel:`Configure Camera Pipelines` allows to configure the number and type of running pipelines
+as shown in the next figure.
+
+.. note:: The *rc_cube I* provides four camera pipelines, the *rc_cube S* two.
+
+.. _fig-pipelines-configuration:
+.. figure:: images/webgui_pipelines_configure.png
+   :width:  60 %
+   :align: center
+
+   Configuring the camera pipelines
+
+The type of a running pipeline can be changed by selecting a different type in the drop down field.
+A running pipeline can be removed by clicking :guilabel:`Remove Pipeline`. Only pipeline 0 can never be removed, because
+this is the primary pipeline.
+Clicking on :guilabel:`+ Add Pipeline` allows to choose the type for the new pipeline and creates a 
+new pipeline of the chosen type.
+Once the pipelines are configured as desired, clicking :guilabel:`Apply Changes & Reboot` will apply the new configuration
+and immediately reboot the |rc_cube|.
+
+
+Configuration of connected cameras
+----------------------------------
+
+A pipeline of a certain type can only discover devices of the same type. That means, a pipeline of type ``rc_visard`` can only
+connect to an |rcvisard|. In case multiple cameras of the same type are connected to the |rc_cube|, the user can set a *device
+filter* to choose a specific camera for each pipeline. The current device filter value is displayed for each running pipeline
+as shown in :numref:`fig-pipelines-running`. By default, the device filter is set to ``*``, which means that any device
+matching the pipeline type will automatically be connected, but only if there is a unique match. Otherwise, no camera will be 
+connected to that pipeline and an error will be shown. 
+
+To adjust the device filter and select the camera to be connected to a pipeline, 
+click on :guilabel:`Configure Camera Connection` on the *Camera Pipelines* page,
+or select the corresponding pipeline in the menu, e.g. under :menuselection:`System --> Camera Pipelines --> Pipeline 1`.
+This will show the current device filter value and more information about the connected
+camera.
+
+.. _fig-pipeline-page:
+.. figure:: images/webgui_pipeline.png
+   :width:  100 %
+   :align: center
+
+   Configuring the camera connection of pipeline 1
+
+Clicking :guilabel:`Choose Camera` opens a dialog to edit the device filter. 
+
+.. _fig-choose-camera:
+.. figure:: images/webgui_choose_camera.png
+   :width:  60 %
+   :align: center
+
+   Choosing the camera by setting a device filter
+
+This dialog also shows a list of all discovered devices matching the pipeline
+type and highlights the ones that match the current value entered for the device filter. 
+It also indicates if the devices are already in use in a different pipeline.
+Device filters can be selected by clicking on an *Interface*, *Name* or *Serial*
+of the desired device in the list. The following table shows possible device filter values.
+
+.. tabularcolumns:: |l|L|
+.. _tab-device-filters:
+.. csv-table:: Possible device filter values
+    :header:  Device filter, Description
+
+    "\*",    "selects any device matching the pipeline type"
+    "sensor<n>:*",   "selects any device connected via the sensor<n> interface that matches the pipeline type"
+    "<name>",   "selects the device by the user-defined name"
+    "<serial>",    "selects the device by the full serial number"
+    "sensor<n>:<serial>",   "selects the device connected via the sensor<n> interface with the given serial"
+    "sensor<n>:<name>",   "selects the device connected via the sensor<n> interface with the given user-defined name"
+    "",    "if empty, no camera will be connected"
+    
+By pressing :guilabel:`Save`, the entered device filter is applied and a camera matching the device filter is connected to
+this pipeline, if possible. Changing the device filter does not require a reboot of the |rc_cube|.

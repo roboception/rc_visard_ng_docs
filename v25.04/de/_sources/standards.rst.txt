@@ -1,0 +1,60 @@
+Schnittstellen, Zulassungen und Normen
+
+Schnittstellen
+
+Der
+
+rc_visard NG
+
+ unterstützt folgende Standardinterfaces:
+
+genicamlogo
+
+Der generische Schnittstellenstandard für Kameras ist die Grundlage
+für die Plug-&-Play-Handhabung von Kameras und Geräten.
+
+gigelogo
+
+GigE Vision® ist ein Interfacestandard für die Übermittlung von
+Hochgeschwindigkeitsvideo- und zugehörigen Steuerdaten über Ethernet-
+Netzwerke.
+
+Zulassungen
+
+   Der
+
+   rc_visard NG
+
+    hat folgende Zulassungen erhalten:
+
+      EG-Konformitätserklärung
+
+Normen
+
+   Der
+
+   rc_visard NG
+
+    wurde getestet und entspricht den Vorgaben der folgenden Normen:
+
+   EN 55032:2015/A11:2020
+
+   EN 55035:2017
+
+   EN 61000-3-2:2014 / IEC 61000-3-2:2018
+
+   EN 61000-3-3:2013 / IEC 61000-3-3:2013+AMD1:2017
+
+   EN IEC 61000-6-1:2019 / IEC 61000-6-1:2016
+
+   EN 61000-6-2:2005/AC:2005 / IEC 61000-6-2:2016
+
+   EN IEC 61000-6-3:2021 / IEC 61000-6-3:2020
+
+   EN 61000-6-4:2007/A1:2011 / IEC 61000-6-4:2018
+
+   konform mit FCC 47 CFR Teil 15B und ICES-003:2021 und 2020
+
+   EN IEC 63000:2018 / IEC 63000:2016
+
+   IP54 entsprechend DIN EN 60529: 2014-09+AMD1:2017-02+AMD2:2019-06

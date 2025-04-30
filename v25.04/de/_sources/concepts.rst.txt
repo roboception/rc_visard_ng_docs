@@ -1,0 +1,17 @@
+Messprinzipien
+
+Der
+
+rc_visard NG
+
+ ist eine selbstregistrierende 3D-Kamera. Er erstellt rektifizierte
+Bilder sowie Disparitäts-, Konfidenz- und Fehlerbilder, mit denen sich
+die Tiefenwerte der Aufnahme berechnen lassen. Zusätzlich werden
+intern gemessene Beschleunigungs- und Drehraten mit
+Bewegungsschätzungen aus den Kamerabildern kombiniert, um Echtzeit-
+Schätzungen der aktuellen Pose (Position und Orientierung),
+Geschwindigkeit und Beschleunigung des Sensors anbieten zu können.
+
+Im Folgenden sind die zugrunde liegenden Messprinzipien genauer
+dargestellt.
+

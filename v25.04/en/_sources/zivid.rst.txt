@@ -1,0 +1,267 @@
+Zivid module
+
+The zivid module is a base module which is available on every
+
+rc_visard NG
+
+ and provides disparity, confidence and error images of a connected
+
+zivid
+
+ structured light camera. It only runs in camera pipelines of type
+"zivid".
+
+User-defined presets
+
+The
+
+zivid
+
+ camera comes with multiple pre-configured settings for capturing
+images, so-called presets.
+
+The 3D presets that come with the
+
+zivid
+
+ camera include both 2D and 3D settings, enabling simultaneous capture
+of color images and depth data. However, the 2D image settings are
+ignored and instead the 2D image is captured with the preset chosen in
+"rc_camera" (see
+
+User-defined presets
+
+). The 3D presets are categorized based on application needs, such as
+
+Consumer Goods
+
+,
+
+Manufacturing
+
+ etc.
+
+Users can also create own 3D presets using the
+
+Zivid Studio
+
+ software (
+
+https://www.zivid.com/zivid-studio-software
+
+) and save them as .yml files. These preset files can be uploaded to
+the
+
+rc_cube
+
+ on the
+
+Depth Image
+
+ page of the Web GUI. User-defined presets can then be selected for
+depth image acquisition in the same way as the pre-defined presets via
+the "preset_name" run-time parameter. If the 2D preset included in the
+user-defined 3D preset should be used, then this preset also has to be
+uploaded as 2D preset and selected as the camera preset name.
+
+Parameters
+
+The zivid module is called "rc_zivid" in the REST-API and it is
+represented by the
+
+Depth Image
+
+ page in the desired pipeline in the
+
+Web GUI
+
+, when a
+
+zivid
+
+ camera is connected and running in the corresponding pipeline. The
+user can change the zivid parameters there, or use the REST-API (
+
+REST-API interface
+
+).
+
+Parameter overview
+
+This module offers the following run-time parameters:
+
+The rc_zivid module's run-time parameters              Name  Type  Min
+Max  Default  Description  acquisition_mode  string  -  -  SingleFrame
+Acquisition mode: [Continuous, SingleFrame]  maxdepth  float64  0.3
+100.0  100.0  Maximum depth in meters  mindepth  float64  0.3  100.0
+0.3  Minimum depth in meters  preset_name  string  -  -  -  Name of
+preset configuration
+
+Description of run-time parameters
+
+Each run-time parameter is represented by a row on the Web GUI's
+
+Depth Image
+
+ page. The name in the Web GUI is given in brackets behind the
+parameter name and the parameters are listed in the order they appear
+in the Web GUI.
+
+acquisition_mode (Acquisition Mode)
+
+      This parameter determines the acquisition mode for 3D data. The
+      acquisition mode can be set to "Continuous" or "SingleFrame".
+      The latter is the default, which acquires a depth image upon
+      each click of the Acquire button or when calling the
+      "rc_zivid/acquisition_trigger" service (see
+
+      Services of the rc_zivid module
+
+      ). In "Continuous" mode, depth images are acquired continuously,
+      when the 2D image acquisition mode is also set to "Continuous".
+      Otherwise, depth images are only acquired when a 2D images
+      acquisition is triggered.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_zivid/parameters/parameters?acquisition_mode=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_zivid/parameters?acquisition_mode=<value>
+
+preset_name (Preset Name)
+
+   This parameter allows to select a preset for 3D image acquisition.
+   The preset can be any of the
+
+   zivid
+
+   's pre-configured presets which depend on the
+
+   zivid
+
+    model and are read from the connected device, or a user-defined
+   preset that has been uploaded to the
+
+   rc_cube
+
+    (see
+
+   User-defined presets
+
+   ).
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_zivid/parameters?preset_name=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_zivid/parameters?preset_name=<value>
+
+Status values
+
+The "rc_zivid" module reports the following status values:
+
+The rc_zivid module's status values      Name  Description  fps
+Actual frame rate of the disparity, error, and confidence images. This
+value is shown in the Web GUI below the image preview as FPS (Hz).
+height  Current height of the disparity, error, and confidence images
+in pixels. This value is shown in the Web GUI below the image preview
+as the second number of Resolution (px).  last_timestamp_grabbed
+Timestamp of the last depth data acquired  latency  Time in seconds
+between image acquisition and publishing of disparity image. This
+value is shown in the Web GUI below the image preview as Latency (s).
+width  Current width of the disparity, error, and confidence images in
+pixels. This value is shown in the Web GUI below the image preview as
+the first number of Resolution (px).
+
+Services of the rc_zivid module
+
+The "rc_zivid" module offers the following services.
+
+acquisition_trigger
+
+   Signals the module to acquire a depth image, if the parameter
+   "acquisition_mode" is set to "SingleFrame".
+
+   Details
+
+   An error is returned if the "acquisition_mode" is set to
+   "Continuous".
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_zivid/services/acquisition_trigger
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_zivid/services/acquisition_trigger
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   Possible return codes are shown below.
+
+   Possible return codes of the acquisition_trigger service call.
+   Code  Description  0  Success  -8  Triggering is only possible in
+   SingleFrame acquisition mode  101  Trigger is ignored, because
+   there is a trigger call pending  102  Trigger is ignored, because
+   there are no subscribers
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "acquisition_trigger",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+reset_defaults
+
+   Restores and applies the default values for this module's
+   parameters ("factory reset").
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_zivid/services/reset_defaults
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_zivid/services/reset_defaults
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

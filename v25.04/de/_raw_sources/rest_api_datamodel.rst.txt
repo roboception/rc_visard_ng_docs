@@ -1,0 +1,27 @@
+.. include:: global_rst.glb
+
+.. _sect-rest-datamodel:
+
+Data type definitions
+^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+   pair: REST-API; data-type
+   pair: REST-API; data model
+
+The |restapi| defines the following data models, which are used to access
+or modify :ref:`the available resources <sect-rest-resources-and-methods>`
+:latex:`\:(Section \ref{rest_api_general:sect-rest-resources-and-methods})` either as
+required attributes/parameters of the requests or as return types.
+
+.. only:: rc_visard
+
+    .. include:: _gen/swagger/rc_visard/definitions.txt
+
+.. only:: rc_visard_ng
+
+    .. include:: _gen/swagger/rc_visard_ng/definitions.txt
+
+.. only:: rc_cube
+
+    .. include:: _gen/swagger/rc_cube/definitions.txt

@@ -1,0 +1,158 @@
+Kamerapipelines
+
+Der
+
+rc_visard NG
+
+ unterstützt mehrere Kameras zur selben Zeit. Dazu bietet er bis zu
+vier
+
+Kamerapipelines
+
+, die vom Benutzer konfiguriert werden können.
+
+Eine Kamerapipeline beinhaltet verschiedene Softwaremodule für die
+Datenaufnahme der mit der Pipeline verbundenen Kamera, für Detektionen
+und für die Konfiguration der Module in dieser Pipeline, z.B. durch
+eine Hand-Auge-Kalibrierung.
+
+Der
+
+rc_visard NG
+
+ unterstützt Kameras vom Typ
+
+rc_visard
+
+,
+
+rc_viscore
+
+,
+
+zivid
+
+,
+
+Stereo ace
+
+ und
+
+blaze
+
+. Der Typ der zugehörigen Kamerapipeline muss so konfiguriert werden,
+dass er zum angeschlossenen Gerät passt.
+
+Konfiguration der Kamerapipelines
+
+Die Kamerapipelines können über die
+
+Web GUI
+
+ unter System ‣ Kamera Pipelines konfiguriert werden. Diese Seite
+zeigt die laufenden Pipelines mit ihrem Typ und dem verbundenen Gerät
+an.
+
+
+Durch Klick auf Pipelines konfigurieren kann die Anzahl und der Typ
+der laufenden Kamerapipelines wie in der nächsten Abbildung gezeigt
+konfiguriert werden.
+
+Bemerkung: Der
+
+  rc_cube I
+
+   bietet vier Kamerapipelines an, der
+
+  rc_cube S
+
+   zwei.
+
+
+Der Typ einer laufenden Pipeline kann geändert werden, indem ein
+anderer Typ im Dropdown-Feld der jeweiligen Pipeline ausgewählt wird.
+Eine laufende Pipeline kann entfernt werden, indem man auf Pipeline
+entfernen klickt. Einzig die Pipeline 0 kann nie gelöscht werden, da
+sie die primäre Pipeline ist. Durch Klick auf + Pipeline hinzufügen
+und anschließendes Auswählen des Pipelinetyps kann eine neue Pipeline
+erstellt werden. Sobald alle Pipelines wie gewünscht konfiguriert
+sind, können die Änderungen durch Klick auf Anwenden & Neustarten
+angewendet werden und der
+
+rc_cube
+
+ startet sofort neu.
+
+Konfiguration der verbundenen Kameras
+
+Eine Pipeline eines bestimmten Typs kann nur Geräte desselben Typs
+erkennen. Das bedeutet, dass eine Pipeline vom Typ "rc_visard" nur mit
+einem
+
+rc_visard
+
+ verbunden werden kann. Falls mehrere Kameras desselben Typs am
+
+rc_cube
+
+ angeschlossen sind, kann durch Setzen eines Filtertexts eine
+bestimmte Kamera für jede Pipeline ausgewählt werden. Der aktuelle
+Filtertext wird für jede laufende Pipeline angezeigt, wie in "fig-
+pipelines-running" dargestellt. Standardmäßig ist der Filtertext auf
+"*" gesetzt, was bedeutet, dass jedes Gerät, das zum Pipelinetyp
+passt, automatisch verbunden wird, aber nur, wenn es eindeutig ist.
+Andernfalls wird keine Kamera mit dieser Pipeline verbunden und ein
+Fehler angezeigt.
+
+Um den Filtertext anzupassen und eine Kamera für eine Pipeline
+auszuwählen, klickt man auf Kameraverbindung konfigurieren auf der
+Seite
+
+Kamera Pipelines
+
+, oder wählt die entsprechende Pipeline im Menü unter, z.B., System ‣
+Kamera Pipelines ‣ Pipeline 1. Diese Seite zeigt den aktuellen
+Filtertext und weitere Informationen über die verbundene Kamera an.
+
+
+Ein Klick auf Kamera auswählen öffnet einen Dialog zum Editieren des
+Filtertexts.
+
+
+Dieser Dialog zeigt weiterhin eine Liste aller erkannten Geräte, die
+zum Pipelinetyp passen, und markiert diejenigen, die zum aktuell
+eingetragenen Filtertext passen. Es wird auch angezeigt, ob die Geräte
+bereits von einer anderen Pipeline verwendet werden. Filtertexte
+können durch Klicken auf das
+
+Interface
+
+, den
+
+Namen
+
+ oder die
+
+Seriennummer
+
+ des gewünschten Geräts ausgewählt werden. Die folgende Tabelle zeigt
+mögliche Filtertexte.
+
+Mögliche Kamera-Filtertexte      Filtertext  Beschreibung  *  wählt
+jedes Gerät aus, das zum Pipelinetyp passt  sensor<n>:*  wählt jedes
+Gerät aus, das über das sensor<n> Interface angeschlossen ist und dem
+Pipelinetyp entspricht.  <Name>  wählt das Gerät mit diesem
+benutzerdefinierten Namen aus  <Seriennummer>  wählt das Gerät mit
+dieser Seriennummer aus  sensor<n>:<Seriennummer>  wählt das Gerät
+aus, das über das sensor<n> Interface angeschlossen sind, und diese
+Seriennummer hat  sensor<n>:<Name>  wählt das Gerät aus, das über das
+sensor<n> Interface angeschlossen sind, und diesen benutzerdefinierten
+Namen hat    falls leer, wird keine Kamera verbunden
+
+Durch Klick auf Speichern wird der eingegebene Filtertext angewendet
+und eine passende Kamera mit dieser Pipeline verbunden, wenn möglich.
+Das Ändern des Filtertext ist ohne Neustart des
+
+rc_cube
+
+ möglich.
