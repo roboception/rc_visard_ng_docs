@@ -1,0 +1,24 @@
+.. _sect-stereo-camera:
+
+.. only:: rc_visard or rc_visard_ng
+
+   Parameters, status values and services
+   ======================================
+   
+   .. include:: visard_viscore_camera.rst
+
+.. only:: rc_cube and (roboception or matrixvision)
+
+   Pipeline types *rc_visard* and *rc_viscore*
+   ===========================================
+   
+   .. include:: visard_viscore_camera.rst
+
+
+.. only:: rc_cube and (basler or schunk)
+
+   Pipeline type *rc_visard*
+   =========================
+
+   .. include:: visard_viscore_camera.rst
+ 

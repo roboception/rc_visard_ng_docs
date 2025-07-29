@@ -1,0 +1,38 @@
+Yaskawa Posenformat
+
+Das Posenformat, welches von Yaskawa Robotern benutzt wird, besteht
+aus einer Position XYZ in Millimetern und einer Orientierung, welche
+durch drei Winkel in Grad gegeben ist. Rx rotiert um die x-Achse, Ry
+rotiert um die y-Achse und Rz rotiert um die z-Achse. Die
+Rotationsreihenfolge ist x-y-z und wird berechnet durch r_z(Rz)
+r_y(Ry) r_x(Rx).
+
+Umrechnung von Yaskawa Rx, Ry, Rz in Quaternionen
+
+Zur Umrechnung von Rx, Ry, Rz Winkeln in Grad in eine Quaternion
+q=(\begin{array}{cccc}x & y & z & w\end{array}) werden zunächst die
+Winkel ins Bogenmaß umgerechnet
+
+   X_r = Rx \frac{\pi}{180} \text{,} \\ Y_r = Ry \frac{\pi}{180}
+   \text{,} \\ Z_r = Rz \frac{\pi}{180} \text{,} \\
+
+und damit wird die Quaternion berechnet als
+
+   x = \cos{(Z_r/2)}\cos{(Y_r/2)}\sin{(X_r/2)} -
+   \sin{(Z_r/2)}\sin{(Y_r/2)}\cos{(X_r/2)} \text{,} \\ y =
+   \cos{(Z_r/2)}\sin{(Y_r/2)}\cos{(X_r/2)} +
+   \sin{(Z_r/2)}\cos{(Y_r/2)}\sin{(X_r/2)} \text{,} \\ z =
+   \sin{(Z_r/2)}\cos{(Y_r/2)}\cos{(X_r/2)} -
+   \cos{(Z_r/2)}\sin{(Y_r/2)}\sin{(X_r/2)} \text{,} \\ w =
+   \cos{(Z_r/2)}\cos{(Y_r/2)}\cos{(X_r/2)} +
+   \sin{(Z_r/2)}\sin{(Y_r/2)}\sin{(X_r/2)} \text{.}
+
+Umrechnung von Quaternionen in Yaskawa Rx, Ry, Rz
+
+Die Umrechnung von einer Quaternion q=(\begin{array}{cccc}x & y & z &
+w\end{array}) mit ||q||=1 in Rx, Ry, Rz Winkel in Grad kann wie folgt
+durchgeführt werden.
+
+   Rx &= \text{atan}_2{(2(wx + yz), 1 - 2(x^2 + y^2))} \frac{180}{\pi}
+   \\ Ry &= \text{asin}{(2(wy - zx))} \frac{180}{\pi} \\ Rz &=
+   \text{atan}_2{(2(wz + xy), 1 - 2(y^2 + z^2))} \frac{180}{\pi}

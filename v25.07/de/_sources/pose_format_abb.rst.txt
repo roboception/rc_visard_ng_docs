@@ -1,0 +1,7 @@
+ABB Posenformat
+
+ABB Roboter beschreiben eine Pose durch Position und Quaternion so wie
+
+rc_visard NG
+
+ Geräte. Es ist keine Konvertierung der Orientierung notwendig.

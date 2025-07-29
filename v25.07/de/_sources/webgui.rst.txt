@@ -1,0 +1,259 @@
+Web GUI
+
+Die Web GUI des
+
+rc_visard NG
+
+ dient dazu, das Gerät zu testen, zu kalibrieren und zu konfigurieren.
+
+Zugriff auf die Web GUI
+
+Auf die Web GUI kann über die IP-Adresse des
+
+rc_visard NG
+
+ von jedem Webbrowser aus zugegriffen werden, z.B. Firefox, Google
+Chrome oder Microsoft Edge. Am einfachsten lässt sich die Web GUI über
+die "rcdiscover-gui" aufrufen, wenn, wie in
+
+Aufspüren von rc_visard NG-Geräten
+
+ beschrieben, ein Doppelklick auf das gewünschte Gerät vorgenommen
+wird.
+
+Alternativ konfigurieren einige Netzwerkumgebungen den eindeutigen
+Host-Namen des
+
+rc_visard NG
+
+ automatisch in ihrem Domain Name Server (
+
+DNS
+
+). In diesem Fall kann die Web GUI auch direkt über folgende
+
+URL
+
+ aufgerufen werden: "http://<host-name>", wobei der Platzhalter
+"<host-name>" gegen den Host-Namen des Geräts auszutauschen ist.
+
+Für Linux und macOS funktioniert das ohne DNS über das Multicast-DNS-
+Protokoll (
+
+mDNS
+
+), das automatisch aktiviert wird, wenn ".local" zum Host-Namen
+hinzugefügt wird. So wird die URL einfach zu: "http://<host-
+name>.local".
+
+Kennenlernen der Web GUI
+
+Die Dashboard-Seite der Web GUI enthält die wichtigsten Informationen
+über das Gerät und die Softwaremodule.
+
+
+Über das Menü kann auf die einzelnen Seiten der Web GUI des
+
+rc_visard NG
+
+ zugegriffen werden:
+
+Kamera
+
+   zeigt einen Live-Stream der rektifizierten Kamerabilder. Die
+   Bildwiederholrate lässt sich reduzieren, um Bandbreite zu sparen,
+   wenn über einen GigE Vision®-Client gestreamt wird. Außerdem lässt
+   sich die Belichtung manuell oder automatisch einstellen. Für nähere
+   Informationen siehe
+
+   Kamera Modul
+
+   .
+
+Tiefenbild
+
+   bietet einen Live-Stream der rektifizierten Bilder der linken
+   Kamera sowie Disparitäts- und Konfidenzbilder. Auf der Seite lassen
+   sich verschiedene Einstellungen zur Berechnung und Filterung von
+   Tiefenbildern vornehmen. Für nähere Informationen siehe
+
+   Stereo-Matching Modul
+
+   .
+
+Module
+
+   ermöglicht den Zugriff auf die Detektionsmodule des
+
+   rc_visard NG
+
+    (siehe
+
+   Detektions- und Messmodule
+
+   ).
+
+Konfiguration
+   ermöglicht den Zugriff auf die Konfigurationsmodule des
+
+   rc_visard NG
+
+    (siehe
+
+   Konfigurationsmodule
+
+   ).
+
+Datenbank
+
+   ermöglicht den Zugriff auf die Datenbankmodule des
+
+   rc_visard NG
+
+    (siehe
+
+   Datenbankmodule
+
+   ).
+
+System
+
+   ermöglicht dem Nutzer den Zugriff auf allgemeine
+   Systemeinstellungen, Informationen zum Gerät und den Log-Dateien,
+   sowie die Möglichkeit, die Firmware oder Lizenzdatei zu
+   aktualisieren.
+
+Bemerkung: Weitere Informationen zu den einzelnen Parametern der Web
+  GUI lassen sich über die jeweils daneben angezeigte Schaltfläche
+
+  Info
+
+   aufrufen.
+
+Web GUI Zugriffskontrolle
+
+Die Web GUI bietet einen simplen Mechanismus das User Interface zu
+sperren um beiläufige und unbeabsichtigte Änderungen zu vermeiden.
+
+Beim aktivieren der Web GUI Zugriffskontrolle über die
+
+System
+
+ Seite muss ein Passwort gesetzt werden. Jetzt ist die Web GUI in
+einem gesperrten Zustand wie das Schloss Symbol in der Kopfleiste
+anzeigt. Alle Seiten, Kamerabilder, Parameter und Detektionen können
+wie gewohnt eingesehen werden, Änderungen sind aber nicht möglich.
+
+Um die Web GUI temporär zu entsperren und Änderungen vorzunehmen,
+klicken Sie das Schloss Symbol und geben Sie das Passwort ein. Während
+das aktivieren und deaktivieren der Web GUI Zugriffskontrolle jeden
+betrifft der diesen
+
+rc_visard NG
+
+ nutzt, ist das Entsperren nur pro Browser gültig und wird durch das
+Symbol mit dem offenen Schloss angezeigt. Nach 10 Minutuen Inaktivität
+wird es automatisch wieder gesperrt.
+
+Die Web GUI Zugriffskontrolle kann auf der
+
+System
+
+ Seite wieder deaktiviert werden nachdem das aktuelle Passwort
+angegeben wurde.
+
+Warnung: Dies ist keine Sicherheitsfunktion! Es sperrt nur die Web
+  GUI und nicht die REST-API. Es ist dazu gedacht um unbeabsichtigte
+  und beiläufige Änderungen, z.B. über einen angeschlossenen
+  Bildschirm, zu verhindern.
+
+Bemerkung: Im Fall eines vergessenen Passworts kann die
+  Zugriffskontrolle über die REST-API mit
+
+  delete ui_lock
+
+   zurückgesetzt und deaktiviert werden.
+
+Herunterladen von Kamerabildern
+
+Die Web GUI bietet eine einfache Möglichkeit, einen Schnappschuss der
+aktuellen Szene als .tar.gz-Datei zu speichern. Dazu dient das
+Kamerasymbol unterhalb der Live-Streams auf der Seite
+
+Kamera
+
+. Dieser Schnappschuss beinhaltet:
+
+die rektifizierten Kamerabilder in voller Auflösung als .png-Dateien,
+
+eine Kameraparameter-Datei mit Kameramatrix, Bildabmessungen,
+Belichtungszeit, Verstärkungsfaktor und Basisabstand der Kameras.
+
+die aktuellen IMU-Messungen als imu.csv-Datei,
+
+eine pipeline_status.json-Datei mit Informationen aller 3D-Kamera-,
+Detektions- und Konfigurationsmodule, die auf dem rc_visard NG laufen,
+
+eine backup.json-Datei mit den Einstellungen des rc_visard NG
+einschließlich konfigurierter Greifer, Load Carrier und Regions of
+Interest,
+
+eine system_info.json-Datei mit Systeminformationen des rc_visard NG.
+
+Die Dateinamen enthalten die Zeitstempel.
+
+Herunterladen von Tiefenbildern und Punktwolken
+
+Die Web GUI bietet eine einfache Möglichkeit, die Tiefendaten der
+aktuellen Szene als .tar.gz-Datei zu speichern. Dazu dient das
+Kamerasymbol unterhalb der Live-Streams auf der Seite
+
+Tiefenbild
+
+. Dieser Schnappschuss beinhaltet:
+
+die rektifizierten linken und rechten Kamerabilder in voller Auflösung
+als .png-Dateien,
+
+eine Parameterdatei für das linke Kamerabild mit Kameramatrix,
+Bildabmessungen, Belichtungszeit, Verstärkungsfaktor und Basisabstand
+der Kameras,
+
+die Disparitäts-, Fehler- und Konfidenzbilder in der Auflösung, die
+der aktuell eingestellten Qualität entspricht, als .png-Dateien,
+
+eine Parameterdatei zum Disparitätsbild mit Kameramatrix,
+Bildabmessungen, Belichtungszeit, Verstärkungsfaktor und Basisabstand
+der Kameras, sowie Informationen über die Disparitätswerte (ungültige
+Werte, Skalierung, Offset),
+
+die aktuellen IMU-Messungen als imu.csv-Datei,
+
+eine pipeline_status.json-Datei mit Informationen aller 3D-Kamera-,
+Detektions- und Konfigurationsmodule, die auf dem rc_visard NG laufen,
+
+eine backup.json-Datei mit den Einstellungen des rc_visard NG
+einschließlich konfigurierter Greifer, Load Carrier und Regions of
+Interest,
+
+eine system_info.json-Datei mit Systeminformationen des rc_visard NG.
+
+Die Dateinamen enthalten die Zeitstempel.
+
+Durch Klick auf das Mesh-Symbol unterhalb der Live-Streams auf der
+Seite
+
+Tiefenbild
+
+ kann man einen Schnappschuss herunterladen, der zusätzlich ein Mesh
+der Punktwolke in der aktuell eingestellten Auflösung (Qualität) als
+>>*<<.ply Datei enthält.
+
+Bemerkung: Das Herunterladen der Tiefenbilder löst eine Bildaufnahme
+  aus, in der gleichen Weise wie ein Klick auf den "Aufnehmen"-Button
+  auf der
+
+  Tiefenbild
+
+  -Seite der Web GUI. Dies kann einen Einfluss auf laufende
+  Anwendungen haben.

@@ -1,0 +1,237 @@
+
+.. include:: global_rst.glb
+
+.. _sect-zivid:
+
+Zivid module
+============
+
+.. Note:: The firmware version of the connected |zivid| camera has to match the version required by the |rc_cube|, 
+   otherwise the |zivid| cannot be used. To update the |zivid| to the required firmware version, open the 
+   :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`,
+   navigate to :menuselection:`System --> Camera Pipelines` and select the |zivid| pipeline. 
+   Then click on :guilabel:`Update zivid firmware` and wait for the update process to finish.
+
+.. index::
+   single: zivid
+   single: depth image
+
+The zivid module is a base module which is available on every |rc_xxx|
+and provides disparity, confidence and error images of a connected |zivid| structured light camera.
+It only runs in camera pipelines of type ``zivid``.
+
+.. _sect-zivid-user-defined-presets:
+
+User-defined presets
+--------------------
+
+The |zivid| camera comes with multiple pre-configured settings for capturing images, so-called presets.
+
+The 3D presets that come with the |zivid| camera include both 2D and 3D settings, enabling simultaneous capture of color images and depth data. 
+However, the 2D image settings are ignored and instead the 2D image is captured with the preset chosen
+in ``rc_camera`` (see :ref:`sect-zivid-camera-user-defined-presets`:latex:`, Section \ref{zivid_camera:sect-zivid-camera-user-defined-presets}`).
+The 3D presets are categorized based on application needs, such as *Consumer Goods*, *Manufacturing* etc.
+
+Users can also create own 3D presets using the *Zivid Studio* software (https://www.zivid.com/zivid-studio-software)
+and save them as .yml files. These preset files can be uploaded to the |rc_cube| on the *Depth Image* page of the |webgui|.
+User-defined presets can then be selected for depth image acquisition in the same way as the pre-defined presets via the 
+``preset_name`` run-time parameter. If the 2D preset included in the user-defined 3D preset should be used, then this preset
+also has to be uploaded as 2D preset and selected as the camera preset name.
+
+.. _sect-zivid-image-parameters:
+
+Parameters
+----------
+
+.. index::
+   pair: parameters; zivid
+
+The zivid module is called ``rc_zivid`` in the |rest-api| and it is represented by the
+*Depth Image* page in the desired pipeline in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`,
+when a |zivid| camera is connected and running in the corresponding pipeline.
+The user can change the zivid parameters there, or use the |rest-api|
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`).
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_zivid.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the |webgui|'s *Depth Image* page. The name in the
+|webgui| is given in brackets behind the parameter name and the parameters are listed in the order
+they appear in the |webgui|.
+
+.. _expl-depth-acquisition_mode:
+
+.. index::
+   pair: zivid; depth acquisition mode
+
+``acquisition_mode`` (*Acquisition Mode*)
+'''''''''''''''''''''''''''''''''''''''''
+    This parameter determines the acquisition mode for 3D data. The acquisition mode can be set to ``Continuous`` or ``SingleFrame``.
+    The latter is the default, which acquires a depth image upon each click of the :guilabel:`Acquire` button or when 
+    calling the ``rc_zivid/acquisition_trigger`` service (see :ref:`sect-zivid-services`:latex:`, Section \ref{zivid:sect-zivid-services}`).
+    In ``Continuous`` mode, depth images are acquired continuously, when the 2D image acquisition mode is also
+    set to ``Continuous``. Otherwise, depth images are only acquired when a 2D images acquisition is triggered.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_zivid/parameters/parameters?acquisition_mode=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_zivid/parameters?acquisition_mode=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_zivid/parameters?acquisition_mode=<value>
+
+.. _expl-zivid-preset_name:
+
+.. index::
+   pair: zivid; preset name
+
+``preset_name`` (*Preset Name*)
+'''''''''''''''''''''''''''''''
+   This parameter allows to select a preset for 3D image acquisition. The preset can be any of the |zivid|'s 
+   pre-configured presets which depend on the |zivid| model and are read from the connected device, or
+   a user-defined preset that has been uploaded to the |rc_cube| 
+   (see :ref:`sect-zivid-user-defined-presets`:latex:`, Section \ref{zivid:sect-zivid-user-defined-presets}`).
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+          
+         .. code-block:: bash
+            
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_zivid/parameters?preset_name=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_zivid/parameters?preset_name=<value>
+
+
+Status values
+-------------
+
+The ``rc_zivid`` module reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_zivid`` module's status values
+   :header:  Name, Description
+
+   "``fps``","Actual frame rate of the disparity, error, and confidence images. This value is shown in the |webgui| below the image preview as *FPS (Hz)*."
+   "``height``","Current height of the disparity, error, and confidence images in pixels. This value is shown in the |webgui| below the image preview as the second number of *Resolution (px)*."
+   "``last_timestamp_grabbed``","Timestamp of the last depth data acquired"
+   "``latency``","Time in seconds between image acquisition and publishing of disparity image. This value is shown in the |webgui| below the image preview as *Latency (s)*."
+   "``width``","Current width of the disparity, error, and confidence images in pixels. This value is shown in the |webgui| below the image preview as the first number of *Resolution (px)*."
+
+.. _sect-zivid-services:
+
+Services of the rc_zivid module
+-------------------------------
+
+The ``rc_zivid`` module offers the following services.
+
+``acquisition_trigger``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+   Signals the module to acquire a depth image, if the parameter ``acquisition_mode`` is set to ``SingleFrame``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      An error is returned if the ``acquisition_mode`` is set to ``Continuous``.
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+               
+            .. code-block:: bash
+            
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_zivid/services/acquisition_trigger
+
+         .. tab:: **API version 1 (deprecated)**
+            
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_zivid/services/acquisition_trigger
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_zivid_acquisition_trigger_request.txt
+
+         .. tab:: **Response**
+
+            Possible return codes are shown below.
+
+            .. tabularcolumns:: |c|L|
+            .. _tab-zivid-acquisition-trigger-return-codes:
+            .. csv-table:: Possible return codes of the ``acquisition_trigger`` service call.
+               :header:  Code, Description
+
+               "0",   "Success"
+               "-8",  "Triggering is only possible in SingleFrame acquisition mode"
+               "101", "Trigger is ignored, because there is a trigger call pending"
+               "102", "Trigger is ignored, because there are no subscribers"
+
+            .. include:: _gen/nodes/services/rc_zivid_acquisition_trigger_response.txt
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+            
+            .. code-block:: bash
+            
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_zivid/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+            
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_zivid/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_zivid_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_zivid_reset_defaults_response.txt
+

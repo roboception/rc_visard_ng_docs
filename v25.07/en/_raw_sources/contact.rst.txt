@@ -1,0 +1,116 @@
+.. include:: global_rst.glb
+
+.. _sect-contact:
+
+Contact
+=======
+
+Support
+^^^^^^^
+
+.. only:: roboception
+
+    For support issues, please see http://www.roboception.com/support or contact support@roboception.de.
+
+.. only:: matrixvision
+
+    For support issues, please see https://www.balluff.com.
+
+.. only:: schunk
+
+    For support issues, please contact service.greifsysteme@de.schunk.com, or call +49 7133-103-2333.
+
+.. only:: basler
+
+   For support issues, please see https://www.baslerweb.com/en/sales-support/support-contact/ or contact
+
+   | **Technical Support Team**
+   |
+   | Europe, Middle East, Africa
+   | +49 4102 463 515
+   | support.europe@baslerweb.com
+   | 
+   | The Americas
+   | +1 610 280 0171
+   | support.usa@baslerweb.com
+   | 
+   | Asia-Pacific
+   | +65 6367 1355
+   | support.asia@baslerweb.com
+   |
+
+Downloads
+^^^^^^^^^
+
+.. only:: roboception or schunk or matrixvision
+
+   Software SDKs, etc. can be downloaded from http://www.roboception.com/download.
+
+.. only:: basler
+
+   Software SDKs, etc. can be downloaded from https://www.baslerweb.com/3d-software.
+
+Address
+^^^^^^^
+
+.. only:: roboception
+
+    | Roboception GmbH
+    | Kaflerstrasse 2
+    | 81241 Munich
+    | Germany
+    |
+    | Web: http://www.roboception.com
+    | Email: info@roboception.de
+    | Phone: +49 89 889 50 79-0
+    |
+
+.. only:: matrixvision
+
+    | Balluff GmbH
+    | Schurwaldstrasse 9
+    | D-73765 Neuhausen a.d.F.
+    | Germany
+    |
+    | Web: https://www.balluff.com
+    | Email: balluff@balluff.de
+    | Phone: +49 7158 173-0 
+    |
+
+.. only:: schunk
+
+    | **Manufacturer:** 
+    | Roboception GmbH
+    | Kaflerstrasse 2
+    | 81241 Munich
+    | Germany
+    |
+    | Web: http://www.roboception.com
+    | Email: info@roboception.de
+    | Phone: +49 89 889 50 79-0
+    |
+    |
+    | **Distributor:** 
+    | SCHUNK GmbH & Co. KG
+    | Spann- und Greiftechnik
+    | Bahnhofstr. 106 - 134
+    | D-74348 Lauffen/Neckar
+    | Germany
+    |
+    | Web: http://www.schunk.com
+    | Email: info@de.schunk.com
+    | Phone: +49-7133-103-0
+    |
+
+.. only:: basler
+
+    | Basler AG
+    | An der Strusbek 60-62
+    | 22926 Ahrensburg
+    | Germany
+    |
+    | Web: http://www.baslerweb.com
+    | Email: info@baslerweb.com
+    | Phone: +49 4102 463 0
+    |
+

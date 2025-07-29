@@ -1,0 +1,606 @@
+.. include:: global_rst.glb
+
+.. _sect-eki:
+
+KUKA Ethernet KRL Interface
+===========================
+
+.. index::
+   single: eki
+
+The |rc_xxx| provides an Ethernet KRL Interface (|eki-bridge|),
+which allows communicating with the |rc_xxx| from KUKA KRL via
+KUKA.EthernetKRL XML.
+
+.. Note::
+
+   The component is optional and requires a separate |company|'s EKIBridge
+   :ref:`license <sect-updating-license>` :latex:`(Section \ref{maintenance:sect-updating-license})`
+   to be purchased.
+
+.. Note::
+
+    The KUKA.EthernetKRL add-on software package version 2.2 or newer must be
+    activated on the robot controller to use this component.
+
+The |eki-bridge| can be used to programmatically
+
+*  do service calls, e.g. to start and stop individual computational nodes,
+   or to use offered services such as the hand-eye calibration or the
+   computation of grasp poses;
+*  set and get run-time parameters of computation nodes,
+   e.g. of the camera, or disparity calculation.
+
+.. Note::
+
+    A known limitation of the |eki-bridge| is that strings representing valid numbers will be converted to int/float.
+    Hence user-defined names (like ROI IDs, etc.) should always contain at least one letter so they can be used in service call arguments.
+
+Ethernet connection configuration
+---------------------------------
+
+The |eki-bridge| listens on port 7000 for EKI XML messages and transparently
+bridges the |rc_xxx|'s :doc:`REST-API v2<rest_api>`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+The received EKI messages are transformed to JSON and forwarded to the
+|rc_xxx|'s |rest-api|.
+The response from the |rest-api| is transformed back to EKI XML.
+
+The |eki-bridge| gives access to run-time parameters and offered services
+of all computational nodes described in
+:doc:`modules`:latex:`\:(Section \ref{modules:sect-modules})`.
+
+.. only:: latex
+
+  The Ethernet connection to the |rc_xxx| on the robot controller is configured
+  using XML configuration files.
+
+  .. only:: roboception or schunk or matrixvision
+
+     The EKI XML configuration files of all nodes running on the |rc_xxx| are
+     available for download at:
+
+     :latex:`\begin{center}\url{https://doc.rc-visard.com/latest/en/eki.html#eki-xml-configuration-files}\end{center}`
+
+.. only:: html
+
+  The Ethernet connection to the |rc_xxx| on the robot controller is configured
+  using XML configuration files.
+  The EKI XML configuration files of all nodes running on the |rc_xxx| are
+  listed at :ref:`sect-eki-configs`.
+
+Each node offering run-time parameters has an XML configuration file
+for setting and getting its parameters.
+These are named following the scheme ``<node_name>-parameters.xml``.
+Each node's service has its own XML configuration file.
+These are named following the scheme ``<node_name>-<service_name>.xml``.
+
+The IP of the |rc_xxx| in the network needs to be filled in the XML file.
+
+.. only:: rc_cube
+
+  The port is already set to 7000, which corresponds to pipeline 0.
+  This needs to be adjusted if a different pipeline should be used.
+  The port number is 7000 + pipeline number, so 7001 for pipeline 1, etc.
+
+These files must be stored in the directory
+``C:\KRC\ROBOTER\Config\User\Common\EthernetKRL``
+of the robot controller and they are read in when a connection is initialized.
+
+As an example, an Ethernet connection to configure the ``rc_stereomatching``
+parameters is established with the following KRL code.
+
+  .. code-block:: c
+
+    DECL EKI_Status RET
+    RET = EKI_INIT("rc_stereomatching-parameters")
+    RET = EKI_Open("rc_stereomatching-parameters")
+
+    ; ----------- Desired operation -----------
+
+    RET = EKI_Close("rc_stereomatching-parameters")
+
+.. note:: The |eki-bridge| automatically terminates the connection to the client
+   if the received XML telegram is invalid.
+
+Generic XML structure
+---------------------
+
+For data transmission, the |eki-bridge| uses ``<req>`` as root XML element
+(short for request).
+
+The root tag always includes the following elements.
+
+*  ``<node>``. This includes a child XML element used by the |eki-bridge|
+   to identify the target node.
+   The node name is already included in the XML configuration file.
+*  ``<end_of_request>``. End of request flag that triggers the request.
+
+The following listing shows the generic XML structure for data transmission.
+
+  .. code-block:: xml
+
+    <SEND>
+      <XML>
+        <ELEMENT Tag="req/node/<node_name>" Type="STRING"/>
+        <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+      </XML>
+    </SEND>
+
+For data reception, the |eki-bridge| uses ``<res>`` as root XML element
+(short for response).
+The root tag always includes a ``<return_code>`` child element.
+
+  .. code-block:: xml
+
+    <RECEIVE>
+      <XML>
+        <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+        <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+        <ELEMENT Tag="res" Set_Flag="998"/>
+      </XML>
+    </RECEIVE>
+
+.. note:: By default the XML configuration files uses 998 as flag to notify KRL
+   that the response data record has been received. If this value is already
+   in use, it should be changed in the corresponding XML configuration file.
+
+Return code
+^^^^^^^^^^^
+
+The ``<return_code>`` element consists of a ``value`` and a ``message`` attribute.
+
+As for all other components, a successful request returns with a
+``res/return_code/@value`` of 0.
+Negative values indicate that the request failed.
+The error message is contained in ``res/return_code/@message``.
+Positive values indicate that the request succeeded with additional information,
+contained in ``res/return_code/@message`` as well.
+
+The following codes can be issued by the |eki-bridge| component.
+
+.. tabularcolumns:: |c|L|
+.. _tab-eki-return-codes:
+.. csv-table:: Return codes of the |eki-bridge| component
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "Parsing error in the conversion from XML to JSON"
+    "-2",   "Internal error "
+    "-5", "Connection error from the |rest-api|"
+    "-9", "Missing or invalid license for |eki-bridge| component"
+
+.. note:: The |eki-bridge| can also return return code values specific
+   to individual nodes. They are documented in the respective
+   :ref:`software module <sect-modules>`:latex:`\:(Section \ref{modules:sect-modules})`.
+
+.. note:: Due to limitations in KRL, the maximum length of a string returned
+   by the |eki-bridge| is 512 characters. All messages larger than this value
+   are truncated.
+
+Services
+--------
+
+For the nodes' services, the XML schema is generated from the service's
+arguments and response in JavaScript Object Notation (JSON) described in
+:doc:`modules`:latex:`\:(Section \ref{modules:sect-modules})`.
+The conversion is done transparently, except for the conversion rules
+described below.
+
+Conversions of poses:
+
+  A pose is a JSON object that includes ``position`` and ``orientation`` keys.
+
+    .. code-block:: json
+
+      {
+        "pose": {
+          "position": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64",
+          },
+          "orientation": {
+            "x": "float64",
+            "y": "float64",
+            "z": "float64",
+            "w": "float64",
+          }
+        }
+      }
+
+  This JSON object is converted to a KRL ``FRAME`` in the XML message.
+
+    .. code-block:: xml
+
+      <pose X="..." Y="..." Z="..." A="..." B="..." C="..."></pose>
+
+  Positions are converted from meters to millimeters and orientations are
+  converted from quaternions to KUKA ABC (in degrees).
+
+  .. note:: No other unit conversions are included in the |eki-bridge|.
+     All dimensions and 3D coordinates that don't belong to a pose are
+     expected and returned in meters.
+
+Arrays:
+
+  Arrays are identified by adding the child element ``<le>``
+  (short for list element) to the list name. As an example, the JSON object
+
+    .. code-block:: json
+
+      {
+        "rectangles": [
+          {
+            "x": "float64",
+            "y": "float64"
+          }
+        ]
+      }
+
+  is converted to the XML fragment
+
+    .. code-block:: xml
+
+      <rectangles>
+        <le>
+          <x>...</x>
+          <y>...</y>
+        </le>
+      </rectangles>
+
+Use of XML attributes:
+
+  All JSON keys whose values are a primitive data type and don't belong to an
+  array are stored in attributes. As an example, the JSON object
+
+    .. code-block:: json
+
+      {
+        "item": {
+          "uuid": "string",
+          "confidence": "float64",
+          "rectangle": {
+            "x": "float64",
+            "y": "float64"
+          }
+        }
+      }
+
+  is converted to the XML fragment
+
+    .. code-block:: xml
+
+      <item uuid="..." confidence="...">
+        <rectangle x="..." y="...">
+        </rectangle>
+      </item>
+
+Request XML structure
+^^^^^^^^^^^^^^^^^^^^^
+
+The ``<SEND>`` element in the XML configuration file for a generic
+service follows the specification below.
+
+  .. code-block:: xml
+
+    <SEND>
+      <XML>
+        <ELEMENT Tag="req/node/<node_name>" Type="STRING"/>
+        <ELEMENT Tag="req/service/<service_name>" Type="STRING"/>
+        <ELEMENT Tag="req/args/<argX>" Type="<argX_type>"/>
+        <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+      </XML>
+    </SEND>
+
+The ``<service>`` element includes a child XML element that is used by the
+|eki-bridge| to identify the target service from the XML telegram.
+The service name is already included in the configuration file.
+
+The ``<args>`` element includes the service arguments and should be configured
+with ``EKI_Set<Type>`` KRL instructions.
+
+As an example, the ``<SEND>`` element of the ``rc_load_carrier_db``'s
+``get_load_carriers`` service
+(see :ref:`sect-loadcarrier-db`:latex:`, Section \ref{loadcarrier_db:sect-loadcarrier-db}`) is:
+
+  .. code-block:: xml
+
+    <SEND>
+      <XML>
+        <ELEMENT Tag="req/node/rc_load_carrier_db" Type="STRING"/>
+        <ELEMENT Tag="req/service/get_load_carriers" Type="STRING"/>
+        <ELEMENT Tag="req/args/load_carrier_ids/le" Type="STRING"/>
+        <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+      </XML>
+    </SEND>
+
+The ``<end_of_request>`` element allows to have arrays in the request.
+For configuring an array, the request is split into as many
+packages as the size of the array.
+The last telegram contains all tags, including the ``<end_of_request>``
+flag, while all other telegrams contain one array element each.
+
+As an example, for requesting two load carrier models to the ``rc_load_carrier_db``'s
+``get_load_carriers`` service, the user needs to send two XML messages.
+The first XML telegram is:
+
+  .. code-block:: xml
+
+    <req>
+      <args>
+        <load_carrier_ids>
+          <le>load_carrier1</le>
+        </load_carrier_ids>
+      </args>
+    </req>
+
+This telegram can be sent from KRL with the ``EKI_Send`` command,
+by specifying the list element as path:
+
+  .. code-block:: c
+
+    DECL EKI_STATUS RET
+    RET = EKI_SetString("rc_load_carrier_db-get_load_carriers", "req/args/load_carrier_ids/le", "load_carrier1")
+    RET = EKI_Send("rc_load_carrier_db-get_load_carriers", "req/args/load_carrier_ids/le")
+
+The second telegram includes all tags and triggers the request to the
+``rc_load_carrier_db`` node:
+
+  .. code-block:: xml
+
+    <req>
+      <node>
+        <rc_load_carrier_db></rc_load_carrier_db>
+      </node>
+      <service>
+        <get_load_carriers></get_load_carriers>
+      </service>
+      <args>
+        <load_carrier_ids>
+          <le>load_carrier2</le>
+        </load_carrier_ids>
+      </args>
+      <end_of_request></end_of_request>
+    </req>
+
+This telegram can be sent from KRL by specifying ``req`` as path for ``EKI_Send``:
+
+  .. code-block:: c
+
+    DECL EKI_STATUS RET
+    RET = EKI_SetString("rc_load_carrier_db-get_load_carriers", "req/args/load_carrier_ids/le", "load_carrier2")
+    RET = EKI_Send("rc_load_carrier_db-get_load_carriers", "req")
+
+Response XML structure
+^^^^^^^^^^^^^^^^^^^^^^
+
+The ``<RECEIVE>`` element in the XML configuration file for a generic
+service follows the specification below:
+
+  .. code-block:: xml
+
+    <RECEIVE>
+      <XML>
+        <ELEMENT Tag="res/<resX>" Type="<resX_type>"/>
+        <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+        <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+        <ELEMENT Tag="res" Set_Flag="998"/>
+      </XML>
+    </RECEIVE>
+
+As an example, the ``<RECEIVE>`` element of the ``rc_april_tag_detect``'s
+``detect`` service
+(see :ref:`sect-tag-detection`:latex:`, Section \ref{tagdetect:sect-tag-detection}`) is:
+
+  .. code-block:: xml
+
+    <RECEIVE>
+      <XML>
+        <ELEMENT Tag="res/timestamp/@sec" Type="INT"/>
+        <ELEMENT Tag="res/timestamp/@nsec" Type="INT"/>
+        <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+        <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+        <ELEMENT Tag="res/tags/le/pose_frame" Type="STRING"/>
+        <ELEMENT Tag="res/tags/le/timestamp/@sec" Type="INT"/>
+        <ELEMENT Tag="res/tags/le/timestamp/@nsec" Type="INT"/>
+        <ELEMENT Tag="res/tags/le/pose/@X" Type="REAL"/>
+        <ELEMENT Tag="res/tags/le/pose/@Y" Type="REAL"/>
+        <ELEMENT Tag="res/tags/le/pose/@Z" Type="REAL"/>
+        <ELEMENT Tag="res/tags/le/pose/@A" Type="REAL"/>
+        <ELEMENT Tag="res/tags/le/pose/@B" Type="REAL"/>
+        <ELEMENT Tag="res/tags/le/pose/@C" Type="REAL"/>
+        <ELEMENT Tag="res/tags/le/instance_id" Type="STRING"/>
+        <ELEMENT Tag="res/tags/le/id" Type="STRING"/>
+        <ELEMENT Tag="res/tags/le/size" Type="REAL"/>
+        <ELEMENT Tag="res" Set_Flag="998"/>
+      </XML>
+    </RECEIVE>
+
+For arrays, the response includes multiple instances of the same XML element.
+Each element is written into a separate buffer within EKI and can be read
+from the buffer with KRL instructions.
+The number of instances can be requested with ``EKI_CheckBuffer`` and each
+instance can then be read by calling ``EKI_Get<Type>``.
+
+As an example, the tag poses received after a call to the
+``rc_april_tag_detect``'s ``detect`` service can be read in KRL using the
+following code:
+
+  .. code-block:: c
+
+      DECL EKI_STATUS RET
+      DECL INT i
+      DECL INT num_instances
+      DECL FRAME poses[32]
+
+      DECL FRAME pose = {X 0.0, Y 0.0, Z 0.0, A 0.0, B 0.0, C 0.0}
+
+      RET = EKI_CheckBuffer("rc_april_tag_detect-detect", "res/tags/le/pose")
+      num_instances = RET.Buff
+      for i=1 to num_instances
+        RET = EKI_GetFrame("rc_april_tag_detect-detect", "res/tags/le/pose", pose)
+        poses[i] = pose
+      endfor
+      RET = EKI_ClearBuffer("rc_april_tag_detect-detect", "res")
+
+.. note:: Before each request from EKI to the |rc_xxx|, all buffers should
+    be cleared in order to store only the current response in the EKI buffers.
+
+Parameters
+----------
+
+All nodes' parameters can be set and queried from the |eki-bridge|.
+The XML configuration file for a generic node follows the specification below:
+
+  .. code-block:: xml
+
+    <SEND>
+      <XML>
+        <ELEMENT Tag="req/node/<node_name>" Type="STRING"/>
+        <ELEMENT Tag="req/parameters/<parameter_x>/@value" Type="INT"/>
+        <ELEMENT Tag="req/parameters/<parameter_y>/@value" Type="STRING"/>
+        <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+      </XML>
+    </SEND>
+    <RECEIVE>
+      <XML>
+        <ELEMENT Tag="res/parameters/<parameter_x>/@value" Type="INT"/>
+        <ELEMENT Tag="res/parameters/<parameter_x>/@default" Type="INT"/>
+        <ELEMENT Tag="res/parameters/<parameter_x>/@min" Type="INT"/>
+        <ELEMENT Tag="res/parameters/<parameter_x>/@max" Type="INT"/>
+        <ELEMENT Tag="res/parameters/<parameter_y>/@value" Type="REAL"/>
+        <ELEMENT Tag="res/parameters/<parameter_y>/@default" Type="REAL"/>
+        <ELEMENT Tag="res/parameters/<parameter_y>/@min" Type="REAL"/>
+        <ELEMENT Tag="res/parameters/<parameter_y>/@max" Type="REAL"/>
+        <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+        <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+        <ELEMENT Tag="res" Set_Flag="998"/>
+      </XML>
+    </RECEIVE>
+
+The request is interpreted as a *get* request if all parameter's
+``value`` attributes are empty.
+If any ``value`` attribute is non-empty, it is interpreted as *set* request
+of the non-empty parameters.
+
+As an example, the current value of all parameters of ``rc_stereomatching``
+can be queried using the XML telegram:
+
+  .. code-block:: xml
+
+    <req>
+      <node>
+        <rc_stereomatching></rc_stereomatching>
+      </node>
+      <parameters></parameters>
+      <end_of_request></end_of_request>
+    </req>
+
+This XML telegram can be sent out with Ethernet KRL using:
+
+  .. code-block:: c
+
+    DECL EKI_STATUS RET
+    RET = EKI_Send("rc_stereomatching-parameters", "req")
+
+The response from the |eki-bridge| contains all parameters:
+
+  .. code-block:: xml
+
+    <res>
+      <parameters>
+        <acquisition_mode default="Continuous" max="" min="" value="Continuous"/>
+        <quality default="High" max="" min="" value="High"/>
+        <static_scene default="0" max="1" min="0" value="0"/>
+        <seg default="200" max="4000" min="0" value="200"/>
+        <smooth default="1" max="1" min="0" value="1"/>
+        <fill default="3" max="4" min="0" value="3"/>
+        <minconf default="0.5" max="1.0" min="0.5" value="0.5"/>
+        <mindepth default="0.1" max="100.0" min="0.1" value="0.1"/>
+        <maxdepth default="100.0" max="100.0" min="0.1" value="100.0"/>
+        <maxdeptherr default="100.0" max="100.0" min="0.01" value="100.0"/>
+      </parameters>
+      <return_code message="" value="0"/>
+    </res>
+
+The ``quality`` parameter of ``rc_stereomatching`` can be set to ``Low``
+by the XML telegram:
+
+  .. code-block:: xml
+
+    <req>
+        <node>
+          <rc_stereomatching></rc_stereomatching>
+        </node>
+        <parameters>
+          <quality value="Low"></quality>
+        </parameters>
+        <end_of_request></end_of_request>
+    </req>
+
+This XML telegram can be sent out with Ethernet KRL using:
+
+  .. code-block:: c
+
+    DECL EKI_STATUS RET
+    RET = EKI_SetString("rc_stereomatching-parameters", "req/parameters/quality/@value", "Low")
+    RET = EKI_Send("rc_stereomatching-parameters", "req")
+
+
+In this case, only the applied value of ``quality`` is returned by the
+|eki-bridge|:
+
+  .. code-block:: xml
+
+    <res>
+      <parameters>
+        <quality default="High" max="" min="" value="Low"/>
+      </parameters>
+      <return_code message="" value="0"/>
+    </res>
+
+.. only:: html
+
+  .. include:: eki_configs.rst_incl
+
+
+.. only:: rc_visard or rc_cube
+
+    Migration to firmware version 22.01
+    -----------------------------------
+
+    From firmware version 22.01 on the |eki-bridge| reflects |rc_xxx|'s :doc:`REST-API v2<rest_api>`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+    This requires the following changes:
+
+    * Configuring load carriers, grippers and regions of interest is now only accessible in the global database modules:
+
+      + Use the ``rc_load_carrier_db`` XML files for getting, setting and deleting of load carriers.
+      + Use the ``rc_gripper_db`` XML files for getting, setting and deleting of grippers.
+      + Use the ``rc_roi_db`` XML files for getting, setting and deleting of regions of interest.
+      
+    * Load carrier detection and filling level detection is now only accessible via the ``rc_load_carrier`` node.
+
+      + Use the ``rc_load_carrier`` XML files for ``detect_load_carriers`` and ``detect_filling_level`` services.
+
+.. only:: roboception or matrixvision or schunk
+
+  Example applications
+  --------------------
+
+  More detailed robot application examples can be found at https://github.com/roboception/eki_examples.
+
+
+Troubleshooting 
+---------------
+
+**SmartPad error message: Limit of element memory reached**
+
+This error may occur if the number of matches exceeds the memory limit.
+
+- Increase BUFFERING and set BUFFSIZE in EKI config files. Adapt these settings to your particular KRC.
+- Decrease the 'Maximum Matches' parameter in the detection module
+- Even if the total memory limit (BUFFSIZE) of a message is not reached, the KRC might not
+  be able to parse the number of child elements in the XML tree if the
+  BUFFERING limit is too small. For example, if your application proposes 50
+  different grasps, the BUFFERING limit needs to be 50 too.

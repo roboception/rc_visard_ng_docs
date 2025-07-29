@@ -1,0 +1,342 @@
+
+.. include:: global_rst.glb
+
+Pipeline type *blaze*
+=====================
+
+.. _sect-blaze-camera-params:
+
+Parameters
+----------
+
+The camera module on a pipeline of type ``blaze`` is called ``rc_camera`` and is represented by the
+*Camera* page in the desired pipeline in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+The user can change the camera parameters there, or directly via the |rest-api|
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`) or GigE Vision
+(:ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+
+.. index::
+   pair: parameters; blaze camera
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_camera_rc_cube_blaze.txt
+
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the |webgui|'s *Camera* page. The name in the
+|webgui| is given in brackets behind the parameter name and the parameters are listed in the order
+they appear in the |webgui|.
+
+.. _blaze-fps:
+
+.. index::
+   pair: blaze camera; frame rate
+   see: blaze camera; fps
+
+``fps`` (*FPS (Hz)*)
+''''''''''''''''''''
+   This value is the cameras' frame rate (fps, frames per second),
+   which determines the upper frequency at which depth images
+   can be computed. This is also the frequency at which the |rc_xxx|
+   delivers images via GigE Vision. Reducing this frequency also
+   reduces the network bandwidth required to transmit the images.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?fps=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?fps=<value>
+
+.. _blaze-exp-max:
+
+.. index::
+   pair: exposure; blaze camera
+
+``exp_max`` (*Max Exposure*)
+''''''''''''''''''''''''''''
+   This value is the maximal exposure time in auto-exposure
+   mode in seconds. The actual
+   exposure time is adjusted automatically so that the images are exposed
+   correctly. If the maximum exposure time is reached, but the images are still
+   underexposed, the |rc_xxx| stepwise increases the gain to increase the
+   images' brightness. Limiting the exposure time is useful for avoiding
+   or reducing motion blur during fast movements. However, higher gain
+   introduces noise into the image. The best trade-off depends on the application.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_max=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_max=<value>
+
+.. index::
+   pair: blaze camera; brightness
+
+.. _blaze_exp-auto-max-min-average:
+
+``exp_auto_average_max`` (*Max Brightness*) and ``exp_auto_average_min`` (*Min Brightness*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+   The auto-exposure tries to set the exposure time and gain factor such that the
+   average intensity (i.e. brightness) in the image or exposure region is between a
+   maximum and a minimum. The maximum brightness will be used if there is no saturation, e.g.
+   no over-exposure due to bright surfaces or reflections. In case of saturation,
+   the exposure time and gain factor are reduced, but only down to the minimum
+   brightness.
+
+   The maximum brightness has precedence over the minimum brightness parameter.
+   If the minimum brightness is larger than the maximum brightness, the auto-exposure
+   always tries to make the average intensity equal to the maximum brightness.
+
+   The current brightness is always shown in the status bar below the images.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_auto_average_max|exp_auto_average_min>=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_auto_average_max|exp_auto_average_min>=<value>
+
+.. _blaze-exp-region:
+
+.. index::
+   pair: blaze camera; exposure region
+
+``exp_offset_x``, ``exp_offset_y``, ``exp_width``, ``exp_height`` (*Exposure Region*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+   These values define a rectangular region in the left rectified image for
+   limiting the area used for computing the auto exposure. The exposure time and
+   gain factor of both images are chosen to optimally expose the defined region.
+   This can lead to over- or underexposure of image parts outside the defined
+   region. If either the width or height is 0, then the whole left and right
+   images are considered by the auto exposure function. This is the default.
+
+   The region is visualized in the |webgui| by a rectangle in the left
+   rectified image. It can be defined using the sliders or by selecting
+   it in the image after pressing the button ``Select Region in Image``.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+.. _blaze-exp-value:
+
+.. index::
+   pair: blaze camera; exposure
+
+``exp_value`` (*Exposure*)
+''''''''''''''''''''''''''
+    This value is the exposure time in manual exposure mode in seconds. This exposure time is kept constant
+    even if the images are underexposed.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_value=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_value=<value>
+
+.. _blaze-gain-value:
+
+.. index::
+   pair: blaze camera; gain
+
+``gain_value`` (*Gain (dB)*)
+''''''''''''''''''''''''''''
+   This value is the gain factor in decibel that can be set in manual exposure mode. Higher gain factors
+   reduce the required exposure time but introduce noise.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gain_value=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?gain_value=<value>
+
+.. _blaze-wb-auto:
+
+.. index::
+   pair: blaze camera; white balance
+
+``wb_auto`` (*White Balance Auto* or *Manual*)
+''''''''''''''''''''''''''''''''''''''''''''''
+   This value can be set to `true` for automatic white balancing or `false` for manually
+   setting the ratio between the colors using ``wb_ratio_red`` and
+   ``wb_ratio_blue``. The last automatically determined ratios are set into
+   ``wb_ratio_red`` and ``wb_ratio_blue`` when switching automatic white balancing off.
+   White balancing is without function for monochrome
+   cameras and will not be displayed in the |webgui| in this case.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?wb_auto=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?wb_auto=<value>
+
+.. _blaze-wb-ratio:
+      
+``wb_ratio_blue`` and ``wb_ratio_red`` (*Blue | Green* and *Red | Green*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+These values are used to set blue to green and red to green ratios
+for manual white balance. White balancing is without function for monochrome
+cameras and will not be displayed in the |webgui| in this case.
+
+Via the |restapi|, this parameter can be set as follows.
+
+.. tabs::
+
+   .. tab:: **API version 2**
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+   .. tab:: **API version 1 (deprecated)**
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+These parameters are also available over the GenICam interface with slightly different names and partly with different units
+or data types (see :ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+
+
+.. _sect-blaze-camera-status-values:
+
+Status values
+-------------
+
+.. index::
+   pair: blaze camera; status values
+
+The ``rc_camera`` module reports the following status values on a pipeline of type ``blaze``.
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_camera`` module's status values on a pipeline of type ``blaze``
+   :header:  Name, Description
+
+   "``baseline``","Stereo baseline :math:`t` in meters"
+   "``color``","0 for monochrome cameras, 1 for color cameras"
+   "``exp``","Current exposure time in seconds. This value is shown below the image preview in the |webgui| as *Exposure (ms)*."
+   "``focal``","Focal length factor normalized to an image width of 1"
+   "``fps``","Current frame rate of the camera images in Hertz. This value is shown in the |webgui| below the image preview as *FPS (Hz)*."
+   "``gain``","Current gain factor in decibel. This value is shown in the |webgui| below the image preview as *Gain (dB)*."
+   "``height``","Height of the camera image in pixels. This value is shown in the |webgui| below the image preview as the second part of *Resolution (px)*."
+   "``width``","Width of the camera image in pixels. This value is shown in the |webgui| below the image preview as the first part of *Resolution (px)*."
+
+.. _sect-blaze-camera-services:
+
+Services
+--------
+
+.. index::
+   pair: blaze camera; services
+
+The ``rc_camera`` module offers the following services on a pipeline of type ``blaze``.
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_camera/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_camera_rc_cube_blaze_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_camera_rc_cube_blaze_reset_defaults_response.txt

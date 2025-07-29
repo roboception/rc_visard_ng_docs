@@ -1,0 +1,907 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Maintenance &mdash; rc_visard NG 25.07.0
+ documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/contentui.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="rc_visard NG 25.07.0
+ documentation" href="index.html"/>
+        <link rel="next" title="Accessories" href="accessories.html"/>
+        <link rel="prev" title="UserSpace" href="userspace.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard NG
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                25.07
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Warranty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Applicable standards</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Approvals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="disposal.html">Information on disposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Safety</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">General warnings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Intended use</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Scope of delivery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technical specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Environmental and operating conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Power-supply specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Wiring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanical interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Coordinate frames</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Power up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Discovery of <em>rc_visard NG</em> devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Resetting configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Network configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatic configuration (factory default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manual configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Measurement principles</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereo vision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_general.html">General information on 3D data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#computing-disparity-images">Computing disparity images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#computing-depth-images-and-point-clouds">Computing depth images and point clouds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#confidence-and-error-images">Confidence and error images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Software modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="camera.html">Camera module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rectification.html">Rectification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="downloading_images.html">Viewing and downloading images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html">Parameters, status values and services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="detection_modules.html">Detection &amp; Measure modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="measure.html">Measure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#measuring-depth">Measuring Depth</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">LoadCarrier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Detection of load carriers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Detection of filling level</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-reading">Tag reading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#pose-estimation">Pose estimation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag re-identification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-eye calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html">ItemPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#computation-of-grasps">Computation of grasps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="boxpick.html">BoxPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#detection-of-items">Detection of items</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#computation-of-grasps">Computation of grasps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#return-codes">Return codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#boxpick-template-api">BoxPick Template API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Base-plane calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setting a region of interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setting of grasp points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-sorting-strategies">Setting the sorting strategies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Detection of objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Internal services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Return codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cadmatch.html">CADMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-grasp-points">Setting of grasp points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-pose-priors">Setting of pose priors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-preferred-orientation-of-the-tcp">Setting the preferred orientation of the TCP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-sorting-strategies">Setting the sorting strategies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#detection-of-objects">Detection of objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#internal-services">Internal services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#return-codes">Return codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#template-api">Template API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration_modules.html">Configuration modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html">Hand-eye calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Calibration interfaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Camera mounting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Calibration routine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking">Collision checking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#status-values">Status values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html">Camera calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#self-calibration">Self-calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#calibration-process">Calibration process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html">IO and Projector Control</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database_modules.html">Database modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier_db.html">LoadCarrierDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-definition">Load carrier definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-compartments">Load carrier compartments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">RoiDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#interaction-with-other-modules">Interaction with other modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#return-codes">Return codes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gripper_db.html">GripperDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#setting-a-gripper">Setting a gripper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#return-codes">Return codes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#cad-element-api">CAD element API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Web GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#accessing-the-web-gui">Accessing the Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#exploring-the-web-gui">Exploring the Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#web-gui-access-control">Web GUI access control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-camera-images">Downloading camera images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Downloading depth images and point clouds</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">General API structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Available resources and requests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Nodes, parameters, and services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_userspace.html">UserSpace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System and logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Data type definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Ethernet connection configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Generic XML structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Return code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Request XML structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Response XML structure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI XML configuration files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#example-applications">Example applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC image stream interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Example client</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#setting-time-manually">Setting time manually</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userspace.html">UserSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="userspace.html#configure-userspace-via-the-webgui">Configure UserSpace via the Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configure-http-proxy">Configure HTTP proxy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#view-running-applications">View running applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#network-access-to-userspace-applications">Network access to UserSpace applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#interfaces">Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#restrictions">Restrictions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#lens-cleaning">Lens cleaning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#camera-calibration">Camera calibration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-and-restoring-backups-of-settings">Creating and restoring backups of settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-the-firmware">Updating the firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rebooting-the-rcxxx">Rebooting the <em>rc_visard NG</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#downloading-log-files">Downloading log files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Connectivity kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Wiring</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Power connections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Power supplies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Spare parts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED colors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Hardware issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Connectivity issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Camera-image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Depth/Disparity, error, and confidence image issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">GigE Vision/GenICam issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#pose-formats">Pose formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_rt.html">Rotation matrix and translation vector</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-rotation-matrix-to-quaternion">Conversion from rotation matrix to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-quaternion-to-rotation-matrix">Conversion from quaternion to rotation matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_abb.html">ABB pose format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fanuc.html">FANUC XYZ-WPR format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-fanuc-wpr-to-quaternion">Conversion from FANUC-WPR to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-quaternion-to-fanuc-wpr">Conversion from quaternion to FANUC-WPR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_franka_emika.html">Franka Emika Pose Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-transformation-matrix-to-quaternion">Conversion from transformation matrix to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-rotation-xyz-to-quaternion">Conversion from Rotation-XYZ to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-and-translation-to-transformation">Conversion from quaternion and translation to transformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-to-rotation-xyz">Conversion from quaternion to Rotation-XYZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#pose-representation-in-racecom-messages-and-state-machines">Pose representation in RaceCom messages and state machines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fruitcore_horst.html">Fruitcore HORST pose format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kawasaki.html">Kawasaki XYZ-OAT format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-kawasaki-oat-to-quaternion">Conversion from Kawasaki-OAT to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-quaternion-to-kawasaki-oat">Conversion from quaternion to Kawasaki-OAT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kuka.html">KUKA XYZ-ABC format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-kuka-abc-to-quaternion">Conversion from KUKA-ABC to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-quaternion-to-kuka-abc">Conversion from quaternion to KUKA-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_mitsubishi.html">Mitsubishi XYZ-ABC format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-mitsubishi-abc-to-quaternion">Conversion from Mitsubishi-ABC to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-quaternion-to-mitsubishi-abc">Conversion from quaternion to Mitsubishi-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_ur.html">Universal Robots pose format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-angle-axis-format-to-quaternion">Conversion from angle-axis format to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-quaternion-to-angle-axis-format">Conversion from quaternion to angle-axis format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_yaskawa.html">Yaskawa Pose Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-yaskawa-rx-ry-rz-to-quaternion">Conversion from Yaskawa Rx, Ry, Rz to quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-quaternion-to-yaskawa-rx-ry-rz">Conversion from quaternion to Yaskawa Rx, Ry, Rz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard NG</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">rc_visard NG</a> &gt;</li>
+        
+      <li>Maintenance</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="maintenance">
+<span id="sect-maintenance"></span><h1>Maintenance<a class="headerlink" href="#maintenance" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The customer does not need to open the <em>rc_visard NG</em>’s housing to perform
+maintenance. Unauthorized opening will void the warranty.</p>
+</div>
+<div class="section" id="lens-cleaning">
+<span id="sect-lens-cleaning"></span><h2>Lens cleaning<a class="headerlink" href="#lens-cleaning" title="Permalink to this headline">¶</a></h2>
+<p>Glass lenses with antireflective coating are used to reduce glare. Please take special
+care when cleaning the lenses. To clean them, use a soft lens-cleaning brush to remove
+dust or dirt particles. Then use a clean microfiber cloth that is designed to clean lenses,
+and gently wipe the lens using a circular motion to avoid scratches that may compromise
+the sensor’s performance. For stubborn dirt, high purity isopropanol or a lens cleaning
+solution formulated for coated lenses (such as the Uvex Clear family of products) may be used.</p>
+</div>
+<div class="section" id="camera-calibration">
+<span id="sect-maintenance-camera-calibration"></span><h2>Camera calibration<a class="headerlink" href="#camera-calibration" title="Permalink to this headline">¶</a></h2>
+<p>The cameras are calibrated during production. Under normal operating conditions, the calibration
+will be valid for the life time of the sensor. High impact, such as occurring when dropping
+the <em>rc_visard NG</em>, can change the camera’s parameters slightly. In this case, calibration can
+be verified and recalibration undertaken via the Web GUI
+(see <a class="reference internal" href="camera_calibration.html"><span class="doc">Camera calibration</span></a>).</p>
+</div>
+<div class="section" id="creating-and-restoring-backups-of-settings">
+<span id="sect-backup-settings"></span><h2>Creating and restoring backups of settings<a class="headerlink" href="#creating-and-restoring-backups-of-settings" title="Permalink to this headline">¶</a></h2>
+<p id="index-0">The <em>rc_visard NG</em> offers the possibility to download the current settings as backup or for
+transferring them to a different <em>rc_visard</em> or <em>rc_cube</em>.</p>
+<p>The current settings of the <em>rc_visard NG</em> can be downloaded on the
+<a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>’s  <em>System</em> page
+in the <em>rc_visard NG</em> <em>Settings</em> section. They can also be downloaded via the <em>rc_visard NG</em>’s
+<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>
+using the <a class="reference internal" href="rest_api_syslogs.html#get--system-backup" title="GET /system/backup"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/system/backup</span></code></a> request.</p>
+<p>For downloading a backup, the user can choose which settings to include:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">nodes</span></code>: the settings of all modules (parameters, preferred orientations and sorting strategies)</li>
+<li><code class="docutils literal notranslate"><span class="pre">load_carriers</span></code>: the configured load carriers</li>
+<li><code class="docutils literal notranslate"><span class="pre">regions_of_interest</span></code>: the configured 2D and 3D regions of interest</li>
+<li><code class="docutils literal notranslate"><span class="pre">grippers</span></code>: the configured grippers (without the CAD elements)</li>
+</ul>
+<p>The returned backup should be stored as a .json file.</p>
+<p>The templates of the SilhouetteMatch and CADMatch modules are not included in the backup but can be
+downloaded manually using the REST-API or the Web GUI
+(see <a class="reference internal" href="silhouettematch.html#sect-silhouettematch-template-upload"><span class="std std-ref">Template API</span></a>
+and <a class="reference internal" href="cadmatch.html#sect-cadmatch-template-upload"><span class="std std-ref">Template API</span></a>).</p>
+<p>A backup can be restored to the <em>rc_visard NG</em> on the
+<a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>’s  <em>System</em> page
+in the <em>rc_visard NG</em> <em>Settings</em> section by uploading the backup .json file.
+In the <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a> the settings included in the backup are shown and can be chosen for restore.
+The corresponding <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>
+call is <a class="reference internal" href="rest_api_syslogs.html#post--system-backup" title="POST /system/backup"><code class="xref http http-post docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/system/backup</span></code></a>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">When restoring load carriers, all existing load carriers on the <em>rc_visard NG</em>
+will get lost and will be replaced by the content of the backup. The same applies to
+restoring grippers and regions of interest.</p>
+</div>
+<p>When restoring a backup, only the settings which are applicable to the <em>rc_visard NG</em> are restored. Parameters
+for modules that do not exist on the device or do not have a valid license will be skipped. If a
+backup can only be restored partially, the user will be notified by warnings.</p>
+</div>
+<div class="section" id="updating-the-firmware">
+<span id="sect-updating-the-firmware"></span><h2>Updating the firmware<a class="headerlink" href="#updating-the-firmware" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">Information about the current firmware image version can be found on the
+<a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>’s  <span class="menuselection">System ‣ Firmware &amp; License</span> page.
+It can also be accessed via the <em>rc_visard NG</em>’s
+<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>
+using the <a class="reference internal" href="rest_api_syslogs.html#get--system" title="GET /system"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/system</span></code></a> request. Users can use either the Web GUI or the REST-API
+to update the firmware.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>When upgrading from a version prior to 21.07, all of the software modules’ configured parameters
+will be reset to their defaults after a firmware update. Only when upgrading from version 21.07 or higher,
+the last saved parameters will be preserved.
+Please make sure these settings are persisted on the application-side
+or client PC (e.g., using the
+<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>)
+to request all parameters and store them prior to executing the update.</p>
+<p>The following settings are excluded from this and will be
+persisted across a firmware update:</p>
+<ul class="simple">
+<li>the <em>rc_visard NG</em>’s network configuration including an optional static IP address and the
+user-specified device name,</li>
+<li>the latest result of the <a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-eye calibration</span></a>,
+i.e., recalibrating the <em>rc_visard NG</em> w.r.t. a robot is not required, unless camera mounting
+has changed, and</li>
+</ul>
+<ul class="last simple">
+<li>the latest result of the <a class="reference internal" href="camera_calibration.html"><span class="doc">Camera calibration</span></a>,
+i.e., recalibration of the <em>rc_visard</em>’s stereo cameras is not required.</li>
+</ul>
+</div>
+<dl class="docutils">
+<dt>Step 1: Download the newest firmware version.</dt>
+<dd><p class="first">Firmware updates will be supplied from of a Mender artifact file
+identified by its <code class="docutils literal notranslate"><span class="pre">.mender</span></code> suffix.</p>
+<p>If a new firmware update is available for your <em>rc_visard NG</em> device, the
+respective file can be downloaded to a local computer from
+<a class="reference external" href="https://www.roboception.com/download">https://www.roboception.com/download</a>.</p>
+<div class="last admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Make sure the firmware version to upload is still within the software maintenance period of your <em>rc_visard NG</em>. You can see the
+firmware version constraints on the <em>rc_visard NG</em>’s Web GUI on the <span class="menuselection">System ‣ Firmware &amp; License</span> page. If the latest
+firmware version exceeds the software maintenance period, a new license must be purchased to use a newer firmware.</p>
+</div>
+</dd>
+<dt>Step 2: Upload the update file.</dt>
+<dd><p class="first">To update with the <em>rc_visard NG</em>’s REST-API, users
+may refer to the <a class="reference internal" href="rest_api_syslogs.html#post--system-update" title="POST /system/update"><code class="xref http http-post docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/system/update</span></code></a> request.</p>
+<p>To update the firmware via the Web GUI, locate the <span class="menuselection">System ‣ Firmware &amp; License</span> page
+and press the “Upload <em>rc_visard NG</em> Update” button.
+Select the desired update image file (file extension <code class="docutils literal notranslate"><span class="pre">.mender</span></code>)
+from the local file system and open it to start the update.</p>
+<p>Depending on the network architecture and configuration, the
+upload may take several minutes. During the update via the Web GUI,
+a progress bar indicates the progress of the upload.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Depending on the web browser, the update progress status shown in the progress bar
+may indicate the completion of the update too early. Please wait until a notification
+window opens, which indicates the end of the update process.
+Expect an overall update time of at least five minutes.</p>
+</div>
+<div class="last admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Do not close the web browser tab which contains the Web GUI or press the renew
+button on this tab, because it will abort the update procedure. In that case,
+repeat the update procedure from the beginning.</p>
+</div>
+</dd>
+<dt>Step 3: Reboot the <em>rc_visard NG</em>.</dt>
+<dd><p class="first">To apply a firmware update to the <em>rc_visard NG</em>
+device, a reboot is required after having uploaded the new image version.</p>
+<div class="admonition note" id="index-2">
+<p class="first admonition-title">Note</p>
+<p class="last">The new image version is uploaded to the inactive partition of the <em>rc_visard NG</em>. Only after rebooting
+will the inactive partition be activated, and the active partition will become inactive.
+If the updated firmware image cannot be loaded, this partition of the <em>rc_visard NG</em> remains inactive and
+the previously installed firmware version from the active partition will be used automatically.</p>
+</div>
+<p>As for the REST-API, the reboot can be performed by the
+<a class="reference internal" href="rest_api_syslogs.html#put--system-reboot" title="PUT /system/reboot"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/system/reboot</span></code></a> request.</p>
+<p class="last">After having uploaded the new firmware via the Web GUI, a notification window
+is opened, which offers to reboot
+the device immediately or to postpone the reboot. To reboot the <em>rc_visard NG</em>
+at a later time, use the <em>Reboot</em> button on the Web GUI’s <em>System</em> page.</p>
+</dd>
+<dt>Step 4: Confirm the firmware update.</dt>
+<dd><p class="first">After rebooting the <em>rc_visard NG</em>, please check the firmware image version
+number of the currently active image to make sure that the updated image
+was successfully loaded. You can do so either via the
+Web GUI’s <span class="menuselection">System ‣ Firmware &amp; License</span> page or via the REST-API’s <a class="reference internal" href="rest_api_syslogs.html#get--system-update" title="GET /system/update"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/system/update</span></code></a> request.</p>
+<p class="last">Please contact Roboception in case the firmware update could not be applied successfully.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="restoring-the-previous-firmware-version">
+<span id="sect-restoring-the-previous-firmware-version"></span><h2>Restoring the previous firmware version<a class="headerlink" href="#restoring-the-previous-firmware-version" title="Permalink to this headline">¶</a></h2>
+<p id="index-3">After a successful firmware update, the previous firmware image is stored on
+the inactive partition of the <em>rc_visard NG</em> and can be restored in case needed.
+This procedure is called a <em>rollback</em>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Using the latest firmware as provided
+by Roboception is strongly recommended. Hence, rollback functionality should only be
+used in case of serious issues with the updated firmware version.</p>
+</div>
+<p>Rollback functionality is only accessible via the <em>rc_visard NG</em>’s
+<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>
+using the <a class="reference internal" href="rest_api_syslogs.html#put--system-rollback" title="PUT /system/rollback"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/system/rollback</span></code></a> request. It can be issued
+using any HTTP-compatible client or using a web browser as described in
+<a class="reference internal" href="rest_api_swagger_ui.html#sect-swagger-ui"><span class="std std-ref">Swagger UI</span></a>.
+Like the update process, the rollback requires a subsequent device reboot
+to activate the restored firmware version.</p>
+</div>
+<div class="section" id="rebooting-the-rcxxx">
+<span id="sect-rebooting"></span><h2>Rebooting the <em>rc_visard NG</em><a class="headerlink" href="#rebooting-the-rcxxx" title="Permalink to this headline">¶</a></h2>
+<p id="index-4">An <em>rc_visard NG</em> reboot is necessary after updating the firmware or
+performing a software rollback. It can be issued either
+programmatically, via the <em>rc_visard NG</em>’s
+<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>
+using the <a class="reference internal" href="rest_api_syslogs.html#put--system-reboot" title="PUT /system/reboot"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/system/reboot</span></code></a> request, or manually on the
+<a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>’s  <em>System</em> page.</p>
+<p>The reboot is finished when the LED turns green again.</p>
+</div>
+<div class="section" id="updating-the-software-license">
+<span id="sect-updating-license"></span><h2>Updating the software license<a class="headerlink" href="#updating-the-software-license" title="Permalink to this headline">¶</a></h2>
+<p>Licenses that are purchased from Roboception for enabling additional features can be installed
+via the <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>’s  <span class="menuselection">System ‣ Firmware &amp; License</span> page.
+The <em>rc_visard NG</em> has to be rebooted to apply the licenses.</p>
+</div>
+<div class="section" id="downloading-log-files">
+<span id="sect-downloading-log-files"></span><h2>Downloading log files<a class="headerlink" href="#downloading-log-files" title="Permalink to this headline">¶</a></h2>
+<p id="index-5">During operation, the <em>rc_visard NG</em> logs important information, warnings, and errors into files. If the <em>rc_visard NG</em> exhibits unexpected
+or erroneous behavior, the log files can be used to trace its origin.
+Log messages can be viewed and filtered using
+the <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>’s  <span class="menuselection">System ‣ Logs</span> page. If contacting the
+support (<a class="reference internal" href="contact.html#sect-contact"><span class="std std-ref">Contact</span></a>), the log files
+are very useful for tracking possible problems. To download them as a .tar.gz file,
+click on <span class="guilabel">Download all logs</span> on the Web GUI’s <span class="menuselection">System ‣ Logs</span> page.</p>
+<p>Aside from the Web GUI, the logs are also accessible via the <em>rc_visard NG</em>’s
+<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>
+using the <a class="reference internal" href="rest_api_syslogs.html#get--logs" title="GET /logs"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/logs</span></code></a> and <a class="reference internal" href="rest_api_syslogs.html#get--logs-log" title="GET /logs/{log}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/logs/{log}</span></code></a> requests.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="accessories.html" class="btn btn-neutral float-right" title="Accessories" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="userspace.html" class="btn btn-neutral" title="UserSpace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2025, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Options</span>
+      en
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Languages</dt>
+        
+          
+          <dd><a href="../en/maintenance.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/maintenance.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="../../v23.10/index.html">v23.10</a></dd>
+          
+            <dd><a href="../../v24.01/index.html">v24.01</a></dd>
+          
+            <dd><a href="../../v24.04/index.html">v24.04</a></dd>
+          
+            <dd><a href="../../v24.07/index.html">v24.07</a></dd>
+          
+            <dd><a href="../../v24.10/index.html">v24.10</a></dd>
+          
+            <dd><a href="../../v25.01/index.html">v25.01</a></dd>
+          
+            <dd><a href="../../v25.04/index.html">v25.04</a></dd>
+          
+            <dd><a href="../../v25.07/index.html">v25.07</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'25.07.0',
+            LANGUAGE:'en',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/contentui.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

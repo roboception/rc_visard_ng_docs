@@ -1,0 +1,555 @@
+.. include:: global_rst.glb
+
+.. _sect-collision:
+
+CollisionCheck
+================
+
+.. index:: ! CollisionCheck
+   single: collision check
+
+Introduction
+------------
+
+The CollisionCheck module is an optional on-board module of the |rcxxx| and is licensed with
+any of the modules |pick_modules| or |match_modules|.
+Otherwise it requires a separate CollisionCheck :ref:`license<sect-updating-license>`
+:latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
+
+The module provides an easy way to check if a gripper is in collision with a load carrier,
+the point cloud (only in combination with |match_modules|),
+or other detected objects (only in combination with |match_modules|). It is integrated
+with the |pick_modules| and |match_modules| modules, but can be used as standalone product.
+The models of the grippers for collision checking have to be
+defined in the :doc:`gripper_db`:latex:`\:(Section \ref{gripper_db:sect-gripper-db})` module.
+
+.. Warning::
+
+   Collisions are checked only between the load carrier and the gripper, not the robot itself, the flange, other objects or
+   the item located in the robot gripper. 
+   Only if ``check_collisions_with_point_cloud`` is enabled in the respective detection module,
+   collisions between the gripper and a watertight version of the point cloud will be checked.
+   Only in combination with |match_modules|,
+   and only in case the selected template contains a collision
+   geometry and ``check_collisions_with_matches`` is enabled in the respective detection module,
+   also collisions between the gripper and other *detected* objects will be checked.
+   Collisions with objects that cannot be detected will not be checked.
+
+.. only:: rc_cube
+
+   .. note::
+
+      This module is pipeline specific. Changes to its settings or parameters only affect
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+
+
+.. tabularcolumns:: |l|L|
+.. _tab-collisioncheck-spec:
+.. csv-table:: Specifications of the CollisionCheck module
+
+      "Collision checking with",    "detected load carrier, detected objects (only |match_modules|), baseplane (only :doc:`silhouettematch`:latex:`, Section \ref{silhouettematch:sect-silhouettematch}`), point cloud (only |match_modules|)"
+      "Collision checking available in",   "|pick_modules|, |match_modules|"
+
+
+Collision checking
+------------------
+
+.. _sect-collision-check-pre-grasp-offset:
+
+Stand-alone collision checking
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``check_collisions`` service call triggers collision checking between the chosen gripper and the provided load carriers
+for each of the provided grasps. Checking collisions with other objects or the point cloud
+is not possible with the stand-alone ``check_collisions`` service.
+The CollisionCheck module checks if the chosen gripper is
+in collision with at least one of the load carriers, when the TCP of the gripper is positioned in the
+grasp position. It is possible to check the collision with multiple load carriers simultaneously. The grasps
+which are in collision with any of the defined load carriers will be returned as colliding.
+
+The ``pre_grasp_offset`` can be used for additional collision checking.
+The pre-grasp offset :math:`P_{off}` is the offset  between the grasp point :math:`P_{grasp}` and the pre-grasp position :math:`P_{pre}`
+in the grasp's coordinate frame (see :numref:`fig-collision-check-pre-grasp-offset`).
+If the pre-grasp offset is defined, the grasp will be detected as colliding
+if the gripper is in collision at any point
+during motion from the pre-grasp position to the grasp position (assuming
+a linear movement).
+
+.. _fig-collision-check-pre-grasp-offset:
+.. figure:: images/pre_grasp_offset.*
+   :width: 300 px
+   :align: center
+
+   Illustration of the pre-grasp offset parameter for collision checking. In this case, the pre-grasp position as
+   well as the grasp position are collision free. However, the trajectory between these poses would have collisions.
+   Thus, this grasp pose would be marked as colliding.
+
+.. _sect-collision-check-other-modules:
+
+Collision checking within other modules
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Collision checking is integrated in the following modules' services:
+
+.. only:: rc_visard
+
+   - :ref:`sect-itempick`:latex:`\:(Section \ref{itempick:sect-itempick})`: ``compute_grasps``
+     (see :ref:`compute_grasps<expl-itempick-srv-compute-grasps>`:latex:`, Section \ref{itempick:expl-itempick-srv-compute-grasps}`)
+
+   - :ref:`sect-boxpick`:latex:`\:(Section \ref{boxpick:sect-boxpick})`: ``compute_grasps``
+     (see :ref:`compute_grasps<expl-boxpick-srv-compute-grasps>`:latex:`, Section \ref{boxpick:expl-boxpick-srv-compute-grasps}`)
+
+   - :ref:`sect-silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`: ``detect_object``
+     (see :ref:`expl-silhouettematch-srv-detect-objects`:latex:`, Section \ref{silhouettematch:expl-silhouettematch-srv-detect-objects}`)
+
+.. only:: rc_cube or rc_visard_ng
+
+   - :ref:`sect-itempick`:latex:`\:(Section \ref{itempick:sect-itempick})`: ``compute_grasps``
+     (see :ref:`compute_grasps<expl-itempick-srv-compute-grasps>`:latex:`, Section \ref{itempick:expl-itempick-srv-compute-grasps}`)
+
+   - :ref:`sect-boxpick`:latex:`\:(Section \ref{boxpick:sect-boxpick})`: ``compute_grasps``
+     (see :ref:`compute_grasps<expl-boxpick-srv-compute-grasps>`:latex:`, Section \ref{boxpick:expl-boxpick-srv-compute-grasps}`)
+
+   - :ref:`sect-silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`: ``detect_object``
+     (see :ref:`expl-silhouettematch-srv-detect-objects`:latex:`, Section \ref{silhouettematch:expl-silhouettematch-srv-detect-objects}`)
+
+   - :ref:`sect-cadmatch`:latex:`\:(Section \ref{cadmatch:sect-cadmatch})`: ``detect_object``
+     (see :ref:`expl-cadmatch-srv-detect-object`:latex:`, Section \ref{cadmatch:expl-cadmatch-srv-detect-object}`)
+
+Each of these services can take a ``collision_detection`` argument consisting of the ``gripper_id`` of the default gripper
+and the ``pre_grasp_offset`` as described in the previous section
+:ref:`sect-collision-check-pre-grasp-offset`:latex:`\:(Section \ref{collisioncheck:sect-collision-check-pre-grasp-offset})`.
+The default gripper given by the ``gripper_id`` argument is only used for grasp points which do not have an individual gripper ID assigned.
+When the ``collision_detection`` argument is given, these services only return the
+grasps at which the gripper is not in collision or which could not be checked for collisions.
+When a load carrier ID is provided to these services, 
+collision checking will always be performed between the gripper and the load carrier.
+Additional collision check features can be enabled depending on the module.
+
+Only for |match_modules|, and only in case the selected template contains a collision
+geometry and ``check_collisions_with_matches`` is enabled in the respective detection module,
+grasp points at which the gripper would be in collision with other *detected* objects are also rejected. The object
+on which the grasp point to be checked is located, is excluded from the collision check.
+
+When a gripper is defined for a grasp point in the object template for |match_modules|, then this gripper will be used
+for collision checking at that specific grasp point instead of the default gripper defined in the ``collision_detection`` argument
+of the ``detect_object`` service (see :ref:`sect-silhouettematch-grasps`:latex:`, Section \ref{silhouettematch:sect-silhouettematch-grasps}`).
+The grasps returned by the ``detect_object`` service contain a flag ``collision_checked``, indicating whether the grasp was checked for collisions,
+and the field ``gripper_id``. If ``collision_checked`` is true, the returned ``gripper_id`` contains the ID of the gripper that was used for the collision check.
+That is the ID of the gripper defined for that specific grasp, or, if empty, the gripper that was given in the
+``collision_detection`` argument of the request. If ``collision_checked`` is false, the returned ``gripper_id``
+is the gripper ID that was defined for that grasp.
+
+In :doc:`silhouettematch`:latex:`, Section \ref{silhouettematch:sect-silhouettematch}`, collisions between
+the gripper and the base plane can be checked, if ``check_collisions_with_base_plane`` is enabled in SilhouetteMatch.
+
+Collisions between the gripper and a watertight version of the point cloud can be checked
+if ``check_collisions_with_point_cloud`` is enabled in the respective module.
+
+.. Warning::
+
+   Collisions are checked only between the load carrier and the gripper, not the robot itself, the flange or other objects.
+   Only if ``check_collisions_with_point_cloud`` is enabled, collisions between the gripper and a watertight version of the point cloud are checked.
+   Only in combination with |match_modules|,
+   and only in case the selected template contains a collision
+   geometry and ``check_collisions_with_matches`` is enabled in the respective detection module,
+   also collisions between the gripper and other *detected* objects are checked.
+   Collisions with objects that cannot be detected will not be checked.
+
+   .. only:: rc_cube or rc_visard_ng
+
+      Only in combination with :doc:`cadmatch`:latex:`, Section \ref{cadmatch:sect-cadmatch}` and
+      only if ``check_collisions_during_retraction`` is enabled
+      in CADMatch and a load carrier and a pre-grasp offset are given, collisions between the object in the 
+      gripper and the walls of the given load carrier are checked along the linear
+      trajectory from the grasp point to the pre-grasp pose.
+
+The collision-check results are affected by run-time parameters, which are listed
+and explained further below.
+
+Parameters
+----------
+
+The CollisionCheck module is called ``rc_collision_check``
+in the |rest-api| and is represented in the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+:cubeonly:`in the desired pipeline` under :menuselection:`Configuration --> CollisionCheck`.
+The user can explore and configure the ``rc_collision_check``
+module's run-time parameters, e.g. for development and testing, using the |webgui| or the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+.. _sect-collisioncheck-parameters:
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_collision_check.txt
+
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row in the |webgui|'s
+*Settings* section :cubeonly:`in the desired pipeline` under
+:menuselection:`Configuration --> CollisionCheck`.
+The name in the |webgui| is given in brackets behind the parameter name:
+
+.. _expl-collisioncheck-collision-dist:
+
+``collision_dist`` (*Collision Distance*)
+'''''''''''''''''''''''''''''''''''''''''
+   Minimal distance in meters between any part of the gripper and the load carrier and/or the base plane (only SilhouetteMatch)
+   for a grasp to be considered collision free.
+
+   .. note::
+      The collision distance is not applied when checking collisions between the
+      gripper and the point cloud, or the gripper and other detected objects. It is not applied
+      when checking if the flange is inside the load carrier (``check_flange``), either.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/parameters?collision_dist=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_collision_check/parameters?collision_dist=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_collision_check/parameters?collision_dist=<value>
+
+.. _expl-collisioncheck-check-flange:
+
+``check_flange`` (*Check Flange*)
+'''''''''''''''''''''''''''''''''
+   Performs an additional safety check as described in
+   :ref:`sect-gripperdb-flange`:latex:`\:(Section \ref{gripper_db:sect-gripperdb-flange})`.
+   If this parameter is set, all grasps in which any part of the robot's flange is inside the load carrier are marked as colliding.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/parameters?check_flange=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_collision_check/parameters?check_flange=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_collision_check/parameters?check_flange=<value>
+
+.. _expl-collisioncheck-check-bottom:
+
+``check_bottom`` (*Check Bottom*)
+'''''''''''''''''''''''''''''''''
+   When this check is enabled the collisions will be checked not only with the side walls of the load carrier but also with its bottom.
+   It might be necessary to disable this check if the TCP is inside the collision geometry (e.g. is defined inside a suction cup).
+
+   .. only:: rc_cube or rc_visard_ng
+
+      The load carrier bottom will always be excluded for the collision check between the object in the gripper and the load carrier 
+      during retraction in combination with :doc:`cadmatch`:latex:`, Section \ref{cadmatch:sect-cadmatch}` when
+      ``check_collisions_during_retraction`` is enabled.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/parameters?check_bottom=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_collision_check/parameters?check_bottom=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_collision_check/parameters?check_bottom=<value>
+
+.. _sect-collisioncheck-status-values:
+
+Status values
+-------------
+
+The ``rc_collision_check`` module reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_collision_check`` module status values
+	:header:  Name, Description
+
+	"``last_evaluated_grasps``","Number of evaluated grasps"
+	"``last_collision_free_grasps``","Number of collision-free grasps"
+	"``collision_check_time``","Collision checking runtime"
+
+.. _sect-collisioncheck-services:
+
+Services
+--------
+
+The user can explore and call the ``rc_collision_check`` module's services,
+e.g. for development and testing, using
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |rc_xxx|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+The CollisionCheck module offers the following services.
+
+.. _expl-collisioncheck-srv-reset-params:
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Resets all parameters of the module to its default values,
+   as listed in above table.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/services/reset_defaults
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_collision_check/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v1/nodes/rc_collision_check/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_collision_check_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_collision_check_reset_defaults_response.txt
+
+
+.. _expl-collisioncheck-srv-check-collision:
+
+``check_collisions`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Triggers a collision check between a gripper and a load carrier.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/services/check_collisions
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_collision_check/services/check_collisions
+
+         .. tab:: **API version 1 (deprecated)**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v1/nodes/rc_collision_check/services/check_collisions
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Required arguments:
+
+               ``grasps``: list of grasps that should be checked.
+
+               ``load_carriers``: list of load carriers against which the collision should be checked.
+               The fields of the load carrier definition are described in
+               :ref:`sect-loadcarrier-detect-lc`:latex:`\:(Section \ref{loadcarrier:sect-loadcarrier-detect-lc})`.
+               The position frame of the grasps and load carriers has to be the same.
+
+               ``gripper_id``: the id of the gripper that is used to check the collisions. The gripper has to be configured beforehand.
+
+            Optional arguments:
+
+               ``pre_grasp_offset``: the offset in meters from the grasp position to the pre-grasp position in the grasp frame.
+               If this argument is set, the collisions will not only be checked in the grasp point, but also on the path from the
+               pre-grasp position to the grasp position (assuming a linear movement).
+
+            .. include:: _gen/nodes/services/rc_collision_check_check_collisions_request.txt
+
+         .. tab:: **Response**
+
+            ``colliding_grasps``: list of grasps in collision with one or more load carriers.
+
+            ``collision_free_grasps``: list of collision-free grasps.
+
+            ``return_code``: holds possible warnings or error codes and messages.
+
+            .. include:: _gen/nodes/services/rc_collision_check_check_collisions_response.txt
+
+
+.. _expl-collisioncheck-srv-set-grippers:
+
+``set_gripper`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Persistently stores a gripper on the |rc_xxx|.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         This service is not available in API version 2.
+         Use :ref:`expl-gripper-db-srv-set-gripper`:latex:`\:(Section \ref{gripper_db:expl-gripper-db-srv-set-gripper})`
+         in ``rc_gripper_db`` instead.
+
+      .. tab:: **API version 1 (deprecated)**
+
+            This service can be called as follows.
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_collision_check/services/set_gripper
+
+            The definitions of the request and response are the same as described in
+            :ref:`expl-gripper-db-srv-set-gripper`:latex:`\:(Section \ref{gripper_db:expl-gripper-db-srv-set-gripper})`
+            in ``rc_gripper_db``.
+
+.. _expl-collisioncheck-srv-get-grippers:
+
+``get_grippers`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Returns the configured grippers with the requested ``gripper_ids``.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         This service is not available in API version 2.
+         Use :ref:`expl-gripper-db-srv-get-grippers`:latex:`\:(Section \ref{gripper_db:expl-gripper-db-srv-get-grippers})`
+         in ``rc_gripper_db`` instead.
+
+      .. tab:: **API version 1 (deprecated)**
+
+            This service can be called as follows.
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_collision_check/services/get_grippers
+
+            The definitions of the request and response are the same as described in
+            :ref:`expl-gripper-db-srv-get-grippers`:latex:`\:(Section \ref{gripper_db:expl-gripper-db-srv-get-grippers})`
+            in ``rc_gripper_db``.
+
+.. _expl-collisioncheck-srv-delete-grippers:
+
+``delete_grippers`` (deprecated)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured grippers with the requested ``gripper_ids``.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         This service is not available in API version 2.
+         Use :ref:`expl-gripper-db-srv-delete-grippers`:latex:`\:(Section \ref{gripper_db:expl-gripper-db-srv-delete-grippers})`
+         in ``rc_gripper_db`` instead.
+
+      .. tab:: **API version 1 (deprecated)**
+
+            This service can be called as follows.
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_collision_check/services/delete_grippers
+
+            The definitions of the request and response are the same as described in
+            :ref:`expl-gripper-db-srv-delete-grippers`:latex:`\:(Section \ref{gripper_db:expl-gripper-db-srv-delete-grippers})`
+            in ``rc_gripper_db``.
+
+
+.. _sect-collisioncheck-return-codes:
+
+Return codes
+------------
+
+.. index::
+   pair: CollisionCheck; return codes
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common codes:
+
+.. tabularcolumns:: |c|L|
+.. _tab-collisioncheck-return-codes:
+.. csv-table:: Return codes of the CollisionCheck services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+    "-7",   "Data could not be read or written to persistent storage"
+    "-9",   "No valid license for the module"
+    "-10",  "New gripper could not be added as the maximum storage capacity of grippers has been exceeded"
+    "10",  "The maximum storage capacity of grippers has been reached"
+    "11",  "Existing gripper was overwritten"

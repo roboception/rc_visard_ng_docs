@@ -1,0 +1,2322 @@
+CADMatch
+
+Introduction
+
+The CADMatch module is an optional module of the
+
+rc_visard NG
+
+ and requires a separate CADMatch
+
+license
+
+  to be purchased.
+
+This module provides an out-of-the-box perception solution for 3D
+object detection and grasping. CADMatch targets the detection of 3D
+objects based on a CAD template for picking with a general gripper.
+The objects can be located in a bin or placed arbitrarily in the field
+of view of the camera. However, their approximate poses must be known
+in advance and specified as pose priors.
+
+For the CADMatch module to work, special object templates are required
+for each type of object to be detected. Please get in touch with the
+Roboception support (
+
+Contact
+
+) to order a template for your CAD file.
+
+The CADMatch module offers:
+
+A dedicated page on the rc_visard NG Web GUI\:(Section \ref{webgui
+:sect-web-gui}) for easy setup, configuration, testing, and
+application tuning.
+
+A REST-API interface\:(Section \ref{rest_api:sect-rest-api}) and a
+KUKA Ethernet KRL Interface\:(Section \ref{eki:sect-eki}).
+
+The definition of regions of interest to select relevant volumes in
+the scene (see RoiDB, Section \ref{roi:sect-roi}).
+
+A load carrier detection functionality for bin-picking applications
+(see LoadCarrier, Section \ref{loadcarrier:sect-loadcarrier}), to
+provide grasps for objects inside a bin only.
+
+The definition of compartments inside a load carrier to provide grasps
+for specific volumes of the bin only.
+
+An interactive 3D visualization for the definition of pose priors in
+the Web GUI.
+
+Storing of up to 50 templates.
+
+The definition of up to 100 grasp points for each template via an
+interactive visualization in the Web GUI.
+
+Collision checking between the gripper and the load carrier, other
+detected objects and/or the point cloud.
+
+Collision checking between the object in the gripper and the load
+carrier walls during retraction.
+
+Support for static and robot-mounted cameras and optional integration
+with the Hand-eye calibration (Section \ref{handeye_calibration:sect-
+handeye-calibration}) module, to provide grasps in the user-configured
+external reference frame.
+
+Selection of a sorting strategy to sort the detected objects and
+returned grasps.
+
+3D visualization of the detection results with grasp points and
+gripper animations in the Web GUI.
+
+Setting of grasp points
+
+The CADMatch module detects 3D objects in a scene based on a CAD
+template and returns the poses of the object origins. To use CADMatch
+directly in a robot application, up to 100 grasp points can be defined
+for each template. A grasp point represents the desired position and
+orientation of the robot's TCP (Tool Center Point) to grasp an object.
+
+Please consult
+
+Setting of grasp points
+
+ for further details.
+
+Setting grasp points in the Web GUI
+
+The
+
+rc_visard NG
+
+ Web GUI provides an intuitive and interactive way of defining grasp
+points for object templates. In a first step, the object template has
+to be uploaded to the
+
+rc_visard NG
+
+. This can be done in the Web GUI in any pipeline under Modules ‣
+CADMatch by clicking on + Add a new Template in the
+
+Templates, Grasps and Pose Priors
+
+ section, or in Database ‣ Templates in the
+
+CADMatch Templates, Grasps and Pose Priors
+
+ section. Once the template upload is complete, a dialog with a 3D
+visualization of the object template is shown for adding or editing
+grasp points. The same dialog appears when editing an existing
+template.
+
+More details are given in
+
+Setting grasp points in the Web GUI
+
+.
+
+Setting grasp points via the REST-API
+
+Grasp points can be set via the
+
+REST-API interface
+
+ using the "set_grasp" or "set_all_grasps" services (see
+
+Internal services
+
+).
+
+More details are given in
+
+Setting grasp points via the REST-API
+
+.
+
+Setting of pose priors
+
+The CADMatch module requires the user to define prior poses of the
+objects to be detected. The pose priors will be refined to estimate
+the true poses of the objects. A pose prior represents the approximate
+position and orientation of the object to be detected. The pose can be
+defined in the camera or the external coordinate frame, if a hand-eye
+calibration is available.
+
+Each pose prior consists of an "id" which must be unique within all
+pose priors for an object template, the "template_id" representing the
+template the pose prior applies to, the "pose" and the "pose_frame" of
+the prior. Pose priors can be set via the
+
+REST-API interface
+
+, or by using the interactive visualization in the Web GUI. The Web
+GUI allows to interactively position the object in the current point
+cloud. This can be done in the "Pose Priors" tab during editing a
+template.
+
+ The
+
+rc_visard NG
+
+ can store up to 50 pose priors per template.
+
+Setting the preferred orientation of the TCP
+
+The CADMatch module determines the reachability of grasp points based
+on the
+
+preferred orientation
+
+ of the TCP. The preferred orientation can be set via the
+"set_preferred_orientation" service call or on the
+
+CADMatch
+
+ page in the Web GUI. The resulting direction of the TCP's z axis is
+used to reject grasps which cannot be reached by the gripper.
+Furthermore, the preferred orientation can be used to sort the
+reachable grasps by setting the corresponding sorting strategy.
+
+The preferred orientation can be set in the camera coordinate frame or
+in the external coordinate frame, in case a hand-eye calibration is
+available. If the preferred orientation is specified in the external
+coordinate frame and the sensor is robot mounted, the current robot
+pose has to be given to each object detection call. If no preferred
+orientation is set, the orientation of the left camera (see
+
+Coordinate frames
+
+ ) will be used as the preferred orientation of the TCP.
+
+Setting the sorting strategies
+
+The objects and grasps returned by the "detect_object" service call
+are sorted according to a sorting strategy which can be chosen by the
+user. The following sorting strategies are available and can be set in
+the
+
+Web GUI
+
+ or using the "set_sorting_strategies" service call:
+
+gravity: highest matches and grasp points along the gravity direction
+are returned first,
+
+match_score: matches with the highest match score and grasp points on
+objects with the highest match score are returned first,
+
+preferred_orientation: matches and grasp points with minimal rotation
+difference of a chosen axis (or all axes, when axis is empty) with
+respect to the preferred TCP orientation are returned first,
+
+direction: matches and grasp points with the shortest distance along a
+defined direction vector in a given pose_frame are returned first.
+
+distance_to_point: matches and grasp points with the shortest or
+farthest (if farthest_first is true) distance from a point in a given
+pose_frame are returned first.
+
+If no sorting strategy is set or default sorting is chosen in the Web
+GUI, sorting is done based on a combination of "match_score" and the
+minimal distance from the camera along the z axis of the preferred
+orientation of the TCP.
+
+Detection of objects
+
+The CADMatch module requires an object template for object detection.
+This template contains information about the 3D shape of the object
+and prominent edges that can be visible in the camera images. CADMatch
+also supports partial object templates, which contain only a specific
+part of the object that can be detected well, e.g., in case of
+occlusions.
+
+The object detection uses the user-defined pose priors and refines
+them with the 3D point cloud and edges in the camera image. For this
+to work, the objects to detect must be visible in both left and right
+camera images.
+
+For triggering the object detection, in general, the following
+information can be provided to the CADMatch module:
+
+The template ID of the object to be detected in the scene
+
+The IDs of the pose priors which approximately match the poses of the
+objects to be detected.
+
+The coordinate frame in which the poses of the detected objects and
+the grasp points shall be returned (ref. Hand-eye calibration, Section
+\ref{cadmatch:sect-cadmatch-hand-eye-dep}).
+
+Optionally, further information can be given to the CADMatch module:
+
+The ID of the load carrier which contains the items to be detected.
+
+A compartment inside the load carrier where to detect objects (see
+Load carrier compartments, Section \ref{loadcarrier_db:sect-
+loadcarrier-compartment}).
+
+The ID of the 3D region of interest where to search for the load
+carriers if a load carrier is set. Otherwise, the ID of the 3D region
+of interest where to search for the objects.
+
+The current robot pose in case the camera is mounted on the robot and
+the chosen coordinate frame for the poses is external, or the
+preferred orientation is given in the external frame, or the chosen
+region of interest is defined in the external frame.
+
+Collision detection information: The ID of the gripper to enable
+collision checking and optionally a pre-grasp offset to define a pre-
+grasp position. Details on collision checking are given below in
+CollisionCheck\:(Section \ref{cadmatch:sect-cadmatch-collision-check-
+dep}).
+
+Data acquisition mode: The user can choose if a new image dataset is
+acquired for the detection (default), or if the detection should be
+performed on the previously used image dataset. This saves data
+acquisition time, e.g. in case several detections with different
+templates have to be run on the same image.
+
+On the Web GUI the detection can be tested in the
+
+Try Out
+
+ section of the CADMatch module's page.
+
+The detected objects are returned in a list of "matches", sorted
+according to the selected sorting strategy (see
+
+Setting the sorting strategies
+
+). Each detected object includes a "uuid" (Universally Unique
+Identifier) and the "timestamp" of the oldest image that was used to
+detect it. The "pose" of a detected object corresponds to the pose of
+the origin of the object template used for detection. Furthermore, the
+matching "score" is given to indicate the quality of the detection.
+
+If the chosen template also has grasp points attached (see
+
+Setting of grasp points
+
+), a list of "grasps" for all objects is returned in addition to the
+list of detected objects. The grasps are sorted according to the
+selected sorting strategy (see
+
+Setting the sorting strategies
+
+). The grasp poses are given in the desired coordinate frame. There
+are references between the detected objects and the grasps via their
+"uuids".
+
+For objects with a discrete symmetry (e.g. prismatic objects), all
+collision-free symmetries of each grasp point which are reachable
+according to the given preferred TCP orientation are returned, ordered
+by the given sorting strategy.
+
+For objects with a continuous symmetry (e.g. cylindrical objects), all
+grasps symmetric to each grasp point on an object are checked for
+reachability and collisions, and only the best one according to the
+given sorting strategy is returned.
+
+Interaction with other modules
+
+Internally, the CADMatch module depends on, and interacts with other
+on-board modules as listed below.
+
+Note: All changes and configuration updates to these modules will
+  affect the performance of the CADMatch modules.
+
+Camera and depth data
+
+The CADMatch module makes internally use of the following data:
+
+Rectified images from the Camera module (rc_camera, Section
+\ref{camera:sect-camera})
+
+Disparity, error, and confidence images from the Stereo matching
+module (rc_stereomatching, Section \ref{stereo_matching:sect-stereo-
+matching}). The quality parameter of the stereo matching module must
+be set to Medium or higher (see Parameters, Section
+\ref{stereo_matching:sect-disp-image-parameters}). We recommend Full
+or High quality for using CADMatch.
+
+All processed images are guaranteed to be captured after the module
+trigger time.
+
+IO and Projector Control
+
+In case the
+
+rc_visard NG
+
+ is used in conjunction with an external random dot projector and the
+
+IO and Projector Control
+
+ module ("rc_iocontrol"), it is recommended to connect the projector
+to GPIO Out 1 and set the stereo-camera module's acquisition mode to
+"SingleFrameOut1" (see
+
+Stereo matching parameters
+
+), so that on each image acquisition trigger an image with and without
+projector pattern is acquired.
+
+Alternatively, the output mode for the GPIO output in use should be
+set to "ExposureAlternateActive" (see
+
+Description of run-time parameters
+
+).
+
+In either case, the
+
+Auto Exposure Mode
+
+ "exp_auto_mode" should be set to "AdaptiveOut1" to optimize the
+exposure of both images.
+
+Hand-eye calibration
+
+In case the camera has been calibrated to a robot, the CADMatch module
+can automatically provide poses in the robot coordinate frame. For the
+CADMatch node's
+
+Services
+
+, the frame of the output poses can be controlled with the
+"pose_frame" argument.
+
+Two different "pose_frame" values can be chosen:
+
+Camera frame (camera). All poses provided by the modules are in the
+camera frame, and no prior knowledge about the pose of the camera in
+the environment is required. This means that the configured regions of
+interest and load carriers move with the camera. It is the user's
+responsibility to update the configured poses if the camera frame
+moves (e.g. with a robot-mounted camera).
+
+External frame (external). All poses provided by the modules are in
+the external frame, configured by the user during the hand-eye
+calibration process. The module relies on the on-board Hand-eye
+calibration module\:(Section \ref{handeye_calibration:sect-handeye-
+calibration}) to retrieve the sensor mounting (static or robot
+mounted) and the hand-eye transformation. If the mounting is static,
+no further information is needed. If the sensor is robot-mounted, the
+robot_pose is required to transform poses to and from the external
+frame.
+
+Note: If no hand-eye calibration is available, all "pose_frame"
+  values should be set to "camera".
+
+All "pose_frame" values that are not "camera" or "external" are
+rejected.
+
+If the sensor is robot-mounted, the current "robot_pose" has to be
+provided depending on the value of "pose_frame", the definition of the
+preferred TCP orientation and the sorting direction or sorting point:
+
+If pose_frame is set to external, providing the robot pose is
+obligatory.
+
+If the preferred TCP orientation is defined in external, providing the
+robot pose is obligatory.
+
+If the sorting direction is defined in external, providing the robot
+pose is obligatory.
+
+If the distance-to-point sorting strategy is defined in external,
+providing the robot pose is obligatory.
+
+In all other cases, providing the robot pose is optional.
+
+LoadCarrier
+
+The CADMatch module uses the load carrier detection functionality
+provided by the
+
+LoadCarrier
+
+ module ("rc_load_carrier"), with the run-time parameters specified
+for this module. However, only one load carrier will be returned and
+used in case multiple matching load carriers could be found in the
+scene. In case multiple load carriers of the same type are visible, a
+region of interest should be set to ensure that always the same load
+carrier is used for the CADMatch module.
+
+CollisionCheck
+
+Collision checking can be easily enabled for grasp computation of the
+CADMatch module by  passing a "collision_detection" argument to the
+"detect_object" service call. It contains the ID of the used gripper
+and optionally a pre-grasp offset. The gripper has to be defined in
+the GripperDB module (see
+
+Setting a gripper
+
+) and details about collision checking are given in
+
+Collision checking within other modules
+
+.
+
+Alternatively, grasp points can be assigned individual gripper IDs,
+and collision checking can be enabled for all grasp points with
+gripper IDs by enabling the run-time parameter "check_collisions".
+
+If the selected CADMatch template contains a collision geometry and
+the run-time parameter "check_collisions_with_matches" is true, also
+collisions between the gripper and all other detected objects (not
+limited to "max_matches") will be checked. The object on which the
+grasp point to be checked is located, is excluded from the collision
+check.
+
+If the run-time parameter "check_collisions_with_point_cloud" is true,
+also collisions between the gripper and a watertight version of the
+point cloud are checked. If this feature is used with suctions
+grippers, it should be ensured that the TCP is defined to be outside
+the gripper geometry, or that the grasp points are defined above the
+object surface. Otherwise every grasp will result in a collision
+between the gripper and the point cloud.
+
+If the run-time parameter "check_collisions_during_retraction" is true
+and a load carrier and a pre-grasp offset are given, each grasp point
+will be checked for collisions between the object in the gripper and
+the load carrier walls during retraction. This collision check is
+performed along the full linear trajectory from the grasp point back
+to the pre-grasp position.
+
+If collision checking is enabled, only grasps which are collision free
+or could not be checked for collisions (e.g. because no gripper was
+given) will be returned. The result image on top of the
+
+CADMatch
+
+ page of the Web GUI also shows collision-free grasps in green,
+unchecked grasps in yellow and colliding grasp points in red. The
+detected objects which are considered in the collision check are also
+visualized with their edges in red.
+
+The CollisionCheck module's run-time parameters affect the collision
+detection as described in
+
+CollisionCheck Parameters
+
+.
+
+Parameters
+
+The CADMatch module is called "rc_cadmatch" in the REST-API and is
+represented in the
+
+Web GUI
+
+  under Modules ‣ CADMatch. The user can explore and configure the
+"rc_cadmatch" module's run-time parameters, e.g. for development and
+testing, using the Web GUI or the
+
+REST-API interface
+
+.
+
+Parameter overview
+
+This module offers the following run-time parameters:
+
+The rc_cadmatch module's run-time parameters              Name  Type
+Min  Max  Default  Description  check_collisions  bool  false  true
+false  Whether to check for collisions when a gripper is defined for a
+grasp  check_collisions_during_-retraction  bool  false  true  false
+Whether to check for collisions between the object in the gripper and
+the load carrier during retraction  check_collisions_with_-matches
+bool  false  true  true  Whether to check for collisions between
+gripper and detected matches  check_collisions_with_-point_cloud  bool
+false  true  false  Whether to check for collisions between gripper
+and point cloud  edge_max_distance  float64  0.5  5.0  2.0  Maximum
+allowed distance in pixels between the template edges and the detected
+edges in the image  edge_sensitivity  float64  0.05  1.0  0.5
+Sensitivity of the edge detector  grasp_filter_orientation_-threshold
+float64  0.0  180.0  45.0  Maximum allowed orientation change between
+grasp and preferred orientation in degrees  max_matches  int32  1  30
+10  Maximum number of matches  min_score  float64  0.05  1.0  0.3
+Minimum score for matches  only_highest_priority_-grasps  bool  false
+true  false  Whether to return only the highest priority level grasps
+
+Description of run-time parameters
+
+Each run-time parameter is represented by a row on the Web GUI's
+
+CADMatch
+
+ page. The name in the Web GUI is given in brackets behind the
+parameter name and the parameters are listed in the order they appear
+in the Web GUI:
+
+max_matches (Maximum Matches)
+
+      is the maximum number of objects to detect.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_cadmatch/parameters?max_matches=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?max_matches=<value>
+
+min_score (Minimum Score)
+
+      is the minimum detection score after refinement. The higher this
+      value, the better 2D edges and 3D point cloud must match the
+      given template.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_cadmatch/parameters?min_score=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?min_score=<value>
+
+edge_sensitivity (Edge Sensitivity)
+
+      is the sensitivity of the edge detector. The higher the value of
+      this parameter, the more edges will be used for pose refinement.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_cadmatch/parameters?edge_sensitivity=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?edge_sensitivity=<value>
+
+edge_max_distance (Maximum Edge Distance)
+
+      is the maximum allowed distance in pixels between the template
+      edges and the detected edges in the image during the refinement
+      step.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_cadmatch/parameters?edge_max_distance=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?edge_max_distance=<value>
+
+grasp_filter_orientation_threshold (Grasp Orientation Threshold)
+
+      is the maximum deviation of the TCP's z axis at the grasp point
+      from the z axis of the TCP's preferred orientation in degrees.
+      Only grasp points which are within this threshold are returned.
+      When set to zero, any deviations are valid.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_cadmatch/parameters?grasp_filter_orientation_threshold=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?grasp_filter_orientation_threshold=<value>
+
+only_highest_priority_grasps (Only Highest Priority Grasps)
+
+   If set to true, only grasps with the highest priority will be
+   returned. If collision checking is enabled, only the collision-free
+   grasps among the group of grasps with the highest priority are
+   returned. This can save computation time and reduce the number of
+   grasps to be parsed on the application side.
+
+   Without collision checking, only grasps of highest priority are
+   returned.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_cadmatch/parameters?only_highest_priority_grasps=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?only_highest_priority_grasps=<value>
+
+check_collisions (Check Collisions)
+
+      If this parameter is enabled, collision checking will be
+      performed for all grasps which have a gripper ID assigned, even
+      when no default gripper is given in the "detect_object" service
+      call. If a load carrier is used, the collision check will always
+      be performed between the gripper and the load carrier. Collision
+      checking with the point cloud and other matches is only
+      performed when the corresponding runtime parameters are enabled.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_cadmatch/parameters?check_collisions=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?check_collisions=<value>
+
+check_collisions_with_matches (Check Collisions with Matches)
+
+      This parameter is only used when collision checking is enabled
+      by passing a gripper to the "detect_object" service call or by
+      enabling the "check_collisions" runtime parameter. If
+      "check_collisions_with_matches" is set to true, all grasp points
+      will be checked for collisions between the gripper and all other
+      detected objects (not limited to "max_matches"), and only grasp
+      points at which the gripper would not collide with any other
+      detected object will be returned.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_cadmatch/parameters?check_collisions_with_matches=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?check_collisions_with_matches=<value>
+
+check_collisions_with_point_cloud (Check Collisions with Point Cloud)
+
+      This parameter is only used when collision checking is enabled
+      by passing a gripper to the "detect_object" service call or by
+      enabling the "check_collisions" runtime parameter. If
+      "check_collisions_with_point_cloud" is set to true, all grasp
+      points will be checked for collisions between the gripper and a
+      watertight version of the point cloud, and only grasp points at
+      which the gripper would not collide with this point cloud will
+      be returned.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_cadmatch/parameters?check_collisions_with_point_cloud=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?check_collisions_with_point_cloud=<value>
+
+check_collisions_during_retraction (Check Collisions during
+Retraction)
+
+      This parameter is only used when collision checking is enabled
+      by passing a gripper to the "detect_object" service call or by
+      enabling the "check_collisions" runtime parameter. When
+      "check_collisions_during_retraction" is enabled and a load
+      carrier and a pre-grasp offset are given, each grasp point will
+      be checked for collisions between the object in the gripper and
+      the load carrier walls during retraction. This collision
+      checking is performed along the full linear trajectory from the
+      grasp point back to the pre-grasp position. Only collision-free
+      grasp points will be returned.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_cadmatch/parameters?check_collisions_during_retraction=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?check_collisions_during_retraction=<value>
+
+Status values
+
+The "rc_cadmatch" module reports the following status values:
+
+The rc_cadmatch module's status values      Name  Description
+data_acquisition_time  Time in seconds required by the last active
+service to acquire images  last_timestamp_processed  The timestamp of
+the last processed dataset  last_request_timestamp  The timestamp of
+the last detection request  load_carrier_detection_time  Processing
+time of the last load carrier detection in seconds
+object_detection_time  Processing time of the last last object
+detection in seconds  processing_time  Processing time of the last
+detection (including load carrier detection) in seconds  state  The
+current state of the rc_cadmatch node
+
+The reported "state" can take one of the following values.
+
+Possible states of the CADMatch module      State name  Description
+IDLE  The module is idle.  RUNNING  The module is running and ready
+for load carrier detection and object detection.  FATAL  A fatal error
+has occurred.
+
+Services
+
+The user can explore and call the "rc_cadmatch" module's services,
+e.g. for development and testing, using the
+
+REST-API interface
+
+ or the
+
+rc_visard NG
+
+
+Web GUI
+
+.
+
+The CADMatch modules offer the following services.
+
+detect_object
+
+   Triggers the detection of objects as described in
+
+   Detection of objects
+
+    based on an object template.
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/detect_object
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/detect_object
+
+   Request
+
+   Required arguments:
+
+      "pose_frame": see
+
+      Hand-eye calibration
+
+      .
+
+      "template_id": the ID of the template to be detected.
+
+      "pose_prior_ids": IDs of the pose priors for the items to be
+      detected.
+
+   Potentially required arguments:
+
+      "robot_pose": see
+
+      Hand-eye calibration
+
+      .
+
+   Optional arguments:
+
+      "load_carrier_id": ID of the load carrier which contains the
+      items to be detected.
+
+      "load_carrier_compartment": compartment inside the load carrier
+      where to detect items (see
+
+      Load carrier compartments
+
+      ).
+
+      "region_of_interest_id": if "load_carrier_id" is set, ID of the
+      3D region of interest where to search for the load carriers.
+      Otherwise, ID of the 3D region of interest where to search for
+      the objects.
+
+      "collision_detection": see
+
+      Collision checking within other modules
+
+      .
+
+      "data_acquisition_mode": if set to "CAPTURE_NEW" (default), a
+      new image dataset will be used for the detection. If set to
+      "USE_LAST" the previous dataset will be used for the detection.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "collision_detection": {
+            "gripper_id": "string",
+            "pre_grasp_offset": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "data_acquisition_mode": "string",
+          "load_carrier_compartment": {
+            "box": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            }
+          },
+          "load_carrier_id": "string",
+          "pose_frame": "string",
+          "pose_prior_ids": [
+            "string"
+          ],
+          "region_of_interest_id": "string",
+          "robot_pose": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          },
+          "template_id": "string"
+        }
+      }
+
+   Response
+
+   "grasps": list of grasps on the detected objects, ordered according
+   to the chosen sorting strategy. The "match_uuid" gives the
+   reference to the detected object in "matches" this grasp belongs
+   to. The list of returned grasps will be trimmed to the 100 best
+   grasps if more reachable grasps are found. Each grasp contains a
+   flag "collision_checked" and a "gripper_id" (see
+
+   Collision checking within other modules
+
+   ).
+
+   "load_carriers": list of detected load carriers.
+
+   "matches": list of detected objects matching the template. The
+   matches are ordered according to the chosen sorting strategy. The
+   "score" indicates how well the object matches the template. The
+   "grasp_uuids" refer to the grasps in "grasps" which are reachable
+   on this object.
+
+   "timestamp": timestamp of the image set the detection ran on.
+
+   "return_code": holds possible warnings or error codes and messages.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "detect_object",
+        "response": {
+          "grasps": [
+            {
+              "collision_checked": "bool",
+              "gripper_id": "string",
+              "id": "string",
+              "match_uuid": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "priority": "int8",
+              "timestamp": {
+                "nsec": "int32",
+                "sec": "int32"
+              },
+              "uuid": "string"
+            }
+          ],
+          "load_carriers": [
+            {
+              "height_open_side": "float64",
+              "id": "string",
+              "inner_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "outer_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "overfilled": "bool",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "rim_ledge": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "rim_step_height": "float64",
+              "rim_thickness": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "matches": [
+            {
+              "grasp_uuids": [
+                "string"
+              ],
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "score": "float32",
+              "template_id": "string",
+              "timestamp": {
+                "nsec": "int32",
+                "sec": "int32"
+              },
+              "uuid": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          },
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          }
+        }
+      }
+
+set_preferred_orientation
+
+   Persistently stores the preferred orientation of the TCP to compute
+   the reachability of the grasps, which is used for filtering and,
+   optionally, sorting the grasps returned by the "detect_object"
+   service (see
+
+   Setting the preferred orientation of the TCP
+
+   ).
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/set_preferred_orientation
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/set_preferred_orientation
+
+   Request
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose_frame": "string"
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_preferred_orientation",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_preferred_orientation
+
+   Returns the preferred orientation of the TCP to compute the
+   reachability of the grasps, which is used for filtering and,
+   optionally, sorting the grasps returned by the "detect_object"
+   service (see
+
+   Setting the preferred orientation of the TCP
+
+   ).
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/get_preferred_orientation
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/get_preferred_orientation
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_preferred_orientation",
+        "response": {
+          "orientation": {
+            "w": "float64",
+            "x": "float64",
+            "y": "float64",
+            "z": "float64"
+          },
+          "pose_frame": "string",
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_sorting_strategies
+
+   Persistently stores the sorting strategy for sorting the grasps and
+   matches returned by the "detect_object" service (see
+
+   Detection of objects
+
+   ).
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/set_sorting_strategies
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/set_sorting_strategies
+
+   Request
+
+   Only one strategy may have a "weight" greater than 0. If all
+   "weight" values are set to 0, the module will use the default
+   sorting strategy.
+
+   If the weight for "direction" is set, the "vector" must contain the
+   direction vector and "pose_frame" must be either "camera" or
+   "external".
+
+   If the weight for "distance_to_point" is set, "point" must contain
+   the sorting point and "pose_frame" must be either "camera" or
+   "external".
+
+   If the weight for "preferred_orientation" is set, the "axis" can be
+   set to "x", "y" or "z" to consider only rotational differences
+   between the respective axes. If "axis" is empty, the full
+   orientation difference will be used for sorting.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "direction": {
+            "pose_frame": "string",
+            "vector": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "weight": "float64"
+          },
+          "distance_to_point": {
+            "farthest_first": "bool",
+            "point": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose_frame": "string",
+            "weight": "float64"
+          },
+          "gravity": {
+            "weight": "float64"
+          },
+          "match_score": {
+            "weight": "float64"
+          },
+          "preferred_orientation": {
+            "axis": "string",
+            "weight": "float64"
+          }
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_sorting_strategies",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_sorting_strategies
+
+   Returns the sorting strategy for sorting the grasps and matches
+   returned by the "detect_object" service (see
+
+   Detection of objects
+
+   ).
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/get_sorting_strategies
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/get_sorting_strategies
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   All "weight" values are 0 when the module uses the default sorting
+   strategy.
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_sorting_strategies",
+        "response": {
+          "direction": {
+            "pose_frame": "string",
+            "vector": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "weight": "float64"
+          },
+          "distance_to_point": {
+            "farthest_first": "bool",
+            "point": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose_frame": "string",
+            "weight": "float64"
+          },
+          "gravity": {
+            "weight": "float64"
+          },
+          "match_score": {
+            "weight": "float64"
+          },
+          "preferred_orientation": {
+            "axis": "string",
+            "weight": "float64"
+          },
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+start
+
+   Starts the module. If the command is accepted, the module moves to
+   state "RUNNING".
+
+   Details
+
+   The "current_state" value in the service response may differ from
+   "RUNNING" if the state transition is still in process when the
+   service returns.
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/start
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/start
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "start",
+        "response": {
+          "accepted": "bool",
+          "current_state": "string"
+        }
+      }
+
+stop
+
+   Stops the module. If the command is accepted, the module moves to
+   state "IDLE".
+
+   Details
+
+   The "current_state" value in the service response may differ from
+   "IDLE" if the state transition is still in process when the service
+   returns.
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/stop
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/stop
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "stop",
+        "response": {
+          "accepted": "bool",
+          "current_state": "string"
+        }
+      }
+
+reset_defaults
+
+   Resets all parameters of the module to its default values, as
+   listed in above table. Also resets preferred orientation and
+   sorting strategies. The reset does not apply to templates.
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/reset_defaults
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/reset_defaults
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Internal services
+
+The following services for configuring grasps and pose priors can
+change in future without notice. Setting, retrieving and deleting
+grasps and pose priors is recommended to be done via the Web GUI.
+
+set_grasp
+
+   Persistently stores a grasp for the given object template on the
+
+   rc_visard NG
+
+   . All configured grasps are persistent over firmware updates and
+   rollbacks.
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/set_grasp
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/set_grasp
+
+   Request
+
+   Details for the definition of the "grasp" type are given in
+
+   Setting of grasp points
+
+   .
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "grasp": {
+            "gripper_id": "string",
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "priority": "int8",
+            "replication": {
+              "max_x_deg": "float64",
+              "min_x_deg": "float64",
+              "origin": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "step_x_deg": "float64"
+            },
+            "template_id": "string"
+          }
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_grasp",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_all_grasps
+
+   Replaces the list of grasps for the given object template on the
+
+   rc_visard NG
+
+   .
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/set_all_grasps
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/set_all_grasps
+
+   Request
+
+   Details for the definition of the "grasp" type are given in
+
+   Setting of grasp points
+
+   .
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "grasps": [
+            {
+              "gripper_id": "string",
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "priority": "int8",
+              "replication": {
+                "max_x_deg": "float64",
+                "min_x_deg": "float64",
+                "origin": {
+                  "orientation": {
+                    "w": "float64",
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  },
+                  "position": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  }
+                },
+                "step_x_deg": "float64"
+              },
+              "template_id": "string"
+            }
+          ],
+          "template_id": "string"
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_all_grasps",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_grasps
+
+   Returns all configured grasps which have the requested "grasp_ids"
+   and belong to the requested "template_ids".
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/get_grasps
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/get_grasps
+
+   Request
+
+   If no "grasp_ids" are provided, all grasps belonging to the
+   requested "template_ids" are returned. If no "template_ids" are
+   provided, all grasps with the requested "grasp_ids" are returned.
+   If neither IDs are provided, all configured grasps are returned.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "grasp_ids": [
+            "string"
+          ],
+          "template_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_grasps",
+        "response": {
+          "grasps": [
+            {
+              "gripper_id": "string",
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "priority": "int8",
+              "replication": {
+                "max_x_deg": "float64",
+                "min_x_deg": "float64",
+                "origin": {
+                  "orientation": {
+                    "w": "float64",
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  },
+                  "position": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  }
+                },
+                "step_x_deg": "float64"
+              },
+              "template_id": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_grasps
+
+   Deletes all grasps with the requested "grasp_ids" that belong to
+   the requested "template_ids".
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/delete_grasps
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/delete_grasps
+
+   Request
+
+   If no "grasp_ids" are provided, all grasps belonging to the
+   requested "template_ids" are deleted. The "template_ids" list must
+   not be empty.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "grasp_ids": [
+            "string"
+          ],
+          "template_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "delete_grasps",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_symmetric_grasps
+
+   Returns all grasps that are symmetric to the given grasp.
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/get_symmetric_grasps
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/get_symmetric_grasps
+
+   Request
+
+   Details for the definition of the "grasp" type are given in
+
+   Setting of grasp points
+
+   .
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "grasp": {
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "replication": {
+              "max_x_deg": "float64",
+              "min_x_deg": "float64",
+              "origin": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "step_x_deg": "float64"
+            },
+            "template_id": "string"
+          }
+        }
+      }
+
+   Response
+
+   The first grasp in the returned list is the one that was passed
+   with the service call. If the object template does not have an
+   exact symmetry, only the grasp passed with the service call will be
+   returned. If the object template has a continuous symmetry (e.g. a
+   cylindrical object), only 12 equally spaced sample grasps will be
+   returned.
+
+   Details for the definition of the "grasp" type are given in
+
+   Setting of grasp points
+
+   .
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_symmetric_grasps",
+        "response": {
+          "grasps": [
+            {
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "replication": {
+                "max_x_deg": "float64",
+                "min_x_deg": "float64",
+                "origin": {
+                  "orientation": {
+                    "w": "float64",
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  },
+                  "position": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  }
+                },
+                "step_x_deg": "float64"
+              },
+              "template_id": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_pose_prior
+
+   Persistently stores a pose prior for the given object template on
+   the
+
+   rc_visard NG
+
+   . All configured pose priors are persistent over firmware updates
+   and rollbacks.
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/set_pose_prior
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/set_pose_prior
+
+   Request
+
+   Details for the definition of the "pose_prior" type are given in
+
+   Setting of pose priors
+
+   .
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "pose_prior": {
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "template_id": "string"
+          }
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_pose_prior",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_all_pose_priors
+
+   Replaces the list of pose priors for the given object template on
+   the
+
+   rc_visard NG
+
+   .
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/set_all_pose_priors
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/set_all_pose_priors
+
+   Request
+
+   Details for the definition of the "pose_prior" type are given in
+
+   Setting of pose priors
+
+   .
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "pose_priors": [
+            {
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "template_id": "string"
+            }
+          ],
+          "template_id": "string"
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_all_pose_priors",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_pose_priors
+
+   Returns all configured pose priors which have the requested
+   "pose_prior_ids" and belong to the requested "template_ids".
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/get_pose_priors
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/get_pose_priors
+
+   Request
+
+   If no "pose_prior_ids" are provided, all pose priors belonging to
+   the requested "template_ids" are returned. If no "template_ids" are
+   provided, all pose priors with the requested "pose_prior_ids" are
+   returned. If neither IDs are provided, all configured pose priors
+   are returned.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "pose_prior_ids": [
+            "string"
+          ],
+          "template_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_pose_priors",
+        "response": {
+          "pose_priors": [
+            {
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "template_id": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_pose_priors
+
+   Deletes all pose priors with the requested "pose_prior_ids" that
+   belong to the requested "template_ids".
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/delete_pose_priors
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_cadmatch/services/delete_pose_priors
+
+   Request
+
+   If no "pose_prior_ids" are provided, all pose priors belonging to
+   the requested "template_ids" are deleted. The "template_ids" list
+   must not be empty.
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "pose_prior_ids": [
+            "string"
+          ],
+          "template_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "delete_pose_priors",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Return codes
+
+Each service response contains a "return_code", which consists of a
+"value" plus an optional "message". A successful service returns with
+a "return_code" value of "0". Negative "return_code" values indicate
+that the service failed. Positive "return_code" values indicate that
+the service succeeded with additional information. The smaller value
+is selected in case a service has multiple "return_code" values, but
+all messages are appended in the "return_code" message.
+
+The following table contains a list of common codes:
+
+Return codes of the CADMatch services      Code  Description  0
+Success  -1  An invalid argument was provided.  -2  An internal error
+occurred.  -3  An internal timeout occurred.  -4  Data acquisition
+took longer than allowed.  -8  Not applicable, stereo quality must be
+at least Medium.  -9  No valid license for the module.  -10  New
+element could not be added as the maximum storage capacity of load
+carriers or regions of interest has been exceeded.  -11  Sensor not
+connected, not supported or not ready.  10  The maximum storage
+capacity of load carriers or regions of interest has been reached.  11
+Existing data was overwritten.  100  The requested load carrier was
+not detected in the scene.  101  None of the detected grasps is
+reachable.  102  The detected load carrier is empty.  103  All
+detected grasps are in collision.  106  The list of returned grasps
+has been trimmed to the 100 best grasps.  110  Hints for setting up
+the application, e.g. reducing the distance from the camera, setting a
+region of interest.  113  No gripper was found for collision checking.
+114  Collision checking during retraction was skipped, e.g. because no
+load carrier or no pre-grasp offset were given.  151  The object
+template has a continuous symmetry.  152  The objects are outside the
+given region of interest, outside the load carrier or outside the
+image.  153  No edges could be detected in the camera image. Check the
+Edge Sensitivity.  999  Additional hints for application development
+
+Template API
+
+For template upload, download, listing and removal, special REST-API
+endpoints are provided. Templates can also be uploaded, downloaded and
+removed via the Web GUI. The templates include the grasp points and
+pose priors, if grasp points or pose priors have been configured. Up
+to 50 templates can be stored persistently on the
+
+rc_visard NG
+
+.
+
+GET /templates/rc_cadmatch
+
+   Get list of all rc_cadmatch templates.
+
+   Template request
+
+      GET /api/v2/templates/rc_cadmatch HTTP/1.1
+
+   Template response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "id": "string"
+        }
+      ]
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns array of Template)
+
+      404 Not Found -- node not found
+
+   Referenced Data Models:
+      Template\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      template})
+
+GET /templates/rc_cadmatch/{id}
+
+   Get a rc_cadmatch template. If the requested content-type is
+   application/octet-stream, the template is returned as file.
+
+   Template request
+
+      GET /api/v2/templates/rc_cadmatch/<id> HTTP/1.1
+
+   Template response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "id": "string"
+      }
+
+   Parameters:
+      id (string) -- id of the template (required)
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson application
+      /octet-stream
+
+   Status Codes:
+      200 OK -- successful operation (returns Template)
+
+      404 Not Found -- node or template not found
+
+   Referenced Data Models:
+      Template\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      template})
+
+PUT /templates/rc_cadmatch/{id}
+
+   Create or update a rc_cadmatch template.
+
+   Template request
+
+      PUT /api/v2/templates/rc_cadmatch/<id> HTTP/1.1
+      Accept: multipart/form-data application/json
+
+   Template response
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "id": "string"
+      }
+
+   Parameters:
+      id (string) -- id of the template (required)
+
+   Form Parameters:
+      file -- template file (required)
+
+   Request Headers:
+      Accept -- multipart/form-data application/json
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation (returns Template)
+
+      400 Bad Request -- Template is not valid or max number of
+      templates reached
+
+      403 Forbidden -- forbidden, e.g. because there is no valid
+      license for this module.
+
+      404 Not Found -- node or template not found
+
+      413 Request Entity Too Large -- Template too large
+
+   Referenced Data Models:
+      Template\:(Section \ref{rest_api_datamodel:sect-rest-datamodel-
+      template})
+
+DELETE /templates/rc_cadmatch/{id}
+
+   Remove a rc_cadmatch template.
+
+   Template request
+
+      DELETE /api/v2/templates/rc_cadmatch/<id> HTTP/1.1
+      Accept: application/json application/ubjson
+
+   Parameters:
+      id (string) -- id of the template (required)
+
+   Request Headers:
+      Accept -- application/json application/ubjson
+
+   Response Headers:
+      Content-Type -- application/json application/ubjson
+
+   Status Codes:
+      200 OK -- successful operation
+
+      403 Forbidden -- forbidden, e.g. because there is no valid
+      license for this module.
+
+      404 Not Found -- node or template not found

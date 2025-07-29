@@ -1,0 +1,23 @@
+Anzeigen und Herunterladen von Bildern
+
+Der
+
+rc_visard NG
+
+ bietet über die GenICam-Schnittstelle zeitgestempelte rektifizierte
+Kamerabilder (siehe
+
+Verfügbare Bild-Streams
+
+). Live-Streams in geringerer Qualität werden in der
+
+Web GUI
+
+ bereitgestellt.
+
+Die Web GUI bietet weiterhin die Möglichkeit, einen Schnappschuss der
+aktuellen Szene als .tar.gz-Datei zu speichern, wie in
+
+Herunterladen von Kamerabildern
+
+ beschrieben wird.

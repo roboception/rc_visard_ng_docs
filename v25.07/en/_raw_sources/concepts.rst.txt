@@ -1,0 +1,31 @@
+.. include:: global_rst.glb
+
+.. _sect-concepts:
+
+Measurement principles
+======================
+
+.. only:: rc_visard or rc_visard_ng
+
+    The |rc_xxx| is a self-registering 3D camera. It provides rectified camera,
+    disparity, confidence, and error images, which enable the viewed scene's depth values along
+    with their uncertainties to be computed. Furthermore, the motion of visual features in the
+    images is combined with acceleration and turn-rate measurements at a high rate, which
+    enables the sensor to provide real-time estimates of its current pose, velocity, and acceleration.
+
+.. only:: rc_cube
+
+    The |rc_xxx| is a high-performance 3D-image-processing device that is used
+    in combination one or more 3D cameras such as |company|'s 3D camera |rc_visard|. 
+    Together, they provide rectified camera,
+    disparity, confidence, and error images, which allow the viewed scene's depth values along
+    with their uncertainties to be computed.
+
+In the following, the underlying measurement principles are explained in more detail.
+
+.. toctree-filt::
+   :maxdepth: 2
+
+   concept_stereo
+   stereo_general
+   :rc_cube_exclude:concept_dynamics

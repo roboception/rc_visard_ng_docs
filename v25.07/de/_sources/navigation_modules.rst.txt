@@ -1,0 +1,26 @@
+Navigationsmodule
+
+Die Navigationsmodule des
+
+rc_visard NG
+
+ umfassen:
+
+Sensor dynamics (rc_dynamics, Abschnitt \ref{dynamics:sect-dynamics})
+erstellt Schätzungen des dynamischen Zustands des rc_visard, d.h.
+seiner Pose, Geschwindigkeit und Beschleunigung. Diese Zustände werden
+als kontinuierliche Datenströme über die rc_dynamics-Schnittstelle
+übertragen. Zu diesem Zweck verwaltet und verknüpft das Dynamik-Modul
+Daten aus den folgenden Submodulen:  Visual odometry (rc_stereovisodo,
+Abschnitt \ref{stereo_visodo:sect-visual-odometry})  schätzt die
+Bewegung des rc_visard anhand der Bewegungen charakteristischer
+Merkmale in den Bildern der linken Kamera.  Stereo INS (rc_stereo_ins,
+Abschnitt \ref{stereo_ins:sect-stereo-ins})  kombiniert die per
+visueller Odometrie ermittelten Werte mit den Daten der integrierten
+inertialen Messeinheit (IMU), um auf dieser Grundlage akkurate und
+hochfrequente Echtzeit-Zustandsschätzungen bereitzustellen.  SLAM
+(rc_slam, Abschnitt \ref{slam:sect-slam})  übernimmt die simultane
+Lokalisierung und Kartenerstellung, um akkumulierte Posendaten zu
+korrigieren. Die Trajektorie des rc_visard lässt sich über die REST-
+API-Schnittstelle\:(Abschnitt \ref{rest_api:sect-rest-api}) abfragen.
+

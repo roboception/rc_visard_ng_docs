@@ -1,0 +1,23 @@
+Viewing and downloading images
+
+The
+
+rc_visard NG
+
+ provides the time-stamped, rectified images over the GenICam
+interface (see
+
+Provided image streams
+
+). Live streams of the images are provided with reduced quality in the
+
+Web GUI
+
+.
+
+The Web GUI also provides the possibility to download a snapshot of
+the current scene as a .tar.gz file as described in
+
+Downloading camera images
+
+.

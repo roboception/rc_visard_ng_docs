@@ -1,0 +1,98 @@
+.. include:: global_rst.glb
+
+.. _sect-time-sync:
+
+Time synchronization
+====================
+
+.. index::
+   pair: time; synchronization
+
+The |rc_xxx| provides timestamps with all images and messages.
+To compare these with the time on the application host, the time needs to be properly synchronized.
+
+.. only:: rc_visard or rc_visard_ng
+
+    This can be done either via the Network Time Protocol (NTP), which is the default, or the Precision Time
+    Protocol (PTP).
+
+   .. only:: rc_visard
+
+      .. Note:: The |rc_visard| does not have a backup battery for its real time clock and hence does not retain time across power cycles.
+               The system time starts at the last saved time (saved on reboot and every 15 minutes) at power up and is then automatically set via
+               NTP if a server can be found.
+
+.. only:: rc_cube
+
+    The time synchronization between the |rc_xxx| and the application host can be done via the
+    Network Time Protocol (NTP), which is activated by default.
+
+    Internal time synchronization between the |rc_xxx| and the connected camera is automatically done via
+    the Precision Time Protocol (PTP).
+
+The current system time as well as time synchronization status can be queried via
+:doc:`REST-API<rest_api>`:latex:`\:(Section \ref{rest_api:sect-rest-api})` and seen on the
+:ref:`Web GUI<sect-web-gui>`'s :latex:`(Section \ref{webgui:sect-web-gui})` *System* page.
+
+.. Note:: Depending on the reachability of NTP servers or PTP masters it might take up to several minutes until the time is synchronized.
+
+.. _sect-ntp:
+
+NTP
+---
+
+.. index::
+   pair: NTP; synchronization
+
+The Network Time Protocol (NTP) is a TCP/IP protocol for synchronizing time over a network.
+A client periodically requests the current time from a server, and uses it to set and correct
+its own clock.
+
+By default the |rc_xxx| tries to reach NTP servers from the NTP Pool Project,
+which will work if the |rc_xxx| has access to the internet.
+
+If the |rc_xxx| is configured for :ref:`DHCP<sect-auto-network-configuration>`:latex:`\ (Section \ref{installation:sect-auto-network-configuration})`
+(which is the default setting), it will also request NTP servers from the DHCP server and try to
+use those.
+
+Additionally, the user can specify up to three NTP servers manually using the |restapi|'s **/system/ntp** endpoint.
+A more convenient way is setting the NTP servers on the :ref:`Web GUI<sect-web-gui>`'s :latex:`(Section \ref{webgui:sect-web-gui})`
+*System Time* page.
+
+.. _sect-ptp:
+
+PTP
+---
+
+.. index::
+   pair: PTP; synchronization
+
+The Precision Time Protocol (PTP, also known as IEEE1588) is a protocol which offers more precise and robust clock synchronization than with NTP.
+
+.. only:: rc_visard or rc_visard_ng
+
+    The |rc_visard| can be configured to act as a PTP slave via the standard :doc:`GigE Vision 2.0/GenICam interface<gigevision>`:latex:`\:(Section \ref{gigevision:sect-genicam})` using the ``GevIEEE1588`` parameter.
+
+    At least one PTP master providing time has to be running in the network.
+    On Linux the respective command for starting a PTP master on ethernet port ``eth0`` is, e.g., ``sudo ptpd --masteronly --foreground -i eth0``.
+
+    While the |rc_visard| is synchronized with a PTP master (|rc_visard| in PTP status SLAVE), the NTP synchronization is paused.
+
+.. only:: rc_cube
+
+    .. Note:: Currently, time synchronization between the application host and the |rc_xxx| is not implemented.
+              Please use NTP instead.
+
+.. _sect-manual-time:
+
+Setting time manually
+---------------------
+
+.. index::
+   pair: time; set
+
+The |rc_xxx| allows to set the current date and time manually using the |restapi|'s **/system/time** endpoint,
+if no time synchronization is active (see :doc:`rest_api_syslogs`:latex:`, Section \ref{rest_api_syslogs:sect-rest-api-syslogs}`).
+A more convenient way is setting the system time on the :ref:`Web GUI<sect-web-gui>`'s :latex:`(Section \ref{webgui:sect-web-gui})`
+*System Time* page.
+

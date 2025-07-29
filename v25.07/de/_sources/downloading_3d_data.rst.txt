@@ -1,0 +1,28 @@
+Anzeigen und Herunterladen von Tiefenbildern und Punktwolken
+
+Der
+
+rc_visard NG
+
+ stellt über die GenICam-Schnittstelle zeitgestempelte Disparitäts-,
+Fehler- und Konfidenzbilder zur Verfügung (siehe
+
+Verfügbare Bild-Streams
+
+). Live-Streams in geringerer Qualität werden auf der
+
+Tiefenbild
+
+ Seite  in der
+
+Web GUI
+
+ bereitgestellt.
+
+Die Web GUI bietet weiterhin die Möglichkeit, einen Schnappschuss der
+aktuellen Szene mit den Tiefen-, Fehler und Konfidenzbildern, sowie
+der Punktwolke als .tar.gz-Datei zu speichern, wie in
+
+Herunterladen von Kamerabildern
+
+ beschrieben wird.

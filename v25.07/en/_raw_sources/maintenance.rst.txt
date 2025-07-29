@@ -1,0 +1,288 @@
+.. include:: global_rst.glb
+
+.. _sect-maintenance:
+
+Maintenance
+===========
+
+.. only:: rc_visard or rc_visard_ng
+
+      .. Warning:: The customer does not need to open the |rc_xxx|'s housing to perform
+         maintenance. Unauthorized opening will void the warranty.
+
+      .. _sect-lens-cleaning:
+
+      Lens cleaning
+      -------------
+
+      Glass lenses with antireflective coating are used to reduce glare. Please take special
+      care when cleaning the lenses. To clean them, use a soft lens-cleaning brush to remove
+      dust or dirt particles. Then use a clean microfiber cloth that is designed to clean lenses,
+      and gently wipe the lens using a circular motion to avoid scratches that may compromise
+      the sensor's performance. For stubborn dirt, high purity isopropanol or a lens cleaning
+      solution formulated for coated lenses (such as the Uvex Clear family of products) may be used.
+
+      .. _sect-maintenance-camera-calibration:
+
+      Camera calibration
+      ------------------
+
+      The cameras are calibrated during production. Under normal operating conditions, the calibration
+      will be valid for the life time of the sensor. High impact, such as occurring when dropping
+      the |rc_xxx|, can change the camera's parameters slightly. In this case, calibration can
+      be verified and recalibration undertaken via the |webgui|
+      (see :doc:`camera_calibration`:latex:`, Section \ref{camera_calibration:sect-camera-calibration}`).
+
+.. _sect-backup-settings:
+
+Creating and restoring backups of settings
+------------------------------------------
+
+.. index::
+   pair: settings; backup
+   pair: settings; download
+   pair: settings; upload
+   pair: settings; restore
+   single: Web GUI; backup
+
+The |rc_xxx| offers the possibility to download the current settings as backup or for
+transferring them to a different |rc_visard| or |rc_cube|.
+
+The current settings of the |rc_xxx| can be downloaded on the
+:ref:`Web GUI<sect-web-gui>`'s :latex:`(Section \ref{webgui:sect-web-gui})` *System* page
+in the |rc_xxx| *Settings* section. They can also be downloaded via the |rcxxx|'s
+:ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+using the :http:get:`/system/backup` request.
+
+For downloading a backup, the user can choose which settings to include:
+
+-  ``nodes``: the settings of all modules (parameters, preferred orientations and sorting strategies)
+-  ``load_carriers``: the configured load carriers
+-  ``regions_of_interest``: the configured 2D and 3D regions of interest
+-  ``grippers``: the configured grippers (without the CAD elements)
+
+The returned backup should be stored as a .json file.
+
+.. only:: rc_visard
+
+   The templates of the SilhouetteMatch module are not included in the backup but can be
+   downloaded manually using the |restapi| or the |webgui|
+   (see :ref:`sect-silhouettematch-template-upload`:latex:`, Section \ref{silhouettematch:sect-silhouettematch-template-upload}`).
+
+.. only:: rc_cube or rc_visard_ng
+
+   The templates of the SilhouetteMatch and CADMatch modules are not included in the backup but can be
+   downloaded manually using the |restapi| or the |webgui|
+   (see :ref:`sect-silhouettematch-template-upload`:latex:`, Section \ref{silhouettematch:sect-silhouettematch-template-upload}`
+   and :ref:`sect-cadmatch-template-upload`:latex:`, Section \ref{cadmatch:sect-cadmatch-template-upload}`).
+
+A backup can be restored to the |rc_xxx| on the
+:ref:`Web GUI<sect-web-gui>`'s :latex:`(Section \ref{webgui:sect-web-gui})` *System* page
+in the |rc_xxx| *Settings* section by uploading the backup .json file.
+In the :ref:`Web GUI<sect-web-gui>` the settings included in the backup are shown and can be chosen for restore.
+The corresponding :ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+call is :http:post:`/system/backup`.
+
+.. Warning:: When restoring load carriers, all existing load carriers on the |rc_xxx|
+   will get lost and will be replaced by the content of the backup. The same applies to
+   restoring grippers and regions of interest.
+
+When restoring a backup, only the settings which are applicable to the |rc_xxx| are restored. Parameters
+for modules that do not exist on the device or do not have a valid license will be skipped. If a
+backup can only be restored partially, the user will be notified by warnings.
+
+.. _sect-updating-the-firmware:
+
+Updating the firmware
+---------------------
+
+.. index::
+   pair: firmware; version
+   pair: firmware; update
+   pair: firmware; mender
+   single: Web GUI; update
+
+Information about the current firmware image version can be found on the
+:ref:`Web GUI<sect-web-gui>`'s :latex:`(Section \ref{webgui:sect-web-gui})` :menuselection:`System --> Firmware & License` page.
+It can also be accessed via the |rcxxx|'s
+:ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+using the :http:get:`/system` request. Users can use either the |webgui| or the |restapi|
+to update the firmware.
+
+.. Warning:: When upgrading from a version prior to 21.07, all of the software modules' configured parameters
+      will be reset to their defaults after a firmware update. Only when upgrading from version 21.07 or higher,
+      the last saved parameters will be preserved.
+      Please make sure these settings are persisted on the application-side
+      or client PC (e.g., using the
+      :ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`)
+      to request all parameters and store them prior to executing the update.
+
+      The following settings are excluded from this and will be
+      persisted across a firmware update:
+
+      -  the |rcxxx|'s network configuration including an optional static IP address and the
+         user-specified device name,
+      -  the latest result of the :doc:`handeye_calibration`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`,
+         i.e., recalibrating the |rcxxx| w.r.t. a robot is not required, unless camera mounting
+         has changed, and
+
+      .. only:: rc_visard or rc_visard_ng
+
+         -  the latest result of the :doc:`camera_calibration`:latex:`\:(Section \ref{camera_calibration:sect-camera-calibration})`,
+            i.e., recalibration of the |rcvisard|'s stereo cameras is not required.
+
+
+Step 1: Download the newest firmware version.
+   Firmware updates will be supplied from of a Mender artifact file
+   identified by its ``.mender`` suffix.
+
+   .. only:: roboception or schunk or matrixvision
+
+         If a new firmware update is available for your |rcxxx| device, the
+         respective file can be downloaded to a local computer from
+         https://www.roboception.com/download.
+
+
+   .. Warning:: Make sure the firmware version to upload is still within the software maintenance period of your |rcxxx|. You can see the 
+      firmware version constraints on the |rcxxx|'s |webgui| on the :menuselection:`System --> Firmware & License` page. If the latest 
+      firmware version exceeds the software maintenance period, a new license must be purchased to use a newer firmware.
+
+
+Step 2: Upload the update file.
+   To update with the |rcxxx|'s |restapi|, users
+   may refer to the :http:post:`/system/update` request.
+
+   To update the firmware via the |webgui|, locate the :menuselection:`System --> Firmware & License` page
+   and press the "Upload |rc_xxx| Update" button.
+   Select the desired update image file (file extension ``.mender``)
+   from the local file system and open it to start the update.
+
+   Depending on the network architecture and configuration, the
+   upload may take several minutes. During the update via the |webgui|,
+   a progress bar indicates the progress of the upload.
+
+   .. Note:: Depending on the web browser, the update progress status shown in the progress bar
+      may indicate the completion of the update too early. Please wait until a notification
+      window opens, which indicates the end of the update process.
+      Expect an overall update time of at least five minutes.
+
+   .. Warning:: Do not close the web browser tab which contains the |webgui| or press the renew
+      button on this tab, because it will abort the update procedure. In that case,
+      repeat the update procedure from the beginning.
+
+Step 3: Reboot the |rcxxx|.
+   To apply a firmware update to the |rcxxx|
+   device, a reboot is required after having uploaded the new image version.
+
+   .. index::
+      single: active partition
+      single: inactive partition
+
+   .. Note:: The new image version is uploaded to the inactive partition of the |rcxxx|. Only after rebooting
+      will the inactive partition be activated, and the active partition will become inactive.
+      If the updated firmware image cannot be loaded, this partition of the |rcxxx| remains inactive and
+      the previously installed firmware version from the active partition will be used automatically.
+
+   As for the |restapi|, the reboot can be performed by the
+   :http:put:`/system/reboot` request.
+
+   After having uploaded the new firmware via the |webgui|, a notification window
+   is opened, which offers to reboot
+   the device immediately or to postpone the reboot. To reboot the |rcxxx|
+   at a later time, use the *Reboot* button on the |webgui|'s *System* page.
+
+Step 4: Confirm the firmware update.
+   After rebooting the |rcxxx|, please check the firmware image version
+   number of the currently active image to make sure that the updated image
+   was successfully loaded. You can do so either via the
+   |webgui|'s :menuselection:`System --> Firmware & License` page or via the |restapi|'s :http:get:`/system/update` request.
+
+   Please contact |company| in case the firmware update could not be applied successfully.
+
+.. _sect-restoring-the-previous-firmware-version:
+
+Restoring the previous firmware version
+---------------------------------------
+
+.. index::
+   pair: rollback; firmware
+   single: inactive partition
+
+After a successful firmware update, the previous firmware image is stored on
+the inactive partition of the |rcxxx| and can be restored in case needed.
+This procedure is called a *rollback*.
+
+.. note:: Using the latest firmware as provided
+      by |company| is strongly recommended. Hence, rollback functionality should only be
+      used in case of serious issues with the updated firmware version.
+
+Rollback functionality is only accessible via the |rcxxx|'s
+:ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+using the :http:put:`/system/rollback` request. It can be issued
+using any HTTP-compatible client or using a web browser as described in
+:ref:`sect-swagger-ui`:latex:`\:(Section \ref{rest_api_swagger_ui:sect-swagger-ui})`.
+Like the update process, the rollback requires a subsequent device reboot
+to activate the restored firmware version.
+
+.. _sect-rebooting:
+
+Rebooting the |rcxxx|
+---------------------
+
+.. index::
+   single: reboot
+
+An |rcxxx| reboot is necessary after updating the firmware or
+performing a software rollback. It can be issued either
+programmatically, via the |rcxxx|'s
+:ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+using the :http:put:`/system/reboot` request, or manually on the
+:ref:`Web GUI<sect-web-gui>`'s :latex:`(Section \ref{webgui:sect-web-gui})` *System* page.
+
+.. only:: rc_visard or rc_visard_ng
+
+   The reboot is finished when the LED turns green again.
+
+
+.. _sect-updating-license:
+
+Updating the software license
+-----------------------------
+
+Licenses that are purchased from |company| for enabling additional features can be installed
+via the :ref:`Web GUI<sect-web-gui>`'s :latex:`(Section \ref{webgui:sect-web-gui})` :menuselection:`System --> Firmware & License` page.
+The |rcxxx| has to be rebooted to apply the licenses.
+
+.. only:: rc_cube
+
+   .. note:: If a computer screen as well as mouse and keyboard are connected to the |rc_xxx|,
+      the software license can also be updated directly at the |rc_xxx| using the
+      |webgui| and a separate USB flash drive from which the new license file can be installed.
+
+
+.. _sect-downloading-log-files:
+
+Downloading log files
+---------------------
+
+.. index::
+   pair: log files; download
+   single: Web GUI; logs
+
+During operation, the |rcxxx| logs important information, warnings, and errors into files. If the |rcxxx| exhibits unexpected
+or erroneous behavior, the log files can be used to trace its origin.
+Log messages can be viewed and filtered using
+the :ref:`Web GUI<sect-web-gui>`'s :latex:`(Section \ref{webgui:sect-web-gui})` :menuselection:`System --> Logs` page. If contacting the
+support (:ref:`sect-contact`:latex:`, Section \ref{contact:sect-contact}`), the log files
+are very useful for tracking possible problems. To download them as a .tar.gz file,
+click on :guilabel:`Download all logs` on the |webgui|'s :menuselection:`System --> Logs` page.
+
+Aside from the |webgui|, the logs are also accessible via the |rcxxx|'s
+:ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+using the :http:get:`/logs` and :http:get:`/logs/{log}` requests.
+
+.. only:: rc_cube
+
+   .. note:: If a computer screen as well as mouse and keyboard are connected to the |rc_xxx|,
+      the log files can also be download directly from the |rc_xxx| using the
+      |webgui| and a separate USB flash drive on which the log files can be stored.

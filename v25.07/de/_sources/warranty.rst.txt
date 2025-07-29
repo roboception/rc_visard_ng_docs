@@ -1,0 +1,42 @@
+Garantie
+
+Jede Änderung oder Modifikation der Hard- oder Software dieses
+Produkts, die nicht ausdrücklich von Roboception genehmigt wurde, kann
+zum Verlust der Gewährleistungs- und Garantierechte führen.
+
+Warnung: Der
+
+  rc_visard NG
+
+   arbeitet mit komplexer Hardware- und Software-Technologie, die sich
+  ggf. nicht immer so verhält, wie es der Benutzer beabsichtigt. Der
+  Käufer muss seine Anwendung so gestalten, dass eine Fehlfunktion des
+
+  rc_visard NG
+
+   nicht zu Körperverletzungen, Sachschäden oder anderen Verlusten
+  führt.
+
+Warnung: Der
+
+  rc_visard NG
+
+   darf nicht zerlegt, geöffnet, instand gesetzt oder verändert
+  werden, da dies eine Stromschlaggefahr oder andere Risiken nach sich
+  ziehen kann. Kann nachgewiesen werden, dass der Benutzer versucht
+  hat, das Gerät zu öffnen und/oder zu modifizieren, erlischt die
+  Garantie. Dies gilt auch, wenn Typenschilder beschädigt, entfernt
+  oder unkenntlich gemacht wurden.
+
+Warnung: VORSICHT: Gemäß den europäischen CE-Anforderungen müssen
+  alle Kabel, die zum Anschluss dieses Geräts verwendet werden,
+  abgeschirmt und geerdet sein. Der Betrieb mit falschen Kabeln kann
+  zu Interferenzen mit anderen Geräten oder zu einem unerwünschten
+  Verhalten des Produkts führen.
+
+Bemerkung: Dieses Produkt darf nicht über den Hausmüll entsorgt
+  werden. Durch die korrekte Entsorgung des Produkts tragen Sie zum
+  Umweltschutz bei. Nähere Informationen zur Wiederverwertung des
+  Produkts erhalten Sie bei den zuständigen Behörden, bei Ihrem
+  Entsorgungsunternehmen oder beim Händler, bei dem Sie das Produkt
+  erworben haben.
