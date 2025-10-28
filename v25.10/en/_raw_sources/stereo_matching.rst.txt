@@ -1,0 +1,722 @@
+
+.. include:: global_rst.glb
+
+.. _sect-stereo-matching:
+
+Stereo matching module
+======================
+
+.. index::
+   single: disparity
+   single: disparity image
+   single: depth image
+
+The stereo matching module is a base module which is available on every |rc_xxx|
+and uses the rectified stereo-image pair to compute
+disparity, error, and confidence images.
+
+.. only:: rc_cube and (roboception or schunk or basler)
+
+   .. note:: This module is not available in camera pipelines of type |rgbd_only|.
+
+To compute full resolution disparity, error and confidence images, an additional StereoPlus
+:ref:`license<sect-updating-license>`
+:latex:`(Section \ref{maintenance:sect-updating-license})` is required.
+This license is included in every |rc_xxx| purchased after
+31.01.2019.
+
+.. _sect-disp-image-parameters:
+
+Parameters
+----------
+
+.. index::
+   pair: parameters; disparity image
+   pair: disparity image; Web GUI
+   pair: depth image; Web GUI
+
+The stereo matching module is called ``rc_stereomatching`` in the |rest-api| and it is represented by the
+*Depth Image* page :cubeonly:`in the desired pipeline` in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+The user can change the stereo matching parameters there, or use the |rest-api|
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`) or GigE Vision
+(:ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_stereomatching.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the |webgui|'s *Depth Image* page. The name in the
+|webgui| is given in brackets behind the parameter name and the parameters are listed in the order
+they appear in the |webgui|:
+
+.. figure:: images/webgui_depth_image.png
+    :width: 100 %
+    :align: center
+
+    The |webgui|'s *Depth Image* page
+
+
+.. _expl-depth-acquisition-mode:
+
+.. index::
+   pair: disparity image; acquisition mode
+
+``acquisition_mode`` (*Acquisition Mode*)
+'''''''''''''''''''''''''''''''''''''''''
+    The acquisition mode can be set to ``Continuous``, ``SingleFrame`` (*Single*) or ``SingleFrameOut1`` (*Single + Out1*).
+    The first one is the default, which performs stereo matching continuously according to the
+    user defined frame rate and the available computation resources. The two other modes
+    perform stereo matching upon each click of the :guilabel:`Acquire` button. The `Single + Out1`
+    mode additionally controls an external projector that is connected to GPIO Out1
+    (:ref:`sect-iocontrol`:latex:`, Section \ref{iocontrol:sect-iocontrol}`). In this mode,
+    ``out1_mode`` of the IOControl module is automatically set to ``ExposureAlternateActive`` upon each trigger call
+    and reset to ``Low`` after receiving images for stereo matching.
+
+    .. NOTE:: The ``Single + Out1`` mode can only change the ``out1_mode`` if the IOControl
+       license is available on the |rc_xxx|.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?acquisition_mode=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/parameters?acquisition_mode=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?acquisition_mode=<value>
+
+.. _expl-depth-exposure-adapt-timeout:
+
+.. index::
+   pair: disparity image; exposure adaptation timeout
+
+``exposure_adapt_timeout`` (*Exposure Adaptation Timeout*)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    The exposure adaptation timeout gives the maximum time in seconds that the system will wait after triggering
+    an image acquisition until auto exposure has found the optimal exposure time. This timeout is only used
+    in ``SingleFrame`` (*Single*) or ``SingleFrameOut1`` (*Single + Out1*)
+    acquisition mode with auto exposure active. This value should be increased in applications
+    with changing lighting conditions, when images are under- oder overexposed and the resulting
+    disparity images are too sparse. In these cases multiple images are acquired until the auto-exposure
+    mode has adjusted or the timeout is reached, and only then the actual image acquisition is triggered.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?exposure_adapt_timeout=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/parameters?exposure_adapt_timeout=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?exposure_adapt_timeout=<value>
+
+.. index::
+   pair: quality; disparity image
+
+.. _expl-depth-quality:
+
+``quality`` (*Quality*)
+'''''''''''''''''''''''
+    Disparity images can be computed in different resolutions:
+    ``Full`` (full image resolution), ``High`` (half of the full image resolution),
+    ``Medium`` (quarter of the full image resolution)
+    and ``Low`` (sixth of the full image resolution). Full resolution matching (``Full``)
+    is only possible with a valid StereoPlus license. The lower
+    the resolution, the higher the frame rate of the disparity image. Please note that the frame
+    rate of the disparity, confidence, and error images will always be less than or
+    equal to the camera frame rate. In case the projector is in ``ExposureAlternateActive`` mode,
+    the frame rate of the images can be at most half of the camera frame rate.
+
+    .. only:: rc_visard
+
+        A 25 Hz frame rate can be achieved only at the lowest resolution.
+    
+    .. only:: rc_visard_ng
+
+        A 25 Hz frame rate can be achieved only at medium and low resolution.
+
+    If full resolution is selected, the depth range is internally limited due to
+    limited on-board memory resources. It is recommended to adjust ``mindepth``
+    and ``maxdepth`` to the depth range that is required by the application.
+
+    .. only:: rc_visard
+
+      .. tabularcolumns:: |l|L|L|L|L|
+      .. _tab-stereo-quality-spec:
+      .. csv-table:: Depth image resolutions depending on the chosen quality
+
+         "Quality",    "**Full**",    "**High**",    "**Medium**",    "**Low**"
+         "Resolution (pixel)",    "1280 x 960",    "640 x 480",    "320 x 240",    "214 x 160"
+
+    .. only:: rc_visard_ng
+
+      .. tabularcolumns:: |l|L|L|L|L|
+      .. _tab-stereo-quality-spec:
+      .. csv-table:: Depth image resolutions depending on the chosen quality
+
+         "Quality",    "**Full**",    "**High**",    "**Medium**",    "**Low**"
+         "Resolution (pixel)",    "1440 x 1080",    "720 x 540",    "360 x 270",    "240 x 180"
+
+   .. only:: rc_cube and (roboception or schunk or matrixvision)
+
+      .. tabularcolumns:: |l|L|L|L|L|
+      .. _tab-stereo-quality-spec:
+      .. csv-table:: Depth image resolutions (pixel) depending on the chosen quality
+            :header:  Connected Camera, Full Quality, High Quality, Medium Quality, Low Quality
+
+            "rc_visard",    "1280 x 960",    "640 x 480",    "320 x 240",    "214 x 160"
+            "rc_visard_ng",    "1440 x 1080",    "720 x 540",    "360 x 270",    "240 x 180"
+            "rc_viscore",    "4112 x 3008",    "2056 x 1504",    "1028 x 752",    "686 x 502"
+
+   .. only:: rc_cube and basler
+
+      .. tabularcolumns:: |l|L|L|L|L|
+      .. _tab-stereo-quality-spec:
+      .. csv-table:: Depth image resolutions (pixel) depending on the chosen quality
+            :header:  Connected Camera, Full Quality, High Quality, Medium Quality, Low Quality
+
+            "rc_visard",    "1280 x 960",    "640 x 480",    "320 x 240",    "214 x 160"
+            "rc_visard_ng",    "1440 x 1080",    "720 x 540",    "360 x 270",    "240 x 180"
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?quality=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/parameters?quality=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?quality=<value>
+
+.. index::
+   pair: double_shot; disparity image
+
+.. _expl-depth-double-shot:
+
+``double_shot`` (*Double-Shot*)
+'''''''''''''''''''''''''''''''
+   Enabling this option will lead to denser disparity images, but will increase processing time.
+
+   For scenes recorded with a projector in ``Single + Out1`` acquisition
+   mode, or in continuous acquisition mode with the projector in ``ExposureAlternateActive`` mode,
+   holes caused by reflections of the projector are filled with depth information computed from
+   the images without projector pattern. In this case, the ``double_shot`` parameter must only be
+   enabled if the scene does not change during the acquisition of the images.
+
+   For all other scenes, holes are filled with depth information computed from a downscaled version of the same image.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?double_shot=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/parameters?double_shot=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?double_shot=<value>
+
+.. index::
+   pair: static_scene; disparity image
+
+.. _expl-depth-static:
+
+``static_scene`` (*Static*)
+'''''''''''''''''''''''''''
+   This option averages 8 consecutive camera images before matching. This reduces
+   noise, which improves the stereo matching result. However, the latency increases significantly.
+   The timestamp of the first
+   image is taken as timestamp of the disparity image. This option only affects
+   matching in full or high quality. It must only be enabled if the scene does not
+   change during the acquisition of the 8 images.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?static_scene=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/parameters?static_scene=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?static_scene=<value>
+
+.. _expl-depth-min-depth:
+
+.. index::
+   single: minimum distance
+
+``mindepth`` (*Minimum Distance*)
+'''''''''''''''''''''''''''''''''
+   The minimum distance is the smallest distance from the camera
+   at which measurements should be possible. Larger values implicitly reduce the
+   disparity range, which also reduces the computation time. The minimum distance
+   is given in meters.
+
+   Depending on the capabilities of the sensor, the actual minimum distance
+   can be higher than the user setting. The actual minimum distance will be
+   reported in the status values.
+
+   .. only:: rc_visard or rc_visard_ng
+
+      In ``quality`` mode ``Full``, the actual minimum distance can also be higher
+      than the user-defined minimum distance due to memory limitations. In this
+      case, lowering the maximum distance helps to reduce the actual minimum distance.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?mindepth=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/parameters?mindepth=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?mindepth=<value>
+
+.. _expl-depth-max-depth:
+
+.. index::
+   single: maximum distance
+
+``maxdepth`` (*Maximum Distance*)
+'''''''''''''''''''''''''''''''''
+   The maximum distance is the largest distance from the camera
+   at which measurements should be possible. Pixels with larger distance values are
+   set to invalid in the disparity image. Setting this value to its maximum permits
+   values up to infinity. The maximum distance is given in meters.
+
+
+   .. only:: rc_visard or rc_visard_ng
+
+      In ``quality`` mode ``Full``, the actual minimum distance can be higher
+      than the user-defined minimum distance due to memory limitations. In this
+      case, lowering the maximum distance helps to reduce the actual minimum distance.
+
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?maxdepth=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/parameters?maxdepth=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?maxdepth=<value>
+
+.. _expl-depth-smooth:
+
+.. index::
+   pair: smooth; disparity image
+
+``smooth`` (*Smoothing*)
+''''''''''''''''''''''''
+   This option activates advanced smoothing of disparity values. It is only
+   available with a valid StereoPlus license.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?smooth=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/parameters?smooth=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?smooth=<value>
+
+.. _expl-depth-fill:
+
+.. index::
+   single: fill-in
+
+``fill`` (*Fill-in*)
+''''''''''''''''''''
+   This option is used to fill holes in the disparity image by interpolation.
+   The fill-in value is the maximum allowed disparity step on the border of the
+   hole. Larger fill-in values can decrease the number of holes, but the interpolated
+   values can have larger errors. At most 5% of pixels are interpolated. Interpolation
+   of small holes is preferred over interpolation of larger holes. The confidence for
+   the interpolated pixels is set to a low value of 0.5. A fill-in value of 0
+   switches hole filling off.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?fill=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/parameters?fill=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?fill=<value>
+
+.. _expl-depth-seg:
+
+.. index::
+   single: segmentation
+
+``seg`` (*Segmentation*)
+''''''''''''''''''''''''
+   The segmentation parameter is used to set the minimum number of
+   pixels that a connected disparity region in the disparity image must fill.
+   Isolated regions that are smaller are set to invalid in the disparity image.
+   The value is related to the high quality disparity image with half resolution
+   and does not have to be scaled when a different quality
+   is chosen. Segmentation is useful for removing erroneous disparities. However,
+   larger values may also remove real objects.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?seg=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/parameters?seg=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?seg=<value>
+
+.. _expl-depth-min-conf:
+
+.. index::
+   single: minimum confidence
+   pair: confidence; minimum
+
+``minconf`` (*Minimum Confidence*)
+''''''''''''''''''''''''''''''''''
+   The minimum confidence can be set to filter potentially false disparity measurements.
+   All pixels with less confidence than the chosen value are set to invalid
+   in the disparity image.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?minconf=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/parameters?minconf=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?minconf=<value>
+
+.. _expl-depth-max-depth-err:
+
+.. index::
+   single: maximum depth error
+   pair: depth error; maximum
+
+``maxdeptherr`` (*Maximum Depth Error*)
+'''''''''''''''''''''''''''''''''''''''
+   The maximum depth error is used to filter measurements
+   that are too inaccurate. All pixels with a larger depth error than the chosen
+   value are set to invalid in the disparity image. The maximum
+   depth error is given in meters. The depth error generally grows quadratically
+   with an object's distance from the camera (see :ref:`sect-confidence-error`:latex:`, Section \ref{stereo_general:sect-confidence-error}`).
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?maxdeptherr=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/parameters?maxdeptherr=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?maxdeptherr=<value>
+
+The same parameters are also available over the GenICam interface with slightly different names and partly with different data types
+(see :ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+
+Status values
+-------------
+
+This module reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_stereomatching`` module's status values
+   :header:  Name, Description
+
+   "``fps``","Actual frame rate of the disparity, error, and confidence images. This value is shown in the |webgui| below the image preview as *FPS (Hz)*."
+   "``latency``","Time in seconds between image acquisition and publishing of disparity image. This value is shown in the |webgui| below the image preview as *Latency (s)*."
+   "``width``","Current width of the disparity, error, and confidence images in pixels. This value is shown in the |webgui| below the image preview as the first number of *Resolution (px)*."
+   "``height``","Current height of the disparity, error, and confidence images in pixels. This value is shown in the |webgui| below the image preview as the second number of *Resolution (px)*."
+   "``mindepth``","Actual minimum working distance in meters. This value is shown in the |webgui| below the image preview as *Minimum Distance (m)*."
+   "``maxdepth``","Actual maximum working distance in meters. This value is shown in the |webgui| below the image preview as *Maximum Distance (m)*."
+   "``time_matching``","Time in seconds for performing stereo matching using |sgm-short| on the GPU"
+   "``time_postprocessing``","Time in seconds for postprocessing the matching result on the CPU"
+   "``reduced_depth_range``","Indicates whether the depth range is reduced due to computation resources"
+
+.. _sect-stereo-matching-services:
+
+Services
+--------
+
+The stereo matching module offers the following services.
+
+``acquisition_trigger``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+   Signals the module to perform stereo matching of the next available
+   images, if the parameter ``acquisition_mode`` is set to ``SingleFrame`` or
+   ``SingleFrameOut1``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      An error is returned if the ``acquisition_mode`` is set to ``Continuous``.
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/services/acquisition_trigger
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/services/acquisition_trigger
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_stereomatching/services/acquisition_trigger
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_stereomatching_acquisition_trigger_request.txt
+
+         .. tab:: **Response**
+
+            Possible return codes are shown below.
+
+            .. tabularcolumns:: |c|L|
+            .. _tab-stereo-acquisition-trigger-return-codes:
+            .. csv-table:: Possible return codes of the ``acquisition_trigger`` service call.
+               :header:  Code, Description
+
+               "0",   "Success"
+               "-8",  "Triggering is only possible in SingleFrame acquisition mode"
+               "101", "Trigger is ignored, because there is a trigger call pending"
+               "102", "Trigger is ignored, because there are no subscribers"
+
+            .. include:: _gen/nodes/services/rc_stereomatching_acquisition_trigger_response.txt
+
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/services/reset_defaults
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_stereomatching/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_stereomatching/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_stereomatching_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_stereomatching_reset_defaults_response.txt
+

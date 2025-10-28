@@ -1,0 +1,457 @@
+Maintenance
+
+Warning: The customer does not need to open the
+
+  rc_visard NG
+
+  's housing to perform maintenance. Unauthorized opening will void
+  the warranty.
+
+Lens cleaning
+
+Glass lenses with antireflective coating are used to reduce glare.
+Please take special care when cleaning the lenses. To clean them, use
+a soft lens-cleaning brush to remove dust or dirt particles. Then use
+a clean microfiber cloth that is designed to clean lenses, and gently
+wipe the lens using a circular motion to avoid scratches that may
+compromise the sensor's performance. For stubborn dirt, high purity
+isopropanol or a lens cleaning solution formulated for coated lenses
+(such as the Uvex Clear family of products) may be used.
+
+Camera calibration
+
+The cameras are calibrated during production. Under normal operating
+conditions, the calibration will be valid for the life time of the
+sensor. High impact, such as occurring when dropping the
+
+rc_visard NG
+
+, can change the camera's parameters slightly. In this case,
+calibration can be verified and recalibration undertaken via the Web
+GUI (see
+
+Camera calibration
+
+).
+
+Creating and restoring backups of settings
+
+The
+
+rc_visard NG
+
+ offers the possibility to download the current settings as backup or
+for transferring them to a different
+
+rc_visard
+
+ or
+
+rc_cube
+
+.
+
+The current settings of the
+
+rc_visard NG
+
+ can be downloaded on the
+
+Web GUI
+
+'s
+
+System
+
+ page in the
+
+rc_visard NG
+
+
+Settings
+
+ section. They can also be downloaded via the
+
+rc_visard NG
+
+'s
+
+REST-API interface
+
+ using the
+
+GET /system/backup
+
+ request.
+
+For downloading a backup, the user can choose which settings to
+include:
+
+nodes: the settings of all modules (parameters, preferred orientations
+and sorting strategies)
+
+load_carriers: the configured load carriers
+
+regions_of_interest: the configured 2D and 3D regions of interest
+
+grippers: the configured grippers (without the CAD elements)
+
+The returned backup should be stored as a .json file.
+
+The templates of the SilhouetteMatch and CADMatch modules are not
+included in the backup but can be downloaded manually using the REST-
+API or the Web GUI (see
+
+Template API
+
+ and
+
+Template API
+
+).
+
+A backup can be restored to the
+
+rc_visard NG
+
+ on the
+
+Web GUI
+
+'s
+
+System
+
+ page in the
+
+rc_visard NG
+
+
+Settings
+
+ section by uploading the backup .json file. In the
+
+Web GUI
+
+ the settings included in the backup are shown and can be chosen for
+restore. The corresponding
+
+REST-API interface
+
+ call is
+
+POST /system/backup
+
+.
+
+Warning: When restoring load carriers, all existing load carriers on
+  the
+
+  rc_visard NG
+
+   will get lost and will be replaced by the content of the backup.
+  The same applies to restoring grippers and regions of interest.
+
+When restoring a backup, only the settings which are applicable to the
+
+rc_visard NG
+
+ are restored. Parameters for modules that do not exist on the device
+or do not have a valid license will be skipped. If a backup can only
+be restored partially, the user will be notified by warnings.
+
+Updating the firmware
+
+Information about the current firmware image version can be found on
+the
+
+Web GUI
+
+'s  System ‣ Firmware & License page. It can also be accessed via the
+
+rc_visard NG
+
+'s
+
+REST-API interface
+
+ using the
+
+GET /system
+
+ request. Users can use either the Web GUI or the REST-API to update
+the firmware.
+
+Warning: When upgrading from a version prior to 21.07, all of the
+  software modules' configured parameters will be reset to their
+  defaults after a firmware update. Only when upgrading from version
+  21.07 or higher, the last saved parameters will be preserved. Please
+  make sure these settings are persisted on the application-side or
+  client PC (e.g., using the
+
+  REST-API interface
+
+  ) to request all parameters and store them prior to executing the
+  update.The following settings are excluded from this and will be
+  persisted across a firmware update:
+
+  the rc_visard NG's network configuration including an optional
+  static IP address and the user-specified device name,
+
+  the latest result of the Hand-eye calibration\:(Section
+  \ref{handeye_calibration:sect-handeye-calibration}), i.e.,
+  recalibrating the rc_visard NG w.r.t. a robot is not required,
+  unless camera mounting has changed, and
+
+  the latest result of the Camera calibration\:(Section
+  \ref{camera_calibration:sect-camera-calibration}), i.e.,
+  recalibration of the rc_visard's stereo cameras is not required.
+
+Step 1: Download the newest firmware version.
+   Firmware updates will be supplied from of a Mender artifact file
+   identified by its ".mender" suffix.
+
+   If a new firmware update is available for your
+
+   rc_visard NG
+
+    device, the respective file can be downloaded to a local computer
+   from
+
+   https://www.roboception.com/download
+
+   .
+
+   Warning: Make sure the firmware version to upload is still within
+     the software maintenance period of your
+
+     rc_visard NG
+
+     . You can see the firmware version constraints on the
+
+     rc_visard NG
+
+     's Web GUI on the System ‣ Firmware & License page. If the latest
+     firmware version exceeds the software maintenance period, a new
+     license must be purchased to use a newer firmware.
+
+Step 2: Upload the update file.
+   To update with the
+
+   rc_visard NG
+
+   's REST-API, users may refer to the
+
+   POST /system/update
+
+    request.
+
+   To update the firmware via the Web GUI, locate the System ‣
+   Firmware & License page and press the "Upload
+
+   rc_visard NG
+
+    Update" button. Select the desired update image file (file
+   extension ".mender") from the local file system and open it to
+   start the update.
+
+   Depending on the network architecture and configuration, the upload
+   may take several minutes. During the update via the Web GUI, a
+   progress bar indicates the progress of the upload.
+
+   Note: Depending on the web browser, the update progress status
+     shown in the progress bar may indicate the completion of the
+     update too early. Please wait until a notification window opens,
+     which indicates the end of the update process. Expect an overall
+     update time of at least five minutes.
+
+   Warning: Do not close the web browser tab which contains the Web
+     GUI or press the renew button on this tab, because it will abort
+     the update procedure. In that case, repeat the update procedure
+     from the beginning.
+
+Step 3: Reboot the
+rc_visard NG
+
+.
+   To apply a firmware update to the
+
+   rc_visard NG
+
+    device, a reboot is required after having uploaded the new image
+   version.
+
+   Note: The new image version is uploaded to the inactive partition
+     of the
+
+     rc_visard NG
+
+     . Only after rebooting will the inactive partition be activated,
+     and the active partition will become inactive. If the updated
+     firmware image cannot be loaded, this partition of the
+
+     rc_visard NG
+
+      remains inactive and the previously installed firmware version
+     from the active partition will be used automatically.
+
+   As for the REST-API, the reboot can be performed by the
+
+   PUT /system/reboot
+
+    request.
+
+   After having uploaded the new firmware via the Web GUI, a
+   notification window is opened, which offers to reboot the device
+   immediately or to postpone the reboot. To reboot the
+
+   rc_visard NG
+
+    at a later time, use the
+
+   Reboot
+
+    button on the Web GUI's
+
+   System
+
+    page.
+
+Step 4: Confirm the firmware update.
+   After rebooting the
+
+   rc_visard NG
+
+   , please check the firmware image version number of the currently
+   active image to make sure that the updated image was successfully
+   loaded. You can do so either via the Web GUI's System ‣ Firmware &
+   License page or via the REST-API's
+
+   GET /system/update
+
+    request.
+
+   Please contact Roboception in case the firmware update could not be
+   applied successfully.
+
+Restoring the previous firmware version
+
+After a successful firmware update, the previous firmware image is
+stored on the inactive partition of the
+
+rc_visard NG
+
+ and can be restored in case needed. This procedure is called a
+
+rollback
+
+.
+
+Note: Using the latest firmware as provided by Roboception is
+  strongly recommended. Hence, rollback functionality should only be
+  used in case of serious issues with the updated firmware version.
+
+Rollback functionality is only accessible via the
+
+rc_visard NG
+
+'s
+
+REST-API interface
+
+ using the
+
+PUT /system/rollback
+
+ request. It can be issued using any HTTP-compatible client or using a
+web browser as described in
+
+Swagger UI
+
+. Like the update process, the rollback requires a subsequent device
+reboot to activate the restored firmware version.
+
+Rebooting the rc_visard NG
+
+An
+
+rc_visard NG
+
+ reboot is necessary after updating the firmware or performing a
+software rollback. It can be issued either programmatically, via the
+
+rc_visard NG
+
+'s
+
+REST-API interface
+
+ using the
+
+PUT /system/reboot
+
+ request, or manually on the
+
+Web GUI
+
+'s
+
+System
+
+ page.
+
+The reboot is finished when the LED turns green again.
+
+Updating the software license
+
+Licenses that are purchased from Roboception for enabling additional
+features can be installed via the
+
+Web GUI
+
+'s  System ‣ Firmware & License page. The
+
+rc_visard NG
+
+ has to be rebooted to apply the licenses.
+
+Downloading log files
+
+During operation, the
+
+rc_visard NG
+
+ logs important information, warnings, and errors into files. If the
+
+rc_visard NG
+
+ exhibits unexpected or erroneous behavior, the log files can be used
+to trace its origin. Log messages can be viewed and filtered using the
+
+Web GUI
+
+'s  System ‣ Logs page. If contacting the support (
+
+Contact
+
+), the log files are very useful for tracking possible problems. To
+download them as a .tar.gz file, click on Download all logs on the Web
+GUI's System ‣ Logs page.
+
+Aside from the Web GUI, the logs are also accessible via the
+
+rc_visard NG
+
+'s
+
+REST-API interface
+
+ using the
+
+GET /logs
+
+ and
+
+GET /logs/{log}
+
+ requests.

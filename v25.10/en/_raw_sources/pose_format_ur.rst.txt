@@ -1,0 +1,59 @@
+.. include:: global_rst.glb
+
+.. _sect-ur-format:
+
+Universal Robots pose format
+----------------------------
+
+The pose format that is used by Universal Robots consists of a position
+:math:`XYZ` in millimeters and an orientation in angle-axis format
+:math:`V=(\begin{array}{ccc}RX & RY & RZ\end{array})^T`. The rotation angle
+:math:`\theta` in radians is the length of the rotation axis :math:`U`.
+
+.. math::
+   V = \left(\begin{array}{c}RX \\ RY \\ RZ\end{array}\right) = \left(\begin{array}{c}\theta u_x \\ \theta u_y \\ \theta u_z\end{array}\right)
+
+:math:`V` is called a rotation vector.
+
+Conversion from angle-axis format to quaternion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from a rotation vector :math:`V` to a quaternion
+:math:`q=(\begin{array}{cccc}x & y & z & w\end{array})` can be done as
+follows.
+
+We first recover the angle :math:`\theta` in radians from the rotation vector
+:math:`V` by
+
+.. math::
+   \theta = \sqrt{RX^2 + RY^2 + RZ^2}\text{.}
+
+If :math:`\theta = 0`, then the quaternion is :math:`q=(\begin{array}{cccc}0 & 0 & 0 & 1\end{array})`,
+otherwise it is
+
+.. math::
+   x = RX \frac{\sin(\theta/2)}{\theta}\text{,} \\
+   y = RY \frac{\sin(\theta/2)}{\theta}\text{,} \\
+   z = RZ \frac{\sin(\theta/2)}{\theta}\text{,} \\
+   w = \cos(\theta/2)\text{.}
+
+Conversion from quaternion to angle-axis format
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from a quaternion :math:`q=(\begin{array}{cccc}x & y & z &
+w\end{array})` with :math:`||q||=1` to a rotation vector in angle-axis form
+can be done as follows.
+
+We first recover the angle :math:`\theta` in radians from the quaternion by
+
+.. math::
+   \theta = 2\cdot\text{acos}(w)\text{.}
+
+If :math:`\theta = 0`, then the rotation vector is :math:`V=(\begin{array}{ccc}0 & 0 & 0\end{array})^T`, 
+otherwise it is
+
+.. math::
+   RX = \theta \frac{x}{\sqrt{1-w^2}}\text{,} \\
+   RY = \theta \frac{y}{\sqrt{1-w^2}}\text{,} \\
+   RZ = \theta \frac{z}{\sqrt{1-w^2}}\text{.}
+

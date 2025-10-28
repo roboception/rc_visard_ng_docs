@@ -1,0 +1,601 @@
+Pipeline type stereo_ace
+
+Parameters
+
+The camera module on a pipeline of type "stereo_ace" is called
+"rc_camera" and is represented by the
+
+Camera
+
+ page in the desired pipeline in the
+
+Web GUI
+
+. The user can change the camera parameters there, or directly via the
+REST-API (
+
+REST-API interface
+
+) or GigE Vision (
+
+GigE Vision 2.0/GenICam image interface
+
+).
+
+Parameter overview
+
+This module offers the following run-time parameters:
+
+The rc_camera module's run-time parameters on a pipeline of type
+stereo_ace              Name  Type  Min  Max  Default  Description
+acquisition_mode  string  -  -  Continuous  Acquisition mode:
+[Continuous, Trigger]  brightness  float64  -1.0  1.0  0.0  Brightness
+contrast  float64  -1.0  1.0  0.0  Contrast  contrast_mode  string  -
+-  Linear  Contrast mode [Linear, SCurve]  exp_auto  bool  false  true
+false  Switching between auto and manual exposure (deprecated, please
+use exp_control instead)  exp_auto_average_max  float64  0.0  1.0
+0.75  Maximum average intensity in Auto exposure mode
+exp_auto_average_min  float64  0.0  1.0  0.25  Minimum average
+intensity in Auto exposure mode  exp_auto_mode  string  -  -  Normal
+Auto-exposure mode: [Normal, Out1High, AdaptiveOut1]  exp_control
+string  -  -  Manual  Exposure control mode: [Manual, Auto, HDR]
+exp_height  int32  0  2047  0  Height of auto exposure region. 0 for
+whole image.  exp_max  float64  6.6e-05  0.1  0.018  Maximum exposure
+time in seconds in Auto exposure mode  exp_offset_x  int32  0  2447  0
+First column of auto exposure region  exp_offset_y  int32  0  2047  0
+First row of auto exposure region  exp_value  float64  6.6e-05  0.1
+0.005  Exposure time in seconds in Manual exposure mode  exp_width
+int32  0  2447  0  Width of auto exposure region. 0 for whole image.
+fps  float64  1.0  50.0  25.0  Frames per second in Hertz  gain_value
+float64  0.0  48.0  0.0  Gain value in decibel if not in Auto exposure
+mode  gamma  float64  0.1  3.99998  1.0  Gamma factor
+light_source_preset  string  -  -  Daylight6500K  Light source preset
+[Off, Tungsten, Daylight5000K, Daylight6500K, FactoryLED6000K]
+saturation  float64  0.0  2.0  1.0  Saturation  trigger_activation
+string  -  -  RisingEdge  Trigger activation: [RisingEdge,
+FallingEdge, AnyEdge]  trigger_source  string  -  -  Software  Trigger
+source: [Software, In1, In2, In3, In4]  wb_auto  bool  false  true
+true  Switching white balance on and off (only for color camera)
+wb_ratio_blue  float64  0.125  16.0  2.4  Blue balance ratio if
+wb_auto is false (only for color camera)  wb_ratio_green  float64
+0.125  16.0  1.0  Green balance ratio if wb_auto is false (only for
+some color cameras)  wb_ratio_red  float64  0.125  16.0  1.2  Red
+balance ratio if wb_auto is false (only for color camera)
+
+Description of run-time parameters
+
+Each run-time parameter is represented by a row on the Web GUI's
+
+Camera
+
+ page. The name in the Web GUI is given in brackets behind the
+parameter name and the parameters are listed in the order they appear
+in the Web GUI.
+
+acquisition_mode (Acquisition Mode)
+
+   This values determines the camera acquisition mode. In "Continuous"
+   mode, the camera will acquire images at the specified frame rate
+   "fps". In "Trigger" mode, images are only acquired when the camera
+   receives a trigger signal.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?acquisition_mode=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?acquisition_mode=<value>
+
+trigger_source (Trigger Source)
+
+   This value is only used when "acquisition_mode" is set to "Trigger"
+   and determines the source for the trigger. In "Software" mode a
+   trigger can be sent via the "rc_camera/acquisition_trigger"
+   service. When the "acquisition_mode" for the depth images is set to
+   "SingleFrame" or "SingleFrameOut1" (see
+
+   Parameters
+
+   ), the camera software trigger is sent automatically whenever a
+   depth image acquisition is triggered. The modes "In1" and "In2" are
+   hardware trigger modes. An image is acquired whenever a signal on
+   the chosen input is received.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?trigger_source=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?trigger_source=<value>
+
+trigger_activation (Trigger Activation)
+
+   This value is only used when "acquisition_mode" is set to "Trigger"
+   and "trigger_source" is set to "In1" or "In2". It determines the
+   signal edge that should be used to trigger an acquisition. Possible
+   values are "RisingEdge", "FallingEdge" or "AnyEdge".
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?trigger_activation=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?trigger_activation=<value>
+
+fps (FPS (Hz))
+
+   This value is the cameras' frame rate (fps, frames per second),
+   which determines the upper frequency at which depth images can be
+   computed. This is also the frequency at which the
+
+   rc_visard NG
+
+    delivers images via GigE Vision. Reducing this frequency also
+   reduces the network bandwidth required to transmit the images.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?fps=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?fps=<value>
+
+gamma (Gamma)
+
+   The gamma value determines the mapping of perceived light to the
+   brightness of a pixel. A gamma value of 1 corresponds to a linear
+   relationship. Lower gamma values let dark image parts appear
+   brighter. A value around 0.5 corresponds to human vision.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gamma=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?gamma=<value>
+
+contrast_mode (Contrast Mode)
+
+   The contrast mode can be set to "Linear" (
+
+   Linear
+
+   ) or "SCurve" (
+
+   S-Curve
+
+   ) and determines how the image intensity values are scaled when the
+   contrast is adjusted. In the "Linear" mode, the camera uses a
+   linear function to adjust the contrast. Increasing or decreasing
+   the contrast, increases or decreases the gradient of the linear
+   function. When increasing the contrast, the darkest and lightest
+   regions of the image will appear completely black or completely
+   white, but the other areas will appear more defined. Decreasing the
+   contrast has the opposite effect. In the "SCurve" mode, the camera
+   uses an S-curve function to adjust the contrast. Increasing the
+   contrast darkens dark pixels and lightens light pixels, but the
+   dynamic range of the image is preserved.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?contrast_mode=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?contrast_mode=<value>
+
+contrast (Contrast)
+
+   Adjusting the contrast increases or decreases the difference
+   between light and dark areas in the image. The way the light and
+   dark regions change when adjusting the contrast depends on the
+   specified "contrast_mode".
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?contrast=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?contrast=<value>
+
+exp_control (Exposure Auto, HDR or Manual)
+
+   The exposure control mode can be set to *Auto*, *HDR* or *Manual*.
+
+   *Auto*: This is the default mode in which the exposure time and
+   gain factor is chosen automatically to correctly expose the image.
+   The last automatically determined exposure and gain values are set
+   into "exp_value" and "gain_value" when switching auto-exposure off.
+
+   *HDR*: The HDR mode computes high-dynamic-range images by combining
+   images with different exposure times to avoid under-exposed and
+   over-exposed areas. This decreases the frame rate and is only
+   suitable for static scenes.
+
+   *Manual*: In the manual exposure mode the exposure time and gain
+   are kept fixed independent of the resulting image brightness.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_control=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_control=<value>
+
+exp_auto_mode (Auto Exposure Mode)
+
+   The auto exposure mode can be set to *Normal*, *Out1High* or
+   *AdaptiveOut1*. These modes are relevant when the
+
+   rc_visard NG
+
+    is used with an external light source or projector connected to
+   the camera's GPIO Out1, which can be controlled by the IOControl
+   module (
+
+   IO and Projector Control
+
+   ).
+
+   *Normal*: All images are considered for exposure control, except if
+   the IOControl mode for GPIO Out1 is *ExposureAlternateActive*: then
+   only images where GPIO Out1 is HIGH will be considered, since these
+   images may be brighter in case GPIO Out1 is used to trigger an
+   external light source.
+
+   *Out1High*: This exposure mode adapts the exposure time using only
+   images with GPIO Out1 HIGH. Images where GPIO Out1 is LOW are not
+   considered at all, which means, that the exposure time does not
+   change when only images with Out1 LOW are acquired. This mode is
+   recommended for using the "acquisition_mode" "SingleFrameOut1" in
+   the stereo matching module as described in
+
+   Stereo Matching Parameters
+
+    and having an external projector connected to GPIO Out1, when
+   changes in the brightness of the scene should only be considered
+   when Out1 is HIGH. This is the case, for example, when a bright
+   part of the robot moves through the field of view of the camera
+   just before a detection is triggered, which should not affect the
+   exposure time.
+
+   *AdaptiveOut1*: This exposure mode uses all camera images and
+   tracks the exposure difference between images with GPIO Out1 LOW
+   and HIGH. While the IOControl mode for GPIO Out1 is LOW, the images
+   are under-exposed by this exposure difference to avoid over-
+   exposure for when GPIO Out1 triggers an external projector. The
+   resulting exposure difference is given as
+
+   Out1 Reduction
+
+    below the live images. This mode is recommended for using the
+   "acquisition_mode" "SingleFrameOut1" in the stereo matching module
+   as described in
+
+   Stereo Matching Parameters
+
+    and having an external projector connected to GPIO Out1, when
+   changes in the brightness of the scene should be considered at all
+   times. This is the case, for example, in applications where the
+   external lighting changes.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_auto_mode=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_auto_mode=<value>
+
+exp_max (Max Exposure)
+
+   This value is the maximal exposure time in auto-exposure mode in
+   seconds. The actual exposure time is adjusted automatically so that
+   the images are exposed correctly. If the maximum exposure time is
+   reached, but the images are still underexposed, the
+
+   rc_visard NG
+
+    stepwise increases the gain to increase the images' brightness.
+   Limiting the exposure time is useful for avoiding or reducing
+   motion blur during fast movements. However, higher gain introduces
+   noise into the image. The best trade-off depends on the
+   application.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_max=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_max=<value>
+
+exp_auto_average_max (Max Brightness) and exp_auto_average_min (Min
+Brightness)
+
+   The auto-exposure tries to set the exposure time and gain factor
+   such that the average intensity (i.e. brightness) in the image or
+   exposure region is between a maximum and a minimum. The maximum
+   brightness will be used if there is no saturation, e.g. no over-
+   exposure due to bright surfaces or reflections. In case of
+   saturation, the exposure time and gain factor are reduced, but only
+   down to the minimum brightness.
+
+   The maximum brightness has precedence over the minimum brightness
+   parameter. If the minimum brightness is larger than the maximum
+   brightness, the auto-exposure always tries to make the average
+   intensity equal to the maximum brightness.
+
+   The current brightness is always shown in the status bar below the
+   images.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_auto_average_max|exp_auto_average_min>=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_auto_average_max|exp_auto_average_min>=<value>
+
+exp_offset_x, exp_offset_y, exp_width, exp_height (Exposure Region)
+
+   These values define a rectangular region in the left rectified
+   image for limiting the area used for computing the auto exposure.
+   The exposure time and gain factor of both images are chosen to
+   optimally expose the defined region. This can lead to over- or
+   underexposure of image parts outside the defined region. If either
+   the width or height is 0, then the whole left and right images are
+   considered by the auto exposure function. This is the default.
+
+   The region is visualized in the Web GUI by a rectangle in the left
+   rectified image. It can be defined using the sliders or by
+   selecting it in the image after pressing the button "Select Region
+   in Image".
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+exp_value (Exposure)
+
+      This value is the exposure time in manual exposure mode in
+      seconds. This exposure time is kept constant even if the images
+      are underexposed.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_value=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_value=<value>
+
+gain_value (Gain (dB))
+
+   This value is the gain factor in decibel that can be set in manual
+   exposure mode. Higher gain factors reduce the required exposure
+   time but introduce noise.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gain_value=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?gain_value=<value>
+
+brightness (Brightness)
+
+   Adjusting the brightness lightens or darkens the entire image.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?brightness=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?brightness=<value>
+
+wb_auto (White Balance Auto or Manual, only available for color
+cameras)
+
+   This value can be set to *true* for automatic white balancing or
+   *false* for manually setting the ratio between the colors using
+   "wb_ratio_red" and "wb_ratio_blue". The last automatically
+   determined ratios are set into "wb_ratio_red" and "wb_ratio_blue"
+   when switching automatic white balancing off. White balancing is
+   without function for monochrome cameras and will not be displayed
+   in the Web GUI in this case.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?wb_auto=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?wb_auto=<value>
+
+wb_ratio_blue, wb_ratio_red and wb_ratio_green (Blue Ratio, Red Ratio
+and Green Ratio, only available for color cameras)
+
+These values are used to set blue, red and green ratios for manual
+white balance. White balancing is without function for monochrome
+cameras and will not be displayed in the Web GUI in this case.
+
+Via the REST-API, this parameter can be set as follows.
+
+API version 2
+
+   PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red|wb_ratio_green>=<value>
+
+API version 1 (deprecated)
+
+   PUT http://<host>/api/v1/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red|wb_ratio_green>=<value>
+
+light_source_preset (Light Source Preset, only available for color
+cameras)
+
+   The light source preset parameter allows to correct color shifts
+   caused by certain light sources. Depending on its specific color
+   temperature, the light used for image acquisition can cause color
+   shifts in the image. These color shifts can be corrected by
+   selecting the related light source preset. Possible values are
+   *Off*, *Tungsten*, *Daylight5000K*, *Daylight6500K* and
+   *FactoryLED6000K*.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?light_source_preset=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?light_source_preset=<value>
+
+saturation (Saturation, only available for color cameras)
+
+   Adjusting the saturation changes the colorfulness (intensity) of
+   the colors. A higher saturation, e.g., makes colors easier to
+   distinguish.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?saturation=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?saturation=<value>
+
+These parameters are also available over the GenICam interface with
+slightly different names and partly with different units or data types
+(see
+
+GigE Vision 2.0/GenICam image interface
+
+).
+
+Status values
+
+The "rc_camera" module reports the following status values on a
+pipeline of type "stereo_ace".
+
+Services
+
+The "rc_camera" module offers the following services on a pipeline of
+type "stereo_ace".
+
+acquisition_trigger
+
+   Triggers an image acquisition when "acquisition_mode" is set to
+   "Trigger" and "trigger_source" is set to "Software".
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/acquisition_trigger
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/services/acquisition_trigger
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "acquisition_trigger",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+reset_defaults
+
+   Restores and applies the default values for this module's
+   parameters ("factory reset").
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/reset_defaults
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/services/reset_defaults
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

@@ -1,0 +1,19 @@
+.. include:: global_rst.glb
+
+.. _sect-disp-accessing-images:
+
+Viewing and downloading images and point clouds
+-----------------------------------------------
+
+.. index::
+   pair: timestamp; image
+   pair: point cloud; download
+
+The |rc_xxx| provides time-stamped disparity, error, and confidence images over the
+GenICam interface (see :ref:`sect-provided-image-streams`:latex:`, \:Section \ref{gigevision:sect-provided-image-streams}`).
+Live streams of the images are provided with reduced quality on the *Depth Image* page :cubeonly:`in the desired pipeline` of the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+The |webgui| also provides the possibility to download a snapshot of the current scene containing the depth, error and confidence
+images, as well as a point cloud in ply format as described in
+:ref:`sect-webgui-depth-snapshot`:latex:`\:(Section \ref{webgui:sect-webgui-depth-snapshot})`.

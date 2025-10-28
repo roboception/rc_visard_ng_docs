@@ -1,0 +1,719 @@
+GripperDB
+
+Einleitung
+
+Das GripperDB Modul ist ein optionales Modul, welches intern auf dem
+
+rc_visard NG
+
+ läuft, und ist freigeschaltet, sobald eine gültige Lizenz für eines
+der Module
+
+ItemPick
+
+ and
+
+BoxPick
+
+ oder
+
+CADMatch
+
+ und
+
+SilhouetteMatch
+
+ vorhanden ist. Andernfalls benötigt dieses Modul eine separate
+
+Lizenz
+
+.
+
+Das Modul bietet Services zum Anlegen, Abfragen und Löschen von
+Greifern, die dann für die Kollisionsprüfung mit einem Load Carrier
+oder anderen erkannten Objekten (nur in Kombination mit
+
+CADMatch
+
+ und
+
+SilhouetteMatch
+
+) genutzt werden können. Die angelegten Greifer sind in allen Modulen
+auf dem
+
+rc_visard NG
+
+ verfügbar, die eine Kollisionsprüfung anbieten.
+
+Spezifikationen des GripperDB Moduls      Max. Anzahl Greifer  50
+Mögliche Greiferelement-Geometrien  Box, Zylinder, CAD-Element  Max.
+Anzahl Elemente pro Greifer  15  Kollisionsprüfung verfügbar in
+ItemPick\:(Section \ref{itempick:sect-itempick}) and BoxPick\:(Section
+\ref{boxpick:sect-boxpick}), CADMatch\:(Abschnitt \ref{cadmatch:sect-
+cadmatch}) und SilhouetteMatch\:(Abschnitt \ref{silhouettematch:sect-
+silhouettematch})
+
+Erstellen eines Greifers
+
+Der Greifer ist eine Kollisionsgeometrie, die zur Prüfung auf
+Kollisionen zwischen dem geplanten Griff und dem Load Carrier
+verwendet wird. Der Greifer kann aus bis zu 15 miteinander verbundenen
+Elementen bestehen.
+
+Es sind folgende Arten von Elementen möglich:
+
+   Quader (BOX), mit den Abmessungen box.x, box.y, box.z.
+
+   Zylinder (CYLINDER), mit dem Radius cylinder.radius und der Höhe
+   cylinder.height.
+
+   CAD-Element (CAD), mit der ID cad.id des gewählten CAD-Elements.
+
+Weiterhin müssen für jeden Greifer der Flanschradius und der Tool
+Center Point (TCP) definiert werden.
+
+Die Konfiguration des Greifers wird in der Regel während des Setups
+der Zielanwendung durchgeführt. Das kann über die
+
+REST-API-Schnittstelle
+
+ oder die
+
+rc_visard NG
+
+
+Web GUI
+
+ geschehen.
+
+Flanschradius
+
+Es werden standardmäßig nur Kollisionen mit dem Greifer, nicht aber
+mit der Robotergeometrie geprüft. Um Kollisionen zwischen dem Load
+Carrier und dem Roboter zu vermeiden, kann über den Laufzeitparameter
+"check_flange" im CollisionCheck Modul (siehe
+
+Übersicht der Parameter
+
+) ein zusätzlicher optionaler Test aktiviert werden. Dieser Test
+erkennt alle Griffe als Kollisionen, bei denen sich ein Teil des
+Roboterflanschs innerhalb des Load Carriers befinden würde (siehe
+
+Abb. 54
+
+). Der Test basiert auf der Greifergeometrie und dem Flanschradius.
+
+
+Hochladen von CAD-Greiferelementen
+
+Ein Greifer kann aus Boxen, Zylindern und CAD-Elementen bestehen.
+Während Boxen und Zylinder während der Erstellung eines Greifers
+parametrisiert werden können, müssen CAD-Elemente im Vorfeld
+hochgeladen werden, um für die Greifererstellung verfügbar zu sein.
+Ein CAD-Element kann über die
+
+REST-API-Schnittstelle
+
+ wie in Abschnitt
+
+CAD-Greiferelement API
+
+ beschrieben, oder über die
+
+rc_visard NG
+
+
+Web GUI
+
+ hochgeladen werden. Unterstützte Dateiformate sind STEP (*.stp,
+*.step), STL (*.stl), OBJ (*.obj) und PLY (*.ply). Die maximal
+hochzuladende Dateigröße ist auf  30  MB begrenzt. Die Dateien werden
+intern in PLY konvertiert und, falls nötig, vereinfacht. Die CAD-
+Elemente können dann während der Greifererstellung über ihre ID
+referenziert werden.
+
+Erstellen eines Greifers über die REST-API oder die Web GUI
+
+Bei der Greifererstellung über die
+
+REST-API-Schnittstelle
+
+ oder die
+
+Web GUI
+
+ hat jedes Greifer-Element ein *Parent*-Element, das die Verbindung
+zwischen den Elementen definiert. Der Greifer wird immer vom
+Roboterflansch ausgehend in Richtung TCP aufgebaut, und mindestens ein
+Element muss den Parent 'flange' (Flansch) haben. Die IDs der Elemente
+müssen eindeutig sein und dürfen nicht 'tcp' oder 'flange' sein. Die
+Pose des Elements muss im Koordinatensystem des *Parent*-Elements
+angegeben werden. Das Koordinatensystem jedes Elements befindet sich
+genau in seinem geometrischen Mittelpunkt. Damit ein Element also
+genau unterhalb seines *Parent*-Elements platziert wird, muss seine
+Position aus der Höhe des *Parent*-Elements und seiner eigenen Höhe
+berechnet werden (siehe
+
+Abb. 55
+
+).
+
+
+Im Falle eines CAD-Greiferelements wird der Ursprung durch die CAD-
+Daten bestimmt und befindet sich nicht notwendigerweise im Mittelpunkt
+der Bounding Box des Elements.
+
+Es wird empfohlen Greifer über die Web GUI zu erstellen, da diese eine
+3D Visualisierung der Greifergeometrie bietet und das automatische
+Anheften von Kind-Element an ihre Parent-Elemente ermöglicht, indem
+die entsprechende Option für dieses Element aktiviert wird. In diesem
+Fall bleiben Elemente an ihren Parent angeheftet, auch wenn sich ihre
+Größen ändern. Bei CAD-Greiferelementen wird die Bounding Box des
+Elements als Referenz verwendet. Das automatische Anheften ist nur
+möglich, wenn das Kind-Element in Bezug auf seinen Parent nicht um die
+x- oder y-Achse rotiert ist.
+
+Das Bezugskoordinatensystem für das erste Element liegt immer im
+Mittelpunkt des Roboterflanschs, wobei die z-Achse nach unten
+gerichtet ist. Es können Greifer mit einer Baumstruktur erstellt
+werden, bei denen mehrere Elemente dasselbe *Parent*-Element haben,
+solange alle Elemente miteinander verbunden sind.
+
+Berechnete TCP-Position
+
+Nach dem Erstellen des Greifers mit dem Service "set_gripper" wird die
+TCP-Position im Flanschkoordinatensystem berechnet und als
+"tcp_pose_flange" zurückgegeben. Dieser Wert muss mit den
+tatsächlichen TCP-Koordinaten des Roboters übereinstimmen. Wenn ein
+Greifer über die Web GUI erstellt wird, wird die aktuelle TCP-Position
+zu jeder Zeit in der 3D-Visualisierung angezeigt.
+
+Nicht-rotationssymmetrische Greifer erstellen
+
+Bei Greifern, die nicht rotationssymmetrisch um die z-Achse sind, muss
+sichergestellt werden, dass der Greifer so montiert wird, dass seine
+Ausrichtung mit der im GripperDB-Modul gespeicherten Darstellung
+übereinstimmt.
+
+Services
+
+Das GripperDB Modul wird in der REST-API als "rc_gripper_db"
+bezeichnet und in der
+
+Web GUI
+
+ unter Datenbank ‣ Greifer dargestellt. Die angebotenen Services des
+GripperDB Moduls können mithilfe der
+
+REST-API-Schnittstelle
+
+ oder der Web GUI ausprobiert und getestet werden.
+
+Das GripperDB Modul stellt folgende Services zur Verfügung.
+
+set_gripper
+
+   konfiguriert und speichert einen Greifer auf dem
+
+   rc_visard NG
+
+   . Alle Greifer sind dauerhaft gespeichert, auch über Firmware-
+   Updates und -Wiederherstellungen hinweg.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v2/nodes/rc_gripper_db/services/set_gripper
+
+   Request
+
+   Obligatorische Serviceargumente:
+
+      "elements": Liste von geometrischen Elementen, aus denen der
+      Greifer besteht. Jedes Element muss den "type" 'CYLINDER' oder
+      'BOX' mit den zugehörigen Dimensionen im Feld "cylinder" bzw.
+      "box", oder den Typ 'CAD' haben, wobei die entsprechende ID
+      unter "id" im Feld "cad" angegeben werden muss. Die Pose jedes
+      Elements muss im *Parent*-Koordinatensystem angegeben werden
+      (siehe
+
+      Erstellen eines Greifers
+
+      ). Die "id" des Elements muss eindeutig sein und darf nicht
+      'tcp' oder 'flange' sein. Die "parent_id" ist die ID des
+      *Parent*-Elements, welche entweder 'flange' ist oder der ID
+      eines anderen Elements entsprechen muss.
+
+      "flange_radius": Flanschradius der benutzt wird, falls der
+      Parameter "check_flange" aktiviert ist.
+
+      "id": Eindeutiger Name des Greifers.
+
+      "tcp_parent_id": ID des Elements, auf dem der TCP definiert ist.
+
+      "tcp_pose_parent": Die Pose des TCP im Koordinatensystem des
+      Elements, das in "tcp_parent_id" angegeben ist.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "elements": [
+            {
+              "box": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "cad": {
+                "id": "string"
+              },
+              "cylinder": {
+                "height": "float64",
+                "radius": "float64"
+              },
+              "id": "string",
+              "parent_id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "type": "string"
+            }
+          ],
+          "flange_radius": "float64",
+          "id": "string",
+          "tcp_parent_id": "string",
+          "tcp_pose_parent": {
+            "orientation": {
+              "w": "float64",
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "position": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            }
+          }
+        }
+      }
+
+   Response
+
+   "gripper": Gibt den Greifer mit dem zusätzlichen Feld
+   "tcp_pose_flange" zurück. Dieses Feld gibt die TCP-Koordinaten im
+   Flanschkoordinatensystem an, um diese mit den Roboter-TCP-
+   Koordinaten vergleichen zu können.
+
+   "return_code": enthält mögliche Warnungen oder Fehlercodes und
+   Nachrichten.
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_gripper",
+        "response": {
+          "gripper": {
+            "elements": [
+              {
+                "box": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "cad": {
+                  "id": "string"
+                },
+                "cylinder": {
+                  "height": "float64",
+                  "radius": "float64"
+                },
+                "id": "string",
+                "parent_id": "string",
+                "pose": {
+                  "orientation": {
+                    "w": "float64",
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  },
+                  "position": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  }
+                },
+                "type": "string"
+              }
+            ],
+            "flange_radius": "float64",
+            "id": "string",
+            "tcp_parent_id": "string",
+            "tcp_pose_flange": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "tcp_pose_parent": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "type": "string"
+          },
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_grippers
+
+   gibt die mit "gripper_ids" spezifizierten und gespeicherten Greifer
+   zurück.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v2/nodes/rc_gripper_db/services/get_grippers
+
+   Request
+
+   Wenn keine "gripper_ids" angegeben werden, enthält die
+   Serviceantwort alle gespeicherten Greifer.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "gripper_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_grippers",
+        "response": {
+          "grippers": [
+            {
+              "elements": [
+                {
+                  "box": {
+                    "x": "float64",
+                    "y": "float64",
+                    "z": "float64"
+                  },
+                  "cad": {
+                    "id": "string"
+                  },
+                  "cylinder": {
+                    "height": "float64",
+                    "radius": "float64"
+                  },
+                  "id": "string",
+                  "parent_id": "string",
+                  "pose": {
+                    "orientation": {
+                      "w": "float64",
+                      "x": "float64",
+                      "y": "float64",
+                      "z": "float64"
+                    },
+                    "position": {
+                      "x": "float64",
+                      "y": "float64",
+                      "z": "float64"
+                    }
+                  },
+                  "type": "string"
+                }
+              ],
+              "flange_radius": "float64",
+              "id": "string",
+              "tcp_parent_id": "string",
+              "tcp_pose_flange": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "tcp_pose_parent": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "type": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_grippers
+
+   löscht die mit "gripper_ids" spezifizierten, gespeicherten Greifer.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v2/nodes/rc_gripper_db/services/delete_grippers
+
+   Request
+
+   Alle zu löschenden Greifer müssen explizit angegeben werden.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "gripper_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "delete_grippers",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Rückgabecodes
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von "0" quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte
+zutreffend wären, wird der kleinste zurückgegeben, und die
+entsprechenden Textnachrichten werden in "return_code.message"
+akkumuliert.
+
+Die folgende Tabelle listet die möglichen Rückgabecodes auf:
+
+Rückgabecodes der GripperDB Services      Code  Beschreibung  0
+Erfolgreich  -1  Ein ungültiges Argument wurde übergeben.  -7  Daten
+konnten nicht in den persistenten Speicher geschrieben oder vom
+persistenten Speicher gelesen werden.  -9  Lizenz für CollisionCheck
+ist nicht verfügbar.  -10  Das neue Element konnte nicht hinzugefügt
+werden, da die maximal speicherbare Anzahl an Greifern überschritten
+wurde.  10  Die maximal speicherbare Anzahl an Greifern wurde
+erreicht.  11  Bestehender Greifer wurde überschrieben.
+
+CAD-Greiferelement API
+
+Für den Upload, Download, das Auflisten und Löschen von CAD-
+Greiferelementen werden spezielle REST-API-Endpunkte zur Verfügung
+gestellt. CAD-Greiferelemente können auch über die Web GUI hoch- und
+runtergeladen werden. Bis zu 50 CAD-Greiferelemente können
+gleichzeitig auf dem
+
+rc_visard NG
+
+ gespeichert werden.
+
+Die maximal hochzuladende Dateigröße ist auf   MB begrenzt.
+
+GET /cad/gripper_elements
+
+   listet alle CAD-Greiferelemente auf.
+
+   Musteranfrage
+
+      GET /api/v2/cad/gripper_elements HTTP/1.1
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      [
+        {
+          "id": "string"
+        }
+      ]
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuswerte:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabewert: Array von
+      GripperElement)
+
+      404 Not Found -- Element nicht gefunden
+
+   Referenzierte Datenmodelle:
+      GripperElement\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-gripperelement})
+
+GET /cad/gripper_elements/{id}
+
+   ruft ein CAD-Greiferelement ab. Falls der angefragte Content-Typ
+   application/octet-stream ist, wird das Element als Datei
+   zurückgegeben.
+
+   Musteranfrage
+
+      GET /api/v2/cad/gripper_elements/<id> HTTP/1.1
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "id": "string"
+      }
+
+   Parameter:
+      id (string) -- ID des Elements (obligatorisch)
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson application
+      /octet-stream
+
+   Statuswerte:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabewert:
+      GripperElement)
+
+      404 Not Found -- Element nicht gefunden
+
+   Referenzierte Datenmodelle:
+      GripperElement\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-gripperelement})
+
+PUT /cad/gripper_elements/{id}
+
+   erstellt oder aktualisiert ein CAD-Greiferelement.
+
+   Musteranfrage
+
+      PUT /api/v2/cad/gripper_elements/<id> HTTP/1.1
+      Accept: multipart/form-data application/json
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "id": "string"
+      }
+
+   Parameter:
+      id (string) -- ID des Elements (obligatorisch)
+
+   Formularparameter:
+      file -- CAD-Datei (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- multipart/form-data application/json
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuswerte:
+      200 OK -- Erfolgreiche Verarbeitung (Rückgabewert:
+      GripperElement)
+
+      400 Bad Request -- CAD ist ungültig oder die maximale Zahl an
+      Elementen wurde erreicht.
+
+      404 Not Found -- Element nicht gefunden
+
+      413 Request Entity Too Large -- Datei zu groß
+
+   Referenzierte Datenmodelle:
+      GripperElement\:(Abschnitt \ref{rest_api_datamodel:sect-rest-
+      datamodel-gripperelement})
+
+DELETE /cad/gripper_elements/{id}
+
+   entfernt ein CAD-Greiferelement.
+
+   Musteranfrage
+
+      DELETE /api/v2/cad/gripper_elements/<id> HTTP/1.1
+      Accept: application/json application/ubjson
+
+   Parameter:
+      id (string) -- ID des Elements (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- application/json application/ubjson
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuswerte:
+      200 OK -- Erfolgreiche Verarbeitung
+
+      404 Not Found -- Element nicht gefunden

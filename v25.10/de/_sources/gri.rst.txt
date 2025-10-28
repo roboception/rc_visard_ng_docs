@@ -1,0 +1,921 @@
+Generic Robot Interface
+
+Das Generic Robot Interface (GRI) ist ein Integrationslayer, der die
+
+REST-API v2
+
+ überbrückt und eine standardisierte Kommunikationsschnittstelle zu
+den Softwaremodulen über eine einfache TCP-Socket-Kommunikation auf
+Port 7100 bietet.
+
+Das GRI ermöglicht es, Konfigurationen zu erstellen und als
+nummerierte Jobs zu speichern. Diese Jobs können durch einfache
+Befehle des Roboters über TCP-Socket-Kommunikation getriggert werden.
+Das GRI übernimmt intern die REST-API-Kommunikation und liefert die
+ausgewählten Posenergebnisse in einem roboterspezifisch wählbaren
+Format.
+
+Job Definition
+
+Jobs sind vorkonfigurierte Aufgaben, die von der Roboteranwendung
+getriggert werden können. Jeder Job hat eine eindeutige ID und enthält
+alle notwendigen Informationen für eine bestimmte Operation, z.B. das
+Berechnen von Greifpunkten für das Bin Picking oder das Ändern von
+Laufzeitparametern eines Moduls. Einmal konfiguriert, kann der Roboter
+diese Jobs mit einfachen Socket-Befehlen ausführen und gegebenenfalls
+die zurückgegebenen Posen empfangen.
+
+Job Arten
+
+Das Generic Robot Interface unterstützt drei Arten von Jobs:
+
+Pipeline Service Job (CALL_PIPELINE_SERVICE)
+
+Dieser Job ruft einen Service auf einer bestimmten Kamera-Pipeline
+auf, um beispielsweise Objekte zu erkennen oder Greifpunkte zu
+berechnen, und gibt Posendaten an den Roboter zurück (z.B.
+Greifposen).
+
+Ein Pipeline-Service-Job besteht aus:
+
+job_type: die Art des Jobs CALL_PIPELINE_SERVICE
+
+name: Name des Jobs (beschreibender Name zur Unterscheidung von Jobs)
+
+pipeline: die Kamerapipeline, die für den Job verwendet werden soll
+(z.B. "0")
+
+node: der REST-API Name der Pipeline-Node die genutzt werden soll
+(z.B. rc_load_carrier)
+
+service: der REST-API Name des Services, der aufgerufen werden soll
+
+args: die REST-API Json Argumente, die dem Service übergeben werden
+sollen
+
+selected_return: der REST-API Name des Felds, das zurückgeliefert
+werden soll
+
+Eine Beispieldefinition für einen Pipeline-Service-Job ist:
+
+   {
+      "args": {
+         "pose_frame": "external",
+         "suction_surface_length": 0.02,
+         "suction_surface_width": 0.02
+      },
+      "job_type": "CALL_PIPELINE_SERVICE",
+      "name": "Compute Grasps",
+      "node": "rc_itempick",
+      "pipeline": "0",
+      "selected_return": "grasps",
+      "service": "compute_grasps"
+   }
+
+Die verfügbaren Werte für "selected_return" hängen von der gewählten
+Node (Modul) ab und können z.B. "grasps" oder "matches" sein. Details
+zu "node", "service", "args" und "selected_return" sind in den
+Servicedefinitionen des entsprechenden Moduls beschrieben.
+
+Globaler Service-Job (CALL_GLOBAL_SERVICE)
+
+Dieser Job ruft einen Service auf, der nicht an eine bestimmte
+Pipeline gebunden ist, z.B. Datenbank Services zum Festlegen von
+Regions of Interest oder Load Carriern. Globale Service Jobs geben
+keine Posen zurück.
+
+Ein globaler Service-Job besteht aus:
+
+job_type: die Art des Jobs CALL_GLOBAL_SERVICE
+
+name: Name des Jobs (beschreibender Name zur Unterscheidung von Jobs)
+
+node: der REST-API Name der globalen Node die genutzt werden soll
+(z.B. rc_load_carrier_db)
+
+service: der REST-API Name des Services, der aufgerufen werden soll
+
+args: die REST-API Json Argumente, die dem Service übergeben werden
+sollen
+
+Eine Beispieldefinition für einen globalen Service-Job ist:
+
+   {
+      "args": {
+         "region_of_interest_2d": {
+            "id": "2d_roi",
+            "width": 526,
+            "height": 501,
+            "offset_x": 558,
+            "offset_y": 307
+         }
+      },
+      "job_type": "CALL_GLOBAL_SERVICE",
+      "name": "Set 2D ROI",
+      "node": "rc_roi_db",
+      "service": "set_region_of_interest_2d"
+   }
+
+Details zu "node", "service" und "args" sind in den
+Servicedefinitionen des entsprechenden Moduls beschrieben.
+
+Parameter-Job (SET_PIPELINE_PARAMETER)
+
+Dieser Job setzt Laufzeitparameter von Pipeline-Nodes, z.B. zum
+Anpassen von Kamera- oder Detektionsmoduleinstellungen. Parameter-Jobs
+geben keine Posen zurück.
+
+Ein Parameter-Job besteht aus:
+
+job_type: die Art des Jobs SET_PIPELINE_PARAMETER
+
+name: Name des Jobs (beschreibender Name zur Unterscheidung von Jobs)
+
+pipeline: die Kamerapipeline, die für den Job verwendet werden soll
+(z.B. "0")
+
+node: der REST-API Name der Pipeline-Node die genutzt werden soll
+(z.B. rc_stereomatching)
+
+parameters: die zu setzenden Parameter als Key-Value Paare
+
+Eine Beispieldefinition für einen Parameter-Job ist:
+
+   {
+      "job_type": "SET_PIPELINE_PARAMETERS",
+      "name": "Set Stereo Parameters",
+      "node": "rc_stereomatching",
+      "parameters": {
+         "maxdepth": 2,
+         "quality": "High"
+      },
+      "pipeline": "0"
+   }
+
+Details zu "node" und "parameters" sind in den
+Laufzeitparameterdefinitionen des entsprechenden Moduls beschrieben.
+
+Die Jobs können über die Web GUI oder über die REST-API definiert
+werden (siehe
+
+Job und HEC_config API
+
+).
+
+Primäre und zugehörige Objekte
+
+Die
+
+primären Objekte
+
+ sind die Objekte, die als "selected_return" festgelegt wurden, z.B.
+die Greifpunkte "grasps". Die
+
+zugehörigen Objekte
+
+ sind dann die gefundenen Objekte "items" oder "matches", auf denen
+der zurückgegebene Greifpunkt liegt. Während ein primäres Objekt
+"grasp" genau ein zugehöriges Objekt "item" oder "match" hat, kann ein
+primäres Objekt "match" mehrere zugehörige Objekte "grasp" haben.
+
+Ausführungsmodi
+
+Das Generic Robot Interface unterstützt zwei Ausführungsmodi zur
+Optimierung der Roboterzykluszeit:
+
+Synchrone Ausführung: Der Roboter startet einen Job und wartet auf das
+erste Ergebnis. Dieser Modus empfiehlt sich, wenn die Ergebnisse
+sofort benötigt werden.
+
+Asynchrone Ausführung: Der Roboter startet einen Job und kann mit
+anderen Vorgängen fortfahren, während der Job im Hintergrund läuft.
+Der Jobstatus kann abgefragt und Ergebnisse abgerufen werden, sobald
+diese vorliegen. Dieser Modus maximiert die Effizienz bei langen
+Erkennungszeiten.
+
+Hand-Auge-Kalibrierung
+
+Für jede Kamera-Pipeline kann eine Hand-Auge-Kalibrierkonfiguration
+definiert werden, um eine programmgesteuerte Hand-Auge-Kalibrierung
+mithilfe des GRI zu ermöglichen. Jede Hand-Auge-Kalibrierkonfiguration
+besteht aus den folgenden Informationen:
+
+grid_height: Höhe des Kalibriermusters in Metern
+
+grid_width:  Breite des Kalibriermusters in Metern
+
+robot_mounted: Boolean, das festlegt, ob die Kamera am Roboter
+montiert ist
+
+tcp_offset: 0 für 6DOF-Roboter. Für 4DOF-Roboter: der
+vorzeichenbehaftete Offset vom TCP zum Kamerakoordinatensystem (am
+Roboter montierter Sensor) oder zur sichtbaren Oberfläche des
+Kalibriermusters (statisch montierter Sensor) entlang der TCP-
+Rotationsachse in Metern.
+
+tcp_rotation_axis: -1 für 6DOF-Roboter. Für 4DOF-Roboter: Bestimmt die
+Achse des Roboterkoordinatensystems, um die der Roboter seinen TCP
+drehen kann (0 wird für X, 1 für Y und 2 für die Z-Achse verwendet).
+
+Nähere Informationen zu diesen Einstellungen und zur Hand-Auge-
+Kalibrierung im Allgemeinen sind in
+
+Hand-Auge-Kalibrierung
+
+ beschrieben.
+
+Die Hand-Auge-Kalibrierkonfigurationen können über die Web GUI oder
+über die REST-API (siehe
+
+Job und HEC_config API
+
+) gesetzt werden.
+
+Spezifikation des Binären GRI Protokolls
+
+Diese Spezifikation definiert das genaue On-Wire-Format für Client-
+Server-Nachrichten. Eine Nachricht besteht aus einem festen 8-Byte-
+Header und einem Body, dessen Layout von der Protokollversion abhängt.
+Derzeit gibt es nur die Protokollversion 1.
+
+Bemerkung: Alle Mehrbyte-Ganzzahlen sind
+
+  Little-Endian
+
+  . Die Typen sind "uint8" (8 Bit ohne Vorzeichen), "int16" (16 Bit
+  mit Vorzeichen) und "int32" (32 Bit mit Vorzeichen).
+
+Header (8 Bytes)
+
+Header Definition          Feld  Typ  Größe  Beschreibung  Magic
+Number  uint32  4  ASCII tag "GRI0", Bytes 47 52 49 00 (Little-Endian)
+protocol_version  uint8  1  Protokollversion: derzeit 1
+message_length  uint8  1  Gesamte Nachrichtengröße (Bytes), inkl.
+Header + Body  pose_format  uint8  1  Datenformat für Posen (siehe
+Posenformate)  Aktion  uint8  1  Kommando/Aktion (siehe Aktionen)
+
+Posenformate
+
+Das GRI verwendet zur Positionsdarstellung immer
+
+Millimeter
+
+. Die folgenden Tabellen zeigen verschiedene Rotationsformate, die
+passend zur Rotationsdarstellung des verwendeten Roboters ausgewählt
+werden können. Die Formate sind in Nicht-Euler-Rotationsformate, Tait-
+Bryan-Euler-Rotationsformate (alle drei Achsen werden verwendet) und
+reine Euler-Rotationsformate (erste und letzte Rotationsachse sind
+identisch) unterteilt.
+
+Nicht-Euler Rotationsformate                  Name  Wert  rot_1  rot_2
+rot_3  rot_4  Einheit  Beispielroboter  QUAT_WXYZ  1  w  x  y  z  --
+ABB  QUAT_XYZW  2  x  y  z  w  --  Fruitcore HORST  AXIS_ANGLE_RAD  3
+rx  ry  rz  --  rad  Universal Robots
+
+In der folgenden Notation kennzeichnen Hochstriche aufeinanderfolgende
+Rotationen im intrinsischen Bezugssystem (z. B. Y' = Rotation um die
+neue Y-Achse nach der ersten Rotation). "_B" und "_F" bestimmen die
+Reihenfolge der Rotationskomponenten. "F" steht für vorwärts
+(forward), d.h. die Rotationskomponenten werden in derselben
+Reihenfolge angegeben, in der die Rotation angewendet wird, und "B"
+steht für rückwärts (backward), d.h. die Rotationskomponenten werden
+in umgekehrter Reihenfolge angegeben. "_RAD" und "_DEG" bestimmen, ob
+die Rotationskomponenten gegebenenfalls in Radian oder Grad angegeben
+werden. Das Format "EULER_ZYX_B_DEG" bedeutet also, dass die
+intrinsische Rotationsreihenfolge z-y'-x' ist (zuerst Rotation um die
+z-Achse, dann Rotation um die neue y-Achse, dann Rotation um die neue
+x-Achse), die Reihenfolge der Rotationskomponenten rückwärts ist (das
+erste Rotationselement ist also der Winkel um die x-Achse), und die
+Winkel in Grad angegeben werden.
+
+Tait-Bryan-Euler-Rotationsformate. Hochstriche zeigen
+aufeinanderfolgende Rotationen im intrinsischen Koordinatensystem an
+(z.B. ist Y' eine Rotation um die neue Y-Achse nach der ersten
+Rotation). _F (Forward): [1., 2., 3.] | _B (Backward): [3., 2., 1.],
+_DEG (degrees): Grad | _RAD (radian): Radian.                  Name
+Wert  rot_1  rot_2  rot_3  rot_4  Einheit  Beispielroboter
+EULER_XYZ_F_DEG  4  X  Y'  Z''  --  deg    EULER_XYZ_F_RAD  5  X  Y'
+Z''  --  rad    EULER_XYZ_B_DEG  6  Z''  Y'  X  --  deg
+EULER_XYZ_B_RAD  7  Z''  Y'  X  --  rad    EULER_XZY_F_DEG  8  X  Z'
+Y''  --  deg    EULER_XZY_F_RAD  9  X  Z'  Y''  --  rad
+EULER_XZY_B_DEG  10  Y''  Z'  X  --  deg    EULER_XZY_B_RAD  11  Y''
+Z'  X  --  rad    EULER_YXZ_F_DEG  12  Y  X'  Z''  --  deg
+EULER_YXZ_F_RAD  13  Y  X'  Z''  --  rad    EULER_YXZ_B_DEG  14  Z''
+X'  Y  --  deg    EULER_YXZ_B_RAD  15  Z''  X'  Y  --  rad
+EULER_YZX_F_DEG  16  Y  Z'  X''  --  deg    EULER_YZX_F_RAD  17  Y  Z'
+X''  --  rad    EULER_YZX_B_DEG  18  X''  Z'  Y  --  deg
+EULER_YZX_B_RAD  19  X''  Z'  Y  --  rad    EULER_ZXY_F_DEG  20  Z  X'
+Y''  --  deg    EULER_ZXY_F_RAD  21  Z  X'  Y''  --  rad
+EULER_ZXY_B_DEG  22  Y''  X'  Z  --  deg    EULER_ZXY_B_RAD  23  Y''
+X'  Z  --  rad    EULER_ZYX_F_DEG  24  Z  Y'  X''  --  deg  KUKA
+EULER_ZYX_F_RAD  25  Z  Y'  X''  --  rad    EULER_ZYX_B_DEG  26  X''
+Y'  Z  --  deg  FANUC, Mitsubishi, Yaskawa  EULER_ZYX_B_RAD  27  X''
+Y'  Z  --  rad
+
+Euler-Rotationsformate. Hochstriche zeigen aufeinanderfolgende
+Rotationen im intrinsischen Koordinatensystem an (z.B. ist Y' eine
+Rotation um die neue Y-Achse nach der ersten Rotation). _F (Forward):
+[1., 2., 3.] | _B (Backward): [3., 2., 1.],  _DEG (degrees): Grad |
+_RAD (radian): Radian.                  Name  Wert  rot_1  rot_2
+rot_3  rot_4  Einheit  Beispielroboter  EULER_XYX_F_DEG  28  X  Y'
+X''  --  deg    EULER_XYX_F_RAD  29  X  Y'  X''  --  rad
+EULER_XYX_B_DEG  30  X''  Y'  X  --  deg    EULER_XYX_B_RAD  31  X''
+Y'  X  --  rad    EULER_XZX_F_DEG  32  X  Z'  X''  --  deg
+EULER_XZX_F_RAD  33  X  Z'  X''  --  rad    EULER_XZX_B_DEG  34  X''
+Z'  X  --  deg    EULER_XZX_B_RAD  35  X''  Z'  X  --  rad
+EULER_YXY_F_DEG  36  Y  X'  Y''  --  deg    EULER_YXY_F_RAD  37  Y  X'
+Y''  --  rad    EULER_YXY_B_DEG  38  Y''  X'  Y  --  deg
+EULER_YXY_B_RAD  39  Y''  X'  Y  --  rad    EULER_YZY_F_DEG  40  Y  Z'
+Y''  --  deg    EULER_YZY_F_RAD  41  Y  Z'  Y''  --  rad
+EULER_YZY_B_DEG  42  Y''  Z'  Y  --  deg    EULER_YZY_B_RAD  43  Y''
+Z'  Y  --  rad    EULER_ZXZ_F_DEG  44  Z  X'  Z''  --  deg
+EULER_ZXZ_F_RAD  45  Z  X'  Z''  --  rad    EULER_ZXZ_B_DEG  46  Z''
+X'  Z  --  deg    EULER_ZXZ_B_RAD  47  Z''  X'  Z  --  rad
+EULER_ZYZ_F_DEG  88  Z  Y'  Z''  --  deg  Kawasaki  EULER_ZYZ_F_RAD
+49  Z  Y'  Z''  --  rad    EULER_ZYZ_B_DEG  50  Z''  Y'  Z  --  deg
+EULER_ZYZ_B_RAD  51  Z''  Y'  Z  --  rad
+
+Alle Posenkomponenten (Position
+
+und
+
+ Rotation) sind "int32" mit 1.000.000 skaliert.
+
+Float zu Int: int = round(float * 1000000)
+
+Int zu Float: float = int / 1000000.0
+
+Positionen werden vor der Skalierung in Millimetern erwartet.
+
+Winkel werden vor der Skalierung in Grad/Radian (je nach Format)
+erwartet.
+
+Quaternion-Komponenten haben keine Einheit, verwenden aber dieselbe
+Skalierung.
+
+rot_4 ist bei Euler oder Axis-Angle format ungenutzt (auf 0 gesetzt)
+
+Aktionen
+
+Die folgenden Aktionen können gesendet werden.
+
+GRI Aktionen        Name  Wert  Beschreibung  STATUS  1  Ready-Zustand
+des Systems abfragen; schreibt den Ready-Zustand auf data_2 (1 oder 0)
+TRIGGER_JOB_SYNC  2  Führt einen Job synchron aus  TRIGGER_JOB_ASYNC
+3  Startet einen Job asynchron  GET_JOB_STATUS  4  Abfrage des
+Jobstatus (siehe Jobstatus)  GET_NEXT_POSE  5  Abfrage des nächsten
+verfügbaren Ergebnisses  GET_RELATED_POSE  6  Abtrage der nächsten
+zugehörigen Pose  HEC_INIT  7  Hand-Auge-Kalibrierung initialisieren
+HEC_SET_POSE  8  Kalibrierpose abspeichern  HEC_CALIBRATE  9
+Kalibrierung durchführen und Ergebnis speichern
+
+STATUS (1)
+
+Liefert den Ready-Zustand des
+
+rc_visard NG
+
+ in "data_2" (1 wenn ready, 0 wenn nicht).
+
+TRIGGER_JOB_SYNC (2)
+
+Führt den Job aus und gibt sofort das
+
+erste
+
+ Ergebnis zurück. Weitere Ergebnisse werden für einen späteren Abruf
+gespeichert. Wenn der Job erfolgreich ist und Ergebnisse
+zurückliefert, ist der "error_code" Null und die Pose befüllt. Wenn
+keine Ergebnisse zurückgeliefert werden, liefert der "error_code" den
+Wert "NO_POSES_FOUND" (positiver Wert als Warnung). Außerdem wird
+Folgendes gemeldet:
+
+data_1 = return_code Wert der Node
+
+data_2 = Anzahl der verbleibenden primären Objekte (siehe Primäre und
+zugehörige Objekte)
+
+data_3 = Anzahl der verbleibenden zugehörigen Objekte (ref. Primäre
+und zugehörige Objekte)
+
+TRIGGER_JOB_ASYNC (3)
+
+Startet den Job und endet sofort. Der Status des Jobs kann mit
+"GET_JOB_STATUS" (4) (siehe
+
+Jobstatus
+
+) abgefragt und die Ergebnisse mit "GET_NEXT_POSE" (5) abgerufen
+werden, sobald der Job abgeschlossen ("DONE") ist
+
+GET_JOB_STATUS (4)
+
+Liefert den Jobstatus. Es wird gemeldet:
+
+data_1 = return_code Wert der Node
+
+data_2 = Jobstatus (siehe Tabelle Job Statuswerte)
+
+Fehlerdetails sind in "error_code" enthalten.
+
+GET_NEXT_POSE (5)
+
+Gibt das nächste Ergebnis des
+
+primären Objekts
+
+ zurück. Außerdem wird Folgendes gemeldet:
+
+data_1 = return_code Wert der Node
+
+data_2 = Anzahl der verbleibenden primären Objekte (siehe Primäre und
+zugehörige Objekte)
+
+data_3 = Anzahl der verbleibenden zugehörigen Objekte (ref. Primäre
+und zugehörige Objekte)
+
+Wenn keine primären Objekte mehr verfügbar sind, wird "NO_POSES_FOUND"
+zurückgegeben und der Job zurückgesetzt.
+
+GET_RELATED_POSE (6)
+
+Gibt die nächste Pose des
+
+zugehörigen Objekts
+
+ zum aktuellen
+
+primären Objekt
+
+ zurück. Außerdem wird Folgendes gemeldet:
+
+data_1 = return_code Wert der Node
+
+data_2 = Anzahl der verbleibenden primären Objekte (siehe Primäre und
+zugehörige Objekte)
+
+data_3 = Anzahl der verbleibenden zugehörigen Objekte (ref. Primäre
+und zugehörige Objekte)
+
+Wenn keine zugehörigen Posen gefunden wurden, wird "NO_RELATED_POSES"
+zurückgeliefert.
+
+HEC_INIT (7)
+
+Diese Aktion initialisiert die Hand-Auge-Kalibrierung. Sie löscht
+existierende Kalibrierdaten, wendet die Hand-Auge-
+Kalibrierkonfiguration der Pipeline an und bereitet das System zum
+Aufnehmen von Kalibrierposen vor. Der Wert in "data_1" gibt die
+Zielpipeline für die Kalibrierung an.
+
+HEC_SET_POSE (8)
+
+Diese Aktion wird achtmal verwendet, um unterschiedliche Roboterposen
+mit sichtbarem Kalibriermuster aufzuzeichnen. Das Feld "data_2" dient
+zur Angabe des Bildspeicherplatzes (Slot) (0-7). Eine vorherige Pose
+in einem Slot wird überschrieben, wenn dieser wiederverwendet wird.
+Jede Pose muss eine andere Ansicht des Kalibriermusters liefern, wie
+in
+
+Hand-Auge-Kalibrierung
+
+ beschrieben. Der Inhalt von "data_1" gibt die Zielpipeline an.
+
+HEC_CALIBRATE (9)
+
+Diese Aktion verarbeitet alle aufgezeichneten Posen und berechnet die
+Transformation zwischen Kamera und Roboter. Erfolgreiche
+Kalibrierergebnisse werden automatisch gespeichert. Der Inhalt von
+"data_1" gibt die Zielpipeline an.
+
+Jobstatus
+
+Die folgenden Statuswerte für Jobs können zurückgeliefert werden.
+
+Job Statuswerte      Name  Wert  INACTIVE  1  RUNNING  2  DONE  3
+FAILED  4
+
+Body Definitionen
+
+Es gibt unterschiedliche Body-Definitionen, je nachdem, ob eine
+Anfrage gesendet oder eine Antwort empfangen wird. Der Anfrage-Body
+besteht aus insgesamt 54 Bytes und seine Definition ist in der Tabelle
+
+Anfrage-Body Definition
+
+ angegeben.
+
+Anfrage-Body Definition          Feld  Typ  Größe  Beschreibung
+Header  struct  8  Nachrichtenheader (siehe Header (8 Bytes))  job_id
+uint16  2  Eindeutige Job ID aus der Job Konfiguration  pos_x  int32
+4  Position X (skaliert imt 10^6)  pos_y  int32  4  Position Y
+(skaliert imt 10^6)  pos_z  int32  4  Position Z (skaliert imt 10^6)
+rot_1  int32  4  Rotationskomponente 1 (skaliert mit 10^6)  rot_2
+int32  4  Rotationskomponente 2 (skaliert mit 10^6)  rot_3  int32  4
+Rotationskomponente 3 (skaliert mit 10^6)  rot_4  int32  4
+Rotationskomponente 4 (skaliert mit 10^6)  data_1  int32  4
+Zusätzlicher Parameter 1  data_2  int32  4  Zusätzlicher Parameter 2
+data_3  int32  4  Zusätzlicher Parameter 3  data_4  int32  4
+Zusätzlicher Parameter 4
+
+Die Job-ID ist die eindeutige Kennung aus der Job-Konfiguration. Die
+Verwendung der Felder "data_1...data_4" ist abhängig von der Aktion
+und vom Job. Bei Nichtverwendung werden sie auf *0* gesetzt.
+
+Der Antwort-Body besteht aus insgesamt 80 Bytes, Seine Definition ist
+in Tabelle
+
+Antwort-Body Definition
+
+ angegeben.
+
+Antwort-Body Definition          Feld  Typ  Größe  Beschreibung
+Header  struct  8  Protokollheader  job_id  uint16  2  Verarbeitete
+Job Nummer  error_code  int16  2  GRI Ergebnisstatus (Schweregrad nach
+Vorzeichen)  pos_x  int32  4  Position X (skaliert imt 10^6)  pos_y
+int32  4  Position Y (skaliert imt 10^6)  pos_z  int32  4  Position Z
+(skaliert imt 10^6)  rot_1  int32  4  Rotationskomponente 1 (skaliert
+mit 10^6)  rot_2  int32  4  Rotationskomponente 2 (skaliert mit 10^6)
+rot_3  int32  4  Rotationskomponente 3 (skaliert mit 10^6)  rot_4
+int32  4  Rotationskomponente 4 (skaliert mit 10^6)  data_1  int32  4
+Rückgabecode der Node (0 wenn keiner)  data_2  int32  4  Zusätzliches
+Ergebnis 2  data_3  int32  4  Zusätzliches Ergebnis 3  data_4  int32
+4  Zusätzliches Ergebnis 4  data_5  int32  4  Zusätzliches Ergebnis 5
+data_6  int32  4  Zusätzliches Ergebnis 6  data_7  int32  4
+Zusätzliches Ergebnis 7  data_8  int32  4  Zusätzliches Ergebnis 8
+data_9  int32  4  Zusätzliches Ergebnis 9  data_10  int32  4
+Zusätzliches Ergebnis 10
+
+Bemerkung: Für "rc_measure" wird "mean_z" auf pos_x/pos_y/pos_z
+  ausgegeben.
+
+Fehlercodes und Bedeutung
+
+Der Fehlercode "error_code" ist ein "int16" und kodiert
+Fehler/Warnungen durch Vorzeichen:
+
+Negativ < 0 = error (Fehler)
+
+Null = 0 = success (Erfolg)
+
+Positiv > 0 = warning (Erfolg mit Warnung)
+
+Die folgenden Tabellen geben die verschiedenen Fehlercodes an und sind
+nach Vorzeichen aufgeteilt und sortiert.
+
+Erfolg
+
+      Name  Wert  Beschreibung  NO_ERROR  0  Verarbeitung erfolgreich
+
+Negative Fehlercodes
+
+      Name  Wert  Beschreibung  UNKNOWN_ERROR  -1  GRI intern, nicht
+spezifiziert  INTERNAL_ERROR  -2  GRI interner Systemfehler
+API_NOT_REACHABLE  -3  API nicht erreichbar  API_RESPONSE_ERROR  -4
+API hat negativen Code zurückgeliefert  PIPELINE_NOT_AVAILABLE  -5
+Pipeline nicht verfügbar  INVALID_REQUEST_ERROR  -6  Fehlerhafte
+Anfrage  INVALID_REQUEST_LENGTH  -7  Falsche Nachrichtenlänge
+INVALID_ACTION  -8  Nicht unterstützte Aktion  PROCESSING_TIMEOUT  -9
+Timeout während der Verarbeitung  UNKNOWN_PROTOCOL_VERSION  -10
+Protokollversion nicht unterstützt  WRONG_PROTOCOL_FOR_JOB  -11  Job
+passt nicht zur Protokollversion  JOB_DOES_NOT_EXIST  -12  Invalid job
+ID  MISCONFIGURED_JOB  -13  Ungültige Job Konfiguration
+HEC_CONFIG_ERROR  -14  Ungültige Konfigurationsparameter
+HEC_INIT_ERROR  -15  Initialisierung der Kalibrierung fehlgeschlagen
+HEC_SET_POSE_ERROR  -16  Pose konnte nicht in angegebenem Slot
+aufgenommen werden  HEC_CALIBRATE_ERROR  -17  Kalibrierung konnte aus
+aufgenommenen Posen nicht berechnet werden  HEC_INSUFFICIENT_DETECTION
+-18  Kalibriermuster nicht sichtbar oder nicht erkannt
+
+Positive Codes
+
+      Name  Wert  Beschreibung  NO_POSES_FOUND  1  Keine Ergebnisse
+verfügbar  NO_RELATED_POSES  2  Keine zugehörigen Objekte gefunden
+NO_RETURN_SPECIFIED  3  Job ohne Rückgabewerte konfiguriert
+JOB_STILL_RUNNING  4  Asynchroner Job nicht beendet
+
+Node Rückgabecode Bedeutung
+
+Die Module/Nodes können einen "return_code" zurückgeben. Dieser Node-
+Rückgabecode wird im Antwortfeld "data_1" platziert (standardmäßig 0,
+wenn kein Code vorhanden ist). Der primäre Status des GRI wird in
+"error_code" zurückgegeben (vorzeichenbasierte Bedeutung).
+
+Integration mit einem Roboter
+
+Die Generic Robot Interface bietet die Kommunikation auf Port 7100 an.
+
+Für die Integration der GRI-Kommunikation mit einem Roboter werden
+Beispiele für verschiedene Robotersprachen unter
+
+https://github.com/roboception/rc_generic_robot_interface_robot
+
+ angeboten.
+
+Unterschiedliche Roboterplattformen können durch die Implementierung
+eines TCP-Socket-Clients unterstützt werden, der dem GRI-
+Binärprotokoll folgt (siehe
+
+Spezifikation des Binären GRI Protokolls
+
+). Dies erfordert einen Robotercontroller mit TCP/IP-Unterstützung und
+der Fähigkeit, Roboterposen in Binärnachrichten zu packen und
+Binärnachrichten in Roboterposen zu parsen.
+
+Die Implementierungsschritte sind wie folgt:
+
+   TCP Socketverbindung aufbauen
+
+   Anfragenachricht zusammenstellen:  Nachrichtenheader setzen (8
+   Bytes)  Job ID setzen (2 Bytes)  Position verpacken (12 Bytes, 3x
+   int32)  Rotation verpacken (16 Bytes, 4x int32)  Zusätzliche Daten
+   verpacken (16 Bytes, 4x int32)
+
+   Anfrage senden (54 Bytes insgesamt)
+
+   Antwort empfangen (80 Bytes insgesamt)
+
+   Antwort parsen:  Header (8 Bytes)  Job ID (2 Bytes)  Fehlercode (2
+   Bytes)  Position (12 Bytes, 3x int32)  Rotation (16 Bytes, 4x
+   int32)  Zusätzliche Daten (40 bytes, 10x int32)
+
+Job und HEC_config API
+
+Die Jobdefinitionen und die Definitionen von HEC_configs für die Hand-
+Auge-Kalibrierung können über die folgenden REST-API-Endpunkte
+gesetzt, abgerufen und gelöscht werden.
+
+GET /generic_robot_interface/hec_configs
+
+   Liefert die definierten Hand-Auge-Kalibrierkonfigurationen zurück
+
+   Musteranfrage
+
+      GET /api/v2/generic_robot_interface/hec_configs HTTP/1.1
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "0": {
+          "grid_height": 0.18,
+          "grid_width": 0.26,
+          "robot_mounted": true,
+          "tcp_offset": 0,
+          "tcp_rotation_axis": -1
+        }
+      }
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+GET /generic_robot_interface/hec_configs/{pipeline}
+
+   Liefert die Hand-Auge-Kalibrierkonfiguration für die ausgewählte
+   Pipeline
+
+   Musteranfrage
+
+      GET /api/v2/generic_robot_interface/hec_configs/<pipeline> HTTP/1.1
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "grid_height": 0.18,
+        "grid_width": 0.26,
+        "robot_mounted": true,
+        "tcp_offset": 0,
+        "tcp_rotation_axis": -1
+      }
+
+   Parameter:
+      pipeline (string) -- Pipeline der Hand-Auge-
+      Kalibrierkonfiguration (obligatorisch)
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+PUT /generic_robot_interface/hec_configs/{pipeline}
+
+   Setzt eine Hand-Auge-Kalibrierkonfiguration für die ausgewählte
+   Pipeline.
+
+   Musteranfrage
+
+      PUT /api/v2/generic_robot_interface/hec_configs/<pipeline> HTTP/1.1
+      Accept: application/json application/ubjson
+
+      {}
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "return_code": {
+          "message": "HEC configuration saved successfully",
+          "value": 0
+        }
+      }
+
+   Parameter:
+      pipeline (string) -- Pipeline der Hand-Auge-
+      Kalibrierkonfiguration (obligatorisch)
+
+   JSON-Objekt zur Anfrage:
+      hand-eye calibration configuration (object) -- Beispielargumente
+      (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- application/json application/ubjson
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+DELETE /generic_robot_interface/hec_configs/{pipeline}
+
+   Entfernt eine Hand-Auge-Kalibrierkonfiguration.
+
+   Musteranfrage
+
+      DELETE /api/v2/generic_robot_interface/hec_configs/<pipeline> HTTP/1.1
+      Accept: application/json application/ubjson
+
+   Parameter:
+      pipeline (string) -- Pipeline der Hand-Auge-
+      Kalibrierkonfiguration (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- application/json application/ubjson
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+      403 Forbidden -- Verboten, z.B. weil keine gültige Lizenz für
+      das CADMatch-Modul vorliegt.
+
+      404 Not Found -- Konfiguration für die angegebene Pipeline nicht
+      gefunden
+
+GET /generic_robot_interface/jobs
+
+   Liefert die definierten Jobs zurück
+
+   Musteranfrage
+
+      GET /api/v2/generic_robot_interface/jobs HTTP/1.1
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "0": {
+          "args": {
+            "pose_frame": "external",
+            "tags": []
+          },
+          "job_type": "CALL_PIPELINE_SERVICE",
+          "name": "detect_qr_code",
+          "node": "rc_qr_code_detect",
+          "pipeline": "0",
+          "selected_return": "tags",
+          "service": "detect"
+        },
+        "1": {
+          "job_type": "SET_PARAMETERS_SERVICE",
+          "name": "set_depth_full_quality",
+          "node": "rc_stereomatching",
+          "parameters": {
+            "double_shot": true,
+            "quality": "Full"
+          },
+          "pipeline": "0"
+        }
+      }
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+GET /generic_robot_interface/jobs/{job_id}
+
+   Liefert die Definition des ausgewählten Jobs zurück
+
+   Musteranfrage
+
+      GET /api/v2/generic_robot_interface/jobs/<job_id> HTTP/1.1
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "args": {
+          "pose_frame": "camera",
+          "tags": []
+        },
+        "job_type": "CALL_PIPELINE_SERVICE",
+        "name": "detect_qr_code",
+        "node": "rc_qr_code_detect",
+        "pipeline": "0",
+        "selected_return": "tags",
+        "service": "detect"
+      }
+
+   Parameter:
+      job_id (string) -- ID des Jobs (obligatorisch)
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+PUT /generic_robot_interface/jobs/{job_id}
+
+   Legt eine Jobdefinition für die ausgewählte Job-Art fest. Die
+   erforderlichen Felder hängen vom gewählten Job-Art ab.
+
+   Musteranfrage
+
+      PUT /api/v2/generic_robot_interface/jobs/<job_id> HTTP/1.1
+      Accept: application/json application/ubjson
+
+      {}
+
+   Musterantwort
+
+      HTTP/1.1 200 OK
+      Content-Type: application/json
+
+      {
+        "job_id": "1",
+        "return_code": {
+          "message": "Job configuration updated successfully",
+          "value": 0
+        }
+      }
+
+   Parameter:
+      job_id (string) -- ID des Jobs (obligatorisch)
+
+   JSON-Objekt zur Anfrage:
+      job definition (object) -- Beispielargumente (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- application/json application/ubjson
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+DELETE /generic_robot_interface/jobs/{job_id}
+
+   Entfernt eine Jobdefinition
+
+   Musteranfrage
+
+      DELETE /api/v2/generic_robot_interface/jobs/<job_id> HTTP/1.1
+      Accept: application/json application/ubjson
+
+   Parameter:
+      job_id (string) -- ID des Jobs (obligatorisch)
+
+   Anfrage-Header:
+      Accept -- application/json application/ubjson
+
+   Antwort-Header:
+      Content-Type -- application/json application/ubjson
+
+   Statuscodes:
+      200 OK -- Erfolgreiche Verarbeitung
+
+      403 Forbidden -- Verboten, z.B. weil keine gültige Lizenz für
+      das CADMatch-Modul vorliegt.
+
+      404 Not Found -- Job mit angegebener ID nicht gefunden

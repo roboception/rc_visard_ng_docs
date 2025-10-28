@@ -1,0 +1,296 @@
+Pipelinetyp zivid
+
+Bemerkung: Die Firmwareversion der angeschlossenen
+
+  zivid
+
+   Kamera muss der vom
+
+  rc_cube
+
+   geforderten Firmwareversion entsprechen, sonst kann die
+
+  zivid
+
+   nicht verwendet werden. Um die
+
+  zivid
+
+   Firmware auf die benötigte Version zu aktualisieren, öffnen Sie die
+
+  Web GUI
+
+  , navigieren Sie zu System ‣ Kamerapipelines und wählen Sie die
+
+  zivid
+
+   Pipeline. Danach wird das Update durch Klicken auf Zivid Firmware
+  updaten durchgeführt.
+
+Benutzerdefinierte Voreinstellungen
+
+Die
+
+zivid
+
+ Kamera verfügt über mehrere vorkonfigurierte Einstellungen für die
+Bildaufnahme, sogenannte Presets. Die 2D-Presets sind speziell auf die
+2D-Bildaufnahme zugeschnitten und beinhalten vor allem Einstellungen
+wie Auflösung, Belichtungszeit, Helligkeit und Verstärkung. Sie sind
+für Anwendungen optimiert, die detaillierte Farb- oder Monochrombilder
+erfordern.
+
+Benutzer können mit der Software
+
+Zivid Studio
+
+ (
+
+https://www.zivid.com/zivid-studio-software
+
+) auch eigene 2D-Voreinstellungen erstellen und als .yml-Dateien
+speichern. Diese Voreinstellungsdateien können auf der Seite
+
+Kamera
+
+ der Web GUI auf den
+
+rc_cube
+
+ hochgeladen werden. Alternativ können Voreinstellungen über die REST-
+API verwaltet werden, wie in
+
+Presets API
+
+ beschrieben. Benutzerdefinierte Voreinstellungen können dann wie die
+vordefinierten Voreinstellungen über den Laufzeitparameter
+"preset_name" für die Bildaufnahme ausgewählt werden. Auch 3D-
+Voreinstellungen mit 2D-Einstellungen können hochgeladen und als 2D-
+Voreinstellung verwendet werden. In diesem Fall werden nur die 2D-
+Einstellungen angewendet.
+
+Parameter
+
+Das Kamera-Modul auf einer Pipeline vom Typ "zivid" wird in der REST-
+API als "rc_camera" bezeichnet und in der
+
+Web GUI
+
+ auf der Seite
+
+Kamera
+
+ in der gewünschten Pipeline dargestellt. Der Benutzer kann die
+Stereo-Matching-Parameter entweder dort oder über die REST-API (
+
+REST-API-Schnittstelle
+
+) oder über GigE Vision (
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+) ändern.
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter:
+
+Laufzeitparameter des rc_camera-Moduls in einer Pipeline vom Typ zivid
+Name  Typ  Min.  Max.  Default  Beschreibung  acquisition_mode  string
+-  -  Trigger  Aufnahmemodus: [Continuous, Trigger]  fps  float64  1.0
+25.0  25.0  Bildwiederholrate in Hertz  preset_name  string  -  -  -
+Name der Voreinstellung
+
+Beschreibung der Laufzeitparameter
+
+Jeder Laufzeitparameter ist durch eine eigene Zeile auf der Seite
+
+Kamera
+
+ der Web GUI repräsentiert. Der Web GUI-Name des Parameters ist in
+Klammern hinter dem Namen des Parameters angegeben und die Parameter
+werden in der Reihenfolge, in der sie in der Web GUI erscheinen,
+aufgelistet:
+
+acquisition_mode (Aufnahmemodus)
+
+   Dieser Parameter bestimmt den Aufnahmemodus der 2D-Kamerabilder. Im
+   Modus
+
+   Kontinuierlich
+
+    ("Continuous") nimmt die Kamera Bilder mit der in "fps"
+   angegebenen Bildwiederholrate auf. Im Modus
+
+   Trigger
+
+    ("Trigger") werden nur Bilder aufgenommen, wenn die Kamera ein
+   Software-Triggersignal empfängt, entweder durch Drücken des
+   Aufnehmen-Knopfes in der Web GUI oder durch Aufrufen des Services
+   "rc_camera/acquisition_trigger" (siehe
+
+   Services
+
+   ).
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?acquisition_mode=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?acquisition_mode=<value>
+
+fps (FPS (Hz))
+
+   Dieser Wert bezeichnet die Bildwiederholrate der Kamera in Bildern
+   pro Sekunde und begrenzt die Frequenz, mit der Kamerabilder
+   aufgenommen werden können.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?fps=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?fps=<value>
+
+preset_name (Voreinstellung)
+
+   Mit diesem Parameter kann eine Voreinstellung für die 2D-
+   Bildaufnahme ausgewählt werden. Die Voreinstellung kann eine der
+   vorkonfigurierten
+
+   zivid
+
+   -Voreinstellungen sein, die vom
+
+   zivid
+
+   -Modell abhängen und vom angeschlossenen Gerät gelesen werden, oder
+   eine benutzerdefinierte Voreinstellung, die auf den
+
+   rc_cube
+
+    hochgeladen wurde (siehe
+
+   Benutzerdefinierte Voreinstellungen
+
+   ).
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?preset_name=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?preset_name=<value>
+
+Statuswerte
+
+Das "rc_camera"-Modul meldet die folgenden Statuswerte für eine
+Pipeline vom Typ "zivid":
+
+Die Statuswerte des rc_camera-Moduls      Name  Beschreibung  baseline
+Intern angenommener Stereo-Basisabstand t in Metern zur Berechnung von
+Disparitätsbildern  brightness  Aktuelle Helligkeit des Bildes als
+Wert zwischen 0 und 1  color  0 für monochrome Kameras, 1 für
+Farbkameras  exp  Aktuelle Belichtungszeit in Sekunden. Dieser Wert
+wird unter der Bildvorschau in der Web GUI als Belichtung (ms)
+angezeigt.  focal  Brennweitenfaktor, normalisiert auf eine Bildbreite
+von 1  fps  Aktuelle Bildwiederholrate der Kamerabilder in Hertz.
+Dieser Wert wird unter der Bildvorschau in der Web GUI als FPS (Hz)
+angezeigt.  height  Höhe des Kamerabilds in Pixeln. Dieser Wert wird
+unter der Bildvorschau in der Web GUI als zweiter Teil von Auflösung
+(px) angezeigt.  last_capture_ok  1 wenn die letzte Bildaufnahme
+erfolgreich war  last_timestamp_grabbed  Zeitstempel des letzten
+aufgenommenen Bildes  test  0 for Live-Bilder und 1 für Test-Bilder
+width  Breite des Kamerabilds in Pixeln. Dieser Wert wird unter der
+Bildvorschau in der Web GUI als erster Teil von Auflösung (px)
+angezeigt.
+
+Services
+
+In einer Pipeline vom Typ "zivid" bietet das "rc_camera" Modul
+folgende Services.
+
+acquisition_trigger
+
+   triggert eine Bildaufnahme, wenn der Aufnahmemodus auf "Trigger"
+   gesetzt sind.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/acquisition_trigger
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/services/acquisition_trigger
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "acquisition_trigger",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+reset_defaults`
+
+   stellt die Werkseinstellungen der Parameter dieses Moduls wieder
+   her und wendet sie an („factory reset“).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/reset_defaults
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/services/reset_defaults
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Presets API
+
+Die 2D Voreinstellungen können über die folgenden REST-API Endpunkte
+gesetzt, abgefragt und gelöscht werden.

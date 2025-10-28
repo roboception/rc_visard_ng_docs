@@ -1,0 +1,55 @@
+.. include:: global_rst.glb
+
+
+.. _sect-interfaces:
+
+Interfaces
+==========
+
+The following interfaces are provided for configuring and obtaining data from the |rc_xxx|:
+
+- :doc:`webgui`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+
+   Easy-to-use graphical interface to configure the |rc_xxx|, do calibrations, view live images,
+   do service calls, visualize results, etc.
+
+- :doc:`GigE Vision 2.0/GenICam<gigevision>`:latex:`\:(Section \ref{gigevision:sect-genicam})`
+
+   Images and camera related configuration.
+
+- :doc:`REST API<rest_api>`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+
+   API to configure the |rc_xxx|, query status information, do service calls, etc.
+
+.. only:: rc_visard
+
+    - :doc:`rc_dynamics streams<rc_dynamics>`:latex:`\:(Section \ref{rc_dynamics:sect-rc-dynamics-interface})`
+
+        Real-time streams containing state estimates with poses, velocities, etc. are provided over the *rc_dynamics* interface.
+        It sends *protobuf*-encoded messages via UDP.
+
+- :doc:`Ethernet KRL Interface (EKI)<eki>`:latex:`\:(Section \ref{eki:sect-eki})`
+
+   API to configure the |rc_xxx| and do service calls from KUKA KSS robots.
+
+- :doc:`gRPC image stream<grpc>`:latex:`\:(Section \ref{grpc:sect-grpc})`
+
+   Stream synchronized image sets via gRPC.
+
+- :doc:`Time synchronization<time_sync>`:latex:`\:(Section \ref{time_sync:sect-time-sync})`
+
+   Time synchronization between the |rc_xxx| and the application host.
+
+.. toctree-filt::
+   :hidden:
+   :maxdepth: 2
+
+   webgui
+   gigevision
+   rest_api
+   :rc_cube_exclude:rc_dynamics
+   gri
+   eki
+   grpc
+   opc_ua
+   time_sync

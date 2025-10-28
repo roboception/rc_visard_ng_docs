@@ -1,0 +1,862 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Kamerakalibrierung &mdash; rc_visard NG 25.10.1
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/contentui.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard NG 25.10.1
+ Dokumentation" href="index.html"/>
+        <link rel="up" title="Konfigurationsmodule" href="configuration_modules.html"/>
+        <link rel="next" title="IOControl und Projektor-Kontrolle" href="iocontrol.html"/>
+        <link rel="prev" title="CollisionCheck" href="collisioncheck.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard NG
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                25.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="disposal.html">Informationen zur Entsorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Aufspüren von <em>rc_visard NG</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host-Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werksseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Messprinzipien</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereovision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_general.html">Allgemeine Informationen zu 3D Daten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Softwaremodule</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="camera.html">Kamera Modul</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rectification.html">Rektifizierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="downloading_images.html">Anzeigen und Herunterladen von Bildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html">Parameter, Statuswerte und Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="detection_modules.html">Detektions- und Messmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="measure.html">Measure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#measuring-depth">Tiefe messen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">LoadCarrier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Erkennung von Load Carriern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Füllstandserkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-reading">Tagerkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag-Wiedererkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html">ItemPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="boxpick.html">BoxPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#detection-of-items">Erkennung von Rechtecken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#boxpick-template-api">BoxPick Template API“</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cadmatch.html">CADMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-pose-priors">Setzen von Posenvorgaben</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#template-api">Template API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="configuration_modules.html">Konfigurationsmodule</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Kameramontage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking">Kollisionsprüfung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Kamerakalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#calibration-process">Kalibriervorgang</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html">IOControl und Projektor-Kontrolle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database_modules.html">Datenbankmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier_db.html">LoadCarrierDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-definition">Load Carrier Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-compartments">Load Carrier Abteile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">RoiDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gripper_db.html">GripperDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#setting-a-gripper">Erstellen eines Greifers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#cad-element-api">CAD-Greiferelement API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Web GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#accessing-the-web-gui">Zugriff auf die Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#exploring-the-web-gui">Kennenlernen der Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#web-gui-access-control">Web GUI Zugriffskontrolle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-camera-images">Herunterladen von Kamerabildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Herunterladen von Tiefenbildern und Punktwolken</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_userspace.html">UserSpace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gri.html">Generic Robot Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gri.html#job-definition">Job Definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#job-types">Job Arten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#primary-and-related-objects">Primäre und zugehörige Objekte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#execution-modes">Ausführungsmodi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gri.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gri.html#gri-binary-protocol-specification">Spezifikation des Binären GRI Protokolls</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#message-header-8-bytes">Header (8 Bytes)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#pose-formats">Posenformate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#actions">Aktionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#job-status">Jobstatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#body-definitions">Body Definitionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#error-codes-and-semantics">Fehlercodes und Bedeutung</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gri.html#integration-with-a-robot">Integration mit einem Roboter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gri.html#job-and-hec-config-api">Job und HEC_config API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#example-applications">Beispielanwendungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Fehlerbehebung</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC Bilddatenschnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC Servicedefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Beispielclient</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#setting-time-manually">Manuelles Setzen der Zeit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userspace.html">UserSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configuration">Konfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="userspace.html#configure-userspace-via-the-webgui">Konfiguration des UserSpace über die Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configure-http-proxy">HTTP Proxy konfigurieren</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#view-running-applications">Anzeige laufender Apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#network-access-to-userspace-applications">Netzwerkzugriff auf die UserSpace Anwendungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#restrictions">Einschränkungen</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Backup der Einstellungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard NG</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#pose-formats">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_rt.html">Rotationsmatrix und Translationsvektor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-rotation-matrix-to-quaternion">Umrechnung von Rotationsmatrizen in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-quaternion-to-rotation-matrix">Umrechnung von Quaternionen in Rotationsmatrizen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_abb.html">ABB Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fanuc.html">FANUC XYZ-WPR Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-fanuc-wpr-to-quaternion">Umrechnung von FANUC-WPR in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-quaternion-to-fanuc-wpr">Umrechnung von Quaternionen in FANUC-WPR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_franka_emika.html">Franka Emika Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-transformation-matrix-to-quaternion">Umrechnung von Transformation in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-rotation-xyz-to-quaternion">Umrechnung von Rotation-XYZ in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-and-translation-to-transformation">Umrechnung von Quaternion und Translation in Transformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-to-rotation-xyz">Umrechnung von Quaternion in Rotation-XYZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#pose-representation-in-racecom-messages-and-state-machines">Posenrepräsentation in RaceCom Messages und Statemachines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fruitcore_horst.html">Fruitcore HORST Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kawasaki.html">Kawasaki XYZ-OAT Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-kawasaki-oat-to-quaternion">Umrechnung von Kawasaki-OAT in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-quaternion-to-kawasaki-oat">Umrechnung von Quaternionen in Kawasaki-OAT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kuka.html">KUKA XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-kuka-abc-to-quaternion">Umrechnung von KUKA-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-quaternion-to-kuka-abc">Umrechnung von Quaternionen in KUKA-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_mitsubishi.html">Mitsubishi XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-mitsubishi-abc-to-quaternion">Umrechnung von Mitsubishi-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-quaternion-to-mitsubishi-abc">Umrechnung von Quaternionen in Mitsubishi-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_ur.html">Universal Robots Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-angle-axis-format-to-quaternion">Umrechnung vom Angle-Axis Format in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-quaternion-to-angle-axis-format">Umrechnung von Quaternionen ins Angle-Axis Format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_yaskawa.html">Yaskawa Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-yaskawa-rx-ry-rz-to-quaternion">Umrechnung von Yaskawa Rx, Ry, Rz in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-quaternion-to-yaskawa-rx-ry-rz">Umrechnung von Quaternionen in Yaskawa Rx, Ry, Rz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard NG</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">rc_visard NG</a> &gt;</li>
+        
+          <li><a href="modules.html">Softwaremodule</a> &gt;</li>
+        
+          <li><a href="configuration_modules.html">Konfigurationsmodule</a> &gt;</li>
+        
+      <li>Kamerakalibrierung</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="camera-calibration">
+<span id="sect-camera-calibration"></span><h1>Kamerakalibrierung<a class="headerlink" href="#camera-calibration" title="Link zu dieser Überschrift">¶</a></h1>
+<p id="index-0">Das Kamerakalibrierungsmodul ist ein Basismodul, welches auf jedem <em>rc_visard NG</em> verfügbar ist.</p>
+<p>Um die Kamera als Messinstrument zu verwenden, müssen die Kameraparameter, wie die Brennweite, die Objektivverzeichnung und die Lage der Kameras zueinander, genau bekannt sein. Diese Parameter werden durch Kalibrierung bestimmt und für die Rektifizierung der Bilder, die Grundlage für alle anderen Bildverarbeitungsmodule ist, verwendet (siehe <a class="reference internal" href="rectification.html#sect-camera-rectification"><span class="std std-ref">Rektifizierung</span></a>).</p>
+<p>Der <em>rc_visard NG</em> ist bereits ab Werk kalibriert. Nichtsdestotrotz kann es vorkommen, dass die Kalibrierung überprüft und neu durchgeführt werden muss, wenn der <em>rc_visard NG</em> einer starken mechanischen Beanspruchung ausgesetzt war.</p>
+<p>Mit dem Kamerakalibrierungsmodul lassen sich die Kalibrierungsüberprüfung und Kalibrierung vornehmen.</p>
+<div class="section" id="self-calibration">
+<h2>Selbstkalibrierung<a class="headerlink" href="#self-calibration" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-1">Im Kamerakalibrierungsmodul läuft im Hintergrund automatisch der Selbstkalibriermodus mit niedriger Frequenz. In diesem Modus überwacht der <em>rc_visard NG</em> die Ausrichtung der Bildzeilen beider rektifizierten Bilder. Wirken mechanische Kräfte auf den <em>rc_visard NG</em> ein, wird er beispielsweise fallen gelassen, kann dies zu einer Fehlausrichtung führen. Kommt es zu einem erheblichen Ausrichtungsfehler, wird dieser automatisch korrigiert. Nach einem Neustart und einer Korrektur wird der aktuelle Kalibrierungsversatz in der Logdatei des Kameramoduls erfasst (siehe <a class="reference internal" href="maintenance.html#sect-downloading-log-files"><span class="std std-ref">Download der Logdateien</span></a>):</p>
+<blockquote>
+<div><em>„rc_stereocalib: Current self-calibration offset is 0.00, update counter is 0“</em></div></blockquote>
+<p>Der Aktualisierungszähler (update counter) wird nach jeder automatischen Korrektur um eins erhöht. Nach einer manuellen Neukalibrierung des <em>rc_visard NG</em> wird der Zähler auf 0 zurückgesetzt.</p>
+<p>Unter normalen Umständen, wenn der <em>rc_visard NG</em> keiner mechanischen Belastung ausgesetzt ist, dürfte die Selbstkalibrierung des <em>rc_visard NG</em> nicht auftreten. Die Selbstkalibrierung erlaubt dem <em>rc_visard NG</em>, auch nach Erkennung einer falschen Ausrichtung normal zu arbeiten, da diese automatisch korrigiert wird. Dessen ungeachtet wird empfohlen, die Kamera manuell neu zu kalibrieren, wenn der Aktualisierungszähler nicht auf 0 steht. Die Web GUI zeigt eine Warnung an, wenn Selbstkalibrierung stattgefunden hat.</p>
+</div>
+<div class="section" id="calibration-process">
+<h2>Kalibriervorgang<a class="headerlink" href="#calibration-process" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Die Kamerakalibrierung kann über die <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>  unter <span class="menuselection">Konfiguration ‣ Kamera Kalibrierung</span> vorgenommen werden. Diese Seite bietet einen Assistenten, der den Benutzer durch den Kalibriervorgang führt.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die Kamerakalibrierung ist für den <em>rc_visard NG</em> in aller Regel nicht nötig, da er bereits ab Werk kalibriert ist. Eine Neukalibrierung ist nur erforderlich, wenn das Gerät einer starken mechanischen Belastung ausgesetzt war, weil es beispielsweise fallen gelassen wurde.</p>
+</div>
+<p>Während der Kalibrierung muss das Kalibriermuster in verschiedenen Posen erkannt werden. Dabei müssen alle schwarzen Quadrate des Musters müssen komplett in beiden Kameras sichtbar sein und dürfen nicht verdeckt werden. Jedes korrekt erkannte Quadrat wird mit einem grünen Haken belegt. Das Muster kann nur dann korrekt erkannt werden, wenn alle schwarzen Quadrate erkannt werden. Werden einige der Quadrate nicht oder nur für kurze Zeit erkannt, so kann dies an schlechten Lichtverhältnissen oder einem beschädigten Kalibriermuster liegen. Quadrate, die in überbelichteten Bereichen des Kalibriermusters liegen, werden rot hervorgehoben. In diesem Fall müssen die Beleuchtung oder die Belichtungseinstellungen angepasst werden. Ein dicker grüner Rahmen um das Kalibriermuster zeigt an, dass das Muster korrekt in beiden Kamerabildern erkannt wurde.</p>
+<div class="section" id="calibration-settings">
+<h3>Kalibriereinstellungen<a class="headerlink" href="#calibration-settings" title="Link zu dieser Überschrift">¶</a></h3>
+<p id="index-2">Die Qualität der Kamerakalibrierung hängt stark von der Qualität des Kalibriermusters ab. Kalibriermuster können von Roboception bezogen werden.</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/webgui_camera_calibration_1_ng_de.png"><img alt="_images/webgui_camera_calibration_1_ng_de.png" src="_images/webgui_camera_calibration_1_ng_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 40 </span><span class="caption-text">Kalibriereinstellungen</span></p>
+</div>
+<p>Im ersten Schritt muss das verwendete Kalibriermuster angegeben werden. Mit Klick auf <em>Weiter</em> gelangt der Benutzer zum nächsten Schritt.</p>
+</div>
+<div class="section" id="verify-calibration">
+<h3>Kalibrierung prüfen<a class="headerlink" href="#verify-calibration" title="Link zu dieser Überschrift">¶</a></h3>
+<p>In diesem Schritt kann die aktuelle Kalibrierung überprüft werden. Um diese Prüfung vorzunehmen, muss das Muster so gehalten werden, dass es sich gleichzeitig im Sichtfeld beider Kameras befindet. Nachdem das Muster vollständig erkannt wurde, wird der Kalibrierfehler automatisch berechnet und das Ergebnis auf dem Bildschirm angegeben.</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/webgui_camera_calibration_3_ng_de.png"><img alt="_images/webgui_camera_calibration_3_ng_de.png" src="_images/webgui_camera_calibration_3_ng_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 41 </span><span class="caption-text">Überprüfung der Kalibrierung</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Um einen aussagekräftigen Kalibrierfehler berechnen zu können, muss das Muster so nah wie möglich an die Kameras gehalten werden. Bedeckt das Muster lediglich einen kleinen Bereich der Kamerabilder, ist der Kalibrierfehler grundsätzlich geringer als wenn das Muster das gesamte Bild ausfüllt. Aus diesem Grund werden zusätzlich zum Kalibrierfehler an der aktuellen Position des Kalibriermusters auch der minimale und maximale Fehler während der Überprüfung der Kalibrierung angezeigt.</p>
+</div>
+<p>Der typische Kalibrierfehler beläuft sich auf unter 0,2 Pixel. Liegt der Fehler in diesem Bereich, kann der Kalibriervorgang übersprungen werden. Ist der errechnete Kalibrierfehler jedoch größer, sollte eine Neukalibrierung vorgenommen werden, um sicherzustellen, dass der Sensor volle Leistung erbringt. Mit Klick auf <em>Weiter</em> gelangt der Benutzer zum nächsten Schritt.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Große Kalibrierfehler können durch falsch kalibrierte Kameras, ein unpräzises Kalibriermuster oder eine falsch eingetragene Musterbreite oder Musterhöhe verursacht werden. Bei der Verwendung eines benutzerdefinierten Kalibriermusters muss sichergestellt werden, dass das Muster präzise und die angegebenen Breiten- und Höhendaten korrekt sind. Anderenfalls kann die manuelle Kalibrierung sogar dazu führen, dass die Kameras dekalibriert werden!</p>
+</div>
+</div>
+<div class="section" id="calibrate">
+<h3>Kalibrieren<a class="headerlink" href="#calibrate" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Bevor die Kalibrierung vorgenommen wird, sollte die Belichtungszeit der Kamera richtig eingestellt werden. Um ein gutes Kalibrierergebnis zu erzielen, sollten die Bilder gut belichtet und Bewegungsunschärfe vermieden werden. Die maximale Belichtungszeit im automatischen Modus sollte so klein wie möglich sein, aber dennoch eine gute Belichtung ermöglichen. Die aktuelle Belichtungszeit wird, wie in <a class="reference internal" href="#fig-webgui-calibration-stereo"><span class="std std-numref">Abb. 43</span></a> gezeigt, unter den Kamerabildern angegeben.</p>
+<p>Für eine vollständige Kalibrierung müssen zunächst beide Kameras einzeln intrinsisch kalibriert werden (Monokalibrierung). Anschließend wird durch die Stereokalibrierung die Ausrichtung der beiden Kameras zueinander bestimmt. In den meisten Fällen wird die intrinsische Kalibrierung der beiden Kameras nicht beeinträchtigt. Daher wird die Monokalibrierung standardmäßig bei einer Neukalibrierung übersprungen, kann aber durch Klick auf <span class="guilabel">Monokalibrierung durchführen</span> durchgeführt werden. Dies sollte nur geschehen, wenn das Ergebnis der Stereokalibrierung nicht zufriedenstellend ist.</p>
+</div>
+<div class="section" id="stereo-calibration">
+<span id="sect-stereo-calibration"></span><h3>Stereokalibrierung<a class="headerlink" href="#stereo-calibration" title="Link zu dieser Überschrift">¶</a></h3>
+<p id="index-3">Bei der Stereokalibrierung wird die relative Rotation und Translation der Kameras zueinander ermittelt.</p>
+<p>Die Kamerabilder können auch gespiegelt angezeigt werden, um die korrekte Ausrichtung des Kalibriermusters zu vereinfachen.</p>
+<p>Als erstes muss das Kalibriermuster möglichst ruhig und so nah wie möglich an die Kamera gehalten werden. Es muss vollständig in beiden Bildern sichtbar sein und die Kameras sollten senkrecht auf das Kalibriermuster gerichtet sein. Wenn das Kalibriermuster nicht senkrecht zur Sichtachse der Kameras ausgerichtet ist, erscheinen kleine grüne Pfeile auf dem Kamerabild, die auf die erwarteten Positionen der Ecken des Kalibriermusters zeigen (siehe <a class="reference internal" href="#fig-webgui-calibration-tilted"><span class="std std-numref">Abb. 42</span></a>).</p>
+<div class="figure align-center" id="id3">
+<span id="fig-webgui-calibration-tilted"></span><a class="reference internal image-reference" href="_images/webgui_camera_calibration_stereo_tilt.png"><img alt="_images/webgui_camera_calibration_stereo_tilt.png" src="_images/webgui_camera_calibration_stereo_tilt.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 42 </span><span class="caption-text">Pfeile weisen darauf hin, wenn das Muster während der Stereokalibrierung nicht senkrecht zur Blickrichtung der Kamera gehalten wird.</span></p>
+</div>
+<p>Das Muster muss für die Erkennung sehr ruhig gehalten werden. Wenn Bewegungsunschärfe auftritt, wird das Muster nicht erkannt. Alle Zellen, die im Kamerabild dargestellt sind, müssen vom Kalibriermuster abgedeckt werden. Dies wird durch eine grüne Füllung der erfassten Zellen dargestellt (siehe <a class="reference internal" href="#fig-webgui-calibration-stereo"><span class="std std-numref">Abb. 43</span></a>).</p>
+<p>Beim <em>rc_visard NG</em> können alle Zellen mit einer einzigen Aufnahme erfasst werden, wenn das Kalibriermuster nah genug gehalten wird.</p>
+<div class="figure align-center" id="id4">
+<span id="fig-webgui-calibration-stereo"></span><a class="reference internal image-reference" href="_images/webgui_camera_calibration_4_ng_de.png"><img alt="_images/webgui_camera_calibration_4_ng_de.png" src="_images/webgui_camera_calibration_4_ng_de.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 43 </span><span class="caption-text">Stereokalibrierung: Das Muster sollte so nah wie möglich gehalten werden, um alle dargestellten Zellen zu füllen.</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Falls alle Häkchen auf dem Kalibriermuster verschwinden, liegt dies daran, dass die Kamerablickrichtung nicht senkrecht zum Muster steht, oder das Muster zu weit von der Kamera entfernt ist.</p>
+</div>
+<p>Sobald alle Zellen erfasst und gefüllt sind, verschwinden sie und eine einzelne entfernte Zelle wird angezeigt. Nun muss das Kalibriermuster so weit entfernt wie möglich gehalten werden, damit die kleine Zelle erfasst wird. Pfeile zeigen an, falls das Muster noch zu nah an der Kamera ist. Wenn das Kalibriermuster erfolgreich detektiert wurde, wird die Zelle grün und das Kalibrierergebnis kann berechnet werden (siehe <a class="reference internal" href="#fig-webgui-calibration-far"><span class="std std-numref">Abb. 44</span></a>).</p>
+<div class="figure align-center" id="id5">
+<span id="fig-webgui-calibration-far"></span><a class="reference internal image-reference" href="_images/webgui_camera_calibration_stereo_far.png"><img alt="_images/webgui_camera_calibration_stereo_far.png" src="_images/webgui_camera_calibration_stereo_far.png" style="width: 80%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 44 </span><span class="caption-text">Positionierung des Musters so entfernt wie möglich während der Stereokalibrierung</span></p>
+</div>
+<p>Führt die Stereokalibrierung nicht zu einem akzeptablen Kalibrierfehler, sollte die Kalibrierung erneut vorgenommen werden, jedoch mit Monokalibrierung (siehe nächster Abschnitt <a class="reference internal" href="#sect-monocalibration"><span class="std std-ref">Monokalibrierung</span></a>).</p>
+</div>
+<div class="section" id="monocalibration">
+<span id="sect-monocalibration"></span><h3>Monokalibrierung<a class="headerlink" href="#monocalibration" title="Link zu dieser Überschrift">¶</a></h3>
+<p id="index-4">Monokalibrierung ist die intrinsische Kalibrierung jeder einzelnen Kamera. Da die intrinsische Kalibrierung in der Regel nicht beeinträchtigt wird, sollte die Monokalibrierung nur durchgeführt werden, wenn das Ergebnis der Stereokalibrierung nicht zufriedenstellend ist.</p>
+<p>Durch Klicken auf <span class="guilabel">Monokalibrierung durchführen</span> im Reiter <em>Kalibrieren</em> kann die Monokalibrierung gestartet werden.</p>
+<p>Zur Kalibrierung muss das Kalibriermuster in verschiedenen Ausrichtungen vor die Kamera gehalten werden. Die Pfeile, die von den Ecken des Musters bis zu den grünen Bildschirmbereichen führen, geben an, dass alle Musterecken innerhalb der grünen Rechtecke platziert werden müssen. Diese grünen Rechtecke sind sensible Bereiche. Mit dem Schieberegler <em>Größe der sensiblen Bereiche</em> lässt sich die Größe der Rechtecke einstellen, um die Kalibrierung zu vereinfachen. Es ist jedoch zu bedenken, dass die Größe nicht zu stark erhöht werden darf, da dies auf Kosten der Kalibriergenauigkeit gehen kann.</p>
+<p>Häufig wird der Fehler begangen, das Muster bei der Kalibrierung falsch herum zu halten. Dieser Fehler lässt sich leicht erkennen, da sich die von den Musterecken zu den grünen Rechtecken verlaufenden Linien in diesem Fall kreuzen (siehe <a class="reference internal" href="#fig-webgui-calibration-wrong"><span class="std std-numref">Abb. 45</span></a>).</p>
+<div class="figure align-center" id="id6">
+<span id="fig-webgui-calibration-wrong"></span><a class="reference internal image-reference" href="_images/webgui_camera_calibration_wrong.png"><img alt="_images/webgui_camera_calibration_wrong.png" src="_images/webgui_camera_calibration_wrong.png" style="width: 60%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 45 </span><span class="caption-text">Wird das Kalibriermuster falsch herum gehalten, kreuzen sich die grünen Linien.</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die Kalibrierung mag umständlich erscheinen, da das Muster hierfür in bestimmten vordefinierten Stellungen gehalten werden muss. Dieses Vorgehen ist jedoch notwendig um ein qualitativ hochwertiges Kalibrierergebnis zu erreichen.</p>
+</div>
+<p>Für den Prozess der Monokalibrierung ist das Kalibriermuster für beide Kameras in den in <a class="reference internal" href="#fig-poses-monocalibration"><span class="std std-numref">Abb. 46</span></a> angegebenen Stellungen zu halten.</p>
+<div class="figure align-center" id="id7">
+<span id="fig-poses-monocalibration"></span><a class="reference internal image-reference" href="_images/calib-views.png"><img alt="_images/calib-views.png" src="_images/calib-views.png" style="width: 100%;" /></a>
+<p class="caption"><span class="caption-number">Abb. 46 </span><span class="caption-text">Musterposen für die Monokalibrierung</span></p>
+</div>
+<p>Nachdem die Ecken oder Seiten des Kalibriermusters auf die sensiblen Bereiche ausgerichtet wurden, zeigt der Kalibriervorgang automatisch die nächste Stellung an. Sobald der Prozess für die linke Kamera abgeschlossen ist, ist er ebenso für die rechte Kamera zu wiederholen.</p>
+<p>Anschließend folgen sind die Schritte im vorherigen Abschnitt <a class="reference internal" href="#sect-stereo-calibration"><span class="std std-ref">Stereokalibrierung</span></a> zu befolgen.</p>
+</div>
+<div class="section" id="storing-the-calibration-result">
+<h3>Kalibrierergebnis speichern<a class="headerlink" href="#storing-the-calibration-result" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Mit Klick auf die Schaltfläche <span class="guilabel">Kalibrierung berechnen</span> wird der Kalibriervorgang beendet und das Endergebnis angezeigt. Der eingeblendete Wert ist der mittlere Reprojektionsfehler aller Kalibrierpunkte. Er ist in Pixeln angegeben und beläuft sich typischerweise auf einen Wert von unter 0,2.</p>
+<p>Mit Klick auf <span class="guilabel">Kalibrierung speichern</span> wird das Kalibrierergebnis übernommen und auf dem Gerät gespeichert.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Das eingeblendete Ergebnis ist der nach der Kalibrierung bestehende Mindestfehler. Der reale Fehler liegt auf keinen Fall darunter, könnte theoretisch jedoch höher sein. Dies gilt für jeden Algorithmus zur Kamerakalibrierung und ist der Grund dafür, warum das Kalibriermuster in verschiedenen Positionen vor den Sensor zu halten ist. So ist sichergestellt, dass der reale Kalibrierfehler den errechneten Fehler nicht signifikant überschreitet.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warnung</p>
+<p class="last">War vor der Durchführung der Kamerakalibrierung eine Hand-Auge-Kalibrierung auf dem <em>rc_visard NG</em> gespeichert, so sind die Werte der Hand-Auge-Kalibrierung möglicherweise ungültig geworden. Daher ist das Hand-Auge-Kalibrierverfahren zu wiederholen.</p>
+</div>
+</div>
+</div>
+<div class="section" id="parameters">
+<h2>Parameter<a class="headerlink" href="#parameters" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-5">Dieses Modul wird in der REST-API als <code class="docutils literal notranslate"><span class="pre">rc_stereocalib</span></code> bezeichnet.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die verfügbaren Parameter und die Statuswerte des Moduls zur Kamerakalibrierung sind nur für den internen Gebrauch bestimmt und können ohne vorherige Ankündigung Änderungen unterzogen werden. Die Kalibrierung sollte gemäß den vorstehenden Anweisungen und ausschließlich in der Web GUI vorgenommen werden.</p>
+</div>
+</div>
+<div class="section" id="services">
+<h2>Services<a class="headerlink" href="#services" title="Link zu dieser Überschrift">¶</a></h2>
+<div class="admonition note" id="index-6">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Die verfügbaren Services des Moduls zur Kamerakalibrierung sind lediglich für den internen Gebrauch bestimmt und können ohne vorherige Ankündigung Änderungen unterzogen werden. Die Kalibrierung sollte gemäß den vorstehenden Anweisungen und ausschließlich in der Web GUI vorgenommen werden.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="iocontrol.html" class="btn btn-neutral float-right" title="IOControl und Projektor-Kontrolle" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="collisioncheck.html" class="btn btn-neutral" title="CollisionCheck" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2025, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../en/camera_calibration.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/camera_calibration.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v23.10/index.html">v23.10</a></dd>
+          
+            <dd><a href="../../v24.01/index.html">v24.01</a></dd>
+          
+            <dd><a href="../../v24.04/index.html">v24.04</a></dd>
+          
+            <dd><a href="../../v24.07/index.html">v24.07</a></dd>
+          
+            <dd><a href="../../v24.10/index.html">v24.10</a></dd>
+          
+            <dd><a href="../../v25.01/index.html">v25.01</a></dd>
+          
+            <dd><a href="../../v25.04/index.html">v25.04</a></dd>
+          
+            <dd><a href="../../v25.07/index.html">v25.07</a></dd>
+          
+            <dd><a href="../../v25.10/index.html">v25.10</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'25.10.1',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="_static/contentui.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,252 @@
+IO and Projector Control
+
+The IOControl module is an on-board module of the
+
+rc_visard
+
+.
+
+The IOControl module allows reading the status of the general purpose
+digital inputs and controlling the digital general purpose outputs
+(GPIOs) of the
+
+rc_visard
+
+. The outputs can be set to LOW or HIGH, or configured to be HIGH for
+the exposure time of every image or every second image.
+
+The purpose of the IOControl module is the control of an external
+light source or a projector, which is connected to one of the
+
+rc_visard
+
+'s GPIOs to be synchronized by the image acquisition trigger. In case
+a pattern projector is used to improve stereo matching, the intensity
+images also show the projected pattern, which might be a disadvantage
+for image processing tasks that are based on the intensity image (e.g.
+edge detection). For this reason, the IOControl module allows setting
+GPIO outputs to HIGH for the exposure time of every second image, so
+that intensity images without the projected pattern are also
+available.
+
+Note: For more details on the
+
+  rc_visard NG
+
+  's GPIOs please refer to
+
+  Wiring
+
+  .
+
+Parameters
+
+The IOControl module is called "rc_iocontrol" in the REST-API and is
+represented in the
+
+Web GUI
+
+  under Configuration ‣ IOControl. The user can change the parameters
+via the Web GUI, the
+
+REST-API interface
+
+, or via GigE Vision using the DigitalIOControl parameters
+"LineSelector" and "LineSource" (
+
+Category: DigitalIOControl
+
+).
+
+Parameter overview
+
+This module offers the following run-time parameters:
+
+The rc_iocontrol module's run-time parameters              Name  Type
+Min  Max  Default  Description  out1_mode  string  -  -  Low  Out1
+mode: [Low, High, ExposureActive, ExposureAlternateActive]  out2_mode
+string  -  -  Low  Out2 mode: [Low, High, ExposureActive,
+ExposureAlternateActive]
+
+Description of run-time parameters
+
+out1_mode and out2_mode (Out1 / Projector and Out2)
+
+      The output modes for GPIO Out 1 and Out 2 can be set
+      individually:
+
+      "Low" sets the output permanently to LOW. This is the factory
+      default.
+
+      "High" sets the output permanently to HIGH.
+
+      "ExposureActive" sets the output to HIGH for the exposure time
+      of every image.
+
+      "ExposureAlternateActive" sets the output to HIGH for the
+      exposure time of every second image.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_iocontrol/parameters/parameters?<out1_mode|out2_mode>=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_iocontrol/parameters?<out1_mode|out2_mode>=<value>
+
+Fig. 47
+
+ shows which images are used for stereo matching and transmission via
+GigE Vision in "ExposureActive" mode with a user-defined frame rate of
+8 Hz.
+
+
+The mode "ExposureAlternateActive" is meant to be used when an
+external random dot projector is connected to the
+
+rc_visard
+
+'s GPIO Out 1. When setting Out 1 to "ExposureAlternateActive", the
+
+stereo matching
+
+ module only uses images with GPIO Out 1 being HIGH, i.e. projector is
+on. The maximum frame rate that is used for stereo matching is
+therefore half of the frame rate configured by the user. All modules
+which make use of the intensity image, like
+
+TagDetect
+
+ and
+
+ItemPick
+
+, use the intensity images with GPIO Out 1 being LOW, i.e. projector
+is off.
+
+Fig. 48
+
+ shows an example.
+
+
+Note: In "ExposureAlternateActive" mode, an intensity image with
+  GPIO Out 1 being HIGH (i.e. with projection) is always 40 ms away
+  from an intensity image with Out 1 being LOW (i.e. without
+  projection), regardless of the user-defined frame rate. This needs
+  to be considered when synchronizing disparity images and camera
+  images without projection in this special mode.
+
+The functionality can also be controlled by the DigitalIOControl
+parameters of the GenICam interface (
+
+Category: DigitalIOControl
+
+).
+
+Services
+
+Each service response contains a "return_code", which consists of a
+"value" plus an optional "message". A successful service returns with
+a "return_code" value of "0". Negative "return_code" values indicate
+that the service failed. Positive "return_code" values indicate that
+the service succeeded with additional information.
+
+The IOControl module offers the following services.
+
+get_io_values
+
+   Retrieves the current state of the
+
+   rc_visard
+
+   's general purpose inputs and outputs (GPIOs).
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_iocontrol/services/get_io_values
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_iocontrol/services/get_io_values
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The returned "timestamp" is the time of measurement.
+
+   "input_mask" and "output_mask" are bit masks defining which bits
+   are used for input and output values, respectively.
+
+   "values" holds the values of the bits corresponding to input and
+   output as given by the "input_mask" and "output_mask".
+
+   "return_code" holds possible warnings or error codes and messages.
+   Possible "return_code" values are shown below.
+
+       Code  Description  0  Success  -2  Internal error  -9  License
+   for IOControl is not available
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_io_values",
+        "response": {
+          "input_mask": "uint32",
+          "inverter_mask": "uint32",
+          "output_mask": "uint32",
+          "ratio_mask": "uint32",
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          },
+          "timestamp": {
+            "nsec": "int32",
+            "sec": "int32"
+          },
+          "values": "uint32"
+        }
+      }
+
+reset_defaults
+
+   Restores and applies the default values for this module's
+   parameters ("factory reset").
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_iocontrol/services/reset_defaults
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_iocontrol/services/reset_defaults
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

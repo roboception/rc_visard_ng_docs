@@ -1,0 +1,560 @@
+RoiDB
+
+Einleitung
+
+Das RoiDB Modul (Region of Interest Datenbankmodul) ermöglicht die
+globale Definition von 2D und 3D Regions of Interest (ROIs), die dann
+in vielen Detektionsmodulen verwendet werden können. Die definierten
+ROIs sind in allen Modulen auf dem
+
+rc_visard NG
+
+ verfügbar, die 2D oder 3D ROIs unterstützen.
+
+Das RoiDB Modul ist ein Basismodul, welches auf jedem
+
+rc_visard NG
+
+ verfügbar ist.
+
+3D ROIs können in den
+
+CADMatch
+
+,
+
+ItemPick
+
+ and
+
+BoxPick
+
+ Modulen verwendet werden. 2D ROIs werden vom
+
+SilhouetteMatch
+
+ Modul und dem
+
+LoadCarrier
+
+ Modul unterstützt.
+
+Spezifikationen des ROIDB Moduls      Unterstützte ROI Typen  2D, 3D
+Unterstützte ROI Geometrien  2D ROI: Rechteck, 3D ROI: Box, Kugel
+Max. Anzahl von ROIs  2D: 100, 3D: 100  ROIs verfügbar in  2D:
+SilhouetteMatch\:(Abschnitt \ref{silhouettematch:sect-
+silhouettematch}), LoadCarrier\:(Abschnitt \ref{loadcarrier:sect-
+loadcarrier}), 3D: CADMatch\:(Section \ref{cadmatch:sect-cadmatch}),
+ItemPick\:(Section \ref{itempick:sect-itempick}) and BoxPick\:(Section
+\ref{boxpick:sect-boxpick})  Unterstützte Referenzkoordinatensysteme
+camera, external
+
+Region of Interest
+
+Eine sogenannte Region of Interest (ROI) definiert ein abgegrenztes
+Raumvolumen (3D ROI, "region_of_interest") oder eine rechteckige
+Region im linken Kamerabild (2D ROI, "region_of_interest_2d"), welche
+für eine spezifische Anwendung relevant sind.
+
+Eine ROI kann das Volumen, in dem ein Load Carrier gesucht wird,
+einschränken, oder einen Bereich definieren, der nur die zu
+erkennenden oder zu greifenden Objekte enthält. Die Verarbeitungszeit
+kann sich deutlich verringern, wenn eine ROI genutzt wird.
+
+Folgende Arten von 3D ROIs ("type") werden unterstützt:
+
+   BOX, für quaderförmige ROIs mit den Abmessungen box.x, box.y,
+   box.z.
+
+   SPHERE, für kugelförmige ROIs mit dem  Radius sphere.radius.
+
+Die Pose "pose" einer 3D ROI kann entweder relativ zum
+
+Kamera
+
+-Koordinatensystem "camera" oder mithilfe der Hand-Auge-Kalibrierung
+im
+
+externen
+
+ Koordinatensystem "external" angegeben werden. Das externe
+Koordinatensystem steht nur zur Verfügung, wenn eine
+
+Hand-Auge-Kalibrierung
+
+ durchgeführt wurde. Wenn der Sensor am Roboter montiert ist, und die
+ROI im externen Koordinatensystem definiert ist, dann muss jedem
+Detektions-Service, der diese ROI benutzt, die aktuelle Roboterpose
+übergeben werden.
+
+Eine 2D ROI ist als rechteckiger Teil des linken Kamerabilds definiert
+und kann sowohl über die
+
+REST-API-Schnittstelle
+
+ als auch über die
+
+rc_visard NG
+
+
+Web GUI
+
+ auf der Seite
+
+Regions of Interest
+
+ unter dem Menüpunkt
+
+Datenbank
+
+ gesetzt werden. Die Web GUI bietet hierfür ein einfach zu benutzendes
+Werkzeug an. Jeder ROI muss ein eindeutiger Name zugewiesen werden, um
+diese später adressieren zu können.
+
+In der REST-API ist eine 2D-ROI über folgende Werte spezifiziert:
+
+id: Eindeutiger Name der ROI
+
+offset_x, offset_y: Abstand in Pixeln von der oberen rechten Bildecke
+entlang der x- bzw. y-Achse
+
+width, height: Breite und Höhe in Pixeln
+
+Der
+
+rc_visard NG
+
+ erlaubt das Speichern von bis zu 100 verschiedenen 3D ROIs und der
+gleichen Anzahl von 2D ROIs. Die Konfiguration von ROIs erfolgt in der
+Regel offline während der Einrichtung der gewünschten Anwendung. Die
+Konfiguration kann mithilfe der
+
+REST-API-Schnittstelle
+
+ des RoiDB Moduls vorgenommen werden, oder über die
+
+rc_visard NG
+
+
+Web GUI
+
+ auf der Seite
+
+Regions of Interest
+
+ unter dem Menüpunkt
+
+Datenbank
+
+.
+
+Bemerkung: Die erstellten ROIs sind persistent auf dem
+
+  rc_visard NG
+
+   gespeichert und auch nach Firmware-Updates und -Wiederherstellungen
+  verfügbar.
+
+Wechselwirkung mit anderen Modulen
+
+Die folgenden, intern auf dem
+
+rc_visard NG
+
+ laufenden Module liefern Daten für das RoiDB Modul oder haben
+Einfluss auf die Datenverarbeitung.
+
+Hand-Auge Kalibrierung
+
+Falls die Kamera zu einem Roboter kalibriert wurde, kann die Pose
+einer 3D ROI im Roboterkoordinatensystem angegeben werden, indem das
+Argument "pose_frame" auf "external" gesetzt wird.
+
+Zwei verschiedene Werte für "pose_frame" können gewählt werden:
+
+Kamera-Koordinatensystem (camera): Die Pose der 3D Region of Interest
+ist Kamera-Koordinatensystem angegeben und es ist kein zusätzliches
+Wissen über die Lage der Kamera in seiner Umgebung notwendig. Das
+bedeutet insbesondere, dass sich ROIs oder Load Carrier, welche in
+diesem Koordinatensystem angegeben sind, mit der Kamera bewegen. Es
+liegt daher in der Verantwortung des Anwenders, in solchen Fällen die
+entsprechenden Posen der Situation entsprechend zu aktualisieren
+(beispielsweise für den Anwendungsfall einer robotergeführten Kamera).
+
+Benutzerdefiniertes externes Koordinatensystem (external): Die Pose
+der 3D Region of Interest ist im sogenannten externen
+Koordinatensystem angegeben, welches vom Nutzer während der Hand-Auge-
+Kalibrierung gewählt wurde. In diesem Fall bezieht das Modul alle
+notwendigen Informationen über die Kameramontage und die kalibrierte
+Hand-Auge-Transformation automatisch vom Modul Hand-Auge-
+Kalibrierung\:(Abschnitt \ref{handeye_calibration:sect-handeye-
+calibration}).
+
+Bemerkung: Wenn keine Hand-Auge-Kalibrierung durchgeführt wurde bzw.
+  zur Verfügung steht, muss als Referenzkoordinatensystem "pose_frame"
+  immer "camera" angegeben werden.
+
+Zulässige Werte zur Angabe des Referenzkoordinatensystems sind
+"camera" und "external". Andere Werte werden als ungültig
+zurückgewiesen.
+
+Services
+
+Das RoiDB Modul wird in der REST-API als "rc_roi_db" bezeichnet und in
+der
+
+Web GUI
+
+ unter Datenbank ‣ Regions of Interest dargestellt. Die angebotenen
+Services des RoiDB Moduls können mithilfe der
+
+REST-API-Schnittstelle
+
+ oder der Web GUI ausprobiert und getestet werden.
+
+Das RoiDB Modul stellt folgende Services zur Verfügung.
+
+set_region_of_interest
+
+   speichert eine 3D ROI auf dem
+
+   rc_visard NG
+
+   . Alle ROIs sind dauerhaft gespeichert, auch über Firmware-Updates
+   und -Wiederherstellungen hinweg.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v2/nodes/rc_roi_db/services/set_region_of_interest
+
+   Request
+
+   Die Definition des Typs "region_of_interest" wird in
+
+   Region of Interest
+
+    beschrieben.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "region_of_interest": {
+            "box": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "id": "string",
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "sphere": {
+              "radius": "float64"
+            },
+            "type": "string"
+          }
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_region_of_interest",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+set_region_of_interest_2d
+
+   speichert eine 2D ROI auf dem
+
+   rc_visard NG
+
+   . Alle ROIs sind dauerhaft gespeichert, auch über Firmware-Updates
+   und -Wiederherstellungen hinweg.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v2/nodes/rc_roi_db/services/set_region_of_interest_2d
+
+   Request
+
+   Die Definition des Typs "region_of_interest_2d" wird in
+
+   Region of Interest
+
+    beschrieben.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "region_of_interest_2d": {
+            "height": "uint32",
+            "id": "string",
+            "offset_x": "uint32",
+            "offset_y": "uint32",
+            "width": "uint32"
+          }
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "set_region_of_interest_2d",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_regions_of_interest
+
+   gibt die mit "region_of_interest_ids" spezifizierten, gespeicherten
+   3D ROIs zurück.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v2/nodes/rc_roi_db/services/get_regions_of_interest
+
+   Request
+
+   Werden keine "region_of_interest_ids" angegeben, enthält die
+   Serviceantwort alle gespeicherten ROIs.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "region_of_interest_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_regions_of_interest",
+        "response": {
+          "regions_of_interest": [
+            {
+              "box": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "id": "string",
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "sphere": {
+                "radius": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_regions_of_interest_2d
+
+   gibt die mit "region_of_interest_2d_ids" spezifizierten,
+   gespeicherten 2D ROIs zurück.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v2/nodes/rc_roi_db/services/get_regions_of_interest_2d
+
+   Request
+
+   Werden keine "region_of_interest_2d_ids" angegeben, enthält die
+   Serviceantwort alle gespeicherten ROIs.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "region_of_interest_2d_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "get_regions_of_interest_2d",
+        "response": {
+          "regions_of_interest": [
+            {
+              "height": "uint32",
+              "id": "string",
+              "offset_x": "uint32",
+              "offset_y": "uint32",
+              "width": "uint32"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_regions_of_interest
+
+   löscht die mit "region_of_interest_ids" spezifizierten,
+   gespeicherten 3D ROIs.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v2/nodes/rc_roi_db/services/delete_regions_of_interest
+
+   Request
+
+   Alle zu löschenden ROIs müssen explizit angegeben werden.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "region_of_interest_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "delete_regions_of_interest",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_regions_of_interest_2d
+
+   löscht die mit "region_of_interest_2d_ids" spezifizierten,
+   gespeicherten 2D ROIs.
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+      PUT http://<host>/api/v2/nodes/rc_roi_db/services/delete_regions_of_interest_2d
+
+   Request
+
+   Alle zu löschenden ROIs müssen explizit angegeben werden.
+
+   Die Definition der *Request*-Argumente mit jeweiligen Datentypen
+   ist:
+
+      {
+        "args": {
+          "region_of_interest_2d_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "delete_regions_of_interest_2d",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Rückgabecodes
+
+Zusätzlich zur eigentlichen Serviceantwort gibt jeder Service einen
+sogenannten "return_code" bestehend aus einem Integer-Wert und einer
+optionalen Textnachricht zurück. Erfolgreiche Service-Anfragen werden
+mit einem Wert von "0" quittiert. Positive Werte bedeuten, dass die
+Service-Anfrage zwar erfolgreich bearbeitet wurde, aber zusätzliche
+Informationen zur Verfügung stehen. Negative Werte bedeuten, dass
+Fehler aufgetreten sind. Für den Fall, dass mehrere Rückgabewerte
+zutreffend wären, wird der kleinste zurückgegeben, und die
+entsprechenden Textnachrichten werden in "return_code.message"
+akkumuliert.
+
+Die folgende Tabelle listet die möglichen Rückgabe-Codes auf:
+
+Rückgabe-Codes der Services des RoiDB Moduls      Code  Beschreibung
+0  Erfolgreich  -1  Ungültige(s) Argument(e)  -10  Das neue Element
+konnte nicht hinzugefügt werden, da die maximal speicherbare Anzahl an
+ROIs überschritten wurde.  10  Die maximal speicherbare Anzahl an ROIs
+wurde erreicht.  11  Mit dem Aufruf von set_region_of_interest oder
+set_region_of_interest_2d wurde ein bereits existierendes Objekt mit
+derselben id überschrieben.

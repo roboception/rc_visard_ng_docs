@@ -1,0 +1,2362 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Generic Robot Interface &mdash; rc_visard NG 25.10.1
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/contentui.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard NG 25.10.1
+ Dokumentation" href="index.html"/>
+        <link rel="up" title="Schnittstellen" href="interfaces.html"/>
+        <link rel="next" title="KUKA Ethernet KRL Schnittstelle" href="eki.html"/>
+        <link rel="prev" title="Swagger UI" href="rest_api_swagger_ui.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard NG
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                25.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="disposal.html">Informationen zur Entsorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Aufspüren von <em>rc_visard NG</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host-Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werksseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Messprinzipien</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereovision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_general.html">Allgemeine Informationen zu 3D Daten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="camera.html">Kamera Modul</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rectification.html">Rektifizierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="downloading_images.html">Anzeigen und Herunterladen von Bildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html">Parameter, Statuswerte und Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="detection_modules.html">Detektions- und Messmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="measure.html">Measure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#measuring-depth">Tiefe messen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">LoadCarrier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Erkennung von Load Carriern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Füllstandserkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-reading">Tagerkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag-Wiedererkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html">ItemPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="boxpick.html">BoxPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#detection-of-items">Erkennung von Rechtecken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#boxpick-template-api">BoxPick Template API“</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cadmatch.html">CADMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-pose-priors">Setzen von Posenvorgaben</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#template-api">Template API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration_modules.html">Konfigurationsmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Kameramontage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking">Kollisionsprüfung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html">IOControl und Projektor-Kontrolle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database_modules.html">Datenbankmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier_db.html">LoadCarrierDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-definition">Load Carrier Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-compartments">Load Carrier Abteile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">RoiDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gripper_db.html">GripperDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#setting-a-gripper">Erstellen eines Greifers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#cad-element-api">CAD-Greiferelement API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Web GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#accessing-the-web-gui">Zugriff auf die Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#exploring-the-web-gui">Kennenlernen der Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#web-gui-access-control">Web GUI Zugriffskontrolle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-camera-images">Herunterladen von Kamerabildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Herunterladen von Tiefenbildern und Punktwolken</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_userspace.html">UserSpace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Generic Robot Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#job-definition">Job Definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#job-types">Job Arten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#primary-and-related-objects">Primäre und zugehörige Objekte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#execution-modes">Ausführungsmodi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gri-binary-protocol-specification">Spezifikation des Binären GRI Protokolls</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#message-header-8-bytes">Header (8 Bytes)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pose-formats">Posenformate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#actions">Aktionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#job-status">Jobstatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#body-definitions">Body Definitionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-codes-and-semantics">Fehlercodes und Bedeutung</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-with-a-robot">Integration mit einem Roboter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#job-and-hec-config-api">Job und HEC_config API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#example-applications">Beispielanwendungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Fehlerbehebung</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC Bilddatenschnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC Servicedefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Beispielclient</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#setting-time-manually">Manuelles Setzen der Zeit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userspace.html">UserSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configuration">Konfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="userspace.html#configure-userspace-via-the-webgui">Konfiguration des UserSpace über die Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configure-http-proxy">HTTP Proxy konfigurieren</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#view-running-applications">Anzeige laufender Apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#network-access-to-userspace-applications">Netzwerkzugriff auf die UserSpace Anwendungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#restrictions">Einschränkungen</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Backup der Einstellungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard NG</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#pose-formats">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_rt.html">Rotationsmatrix und Translationsvektor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-rotation-matrix-to-quaternion">Umrechnung von Rotationsmatrizen in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-quaternion-to-rotation-matrix">Umrechnung von Quaternionen in Rotationsmatrizen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_abb.html">ABB Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fanuc.html">FANUC XYZ-WPR Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-fanuc-wpr-to-quaternion">Umrechnung von FANUC-WPR in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-quaternion-to-fanuc-wpr">Umrechnung von Quaternionen in FANUC-WPR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_franka_emika.html">Franka Emika Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-transformation-matrix-to-quaternion">Umrechnung von Transformation in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-rotation-xyz-to-quaternion">Umrechnung von Rotation-XYZ in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-and-translation-to-transformation">Umrechnung von Quaternion und Translation in Transformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-to-rotation-xyz">Umrechnung von Quaternion in Rotation-XYZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#pose-representation-in-racecom-messages-and-state-machines">Posenrepräsentation in RaceCom Messages und Statemachines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fruitcore_horst.html">Fruitcore HORST Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kawasaki.html">Kawasaki XYZ-OAT Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-kawasaki-oat-to-quaternion">Umrechnung von Kawasaki-OAT in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-quaternion-to-kawasaki-oat">Umrechnung von Quaternionen in Kawasaki-OAT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kuka.html">KUKA XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-kuka-abc-to-quaternion">Umrechnung von KUKA-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-quaternion-to-kuka-abc">Umrechnung von Quaternionen in KUKA-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_mitsubishi.html">Mitsubishi XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-mitsubishi-abc-to-quaternion">Umrechnung von Mitsubishi-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-quaternion-to-mitsubishi-abc">Umrechnung von Quaternionen in Mitsubishi-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_ur.html">Universal Robots Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-angle-axis-format-to-quaternion">Umrechnung vom Angle-Axis Format in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-quaternion-to-angle-axis-format">Umrechnung von Quaternionen ins Angle-Axis Format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_yaskawa.html">Yaskawa Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-yaskawa-rx-ry-rz-to-quaternion">Umrechnung von Yaskawa Rx, Ry, Rz in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-quaternion-to-yaskawa-rx-ry-rz">Umrechnung von Quaternionen in Yaskawa Rx, Ry, Rz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard NG</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">rc_visard NG</a> &gt;</li>
+        
+          <li><a href="interfaces.html">Schnittstellen</a> &gt;</li>
+        
+      <li>Generic Robot Interface</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="generic-robot-interface">
+<span id="sect-gri"></span><h1>Generic Robot Interface<a class="headerlink" href="#generic-robot-interface" title="Link zu dieser Überschrift">¶</a></h1>
+<p id="index-0">Das Generic Robot Interface (GRI) ist ein Integrationslayer, der die <a class="reference internal" href="rest_api.html"><span class="doc">REST-API v2</span></a> überbrückt und eine standardisierte Kommunikationsschnittstelle zu den Softwaremodulen über eine einfache TCP-Socket-Kommunikation auf Port 7100 bietet.</p>
+<p>Das GRI ermöglicht es, Konfigurationen zu erstellen und als nummerierte Jobs zu speichern. Diese Jobs können durch einfache Befehle des Roboters über TCP-Socket-Kommunikation getriggert werden. Das GRI übernimmt intern die REST-API-Kommunikation und liefert die ausgewählten Posenergebnisse in einem roboterspezifisch wählbaren Format.</p>
+<div class="section" id="job-definition">
+<h2>Job Definition<a class="headerlink" href="#job-definition" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Jobs sind vorkonfigurierte Aufgaben, die von der Roboteranwendung getriggert werden können. Jeder Job hat eine eindeutige ID und enthält alle notwendigen Informationen für eine bestimmte Operation, z.B. das Berechnen von Greifpunkten für das Bin Picking oder das Ändern von Laufzeitparametern eines Moduls. Einmal konfiguriert, kann der Roboter diese Jobs mit einfachen Socket-Befehlen ausführen und gegebenenfalls die zurückgegebenen Posen empfangen.</p>
+<div class="section" id="job-types">
+<span id="sect-gri-job-types"></span><h3>Job Arten<a class="headerlink" href="#job-types" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Das Generic Robot Interface unterstützt drei Arten von Jobs:</p>
+<p><strong>Pipeline Service Job (CALL_PIPELINE_SERVICE)</strong></p>
+<p>Dieser Job ruft einen Service auf einer bestimmten Kamera-Pipeline auf, um beispielsweise Objekte zu erkennen oder Greifpunkte zu berechnen, und gibt Posendaten an den Roboter zurück (z.B. Greifposen).</p>
+<p>Ein Pipeline-Service-Job besteht aus:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">job_type</span></code>: die Art des Jobs <code class="docutils literal notranslate"><span class="pre">CALL_PIPELINE_SERVICE</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name des Jobs (beschreibender Name zur Unterscheidung von Jobs)</li>
+<li><code class="docutils literal notranslate"><span class="pre">pipeline</span></code>: die Kamerapipeline, die für den Job verwendet werden soll (z.B. „0“)</li>
+<li><code class="docutils literal notranslate"><span class="pre">node</span></code>: der REST-API Name der Pipeline-Node die genutzt werden soll (z.B. <code class="docutils literal notranslate"><span class="pre">rc_load_carrier</span></code>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">service</span></code>: der REST-API Name des Services, der aufgerufen werden soll</li>
+<li><code class="docutils literal notranslate"><span class="pre">args</span></code>: die REST-API Json Argumente, die dem Service übergeben werden sollen</li>
+<li><code class="docutils literal notranslate"><span class="pre">selected_return</span></code>: der REST-API Name des Felds, das zurückgeliefert werden soll</li>
+</ul>
+<p>Eine Beispieldefinition für einen Pipeline-Service-Job ist:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">{</span>
+   <span class="s2">&quot;args&quot;</span>: <span class="o">{</span>
+      <span class="s2">&quot;pose_frame&quot;</span>: <span class="s2">&quot;external&quot;</span>,
+      <span class="s2">&quot;suction_surface_length&quot;</span>: <span class="m">0</span>.02,
+      <span class="s2">&quot;suction_surface_width&quot;</span>: <span class="m">0</span>.02
+   <span class="o">}</span>,
+   <span class="s2">&quot;job_type&quot;</span>: <span class="s2">&quot;CALL_PIPELINE_SERVICE&quot;</span>,
+   <span class="s2">&quot;name&quot;</span>: <span class="s2">&quot;Compute Grasps&quot;</span>,
+   <span class="s2">&quot;node&quot;</span>: <span class="s2">&quot;rc_itempick&quot;</span>,
+   <span class="s2">&quot;pipeline&quot;</span>: <span class="s2">&quot;0&quot;</span>,
+   <span class="s2">&quot;selected_return&quot;</span>: <span class="s2">&quot;grasps&quot;</span>,
+   <span class="s2">&quot;service&quot;</span>: <span class="s2">&quot;compute_grasps&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Die verfügbaren Werte für <code class="docutils literal notranslate"><span class="pre">selected_return</span></code> hängen von der gewählten Node (Modul) ab und können z.B. <code class="docutils literal notranslate"><span class="pre">grasps</span></code> oder <code class="docutils literal notranslate"><span class="pre">matches</span></code> sein. Details zu <code class="docutils literal notranslate"><span class="pre">node</span></code>, <code class="docutils literal notranslate"><span class="pre">service</span></code>, <code class="docutils literal notranslate"><span class="pre">args</span></code> und <code class="docutils literal notranslate"><span class="pre">selected_return</span></code> sind in den Servicedefinitionen des entsprechenden Moduls beschrieben.</p>
+<p><strong>Globaler Service-Job (CALL_GLOBAL_SERVICE)</strong></p>
+<p>Dieser Job ruft einen Service auf, der nicht an eine bestimmte Pipeline gebunden ist, z.B. Datenbank Services zum Festlegen von Regions of Interest oder Load Carriern. Globale Service Jobs geben keine Posen zurück.</p>
+<p>Ein globaler Service-Job besteht aus:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">job_type</span></code>: die Art des Jobs <code class="docutils literal notranslate"><span class="pre">CALL_GLOBAL_SERVICE</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name des Jobs (beschreibender Name zur Unterscheidung von Jobs)</li>
+<li><code class="docutils literal notranslate"><span class="pre">node</span></code>: der REST-API Name der globalen Node die genutzt werden soll (z.B. <code class="docutils literal notranslate"><span class="pre">rc_load_carrier_db</span></code>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">service</span></code>: der REST-API Name des Services, der aufgerufen werden soll</li>
+<li><code class="docutils literal notranslate"><span class="pre">args</span></code>: die REST-API Json Argumente, die dem Service übergeben werden sollen</li>
+</ul>
+<p>Eine Beispieldefinition für einen globalen Service-Job ist:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">{</span>
+   <span class="s2">&quot;args&quot;</span>: <span class="o">{</span>
+      <span class="s2">&quot;region_of_interest_2d&quot;</span>: <span class="o">{</span>
+         <span class="s2">&quot;id&quot;</span>: <span class="s2">&quot;2d_roi&quot;</span>,
+         <span class="s2">&quot;width&quot;</span>: <span class="m">526</span>,
+         <span class="s2">&quot;height&quot;</span>: <span class="m">501</span>,
+         <span class="s2">&quot;offset_x&quot;</span>: <span class="m">558</span>,
+         <span class="s2">&quot;offset_y&quot;</span>: <span class="m">307</span>
+      <span class="o">}</span>
+   <span class="o">}</span>,
+   <span class="s2">&quot;job_type&quot;</span>: <span class="s2">&quot;CALL_GLOBAL_SERVICE&quot;</span>,
+   <span class="s2">&quot;name&quot;</span>: <span class="s2">&quot;Set 2D ROI&quot;</span>,
+   <span class="s2">&quot;node&quot;</span>: <span class="s2">&quot;rc_roi_db&quot;</span>,
+   <span class="s2">&quot;service&quot;</span>: <span class="s2">&quot;set_region_of_interest_2d&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Details zu <code class="docutils literal notranslate"><span class="pre">node</span></code>, <code class="docutils literal notranslate"><span class="pre">service</span></code> und <code class="docutils literal notranslate"><span class="pre">args</span></code> sind in den Servicedefinitionen des entsprechenden Moduls beschrieben.</p>
+<p><strong>Parameter-Job (SET_PIPELINE_PARAMETER)</strong></p>
+<p>Dieser Job setzt Laufzeitparameter von Pipeline-Nodes, z.B. zum Anpassen von Kamera- oder Detektionsmoduleinstellungen. Parameter-Jobs geben keine Posen zurück.</p>
+<p>Ein Parameter-Job besteht aus:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">job_type</span></code>: die Art des Jobs <code class="docutils literal notranslate"><span class="pre">SET_PIPELINE_PARAMETER</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">name</span></code>: Name des Jobs (beschreibender Name zur Unterscheidung von Jobs)</li>
+<li><code class="docutils literal notranslate"><span class="pre">pipeline</span></code>: die Kamerapipeline, die für den Job verwendet werden soll (z.B. „0“)</li>
+<li><code class="docutils literal notranslate"><span class="pre">node</span></code>: der REST-API Name der Pipeline-Node die genutzt werden soll (z.B. <code class="docutils literal notranslate"><span class="pre">rc_stereomatching</span></code>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">parameters</span></code>: die zu setzenden Parameter als Key-Value Paare</li>
+</ul>
+<p>Eine Beispieldefinition für einen Parameter-Job ist:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">{</span>
+   <span class="s2">&quot;job_type&quot;</span>: <span class="s2">&quot;SET_PIPELINE_PARAMETERS&quot;</span>,
+   <span class="s2">&quot;name&quot;</span>: <span class="s2">&quot;Set Stereo Parameters&quot;</span>,
+   <span class="s2">&quot;node&quot;</span>: <span class="s2">&quot;rc_stereomatching&quot;</span>,
+   <span class="s2">&quot;parameters&quot;</span>: <span class="o">{</span>
+      <span class="s2">&quot;maxdepth&quot;</span>: <span class="m">2</span>,
+      <span class="s2">&quot;quality&quot;</span>: <span class="s2">&quot;High&quot;</span>
+   <span class="o">}</span>,
+   <span class="s2">&quot;pipeline&quot;</span>: <span class="s2">&quot;0&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Details zu <code class="docutils literal notranslate"><span class="pre">node</span></code> und <code class="docutils literal notranslate"><span class="pre">parameters</span></code> sind in den Laufzeitparameterdefinitionen des entsprechenden Moduls beschrieben.</p>
+<p>Die Jobs können über die Web GUI oder über die REST-API definiert werden (siehe <a class="reference internal" href="#sect-gri-api"><span class="std std-ref">Job und HEC_config API</span></a>).</p>
+</div>
+<div class="section" id="primary-and-related-objects">
+<span id="sect-gri-primary-related"></span><h3>Primäre und zugehörige Objekte<a class="headerlink" href="#primary-and-related-objects" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Die <em>primären Objekte</em> sind die Objekte, die als <code class="docutils literal notranslate"><span class="pre">selected_return</span></code> festgelegt wurden, z.B. die Greifpunkte <code class="docutils literal notranslate"><span class="pre">grasps</span></code>. Die <em>zugehörigen Objekte</em> sind dann die gefundenen Objekte <code class="docutils literal notranslate"><span class="pre">items</span></code> oder <code class="docutils literal notranslate"><span class="pre">matches</span></code>, auf denen der zurückgegebene Greifpunkt liegt. Während ein primäres Objekt <code class="docutils literal notranslate"><span class="pre">grasp</span></code> genau ein zugehöriges Objekt <code class="docutils literal notranslate"><span class="pre">item</span></code> oder <code class="docutils literal notranslate"><span class="pre">match</span></code> hat, kann ein primäres Objekt <code class="docutils literal notranslate"><span class="pre">match</span></code> mehrere zugehörige Objekte <code class="docutils literal notranslate"><span class="pre">grasp</span></code> haben.</p>
+</div>
+<div class="section" id="execution-modes">
+<span id="sect-gri-execution-modes"></span><h3>Ausführungsmodi<a class="headerlink" href="#execution-modes" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Das Generic Robot Interface unterstützt zwei Ausführungsmodi zur Optimierung der Roboterzykluszeit:</p>
+<ul class="simple">
+<li>Synchrone Ausführung: Der Roboter startet einen Job und wartet auf das erste Ergebnis. Dieser Modus empfiehlt sich, wenn die Ergebnisse sofort benötigt werden.</li>
+<li>Asynchrone Ausführung: Der Roboter startet einen Job und kann mit anderen Vorgängen fortfahren, während der Job im Hintergrund läuft. Der Jobstatus kann abgefragt und Ergebnisse abgerufen werden, sobald diese vorliegen. Dieser Modus maximiert die Effizienz bei langen Erkennungszeiten.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="hand-eye-calibration">
+<span id="sect-gri-hand-eye-calibration"></span><h2>Hand-Auge-Kalibrierung<a class="headerlink" href="#hand-eye-calibration" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Für jede Kamera-Pipeline kann eine Hand-Auge-Kalibrierkonfiguration definiert werden, um eine programmgesteuerte Hand-Auge-Kalibrierung mithilfe des GRI zu ermöglichen. Jede Hand-Auge-Kalibrierkonfiguration besteht aus den folgenden Informationen:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">grid_height</span></code>: Höhe des Kalibriermusters in Metern</li>
+<li><code class="docutils literal notranslate"><span class="pre">grid_width</span></code>:  Breite des Kalibriermusters in Metern</li>
+<li><code class="docutils literal notranslate"><span class="pre">robot_mounted</span></code>: Boolean, das festlegt, ob die Kamera am Roboter montiert ist</li>
+<li><code class="docutils literal notranslate"><span class="pre">tcp_offset</span></code>: 0 für 6DOF-Roboter. Für 4DOF-Roboter: der vorzeichenbehaftete Offset vom TCP zum Kamerakoordinatensystem (am Roboter montierter Sensor) oder zur sichtbaren Oberfläche des Kalibriermusters (statisch montierter Sensor) entlang der TCP-Rotationsachse in Metern.</li>
+<li><code class="docutils literal notranslate"><span class="pre">tcp_rotation_axis</span></code>: -1 für 6DOF-Roboter. Für 4DOF-Roboter: Bestimmt die Achse des Roboterkoordinatensystems, um die der Roboter seinen TCP drehen kann (0 wird für X, 1 für Y und 2 für die Z-Achse verwendet).</li>
+</ul>
+<p>Nähere Informationen zu diesen Einstellungen und zur Hand-Auge-Kalibrierung im Allgemeinen sind in <a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-Auge-Kalibrierung</span></a> beschrieben.</p>
+<p>Die Hand-Auge-Kalibrierkonfigurationen können über die Web GUI oder über die REST-API (siehe <a class="reference internal" href="#sect-gri-api"><span class="std std-ref">Job und HEC_config API</span></a>) gesetzt werden.</p>
+</div>
+<div class="section" id="gri-binary-protocol-specification">
+<span id="sect-gri-protocol-specification"></span><h2>Spezifikation des Binären GRI Protokolls<a class="headerlink" href="#gri-binary-protocol-specification" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Diese Spezifikation definiert das genaue On-Wire-Format für Client-Server-Nachrichten. Eine Nachricht besteht aus einem festen 8-Byte-Header und einem Body, dessen Layout von der Protokollversion abhängt. Derzeit gibt es nur die Protokollversion 1.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Alle Mehrbyte-Ganzzahlen sind <strong>Little-Endian</strong>. Die Typen sind <code class="docutils literal notranslate"><span class="pre">uint8</span></code> (8 Bit ohne Vorzeichen), <code class="docutils literal notranslate"><span class="pre">int16</span></code> (16 Bit mit Vorzeichen) und <code class="docutils literal notranslate"><span class="pre">int32</span></code> (32 Bit mit Vorzeichen).</p>
+</div>
+<div class="section" id="message-header-8-bytes">
+<span id="sect-gri-header"></span><h3>Header (8 Bytes)<a class="headerlink" href="#message-header-8-bytes" title="Link zu dieser Überschrift">¶</a></h3>
+<span id="tab-gri-message-header-definition"></span><table border="1" class="docutils" id="header-definition">
+<caption><span class="caption-number">Tab. 57 </span><span class="caption-text">Header Definition</span><a class="headerlink" href="#header-definition" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="20%" />
+<col width="9%" />
+<col width="6%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Feld</th>
+<th class="head">Typ</th>
+<th class="head">Größe</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Magic Number</td>
+<td>uint32</td>
+<td>4</td>
+<td>ASCII tag <cite>„GRI0“</cite>, Bytes <cite>47 52 49 00</cite> (Little-Endian)</td>
+</tr>
+<tr class="row-odd"><td>protocol_version</td>
+<td>uint8</td>
+<td>1</td>
+<td>Protokollversion: derzeit <cite>1</cite></td>
+</tr>
+<tr class="row-even"><td>message_length</td>
+<td>uint8</td>
+<td>1</td>
+<td>Gesamte Nachrichtengröße (Bytes), inkl. Header + Body</td>
+</tr>
+<tr class="row-odd"><td>pose_format</td>
+<td>uint8</td>
+<td>1</td>
+<td>Datenformat für Posen (siehe <a class="reference internal" href="#sect-gri-pose-formats"><span class="std std-ref">Posenformate</span></a>)</td>
+</tr>
+<tr class="row-even"><td>Aktion</td>
+<td>uint8</td>
+<td>1</td>
+<td>Kommando/Aktion (siehe <a class="reference internal" href="#sect-gri-ac"><span class="std std-ref">Aktionen</span></a>)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pose-formats">
+<span id="sect-gri-pose-formats"></span><h3>Posenformate<a class="headerlink" href="#pose-formats" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Das GRI verwendet zur Positionsdarstellung immer <strong>Millimeter</strong>. Die folgenden Tabellen zeigen verschiedene Rotationsformate, die passend zur Rotationsdarstellung des verwendeten Roboters ausgewählt werden können. Die Formate sind in Nicht-Euler-Rotationsformate, Tait-Bryan-Euler-Rotationsformate (alle drei Achsen werden verwendet) und reine Euler-Rotationsformate (erste und letzte Rotationsachse sind identisch) unterteilt.</p>
+<span id="tab-gri-pose-formats-non-euler"></span><table border="1" class="docutils" id="nicht-euler-rotationsformate">
+<caption><span class="caption-number">Tab. 58 </span><span class="caption-text">Nicht-Euler Rotationsformate</span><a class="headerlink" href="#nicht-euler-rotationsformate" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="21%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+<col width="22%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Wert</th>
+<th class="head">rot_1</th>
+<th class="head">rot_2</th>
+<th class="head">rot_3</th>
+<th class="head">rot_4</th>
+<th class="head">Einheit</th>
+<th class="head">Beispielroboter</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>QUAT_WXYZ</td>
+<td>1</td>
+<td>w</td>
+<td>x</td>
+<td>y</td>
+<td>z</td>
+<td>–</td>
+<td>ABB</td>
+</tr>
+<tr class="row-odd"><td>QUAT_XYZW</td>
+<td>2</td>
+<td>x</td>
+<td>y</td>
+<td>z</td>
+<td>w</td>
+<td>–</td>
+<td>Fruitcore HORST</td>
+</tr>
+<tr class="row-even"><td>AXIS_ANGLE_RAD</td>
+<td>3</td>
+<td>rx</td>
+<td>ry</td>
+<td>rz</td>
+<td>–</td>
+<td>rad</td>
+<td>Universal Robots</td>
+</tr>
+</tbody>
+</table>
+<p>In der folgenden Notation kennzeichnen Hochstriche aufeinanderfolgende Rotationen im intrinsischen Bezugssystem (z. B. Y‘ = Rotation um die neue Y-Achse nach der ersten Rotation). <code class="docutils literal notranslate"><span class="pre">_B</span></code> und <code class="docutils literal notranslate"><span class="pre">_F</span></code> bestimmen die Reihenfolge der Rotationskomponenten. <code class="docutils literal notranslate"><span class="pre">F</span></code> steht für vorwärts (forward), d.h. die Rotationskomponenten werden in derselben Reihenfolge angegeben, in der die Rotation angewendet wird, und <code class="docutils literal notranslate"><span class="pre">B</span></code> steht für rückwärts (backward), d.h. die Rotationskomponenten werden in umgekehrter Reihenfolge angegeben. <code class="docutils literal notranslate"><span class="pre">_RAD</span></code> und <code class="docutils literal notranslate"><span class="pre">_DEG</span></code> bestimmen, ob die Rotationskomponenten gegebenenfalls in Radian oder Grad angegeben werden. Das Format <code class="docutils literal notranslate"><span class="pre">EULER_ZYX_B_DEG</span></code> bedeutet also, dass die intrinsische Rotationsreihenfolge z-y‘-x‘ ist (zuerst Rotation um die z-Achse, dann Rotation um die neue y-Achse, dann Rotation um die neue x-Achse), die Reihenfolge der Rotationskomponenten rückwärts ist (das erste Rotationselement ist also der Winkel um die x-Achse), und die Winkel in Grad angegeben werden.</p>
+<span id="tab-gri-pose-formats-tait-bryan"></span><table border="1" class="docutils" id="tait-bryan-euler-rotationsformate-hochstriche-zeigen-aufeinanderfolgende-rotationen-im-intrinsischen-koordinatensystem-an-z-b-ist-y-eine-rotation-um-die-neue-y-achse-nach-der-ersten-rotation-f-forward-1-2-3-b-backward-3-2-1-deg-degrees-grad-rad-radian-radian">
+<caption><span class="caption-number">Tab. 59 </span><span class="caption-text">Tait-Bryan-Euler-Rotationsformate. Hochstriche zeigen aufeinanderfolgende Rotationen im intrinsischen Koordinatensystem an (z.B. ist Y‘ eine Rotation um die neue Y-Achse nach der ersten Rotation). <strong>_F (Forward)</strong>: <cite>[1., 2., 3.]</cite> | <strong>_B (Backward)</strong>: <cite>[3., 2., 1.]</cite>,  <strong>_DEG (degrees): Grad</strong> | <strong>_RAD (radian): Radian</strong>.</span><a class="headerlink" href="#tait-bryan-euler-rotationsformate-hochstriche-zeigen-aufeinanderfolgende-rotationen-im-intrinsischen-koordinatensystem-an-z-b-ist-y-eine-rotation-um-die-neue-y-achse-nach-der-ersten-rotation-f-forward-1-2-3-b-backward-3-2-1-deg-degrees-grad-rad-radian-radian" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="19%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="10%" />
+<col width="10%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Wert</th>
+<th class="head">rot_1</th>
+<th class="head">rot_2</th>
+<th class="head">rot_3</th>
+<th class="head">rot_4</th>
+<th class="head">Einheit</th>
+<th class="head">Beispielroboter</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>EULER_XYZ_F_DEG</td>
+<td>4</td>
+<td>X</td>
+<td>Y‘</td>
+<td>Z‘‘</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_XYZ_F_RAD</td>
+<td>5</td>
+<td>X</td>
+<td>Y‘</td>
+<td>Z‘‘</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_XYZ_B_DEG</td>
+<td>6</td>
+<td>Z‘‘</td>
+<td>Y‘</td>
+<td>X</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_XYZ_B_RAD</td>
+<td>7</td>
+<td>Z‘‘</td>
+<td>Y‘</td>
+<td>X</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_XZY_F_DEG</td>
+<td>8</td>
+<td>X</td>
+<td>Z‘</td>
+<td>Y‘‘</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_XZY_F_RAD</td>
+<td>9</td>
+<td>X</td>
+<td>Z‘</td>
+<td>Y‘‘</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_XZY_B_DEG</td>
+<td>10</td>
+<td>Y‘‘</td>
+<td>Z‘</td>
+<td>X</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_XZY_B_RAD</td>
+<td>11</td>
+<td>Y‘‘</td>
+<td>Z‘</td>
+<td>X</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_YXZ_F_DEG</td>
+<td>12</td>
+<td>Y</td>
+<td>X‘</td>
+<td>Z‘‘</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_YXZ_F_RAD</td>
+<td>13</td>
+<td>Y</td>
+<td>X‘</td>
+<td>Z‘‘</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_YXZ_B_DEG</td>
+<td>14</td>
+<td>Z‘‘</td>
+<td>X‘</td>
+<td>Y</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_YXZ_B_RAD</td>
+<td>15</td>
+<td>Z‘‘</td>
+<td>X‘</td>
+<td>Y</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_YZX_F_DEG</td>
+<td>16</td>
+<td>Y</td>
+<td>Z‘</td>
+<td>X‘‘</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_YZX_F_RAD</td>
+<td>17</td>
+<td>Y</td>
+<td>Z‘</td>
+<td>X‘‘</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_YZX_B_DEG</td>
+<td>18</td>
+<td>X‘‘</td>
+<td>Z‘</td>
+<td>Y</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_YZX_B_RAD</td>
+<td>19</td>
+<td>X‘‘</td>
+<td>Z‘</td>
+<td>Y</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_ZXY_F_DEG</td>
+<td>20</td>
+<td>Z</td>
+<td>X‘</td>
+<td>Y‘‘</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_ZXY_F_RAD</td>
+<td>21</td>
+<td>Z</td>
+<td>X‘</td>
+<td>Y‘‘</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_ZXY_B_DEG</td>
+<td>22</td>
+<td>Y‘‘</td>
+<td>X‘</td>
+<td>Z</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_ZXY_B_RAD</td>
+<td>23</td>
+<td>Y‘‘</td>
+<td>X‘</td>
+<td>Z</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_ZYX_F_DEG</td>
+<td>24</td>
+<td>Z</td>
+<td>Y‘</td>
+<td>X‘‘</td>
+<td>–</td>
+<td>deg</td>
+<td>KUKA</td>
+</tr>
+<tr class="row-odd"><td>EULER_ZYX_F_RAD</td>
+<td>25</td>
+<td>Z</td>
+<td>Y‘</td>
+<td>X‘‘</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_ZYX_B_DEG</td>
+<td>26</td>
+<td>X‘‘</td>
+<td>Y‘</td>
+<td>Z</td>
+<td>–</td>
+<td>deg</td>
+<td>FANUC, Mitsubishi, Yaskawa</td>
+</tr>
+<tr class="row-odd"><td>EULER_ZYX_B_RAD</td>
+<td>27</td>
+<td>X‘‘</td>
+<td>Y‘</td>
+<td>Z</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<span id="tab-gri-pose-formats-euler"></span><table border="1" class="docutils" id="euler-rotationsformate-hochstriche-zeigen-aufeinanderfolgende-rotationen-im-intrinsischen-koordinatensystem-an-z-b-ist-y-eine-rotation-um-die-neue-y-achse-nach-der-ersten-rotation-f-forward-1-2-3-b-backward-3-2-1-deg-degrees-grad-rad-radian-radian">
+<caption><span class="caption-number">Tab. 60 </span><span class="caption-text">Euler-Rotationsformate. Hochstriche zeigen aufeinanderfolgende Rotationen im intrinsischen Koordinatensystem an (z.B. ist Y‘ eine Rotation um die neue Y-Achse nach der ersten Rotation). <strong>_F (Forward)</strong>: <cite>[1., 2., 3.]</cite> | <strong>_B (Backward)</strong>: <cite>[3., 2., 1.]</cite>,  <strong>_DEG (degrees): Grad</strong> | <strong>_RAD (radian): Radian</strong>.</span><a class="headerlink" href="#euler-rotationsformate-hochstriche-zeigen-aufeinanderfolgende-rotationen-im-intrinsischen-koordinatensystem-an-z-b-ist-y-eine-rotation-um-die-neue-y-achse-nach-der-ersten-rotation-f-forward-1-2-3-b-backward-3-2-1-deg-degrees-grad-rad-radian-radian" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="19%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="10%" />
+<col width="10%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Wert</th>
+<th class="head">rot_1</th>
+<th class="head">rot_2</th>
+<th class="head">rot_3</th>
+<th class="head">rot_4</th>
+<th class="head">Einheit</th>
+<th class="head">Beispielroboter</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>EULER_XYX_F_DEG</td>
+<td>28</td>
+<td>X</td>
+<td>Y‘</td>
+<td>X‘‘</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_XYX_F_RAD</td>
+<td>29</td>
+<td>X</td>
+<td>Y‘</td>
+<td>X‘‘</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_XYX_B_DEG</td>
+<td>30</td>
+<td>X‘‘</td>
+<td>Y‘</td>
+<td>X</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_XYX_B_RAD</td>
+<td>31</td>
+<td>X‘‘</td>
+<td>Y‘</td>
+<td>X</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_XZX_F_DEG</td>
+<td>32</td>
+<td>X</td>
+<td>Z‘</td>
+<td>X‘‘</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_XZX_F_RAD</td>
+<td>33</td>
+<td>X</td>
+<td>Z‘</td>
+<td>X‘‘</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_XZX_B_DEG</td>
+<td>34</td>
+<td>X‘‘</td>
+<td>Z‘</td>
+<td>X</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_XZX_B_RAD</td>
+<td>35</td>
+<td>X‘‘</td>
+<td>Z‘</td>
+<td>X</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_YXY_F_DEG</td>
+<td>36</td>
+<td>Y</td>
+<td>X‘</td>
+<td>Y‘‘</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_YXY_F_RAD</td>
+<td>37</td>
+<td>Y</td>
+<td>X‘</td>
+<td>Y‘‘</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_YXY_B_DEG</td>
+<td>38</td>
+<td>Y‘‘</td>
+<td>X‘</td>
+<td>Y</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_YXY_B_RAD</td>
+<td>39</td>
+<td>Y‘‘</td>
+<td>X‘</td>
+<td>Y</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_YZY_F_DEG</td>
+<td>40</td>
+<td>Y</td>
+<td>Z‘</td>
+<td>Y‘‘</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_YZY_F_RAD</td>
+<td>41</td>
+<td>Y</td>
+<td>Z‘</td>
+<td>Y‘‘</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_YZY_B_DEG</td>
+<td>42</td>
+<td>Y‘‘</td>
+<td>Z‘</td>
+<td>Y</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_YZY_B_RAD</td>
+<td>43</td>
+<td>Y‘‘</td>
+<td>Z‘</td>
+<td>Y</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_ZXZ_F_DEG</td>
+<td>44</td>
+<td>Z</td>
+<td>X‘</td>
+<td>Z‘‘</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_ZXZ_F_RAD</td>
+<td>45</td>
+<td>Z</td>
+<td>X‘</td>
+<td>Z‘‘</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_ZXZ_B_DEG</td>
+<td>46</td>
+<td>Z‘‘</td>
+<td>X‘</td>
+<td>Z</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_ZXZ_B_RAD</td>
+<td>47</td>
+<td>Z‘‘</td>
+<td>X‘</td>
+<td>Z</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_ZYZ_F_DEG</td>
+<td>88</td>
+<td>Z</td>
+<td>Y‘</td>
+<td>Z‘‘</td>
+<td>–</td>
+<td>deg</td>
+<td>Kawasaki</td>
+</tr>
+<tr class="row-odd"><td>EULER_ZYZ_F_RAD</td>
+<td>49</td>
+<td>Z</td>
+<td>Y‘</td>
+<td>Z‘‘</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>EULER_ZYZ_B_DEG</td>
+<td>50</td>
+<td>Z‘‘</td>
+<td>Y‘</td>
+<td>Z</td>
+<td>–</td>
+<td>deg</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>EULER_ZYZ_B_RAD</td>
+<td>51</td>
+<td>Z‘‘</td>
+<td>Y‘</td>
+<td>Z</td>
+<td>–</td>
+<td>rad</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<p>Alle Posenkomponenten (Position <strong>und</strong> Rotation) sind <code class="docutils literal notranslate"><span class="pre">int32</span></code> mit 1.000.000 skaliert.</p>
+<ul class="simple">
+<li>Float zu Int: <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">=</span> <span class="pre">round(float</span> <span class="pre">*</span> <span class="pre">1000000)</span></code></li>
+<li>Int zu Float: <code class="docutils literal notranslate"><span class="pre">float</span> <span class="pre">=</span> <span class="pre">int</span> <span class="pre">/</span> <span class="pre">1000000.0</span></code></li>
+<li>Positionen werden <strong>vor der Skalierung</strong> in Millimetern erwartet.</li>
+<li>Winkel werden vor der Skalierung in Grad/Radian (je nach Format) erwartet.</li>
+<li>Quaternion-Komponenten haben keine Einheit, verwenden aber dieselbe Skalierung.</li>
+<li><code class="docutils literal notranslate"><span class="pre">rot_4</span></code> ist bei Euler oder Axis-Angle format ungenutzt (auf 0 gesetzt)</li>
+</ul>
+</div>
+<div class="section" id="actions">
+<span id="sect-gri-ac"></span><h3>Aktionen<a class="headerlink" href="#actions" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Die folgenden Aktionen können gesendet werden.</p>
+<span id="tab-gri-ac"></span><table border="1" class="docutils" id="gri-aktionen">
+<caption><span class="caption-number">Tab. 61 </span><span class="caption-text">GRI Aktionen</span><a class="headerlink" href="#gri-aktionen" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="22%" />
+<col width="8%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Wert</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>STATUS</td>
+<td>1</td>
+<td>Ready-Zustand des Systems abfragen; schreibt den Ready-Zustand auf <code class="docutils literal notranslate"><span class="pre">data_2</span></code> (1 oder 0)</td>
+</tr>
+<tr class="row-odd"><td>TRIGGER_JOB_SYNC</td>
+<td>2</td>
+<td>Führt einen Job synchron aus</td>
+</tr>
+<tr class="row-even"><td>TRIGGER_JOB_ASYNC</td>
+<td>3</td>
+<td>Startet einen Job asynchron</td>
+</tr>
+<tr class="row-odd"><td>GET_JOB_STATUS</td>
+<td>4</td>
+<td>Abfrage des Jobstatus (siehe <a class="reference internal" href="#sect-gri-job-status"><span class="std std-ref">Jobstatus</span></a>)</td>
+</tr>
+<tr class="row-even"><td>GET_NEXT_POSE</td>
+<td>5</td>
+<td>Abfrage des nächsten verfügbaren Ergebnisses</td>
+</tr>
+<tr class="row-odd"><td>GET_RELATED_POSE</td>
+<td>6</td>
+<td>Abtrage der nächsten zugehörigen Pose</td>
+</tr>
+<tr class="row-even"><td>HEC_INIT</td>
+<td>7</td>
+<td>Hand-Auge-Kalibrierung initialisieren</td>
+</tr>
+<tr class="row-odd"><td>HEC_SET_POSE</td>
+<td>8</td>
+<td>Kalibrierpose abspeichern</td>
+</tr>
+<tr class="row-even"><td>HEC_CALIBRATE</td>
+<td>9</td>
+<td>Kalibrierung durchführen und Ergebnis speichern</td>
+</tr>
+</tbody>
+</table>
+<p><strong>STATUS (1)</strong></p>
+<p>Liefert den Ready-Zustand des <em>rc_visard NG</em> in <code class="docutils literal notranslate"><span class="pre">data_2</span></code> (1 wenn ready, 0 wenn nicht).</p>
+<p><strong>TRIGGER_JOB_SYNC (2)</strong></p>
+<p>Führt den Job aus und gibt sofort das <strong>erste</strong> Ergebnis zurück. Weitere Ergebnisse werden für einen späteren Abruf gespeichert. Wenn der Job erfolgreich ist und Ergebnisse zurückliefert, ist der <code class="docutils literal notranslate"><span class="pre">error_code</span></code> Null und die Pose befüllt. Wenn keine Ergebnisse zurückgeliefert werden, liefert der <code class="docutils literal notranslate"><span class="pre">error_code</span></code> den Wert <code class="docutils literal notranslate"><span class="pre">NO_POSES_FOUND</span></code> (positiver Wert als Warnung). Außerdem wird Folgendes gemeldet:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">data_1</span></code> = <code class="docutils literal notranslate"><span class="pre">return_code</span></code> Wert der Node</li>
+<li><code class="docutils literal notranslate"><span class="pre">data_2</span></code> = Anzahl der verbleibenden <em>primären Objekte</em> (siehe <a class="reference internal" href="#sect-gri-primary-related"><span class="std std-ref">Primäre und zugehörige Objekte</span></a>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">data_3</span></code> = Anzahl der verbleibenden <em>zugehörigen Objekte</em> (ref. <a class="reference internal" href="#sect-gri-primary-related"><span class="std std-ref">Primäre und zugehörige Objekte</span></a>)</li>
+</ul>
+<p><strong>TRIGGER_JOB_ASYNC (3)</strong></p>
+<p>Startet den Job und endet sofort. Der Status des Jobs kann mit <code class="docutils literal notranslate"><span class="pre">GET_JOB_STATUS</span></code> (4) (siehe <a class="reference internal" href="#sect-gri-job-status"><span class="std std-ref">Jobstatus</span></a>) abgefragt und die Ergebnisse mit <code class="docutils literal notranslate"><span class="pre">GET_NEXT_POSE</span></code> (5) abgerufen werden, sobald der Job abgeschlossen (<code class="docutils literal notranslate"><span class="pre">DONE</span></code>) ist</p>
+<p><strong>GET_JOB_STATUS (4)</strong></p>
+<p>Liefert den Jobstatus. Es wird gemeldet:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">data_1</span></code> = <code class="docutils literal notranslate"><span class="pre">return_code</span></code> Wert der Node</li>
+<li><code class="docutils literal notranslate"><span class="pre">data_2</span></code> = Jobstatus (siehe Tabelle <a class="reference internal" href="#tab-gri-status-values"><span class="std std-ref">Job Statuswerte</span></a>)</li>
+</ul>
+<p>Fehlerdetails sind in <code class="docutils literal notranslate"><span class="pre">error_code</span></code> enthalten.</p>
+<p><strong>GET_NEXT_POSE (5)</strong></p>
+<p>Gibt das nächste Ergebnis des <em>primären Objekts</em> zurück. Außerdem wird Folgendes gemeldet:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">data_1</span></code> = <code class="docutils literal notranslate"><span class="pre">return_code</span></code> Wert der Node</li>
+<li><code class="docutils literal notranslate"><span class="pre">data_2</span></code> = Anzahl der verbleibenden <em>primären Objekte</em> (siehe <a class="reference internal" href="#sect-gri-primary-related"><span class="std std-ref">Primäre und zugehörige Objekte</span></a>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">data_3</span></code> = Anzahl der verbleibenden <em>zugehörigen Objekte</em> (ref. <a class="reference internal" href="#sect-gri-primary-related"><span class="std std-ref">Primäre und zugehörige Objekte</span></a>)</li>
+</ul>
+<p>Wenn keine primären Objekte mehr verfügbar sind, wird <code class="docutils literal notranslate"><span class="pre">NO_POSES_FOUND</span></code> zurückgegeben und der Job zurückgesetzt.</p>
+<p><strong>GET_RELATED_POSE (6)</strong></p>
+<p>Gibt die nächste Pose des <em>zugehörigen Objekts</em> zum aktuellen <em>primären Objekt</em> zurück. Außerdem wird Folgendes gemeldet:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">data_1</span></code> = <code class="docutils literal notranslate"><span class="pre">return_code</span></code> Wert der Node</li>
+<li><code class="docutils literal notranslate"><span class="pre">data_2</span></code> = Anzahl der verbleibenden <em>primären Objekte</em> (siehe <a class="reference internal" href="#sect-gri-primary-related"><span class="std std-ref">Primäre und zugehörige Objekte</span></a>)</li>
+<li><code class="docutils literal notranslate"><span class="pre">data_3</span></code> = Anzahl der verbleibenden <em>zugehörigen Objekte</em> (ref. <a class="reference internal" href="#sect-gri-primary-related"><span class="std std-ref">Primäre und zugehörige Objekte</span></a>)</li>
+</ul>
+<p>Wenn keine zugehörigen Posen gefunden wurden, wird <code class="docutils literal notranslate"><span class="pre">NO_RELATED_POSES</span></code> zurückgeliefert.</p>
+<p><strong>HEC_INIT (7)</strong></p>
+<p>Diese Aktion initialisiert die Hand-Auge-Kalibrierung. Sie löscht existierende Kalibrierdaten, wendet die Hand-Auge-Kalibrierkonfiguration der Pipeline an und bereitet das System zum Aufnehmen von Kalibrierposen vor. Der Wert in <code class="docutils literal notranslate"><span class="pre">data_1</span></code> gibt die Zielpipeline für die Kalibrierung an.</p>
+<p><strong>HEC_SET_POSE (8)</strong></p>
+<p>Diese Aktion wird achtmal verwendet, um unterschiedliche Roboterposen mit sichtbarem Kalibriermuster aufzuzeichnen. Das Feld <code class="docutils literal notranslate"><span class="pre">data_2</span></code> dient zur Angabe des Bildspeicherplatzes (Slot) (0-7). Eine vorherige Pose in einem Slot wird überschrieben, wenn dieser wiederverwendet wird. Jede Pose muss eine andere Ansicht des Kalibriermusters liefern, wie in <a class="reference internal" href="handeye_calibration.html"><span class="doc">Hand-Auge-Kalibrierung</span></a> beschrieben. Der Inhalt von <code class="docutils literal notranslate"><span class="pre">data_1</span></code> gibt die Zielpipeline an.</p>
+<p><strong>HEC_CALIBRATE (9)</strong></p>
+<p>Diese Aktion verarbeitet alle aufgezeichneten Posen und berechnet die Transformation zwischen Kamera und Roboter. Erfolgreiche Kalibrierergebnisse werden automatisch gespeichert. Der Inhalt von <code class="docutils literal notranslate"><span class="pre">data_1</span></code> gibt die Zielpipeline an.</p>
+</div>
+<div class="section" id="job-status">
+<span id="sect-gri-job-status"></span><h3>Jobstatus<a class="headerlink" href="#job-status" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Die folgenden Statuswerte für Jobs können zurückgeliefert werden.</p>
+<span id="tab-gri-status-values"></span><table border="1" class="docutils" id="job-statuswerte">
+<caption><span class="caption-number">Tab. 62 </span><span class="caption-text">Job Statuswerte</span><a class="headerlink" href="#job-statuswerte" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="59%" />
+<col width="41%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Wert</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>INACTIVE</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>RUNNING</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>DONE</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>FAILED</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="body-definitions">
+<h3>Body Definitionen<a class="headerlink" href="#body-definitions" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Es gibt unterschiedliche Body-Definitionen, je nachdem, ob eine Anfrage gesendet oder eine Antwort empfangen wird. Der Anfrage-Body besteht aus insgesamt 54 Bytes und seine Definition ist in der Tabelle <a class="reference internal" href="#tab-gri-request-body"><span class="std std-ref">Anfrage-Body Definition</span></a> angegeben.</p>
+<span id="tab-gri-request-body"></span><table border="1" class="docutils" id="anfrage-body-definition">
+<caption><span class="caption-number">Tab. 63 </span><span class="caption-text">Anfrage-Body Definition</span><a class="headerlink" href="#anfrage-body-definition" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="13%" />
+<col width="10%" />
+<col width="9%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Feld</th>
+<th class="head">Typ</th>
+<th class="head">Größe</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Header</td>
+<td>struct</td>
+<td>8</td>
+<td>Nachrichtenheader (siehe <a class="reference internal" href="#sect-gri-header"><span class="std std-ref">Header (8 Bytes)</span></a>)</td>
+</tr>
+<tr class="row-odd"><td>job_id</td>
+<td>uint16</td>
+<td>2</td>
+<td>Eindeutige Job ID aus der Job Konfiguration</td>
+</tr>
+<tr class="row-even"><td>pos_x</td>
+<td>int32</td>
+<td>4</td>
+<td>Position X (skaliert imt 10^6)</td>
+</tr>
+<tr class="row-odd"><td>pos_y</td>
+<td>int32</td>
+<td>4</td>
+<td>Position Y (skaliert imt 10^6)</td>
+</tr>
+<tr class="row-even"><td>pos_z</td>
+<td>int32</td>
+<td>4</td>
+<td>Position Z (skaliert imt 10^6)</td>
+</tr>
+<tr class="row-odd"><td>rot_1</td>
+<td>int32</td>
+<td>4</td>
+<td>Rotationskomponente 1 (skaliert mit 10^6)</td>
+</tr>
+<tr class="row-even"><td>rot_2</td>
+<td>int32</td>
+<td>4</td>
+<td>Rotationskomponente 2 (skaliert mit 10^6)</td>
+</tr>
+<tr class="row-odd"><td>rot_3</td>
+<td>int32</td>
+<td>4</td>
+<td>Rotationskomponente 3 (skaliert mit 10^6)</td>
+</tr>
+<tr class="row-even"><td>rot_4</td>
+<td>int32</td>
+<td>4</td>
+<td>Rotationskomponente 4 (skaliert mit 10^6)</td>
+</tr>
+<tr class="row-odd"><td>data_1</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzlicher Parameter 1</td>
+</tr>
+<tr class="row-even"><td>data_2</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzlicher Parameter 2</td>
+</tr>
+<tr class="row-odd"><td>data_3</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzlicher Parameter 3</td>
+</tr>
+<tr class="row-even"><td>data_4</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzlicher Parameter 4</td>
+</tr>
+</tbody>
+</table>
+<p>Die Job-ID ist die eindeutige Kennung aus der Job-Konfiguration. Die Verwendung der Felder <code class="docutils literal notranslate"><span class="pre">data_1...data_4</span></code> ist abhängig von der Aktion und vom Job. Bei Nichtverwendung werden sie auf <cite>0</cite> gesetzt.</p>
+<p>Der Antwort-Body besteht aus insgesamt 80 Bytes, Seine Definition ist in Tabelle <a class="reference internal" href="#tab-gri-response-body"><span class="std std-ref">Antwort-Body Definition</span></a> angegeben.</p>
+<span id="tab-gri-response-body"></span><table border="1" class="docutils" id="antwort-body-definition">
+<caption><span class="caption-number">Tab. 64 </span><span class="caption-text">Antwort-Body Definition</span><a class="headerlink" href="#antwort-body-definition" title="Link zu dieser Tabelle">¶</a></caption>
+<colgroup>
+<col width="21%" />
+<col width="9%" />
+<col width="8%" />
+<col width="62%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Feld</th>
+<th class="head">Typ</th>
+<th class="head">Größe</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Header</td>
+<td>struct</td>
+<td>8</td>
+<td>Protokollheader</td>
+</tr>
+<tr class="row-odd"><td>job_id</td>
+<td>uint16</td>
+<td>2</td>
+<td>Verarbeitete Job Nummer</td>
+</tr>
+<tr class="row-even"><td>error_code</td>
+<td>int16</td>
+<td>2</td>
+<td>GRI Ergebnisstatus (Schweregrad nach Vorzeichen)</td>
+</tr>
+<tr class="row-odd"><td>pos_x</td>
+<td>int32</td>
+<td>4</td>
+<td>Position X (skaliert imt 10^6)</td>
+</tr>
+<tr class="row-even"><td>pos_y</td>
+<td>int32</td>
+<td>4</td>
+<td>Position Y (skaliert imt 10^6)</td>
+</tr>
+<tr class="row-odd"><td>pos_z</td>
+<td>int32</td>
+<td>4</td>
+<td>Position Z (skaliert imt 10^6)</td>
+</tr>
+<tr class="row-even"><td>rot_1</td>
+<td>int32</td>
+<td>4</td>
+<td>Rotationskomponente 1 (skaliert mit 10^6)</td>
+</tr>
+<tr class="row-odd"><td>rot_2</td>
+<td>int32</td>
+<td>4</td>
+<td>Rotationskomponente 2 (skaliert mit 10^6)</td>
+</tr>
+<tr class="row-even"><td>rot_3</td>
+<td>int32</td>
+<td>4</td>
+<td>Rotationskomponente 3 (skaliert mit 10^6)</td>
+</tr>
+<tr class="row-odd"><td>rot_4</td>
+<td>int32</td>
+<td>4</td>
+<td>Rotationskomponente 4 (skaliert mit 10^6)</td>
+</tr>
+<tr class="row-even"><td>data_1</td>
+<td>int32</td>
+<td>4</td>
+<td>Rückgabecode der Node (0 wenn keiner)</td>
+</tr>
+<tr class="row-odd"><td>data_2</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzliches Ergebnis 2</td>
+</tr>
+<tr class="row-even"><td>data_3</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzliches Ergebnis 3</td>
+</tr>
+<tr class="row-odd"><td>data_4</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzliches Ergebnis 4</td>
+</tr>
+<tr class="row-even"><td>data_5</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzliches Ergebnis 5</td>
+</tr>
+<tr class="row-odd"><td>data_6</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzliches Ergebnis 6</td>
+</tr>
+<tr class="row-even"><td>data_7</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzliches Ergebnis 7</td>
+</tr>
+<tr class="row-odd"><td>data_8</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzliches Ergebnis 8</td>
+</tr>
+<tr class="row-even"><td>data_9</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzliches Ergebnis 9</td>
+</tr>
+<tr class="row-odd"><td>data_10</td>
+<td>int32</td>
+<td>4</td>
+<td>Zusätzliches Ergebnis 10</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Für <code class="docutils literal notranslate"><span class="pre">rc_measure</span></code> wird <code class="docutils literal notranslate"><span class="pre">mean_z</span></code> auf pos_x/pos_y/pos_z ausgegeben.</p>
+</div>
+</div>
+<div class="section" id="error-codes-and-semantics">
+<h3>Fehlercodes und Bedeutung<a class="headerlink" href="#error-codes-and-semantics" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Der Fehlercode <code class="docutils literal notranslate"><span class="pre">error_code</span></code> ist ein <code class="docutils literal notranslate"><span class="pre">int16</span></code> und kodiert Fehler/Warnungen durch Vorzeichen:</p>
+<ul class="simple">
+<li>Negativ <cite>&lt; 0</cite> = <strong>error</strong> (Fehler)</li>
+<li>Null <cite>= 0</cite> = <strong>success</strong> (Erfolg)</li>
+<li>Positiv <cite>&gt; 0</cite> = <strong>warning</strong> (Erfolg mit Warnung)</li>
+</ul>
+<p>Die folgenden Tabellen geben die verschiedenen Fehlercodes an und sind nach Vorzeichen aufgeteilt und sortiert.</p>
+<p><strong>Erfolg</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="18%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Wert</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>NO_ERROR</td>
+<td>0</td>
+<td>Verarbeitung erfolgreich</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Negative Fehlercodes</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="8%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Wert</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>UNKNOWN_ERROR</td>
+<td>-1</td>
+<td>GRI intern, nicht spezifiziert</td>
+</tr>
+<tr class="row-odd"><td>INTERNAL_ERROR</td>
+<td>-2</td>
+<td>GRI interner Systemfehler</td>
+</tr>
+<tr class="row-even"><td>API_NOT_REACHABLE</td>
+<td>-3</td>
+<td>API nicht erreichbar</td>
+</tr>
+<tr class="row-odd"><td>API_RESPONSE_ERROR</td>
+<td>-4</td>
+<td>API hat negativen Code zurückgeliefert</td>
+</tr>
+<tr class="row-even"><td>PIPELINE_NOT_AVAILABLE</td>
+<td>-5</td>
+<td>Pipeline nicht verfügbar</td>
+</tr>
+<tr class="row-odd"><td>INVALID_REQUEST_ERROR</td>
+<td>-6</td>
+<td>Fehlerhafte Anfrage</td>
+</tr>
+<tr class="row-even"><td>INVALID_REQUEST_LENGTH</td>
+<td>-7</td>
+<td>Falsche Nachrichtenlänge</td>
+</tr>
+<tr class="row-odd"><td>INVALID_ACTION</td>
+<td>-8</td>
+<td>Nicht unterstützte Aktion</td>
+</tr>
+<tr class="row-even"><td>PROCESSING_TIMEOUT</td>
+<td>-9</td>
+<td>Timeout während der Verarbeitung</td>
+</tr>
+<tr class="row-odd"><td>UNKNOWN_PROTOCOL_VERSION</td>
+<td>-10</td>
+<td>Protokollversion nicht unterstützt</td>
+</tr>
+<tr class="row-even"><td>WRONG_PROTOCOL_FOR_JOB</td>
+<td>-11</td>
+<td>Job passt nicht zur Protokollversion</td>
+</tr>
+<tr class="row-odd"><td>JOB_DOES_NOT_EXIST</td>
+<td>-12</td>
+<td>Invalid job ID</td>
+</tr>
+<tr class="row-even"><td>MISCONFIGURED_JOB</td>
+<td>-13</td>
+<td>Ungültige Job Konfiguration</td>
+</tr>
+<tr class="row-odd"><td>HEC_CONFIG_ERROR</td>
+<td>-14</td>
+<td>Ungültige Konfigurationsparameter</td>
+</tr>
+<tr class="row-even"><td>HEC_INIT_ERROR</td>
+<td>-15</td>
+<td>Initialisierung der Kalibrierung fehlgeschlagen</td>
+</tr>
+<tr class="row-odd"><td>HEC_SET_POSE_ERROR</td>
+<td>-16</td>
+<td>Pose konnte nicht in angegebenem Slot aufgenommen werden</td>
+</tr>
+<tr class="row-even"><td>HEC_CALIBRATE_ERROR</td>
+<td>-17</td>
+<td>Kalibrierung konnte aus aufgenommenen Posen nicht berechnet werden</td>
+</tr>
+<tr class="row-odd"><td>HEC_INSUFFICIENT_DETECTION</td>
+<td>-18</td>
+<td>Kalibriermuster nicht sichtbar oder nicht erkannt</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Positive Codes</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="35%" />
+<col width="11%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Wert</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>NO_POSES_FOUND</td>
+<td>1</td>
+<td>Keine Ergebnisse verfügbar</td>
+</tr>
+<tr class="row-odd"><td>NO_RELATED_POSES</td>
+<td>2</td>
+<td>Keine zugehörigen Objekte gefunden</td>
+</tr>
+<tr class="row-even"><td>NO_RETURN_SPECIFIED</td>
+<td>3</td>
+<td>Job ohne Rückgabewerte konfiguriert</td>
+</tr>
+<tr class="row-odd"><td>JOB_STILL_RUNNING</td>
+<td>4</td>
+<td>Asynchroner Job nicht beendet</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Node Rückgabecode Bedeutung</strong></p>
+<p>Die Module/Nodes können einen <code class="docutils literal notranslate"><span class="pre">return_code</span></code> zurückgeben. Dieser Node-Rückgabecode wird im Antwortfeld <code class="docutils literal notranslate"><span class="pre">data_1</span></code> platziert (standardmäßig 0, wenn kein Code vorhanden ist). Der primäre Status des GRI wird in <code class="docutils literal notranslate"><span class="pre">error_code</span></code> zurückgegeben (vorzeichenbasierte Bedeutung).</p>
+</div>
+</div>
+<div class="section" id="integration-with-a-robot">
+<span id="sect-gri-robot-integration"></span><h2>Integration mit einem Roboter<a class="headerlink" href="#integration-with-a-robot" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Die Generic Robot Interface bietet die Kommunikation auf Port 7100 an.</p>
+<p>Für die Integration der GRI-Kommunikation mit einem Roboter werden Beispiele für verschiedene Robotersprachen unter <a class="reference external" href="https://github.com/roboception/rc_generic_robot_interface_robot">https://github.com/roboception/rc_generic_robot_interface_robot</a> angeboten.</p>
+<p>Unterschiedliche Roboterplattformen können durch die Implementierung eines TCP-Socket-Clients unterstützt werden, der dem GRI-Binärprotokoll folgt (siehe <a class="reference internal" href="#sect-gri-protocol-specification"><span class="std std-ref">Spezifikation des Binären GRI Protokolls</span></a>). Dies erfordert einen Robotercontroller mit TCP/IP-Unterstützung und der Fähigkeit, Roboterposen in Binärnachrichten zu packen und Binärnachrichten in Roboterposen zu parsen.</p>
+<p>Die Implementierungsschritte sind wie folgt:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>TCP Socketverbindung aufbauen</li>
+<li>Anfragenachricht zusammenstellen:<ul>
+<li>Nachrichtenheader setzen (8 Bytes)</li>
+<li>Job ID setzen (2 Bytes)</li>
+<li>Position verpacken (12 Bytes, 3x int32)</li>
+<li>Rotation verpacken (16 Bytes, 4x int32)</li>
+<li>Zusätzliche Daten verpacken (16 Bytes, 4x int32)</li>
+</ul>
+</li>
+<li>Anfrage senden (54 Bytes insgesamt)</li>
+<li>Antwort empfangen (80 Bytes insgesamt)</li>
+<li>Antwort parsen:<ul>
+<li>Header (8 Bytes)</li>
+<li>Job ID (2 Bytes)</li>
+<li>Fehlercode (2 Bytes)</li>
+<li>Position (12 Bytes, 3x int32)</li>
+<li>Rotation (16 Bytes, 4x int32)</li>
+<li>Zusätzliche Daten (40 bytes, 10x int32)</li>
+</ul>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="job-and-hec-config-api">
+<span id="sect-gri-api"></span><h2>Job und HEC_config API<a class="headerlink" href="#job-and-hec-config-api" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Die Jobdefinitionen und die Definitionen von HEC_configs für die Hand-Auge-Kalibrierung können über die folgenden REST-API-Endpunkte gesetzt, abgerufen und gelöscht werden.</p>
+<span class="target" id="sect-rest-get-generic-robot-interface-hec-configs"><span id="sect-rest-generic-robot-interface"></span></span><dl class="get">
+<dt id="get--generic_robot_interface-hec_configs">
+<code class="descname">GET </code><code class="descname">/generic_robot_interface/hec_configs</code><a class="headerlink" href="#get--generic_robot_interface-hec_configs" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Liefert die definierten Hand-Auge-Kalibrierkonfigurationen zurück</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/generic_robot_interface/hec_configs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Musterantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;0&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;grid_height&quot;</span><span class="p">:</span> <span class="mf">0.18</span><span class="p">,</span>
+    <span class="nt">&quot;grid_width&quot;</span><span class="p">:</span> <span class="mf">0.26</span><span class="p">,</span>
+    <span class="nt">&quot;robot_mounted&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;tcp_offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;tcp_rotation_axis&quot;</span><span class="p">:</span> <span class="mi">-1</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Antwort-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-generic-robot-interface-hec-configs-pipeline"></span><dl class="get">
+<dt id="get--generic_robot_interface-hec_configs-pipeline">
+<code class="descname">GET </code><code class="descname">/generic_robot_interface/hec_configs/{pipeline}</code><a class="headerlink" href="#get--generic_robot_interface-hec_configs-pipeline" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Liefert die Hand-Auge-Kalibrierkonfiguration für die ausgewählte Pipeline</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/generic_robot_interface/hec_configs/&lt;pipeline&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Musterantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;grid_height&quot;</span><span class="p">:</span> <span class="mf">0.18</span><span class="p">,</span>
+  <span class="nt">&quot;grid_width&quot;</span><span class="p">:</span> <span class="mf">0.26</span><span class="p">,</span>
+  <span class="nt">&quot;robot_mounted&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;tcp_offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;tcp_rotation_axis&quot;</span><span class="p">:</span> <span class="mi">-1</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>pipeline</strong> (<em>string</em>) – Pipeline der Hand-Auge-Kalibrierkonfiguration <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Antwort-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-put-generic-robot-interface-hec-configs-pipeline"></span><dl class="put">
+<dt id="put--generic_robot_interface-hec_configs-pipeline">
+<code class="descname">PUT </code><code class="descname">/generic_robot_interface/hec_configs/{pipeline}</code><a class="headerlink" href="#put--generic_robot_interface-hec_configs-pipeline" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Setzt eine Hand-Auge-Kalibrierkonfiguration für die ausgewählte Pipeline.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v2/generic_robot_interface/hec_configs/&lt;pipeline&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json application/ubjson</span>
+
+{}
+</pre></div>
+</div>
+<p><strong>Musterantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;HEC configuration saved successfully&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>pipeline</strong> (<em>string</em>) – Pipeline der Hand-Auge-Kalibrierkonfiguration <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">JSON-Objekt zur Anfrage:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>hand-eye calibration configuration</strong> (<em>object</em>) – Beispielargumente <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Antwort-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-delete-generic-robot-interface-hec-configs-pipeline"></span><dl class="delete">
+<dt id="delete--generic_robot_interface-hec_configs-pipeline">
+<code class="descname">DELETE </code><code class="descname">/generic_robot_interface/hec_configs/{pipeline}</code><a class="headerlink" href="#delete--generic_robot_interface-hec_configs-pipeline" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Entfernt eine Hand-Auge-Kalibrierkonfiguration.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">DELETE</span> <span class="nn">/api/v2/generic_robot_interface/hec_configs/&lt;pipeline&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json application/ubjson</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>pipeline</strong> (<em>string</em>) – Pipeline der Hand-Auge-Kalibrierkonfiguration <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Antwort-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a> – Verboten, z.B. weil keine gültige Lizenz für das CADMatch-Modul vorliegt.</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Konfiguration für die angegebene Pipeline nicht gefunden</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-generic-robot-interface-jobs"></span><dl class="get">
+<dt id="get--generic_robot_interface-jobs">
+<code class="descname">GET </code><code class="descname">/generic_robot_interface/jobs</code><a class="headerlink" href="#get--generic_robot_interface-jobs" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Liefert die definierten Jobs zurück</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/generic_robot_interface/jobs</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Musterantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;0&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;external&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;job_type&quot;</span><span class="p">:</span> <span class="s2">&quot;CALL_PIPELINE_SERVICE&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;detect_qr_code&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;node&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_qr_code_detect&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;pipeline&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;selected_return&quot;</span><span class="p">:</span> <span class="s2">&quot;tags&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;service&quot;</span><span class="p">:</span> <span class="s2">&quot;detect&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;1&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;job_type&quot;</span><span class="p">:</span> <span class="s2">&quot;SET_PARAMETERS_SERVICE&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;set_depth_full_quality&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;node&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_stereomatching&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;double_shot&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="nt">&quot;quality&quot;</span><span class="p">:</span> <span class="s2">&quot;Full&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;pipeline&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Antwort-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-get-generic-robot-interface-jobs-job-id"></span><dl class="get">
+<dt id="get--generic_robot_interface-jobs-job_id">
+<code class="descname">GET </code><code class="descname">/generic_robot_interface/jobs/{job_id}</code><a class="headerlink" href="#get--generic_robot_interface-jobs-job_id" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Liefert die Definition des ausgewählten Jobs zurück</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/api/v2/generic_robot_interface/jobs/&lt;job_id&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p><strong>Musterantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;pose_frame&quot;</span><span class="p">:</span> <span class="s2">&quot;camera&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[]</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;job_type&quot;</span><span class="p">:</span> <span class="s2">&quot;CALL_PIPELINE_SERVICE&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;detect_qr_code&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;node&quot;</span><span class="p">:</span> <span class="s2">&quot;rc_qr_code_detect&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;pipeline&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;selected_return&quot;</span><span class="p">:</span> <span class="s2">&quot;tags&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;service&quot;</span><span class="p">:</span> <span class="s2">&quot;detect&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>job_id</strong> (<em>string</em>) – ID des Jobs <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Antwort-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-put-generic-robot-interface-jobs-job-id"></span><dl class="put">
+<dt id="put--generic_robot_interface-jobs-job_id">
+<code class="descname">PUT </code><code class="descname">/generic_robot_interface/jobs/{job_id}</code><a class="headerlink" href="#put--generic_robot_interface-jobs-job_id" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Legt eine Jobdefinition für die ausgewählte Job-Art fest. Die erforderlichen Felder hängen vom gewählten Job-Art ab.</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">PUT</span> <span class="nn">/api/v2/generic_robot_interface/jobs/&lt;job_id&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json application/ubjson</span>
+
+{}
+</pre></div>
+</div>
+<p><strong>Musterantwort</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;job_id&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;return_code&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Job configuration updated successfully&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">0</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>job_id</strong> (<em>string</em>) – ID des Jobs <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">JSON-Objekt zur Anfrage:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>job definition</strong> (<em>object</em>) – Beispielargumente <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Antwort-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="sect-rest-delete-generic-robot-interface-jobs-job-id"></span><dl class="delete">
+<dt id="delete--generic_robot_interface-jobs-job_id">
+<code class="descname">DELETE </code><code class="descname">/generic_robot_interface/jobs/{job_id}</code><a class="headerlink" href="#delete--generic_robot_interface-jobs-job_id" title="Link zu dieser Definition">¶</a></dt>
+<dd><p>Entfernt eine Jobdefinition</p>
+<p><strong>Musteranfrage</strong></p>
+<div class="highlight-http notranslate"><div class="highlight"><pre><span></span><span class="nf">DELETE</span> <span class="nn">/api/v2/generic_robot_interface/jobs/&lt;job_id&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json application/ubjson</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameter:</th><td class="field-body"><ul class="first simple">
+<li><strong>job_id</strong> (<em>string</em>) – ID des Jobs <em>(obligatorisch)</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Anfrage-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Antwort-Header:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.1.5">Content-Type</a> – application/json application/ubjson</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Statuscodes:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a> – Erfolgreiche Verarbeitung</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a> – Verboten, z.B. weil keine gültige Lizenz für das CADMatch-Modul vorliegt.</li>
+<li><a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a> – Job mit angegebener ID nicht gefunden</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="eki.html" class="btn btn-neutral float-right" title="KUKA Ethernet KRL Schnittstelle" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rest_api_swagger_ui.html" class="btn btn-neutral" title="Swagger UI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2025, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../en/gri.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/gri.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v23.10/index.html">v23.10</a></dd>
+          
+            <dd><a href="../../v24.01/index.html">v24.01</a></dd>
+          
+            <dd><a href="../../v24.04/index.html">v24.04</a></dd>
+          
+            <dd><a href="../../v24.07/index.html">v24.07</a></dd>
+          
+            <dd><a href="../../v24.10/index.html">v24.10</a></dd>
+          
+            <dd><a href="../../v25.01/index.html">v25.01</a></dd>
+          
+            <dd><a href="../../v25.04/index.html">v25.04</a></dd>
+          
+            <dd><a href="../../v25.07/index.html">v25.07</a></dd>
+          
+            <dd><a href="../../v25.10/index.html">v25.10</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'25.10.1',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="_static/contentui.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

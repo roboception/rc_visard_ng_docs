@@ -1,0 +1,40 @@
+Mitsubishi XYZ-ABC Format
+
+Das Posenformat, welches von Mitsubishi Robotern benutzt wird, ist das
+gleiche wie für KUKA Roboter (siehe
+
+KUKA XYZ-ABC Format
+
+), außer, dass der Winkel A um die x-Achse rotiert und C eine Rotation
+um die z-Achse ist. Damit wird die Rotation berechnet durch r_z(C)
+r_y(B) r_x(A).
+
+Umrechnung von Mitsubishi-ABC in Quaternionen
+
+Zur Umrechnung von ABC Winkeln in Grad in eine Quaternion
+q=(\begin{array}{cccc}x & y & z & w\end{array}) werden die Winkel
+zunächst ins Bogenmaß umgerechnet mit
+
+   A_r = A \frac{\pi}{180} \text{,} \\ B_r = B \frac{\pi}{180}
+   \text{,} \\ C_r = C \frac{\pi}{180} \text{,} \\
+
+und damit die Quaternion berechnet durch
+
+   x = \cos{(C_r/2)}\cos{(B_r/2)}\sin{(A_r/2)} -
+   \sin{(C_r/2)}\sin{(B_r/2)}\cos{(A_r/2)} \text{,} \\ y =
+   \cos{(C_r/2)}\sin{(B_r/2)}\cos{(A_r/2)} +
+   \sin{(C_r/2)}\cos{(B_r/2)}\sin{(A_r/2)} \text{,} \\ z =
+   \sin{(C_r/2)}\cos{(B_r/2)}\cos{(A_r/2)} -
+   \cos{(C_r/2)}\sin{(B_r/2)}\sin{(A_r/2)} \text{,} \\ w =
+   \cos{(C_r/2)}\cos{(B_r/2)}\cos{(A_r/2)} +
+   \sin{(C_r/2)}\sin{(B_r/2)}\sin{(A_r/2)} \text{.}
+
+Umrechnung von Quaternionen in Mitsubishi-ABC
+
+Die Umrechnung von einer Quaternion q=(\begin{array}{cccc}x & y & z &
+w\end{array}) mit ||q||=1 in ABC Winkel in Grad kann wie folgt
+durchgeführt werden.
+
+   A &= \text{atan}_2{(2(wx + yz), 1 - 2(x^2 + y^2))} \frac{180}{\pi}
+   \\ B &= \text{asin}{(2(wy - zx))} \frac{180}{\pi} \\ C &=
+   \text{atan}_2{(2(wz + xy), 1 - 2(y^2 + z^2))} \frac{180}{\pi}

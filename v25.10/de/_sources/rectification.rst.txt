@@ -1,0 +1,22 @@
+Rektifizierung
+
+Um die Bildverarbeitung zu vereinfachen rektifiziert das Modul alle
+Kamerabilder basierend auf der Kamerakalibrierung. Dies bedeutet, dass
+die Verzeichnung entfernt und der Bildhauptpunkt genau in die Mitte
+des Bildes gelegt wird.
+
+Eine rektifizierte Kamera kann mit der Brennweite als einzigen
+Modellparameter beschrieben werden. Der
+
+rc_visard NG
+
+ stellt über seine verschiedenen Schnittstellen einen
+Brennweitenfaktor bereit. Er bezieht sich auf die Bildbreite, um
+verschiedene Bildauflösungen zu unterstützen. Die Brennweite f in
+Pixeln lässt sich leicht bestimmen, indem der Brennweitenfaktor mit
+der Bildbreite (in Pixeln) multipliziert wird.
+
+Im Fall einer Stereokamera richtet die Rektifizierung die Bilder so
+aus, dass Objektpunkte in beiden Bildern immer in die gleiche
+Bildzeile projiziert werden. Die optischen Achsen der Kameras werden
+dadurch exakt parallel ausgerichtet.

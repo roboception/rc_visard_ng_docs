@@ -1,0 +1,57 @@
+.. include:: global_rst.glb
+
+.. _sect-xyz-quaternion-format:
+
+Rotation matrix and translation vector
+--------------------------------------
+
+A pose can also be defined by a rotation matrix :math:`R` and a translation
+vector :math:`T`.
+
+.. math::
+   R = \left(\begin{array}{ccc}
+     r_{00} & r_{01} & r_{02} \\
+     r_{10} & r_{11} & r_{12} \\
+     r_{20} & r_{21} & r_{22}
+   \end{array}\right), \qquad
+   T = \left(\begin{array}{c}
+     X \\
+     Y \\
+     Z
+   \end{array}\right).
+
+The pose transformation can be applied to a point :math:`P` by
+
+.. math::
+   P' = R P + T.
+
+Conversion from rotation matrix to quaternion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from a rotation matrix (with :math:`det(R)=1`) to a quaternion
+:math:`q=(\begin{array}{cccc}x & y & z & w\end{array})` can be done as follows.
+
+.. math::
+  x &= \text{sign}(r_{21}-r_{12}) \frac{1}{2}\sqrt{\text{max}(0, 1 + r_{00} - r_{11} - r_{22})} \\
+  y &= \text{sign}(r_{02}-r_{20}) \frac{1}{2}\sqrt{\text{max}(0, 1 - r_{00} + r_{11} - r_{22})} \\
+  z &= \text{sign}(r_{10}-r_{01}) \frac{1}{2}\sqrt{\text{max}(0, 1 - r_{00} - r_{11} + r_{22})} \\
+  w &= \frac{1}{2}\sqrt{\text{max}(0, 1 + r_{00} + r_{11} + r_{22})}
+
+The :math:`\text{sign}` operator returns -1 if the argument is negative.
+Otherwise, 1 is returned. It is used to recover the sign for the square root.
+The :math:`\text{max}` function ensures that the argument of the square root
+function is not negative, which can happen in practice due to round-off errors.
+
+Conversion from quaternion to rotation matrix
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from a quaternion :math:`q=(\begin{array}{cccc}x & y & z &
+w\end{array})` with :math:`||q||=1` to a rotation matrix can be done as
+follows.
+
+.. math::
+   R = 2 \left(\begin{array}{ccc}
+     \frac{1}{2} - y^2 - z^2 & x y - z w & x z + y w \\
+     x y + z w & \frac{1}{2} - x^2 - z^2 & y z - x w \\
+     x z - y w & y z + x w & \frac{1}{2} - x^2 - y^2
+   \end{array}\right)

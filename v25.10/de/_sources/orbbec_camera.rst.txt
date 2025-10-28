@@ -1,0 +1,294 @@
+Pipelinetyp orbbec
+
+Bemerkung: Die Firmwareversion der angeschlossenen
+
+  Orbbec
+
+   Kamera muss mindestens 1.6.00 sein, damit die Kamera genutzt werden
+  kann.
+
+Parameter
+
+Das  Kamera-Modul auf einer Pipeline vom Typ "orbbec" wird in der
+REST-API als "rc_camera" bezeichnet und in der
+
+Web GUI
+
+ auf der Seite
+
+Kamera
+
+ in der gewünschten Pipeline dargestellt. Der Benutzer kann die
+Stereo-Matching-Parameter entweder dort oder über die REST-API (
+
+REST-API-Schnittstelle
+
+) oder über GigE Vision (
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+) ändern.
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter:
+
+Laufzeitparameter des rc_camera-Moduls für eine Pipeline vom Typ
+orbbec              Name  Typ  Min.  Max.  Default  Beschreibung
+exp_control  string  -  -  Auto  Art der Belichtungsregelung: [Manual,
+Auto]  exp_height  int32  0  799  0  Höhe der Region für automatische
+Belichtung, 0 für das ganze Bild  exp_max  float64  1.0  1999.0  665.0
+Maximale Belichtungszeit in Sekunden im Auto Belichtungsmodus
+exp_offset_x  int32  0  1279  0  Erste Spalte der Region für
+automatische Belichtung  exp_offset_y  int32  0  799  0  Erste Zeile
+der Region für automatische Belichtung  exp_value  float64  1.0
+1999.0  156.0  Maximale Belichtungszeit in Sekunden im Auto
+Belichtungsmodus  exp_width  int32  0  1279  0  Breite der Region für
+automatische Belichtung, 0 für das ganze Bild  gain_value  float64
+0.0  128.0  16.0  Verstärkung in Dezibel, wenn nicht im Auto
+Belichtungsmodus  gamma  float64  100.0  500.0  300.0  Gammafaktor
+wb_auto  bool  false  true  true  Ein- und Ausschalten des manuellen
+Weißabgleichs (nur für Farbkameras)  wb_value  float64  2800.0  6500.0
+4600.0  Weißabgleich Wert
+
+Beschreibung der Laufzeitparameter
+
+Jeder Laufzeitparameter ist durch eine eigene Zeile auf der Seite
+
+Tiefenbild
+
+ der Web GUI repräsentiert. Der Web GUI-Name des Parameters ist in
+Klammern hinter dem Namen des Parameters angegeben und die Parameter
+werden in der Reihenfolge, in der sie in der Web GUI erscheinen,
+aufgelistet.
+
+gamma (Gamma)
+
+   Der Gammawert bestimmt, wie das gemessene Licht auf die Helligkeit
+   eines Pixels abgebildet wird. Kleinere Gammawerte lassen dunkle
+   Bildbereiche heller erscheinen.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gamma=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?gamma=<value>
+
+exp_control (Belichtung Auto oder Manual)
+
+   Die Belichtungsregelung kann auf *Auto* oder *Manual* gesetzt
+   werden.
+
+   *Auto*: Dies ist der Standard Modus der die die Belichtungszeit und
+   Verstärkung automatisch anpasst, um Unter- und Überbelichtung zu
+   vermeiden. Wenn die Automatik abgeschaltet wird, werden *exp_value*
+   und *gain_value* auf die letzten von der Automatik ermittelten
+   Werte für Belichtungszeit und Verstärkung gesetzt.
+
+   *Manual*: Im manuellen Belichtungsmodus werden die Belichtungszeit
+   und die Verstärkung konstant gehalten unabhängig von der
+   resultierenden Bildhelligkeit.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_control=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_control=<value>
+
+exp_max (Maximale Belichtung)
+
+   Dieser Wert gibt die maximale Belichtung im automatischen Modus in
+   Sekunden an. Die tatsächliche Belichtung wird automatisch
+   angepasst, sodass das Bild korrekt belichtet wird. Sind die Bilder
+   trotz maximaler Belichtung noch immer unterbelichtet, erhöht der
+
+   rc_visard NG
+
+    schrittweise die Verstärkung, um die Helligkeit der Bilder zu
+   erhöhen. Es ist sinnvoll, die Belichtung zu begrenzen, um die bei
+   schnellen Bewegungen auftretende Bildunschärfe zu vermeiden oder zu
+   verringern. Jedoch führt eine höhere Verstärkung auch zu mehr
+   Bildrauschen. Welcher Kompromiss der beste ist, hängt immer auch
+   von der Anwendung ab.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_max=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_max=<value>
+
+exp_offset_x, exp_offset_y, exp_width, exp_height (Bereich zur
+Regelung)
+
+   Diese Werte definieren eine rechteckige Region im linken
+   rektifizierten Bild, um den von der automatischen Belichtung
+   überwachten Bereich zu limitieren. Die Belichtungszeit und der
+   Verstärkungsfaktor werden so gewählt, dass die definierte Region
+   optimal belichtet wird. Dies kann zu Über- oder Unterbelichtung in
+   anderen Bildbereichen führen. Falls die Breite oder Höhe auf 0
+   gesetzt werden, dann wird das gesamte linke und rechte Bild von der
+   automatischen Belichtungsfunktion berücksichtigt. Dies ist die
+   Standardeinstellung.
+
+   Die Region wird in der Web GUI mit einem Rechteck im linken
+   rektifizierten Bild visualisiert. Sie kann über Slider oder direkt
+   im Bild mithilfe der Schaltfläche "Bereich im Bild auswählen"
+   verändert werden.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+exp_value (Belichtungszeit)
+
+      Dieser Wert gibt die Belichtung im manuellen Modus an. Diese
+      Belichtung wird konstant gehalten, auch wenn die Bilder
+      unterbelichtet sind.
+
+      Über die REST-API kann dieser Parameter wie folgt gesetzt
+      werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_value=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_value=<value>
+
+gain_value (Verstärkungsfaktor)
+
+   Dieser Wert gibt den Verstärkungsfaktor im manuellen Modus an.
+   Höhere Verstärkungswerte reduzieren die Belichtungszeit, führen
+   aber zu Rauschen.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gain_value=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?gain_value=<value>
+
+wb_auto (Weißabgleich Auto oder Manuell)
+
+   Dieser Wert kann für den automatischen Weißabgleich auf *true*
+   gesetzt werden. Ist dieser Wert *false*, wird der Weißabgleich über
+   "wb_value" bestimmt.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?wb_auto=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?wb_auto=<value>
+
+wb_value (Weißabgleich Manuell Wert)
+
+Dieser Wert bestimmt den Weißabgleich, wenn "wb_auto" auf *false*
+gesetzt ist.
+
+Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+API Version 2
+
+   PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+API Version 1 (veraltet)
+
+   PUT http://<host>/api/v1/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+Die gleichen Parameter sind – mit leicht abweichenden Namen und
+teilweise mit anderen Einheiten oder Datentypen – auch über die
+GenICam-Schnittstelle verfügbar (siehe
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+).
+
+Statuswerte
+
+Das "rc_camera"-Modul meldet die folgenden Statuswerte für eine
+Pipeline vom Typ "orbbec":
+
+Statuswerte des rc_camera-Moduls      Name  Beschreibung  baseline
+Intern angenommener Stereo-Basisabstand t in Metern zur Berechnung von
+Disparitätsbildern  brightness  Aktuelle Helligkeit als Wert zwischen
+0 und 1  color  0 für monochrome Kameras, 1 für Farbkameras  exp
+Aktuelle Belichtung. Dieser Wert wird unter der Bildvorschau in der
+Web GUI als Belichtung angezeigt.  focal  Brennweitenfaktor,
+normalisiert auf eine Bildbreite von 1  fps  Aktuelle
+Bildwiederholrate der Kamerabilder in Hertz. Dieser Wert wird unter
+der Bildvorschau in der Web GUI als FPS (Hz) angezeigt.  gain
+Aktueller Verstärkungsfaktor. Dieser Wert wird unter der Bildvorschau
+in der Web GUI als Verstärkung angezeigt.  height  Höhe des
+Kamerabilds in Pixeln. Dieser Wert wird unter der Bildvorschau in der
+Web GUI als zweiter Teil von Auflösung (px) angezeigt.
+last_capture_ok  1 wenn die letzte Bildaufnahme erfolgreich war
+last_timestamp_grabbed  Zeitstempel des letzten aufgenommenen Bildes
+test  0 for Live-Bilder und 1 für Test-Bilder  width  Breite des
+Kamerabilds in Pixeln. Dieser Wert wird unter der Bildvorschau in der
+Web GUI als erster Teil von Auflösung (px) angezeigt.
+
+Services
+
+In einer Pipeline vom Typ "orbbec" bietet das "rc_camera" Modul
+folgende Services.
+
+reset_defaults
+
+   stellt die Werkseinstellungen der Parameter dieses Moduls wieder
+   her und wendet sie an („factory reset“).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/reset_defaults
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/services/reset_defaults
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

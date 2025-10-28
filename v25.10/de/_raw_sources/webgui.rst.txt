@@ -1,0 +1,213 @@
+.. include:: global_rst.glb
+
+.. _sect-web-gui:
+
+Web GUI
+=======
+
+.. index:: ! Web GUI
+
+The |rc_xxx|'s |webgui| can be used to test, calibrate, and configure the device.
+
+Accessing the Web GUI
+---------------------
+
+The |webgui| can be accessed from any web browser, such as Firefox, Google Chrome, or Microsoft Edge, via
+the |rc_xxx|'s IP address. The easiest way to access the |webgui| is to simply double click on the
+desired device using the ``rcdiscover-gui`` tool as explained in :ref:`sect-discovery-of-rcvisard-devices`:latex:`\:(Section \ref{installation:sect-discovery-of-rcvisard-devices})`.
+
+Alternatively, some network environments automatically configure the unique host name of
+the |rc_xxx| in their Domain Name Server (:term:`DNS`). In this case, the |webgui| can also be
+accessed directly using the :term:`URL` ``http://<host-name>`` by
+replacing ``<host-name>`` with the device's host name.
+
+For Linux and Mac operating systems, this even works without DNS via the multicast
+Domain Name System (:term:`mDNS`), which is automatically used if ``.local`` is appended to the
+host name. Thus, the URL simply becomes ``http://<host-name>.local``.
+
+.. only:: rc_cube
+
+    Access to the |rc_visard| |webgui|
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    For troubleshooting, users can
+    also directly access the |webgui| of the |rc_visard| device that
+    is connected to the |rc_xxx|.
+    It is available for the |rc_visard| on camera pipeline 0
+    at port ``2342`` of the |rc_xxx|, and hence at
+    the :term:`URL` ``http://<host>:2342``
+    where ``<host>`` is the IP address or host
+    name of the |rc_xxx| that the |rc_visard| is connected to.
+    For camera pipelines 1, 2 or 3 it can be accessed at ``http://<host>:2343``,
+    ``http://<host>:2344``, and ``http://<host>:2345``, respectively.
+
+    By this means, users have access to the |rc_visard|'s device information
+    or log files.
+
+    .. note:: If a computer screen is directly connected to the |rc_xxx|,
+              it shows the |webgui| with a small additional menu from which
+              the |rc_visard|'s |webgui| can be accessed as well.
+
+
+Exploring the Web GUI
+---------------------
+
+.. only:: rc_visard or rc_visard_ng
+
+  The |webgui|'s dashboard page gives the most important information about the device
+  and the software modules.
+
+.. only:: rc_cube
+
+  The |webgui|'s dashboard page gives the most important information about the device
+  and the running camera pipelines.
+
+.. figure:: images/webgui_dashboard.png
+    :align: center
+
+    Dashboard page of the |rc_xxx|'s |webgui|
+
+The page's side menu permits access to the individual pages of the |rc_xxx|'s |webgui|:
+
+.. only:: rc_cube
+
+  *Pipeline*
+    gives access to the respective camera pipeline and its camera, detection and configuration modules.
+    Each camera pipeline provides an overview page with the most important information about the
+    camera connection and the software modules running in the pipeline.
+
+  .. figure:: images/webgui_pipeline_overview.png
+      :align: center
+
+      Pipeline overview page of the |rc_xxx|'s |webgui|
+
+  Each pipeline provides a sub-menu with the individual pages for the modules running in the pipeline:
+
+*Camera*
+  shows a live stream of the rectified camera images.
+  The frame rate can be reduced to save bandwidth when streaming to a
+  GigE Vision\ |reg| client. Furthermore, exposure can be set manually or automatically.
+  See :ref:`sect-camera`:latex:`\:(Section \ref{camera:sect-camera})` for more information.
+
+.. only:: rc_cube
+
+    *Depth Image*
+      shows a live stream of the left rectified, disparity, and
+      confidence images. The page contains various settings for depth-image
+      computation and filtering. See :ref:`sect-3d-camera-modules`:latex:`\:(Section \ref{camera_modules:sect-3d-camera-modules})` for more information.
+
+.. only:: rc_visard or rc_visard_ng
+
+    *Depth Image*
+      shows a live stream of the left rectified, disparity, and
+      confidence images. The page contains various settings for depth-image
+      computation and filtering. See :ref:`sect-stereo-matching`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})` for more information.
+      
+.. only:: rc_visard
+
+    *Dynamics*
+      shows the location and movement of image features that are
+      used to compute the |rcvisard|'s egomotion. Settings include the number of corners
+      and features that should be used. See :ref:`sect-vo-parameters`:latex:`\:(Section \ref{stereo_visodo:sect-vo-parameters})` for more information.
+
+*Modules*
+  gives access to the detection modules of the |rcxxx|
+  (see :doc:`detection_modules`:latex:`, Section \ref{detection_modules:sect-detection-modules}`).
+
+*Configuration*
+  gives access to the configuration modules of the |rcxxx|
+  (see :doc:`configuration_modules`:latex:`, Section \ref{configuration_modules:sect-configuration-modules}`).
+
+.. only:: rc_cube
+
+  The following modules running outside the pipelines can be accessed in the side menu:
+
+*Database*
+  gives access to the database modules of the |rcxxx|
+  (see :doc:`database_modules`:latex:`, Section \ref{database_modules:sect-database-modules}`).
+
+*System*
+  gives access to general settings, device information and to the log files,
+  and permits the firmware or the license file to be updated.
+
+.. only:: rc_cube
+
+  *UserSpace*
+    gives access to the |rc_cube|'s UserSpace
+    (see :doc:`userspace`:latex:`, Section \ref{userspace:sect-userspace}`).
+
+.. Note:: Further information on all parameters in the |webgui| can be obtained by pressing the *Info*
+          button next to each parameter.
+
+.. _sect-webgui-ui-lock:
+
+Web GUI access control
+----------------------
+
+The |webgui| has a simple mechanism to lock the UI against casual and accidental changes.
+
+When enabling |webgui| access control via the *System* page, you will be asked to set a password.
+Now the |webgui| is in a locked mode indicated by the lock symbol in the top bar.
+All pages, camera streams, parameters and detections can be inspected as usual, but changes are not possible.
+
+To temporarily unlock the |webgui| and make changes, click the lock symbol and enter the password.
+While enabling or disabling |webgui| access control affects anyone accessing this |rc_xxx|,
+the unlocked state is only valid for the browser where it was unlocked and indicated by the open lock symbol.
+It is automatically locked again after 10 minutes of inactivity.
+
+|webgui| access control can also be disabled again on the *System* page after providing the current password.
+
+.. Warning:: This is not a security feature! It only locks the |webgui| and not the |rest-api|.
+             It is meant to prevent accidental and casual changes e.g. via a connected screen.
+
+.. Note:: In case the password is lost, this can be disabled via the |rest-api|
+          :ref:`delete ui_lock<sect-rest-delete-system-ui-lock>`:latex:`\:(Section \ref{rest_api_syslogs:sect-rest-delete-system-ui-lock})`.
+
+.. _sect-webgui-camera-snapshot:
+
+Downloading camera images
+-------------------------
+
+The |webgui|
+provides an easy way to download a snapshot of the current scene as a .tar.gz file
+by clicking on the camera icon below the image live streams on the *Camera* page. This snapshot contains:
+
+-  the rectified camera images in full resolution as .png files,
+-  a camera parameter file containing the camera matrix, image dimensions, exposure time,
+   gain value and the stereo baseline,
+-  the current IMU readings as imu.csv file, :cubeonly:`if available,`
+-  a pipeline_status.json file containing information about all :cubeonly:`modules running inside the pipelines`:visardsonly:`3D-camera, detection and configuration nodes running` on the |rc_xxx|,
+-  a backup.json file containing the settings of the |rc_xxx| including grippers, load carriers and regions of interest,
+-  a system_info.json file containing system information about the |rc_xxx|.
+
+
+The filenames contain the timestamps.
+
+.. _sect-webgui-depth-snapshot:
+
+Downloading depth images and point clouds
+-----------------------------------------
+
+The |webgui| provides an easy way to download the depth data of the current scene as a .tar.gz file
+by clicking on the camera icon below the image live streams on the *Depth Image* page. This snapshot contains:
+
+-  the rectified left and right camera images in full resolution as .png files,
+-  an image parameter file corresponding to the left image containing the camera matrix, image dimensions, exposure time,
+   gain value and the stereo baseline,
+-  the disparity, error and confidence images in the resolution corresponding to the currently chosen quality as .png files,
+-  a disparity parameter file corresponding to the disparity image containing the camera matrix, image dimensions, exposure time,
+   gain value and the stereo baseline, and information about the disparity values (i.e. invalid values, scale, offset),
+-  the current IMU readings as imu.csv file, :cubeonly:`if available,`
+-  a pipeline_status.json file containing information about all :cubeonly:`modules running inside the pipelines`:visardsonly:`3D-camera, detection and configuration nodes running` on the |rc_xxx|,
+-  a backup.json file containing the settings of the |rc_xxx| including grippers, load carriers and regions of interest,
+-  a system_info.json file containing system information about the |rc_xxx|.
+
+The filenames contain the timestamps.
+
+When clicking on the mesh icon below the image live streams on the *Depth Image* page, a snapshot is downloaded
+which additionally includes a mesh of the point cloud in the current depth quality (resolution) as .ply file.
+
+.. note::
+   Downloading a depth snapshot will trigger an acquisition in the same way as clicking on the "Acquire" button on the
+   *Depth Image* page of the Web GUI, and, thus, might affect running applications.
+

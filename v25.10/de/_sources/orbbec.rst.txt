@@ -1,0 +1,219 @@
+Orbbec Modul
+
+Bemerkung: Die Firmwareversion der angeschlossenen
+
+  Orbbec
+
+   Kamera muss mindestens 1.6.00 sein, damit die Kamera genutzt werden
+  kann.
+
+Das Orbbec Modul ist ein Basismodul, das auf jedem
+
+rc_visard NG
+
+ verfügbar ist und liefert Disparitäts-, Konfidenz- und Fehlerbilder
+einer angeschlossenen
+
+Orbbec
+
+ Stereokamera. Es läuft nur in Kamera-Pipelines vom Typ "orbbec".
+
+Parameter
+
+Das Orbbec Modul wird in der REST-API als "rc_orbbec" bezeichnet und
+in der
+
+Web GUI
+
+ auf der Seite
+
+Tiefenbild
+
+ in der gewünschten Pipeline dargestellt, wenn eine
+
+Orbbec
+
+ Kamera an der entsprechenden Pipeline angeschlossen ist. Der Benutzer
+kann die Orbbec Parameter entweder dort oder über die REST-API (
+
+REST-API-Schnittstelle
+
+) ändern.
+
+Übersicht über die Parameter
+
+Dieses Softwaremodul bietet folgende Laufzeitparameter:
+
+Laufzeitparameter des rc_orbbec Moduls              Name  Typ  Min.
+Max.  Default  Beschreibung  fill  int32  0  4  3  Disparitätstoleranz
+(für das Füllen von Löchern) in Pixeln  maxdepth  float64  0.1  100.0
+100.0  Maximaler Abstand in Metern  mindepth  float64  0.1  100.0  0.1
+Minimaler Abstand in Metern  seg  int32  0  4000  200  Mindestgröße
+der gültigen Disparitätssegmente in Pixeln  smooth  bool  false  true
+true  Glättung von Disparitätsbildern (benötigt eine
+'StereoPlus'-Lizenz)
+
+Beschreibung der Laufzeitparameter
+
+Jeder Laufzeitparameter ist durch eine eigene Zeile auf der Seite
+
+Tiefenbild
+
+ der Web GUI repräsentiert. Der Web GUI-Name des Parameters ist in
+Klammern hinter dem Namen des Parameters angegeben und die Parameter
+werden in der Reihenfolge, in der sie in der Web GUI erscheinen,
+aufgelistet:
+
+mindepth (Minimaler Abstand)
+
+   Dieser Wert bezeichnet den geringsten Abstand zur Kamera, ab dem
+   Messungen möglich sind. Der minimale Abstand wird in Metern
+   angegeben.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?mindepth=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?mindepth=<value>
+
+maxdepth (Maximaler Abstand)
+
+   Dieser Wert ist der größte Abstand zur Kamera, bis zu dem Messungen
+   möglich sind. Pixel mit größeren Distanzwerten werden auf
+   „ungültig“ gesetzt. Wird dieser Wert auf das Maximum gesetzt, so
+   sind Abstände bis Unendlich möglich. Der maximale Abstand wird in
+   Metern angegeben.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?maxdepth=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?maxdepth=<value>
+
+smooth (Glättung)
+
+   Diese Option aktiviert die Glättung von Disparitätswerten.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?smooth=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?smooth=<value>
+
+fill (Füllen)
+
+   Diese Option wird verwendet, um Löcher im Disparitätsbild durch
+   Interpolation zu füllen. Der Füllwert gibt die maximale
+   Disparitätsabweichung am Rand des Lochs an. Größere Füllwerte
+   können die Anzahl an Löchern verringern, aber die interpolierten
+   Werte können größere Fehler aufweisen. Maximal 5% der Pixel werden
+   interpoliert. Kleine Löcher werden dabei bevorzugt interpoliert.
+   Die Konfidenz für die interpolierten Pixel wird auf einen geringen
+   Wert von 0,5 eingestellt. Das Auffüllen lässt sich deaktivieren,
+   wenn der Wert auf 0 gesetzt wird.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?fill=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?fill=<value>
+
+seg (Segmentierung)
+
+   Der Segmentierungsparameter wird verwendet, um die Mindestanzahl an
+   Pixeln anzugeben, die eine zusammenhängende Disparitätsregion im
+   Disparitätsbild ausfüllen muss. Isolierte Regionen, die kleiner
+   sind, werden im Disparitätsbild auf ungültig gesetzt. Der Wert
+   bezieht sich immer auf ein Disparitätsbild mit hoher Qualität
+   (halbe Auflösung) und muss nicht verändert werden, wenn andere
+   Qualitäten gewählt werden. Die Segmentierung eignet sich, um
+   Disparitätsfehler zu entfernen. Bei größeren Werten kann es jedoch
+   vorkommen, dass real vorhandene Objekte entfernt werden.
+
+   Über die REST-API kann dieser Parameter wie folgt gesetzt werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?seg=<value>
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?seg=<value>
+
+Statuswerte
+
+Das "rc_orbbec" Modul meldet die folgenden Statuswerte:
+
+Die Statuswerte des rc_orbbec-Moduls      Name  Beschreibung  fps
+Aktuelle Bildwiederholrate der Disparitäts-, Fehler- und
+Konfidenzbilder in Hertz. Dieser Wert wird unter der Bildvorschau in
+der Web GUI als FPS (Hz) angezeigt.  height  Höhe der Disparitäts-,
+Fehler- und Konfidenzbilder in Pixeln. Dieser Wert wird unter der
+Bildvorschau in der Web GUI als zweiter Teil von Auflösung (px)
+angezeigt.  last_capture_ok  1 wenn die letzte Bildaufnahme
+erfolgreich war  last_timestamp_grabbed  Zeitstempel des letzten
+aufgenommenen Tiefenbilds  latency  Aktuelle Bildwiederholrate der
+Disparitäts-, Fehler- und Konfidenzbilder in Hertz. Dieser Wert wird
+unter der Bildvorschau in der Web GUI als FPS (Hz) angezeigt.
+mindepth  Tatsächlicher minimaler Arbeitsabstand in Metern. Dieser
+Wert wird unter der Bildvorschau in der Web GUI als Min. Abstand (m)
+angezeigt.  maxdepth  Tatsächlicher maximaler Arbeitsabstand in
+Metern. Dieser Wert wird unter der Bildvorschau in der Web GUI als
+Max. Abstand (m) angezeigt.  width  Breite der Disparitäts-, Fehler-
+und Konfidenzbilder in Pixeln. Dieser Wert wird unter der Bildvorschau
+in der Web GUI als erster Teil von Auflösung (px) angezeigt.
+
+Services des rc_orbbec Moduls
+
+Das >>``<<rc_orbbec` Modul bietet folgende Services.
+
+reset_defaults`
+
+   stellt die Werkseinstellungen der Parameter dieses Moduls wieder
+   her und wendet sie an („factory reset“).
+
+   Details
+
+   Dieser Service kann wie folgt aufgerufen werden.
+
+   API Version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/services/reset_defaults
+
+   API Version 1 (veraltet)
+
+      PUT http://<host>/api/v1/nodes/rc_orbbec/services/reset_defaults
+
+   Request
+
+   Dieser Service hat keine Argumente.
+
+   Response
+
+   Die Definition der *Response* mit jeweiligen Datentypen ist:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

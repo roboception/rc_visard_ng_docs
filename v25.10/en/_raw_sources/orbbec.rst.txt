@@ -1,0 +1,248 @@
+
+.. include:: global_rst.glb
+
+.. _sect-orbbec:
+
+Orbbec module
+=============
+
+.. Note:: The firmware version of the connected |orbbec| camera has to be at least 1.6.00, 
+   otherwise the |orbbec| cannot be used. 
+
+.. index::
+   single: orbbec
+   single: depth image
+
+The orbbec module is a base module which is available on every |rc_xxx|
+and provides disparity, confidence and error images of a connected |orbbec| stereo camera.
+It only runs in camera pipelines of type ``orbbec``.
+
+.. _sect-orbbec-image-parameters:
+
+Parameters
+----------
+
+.. index::
+   pair: parameters; orbbec
+
+The orbbec module is called ``rc_orbbec`` in the |rest-api| and it is represented by the
+*Depth Image* page in the desired pipeline in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`,
+when an |orbbec| camera is connected and running in the corresponding pipeline.
+The user can change the orbbec parameters there, or use the |rest-api|
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`).
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_orbbec.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the |webgui|'s *Depth Image* page. The name in the
+|webgui| is given in brackets behind the parameter name and the parameters are listed in the order
+they appear in the |webgui|.
+
+.. _expl-orbbec-depth-min-depth:
+
+.. index::
+   single: minimum distance
+
+``mindepth`` (*Minimum Distance*)
+'''''''''''''''''''''''''''''''''
+   The minimum distance is the smallest distance from the camera
+   at which measurements should be possible. The minimum distance
+   is given in meters.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?mindepth=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?mindepth=<value>
+
+.. _expl-orbbec-depth-max-depth:
+
+.. index::
+   single: maximum distance
+
+``maxdepth`` (*Maximum Distance*)
+'''''''''''''''''''''''''''''''''
+   The maximum distance is the largest distance from the camera
+   at which measurements should be possible. Pixels with larger distance values are
+   set to invalid in the disparity image. Setting this value to its maximum permits
+   values up to infinity. The maximum distance is given in meters.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?maxdepth=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?maxdepth=<value>
+
+.. _expl-orbbec-depth-smooth:
+
+.. index::
+   pair: smooth; disparity image
+
+``smooth`` (*Smoothing*)
+''''''''''''''''''''''''
+   This option activates advanced smoothing of disparity values.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?smooth=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?smooth=<value>
+
+.. _expl-orbbec-depth-fill:
+
+.. index::
+   single: fill-in
+
+``fill`` (*Fill-in*)
+''''''''''''''''''''
+   This option is used to fill holes in the disparity image by interpolation.
+   The fill-in value is the maximum allowed disparity step on the border of the
+   hole. Larger fill-in values can decrease the number of holes, but the interpolated
+   values can have larger errors. At most 5% of pixels are interpolated. Interpolation
+   of small holes is preferred over interpolation of larger holes. The confidence for
+   the interpolated pixels is set to a low value of 0.5. A fill-in value of 0
+   switches hole filling off.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?fill=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?fill=<value>
+
+.. _expl-orbbec-depth-seg:
+
+.. index::
+   single: segmentation
+
+``seg`` (*Segmentation*)
+''''''''''''''''''''''''
+   The segmentation parameter is used to set the minimum number of
+   pixels that a connected disparity region in the disparity image must fill.
+   Isolated regions that are smaller are set to invalid in the disparity image.
+   The value is related to the high quality disparity image with half resolution
+   and does not have to be scaled when a different quality
+   is chosen. Segmentation is useful for removing erroneous disparities. However,
+   larger values may also remove real objects.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?seg=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?seg=<value>
+
+
+Status values
+-------------
+
+The ``rc_orbbec`` module reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_orbbec`` module's status values
+   :header:  Name, Description
+
+   "``fps``","Actual frame rate of the disparity, error, and confidence images. This value is shown in the |webgui| below the image preview as *FPS (Hz)*."
+   "``height``","Current height of the disparity, error, and confidence images in pixels. This value is shown in the |webgui| below the image preview as the second number of *Resolution (px)*."
+   "``last_capture_ok``", "1 if the last image capture was successful"
+   "``last_timestamp_grabbed``","Timestamp of the last depth data acquired"
+   "``latency``","Time in seconds between image acquisition and publishing of disparity image. This value is shown in the |webgui| below the image preview as *Latency (s)*."
+   "``mindepth``","Actual minimum working distance in meters. This value is shown in the |webgui| below the image preview as *Minimum Distance (m)*."
+   "``maxdepth``","Actual maximum working distance in meters. This value is shown in the |webgui| below the image preview as *Maximum Distance (m)*."
+   "``width``","Current width of the disparity, error, and confidence images in pixels. This value is shown in the |webgui| below the image preview as the first number of *Resolution (px)*."
+
+.. _sect-orbbec-services:
+
+Services of the rc_orbbec module
+--------------------------------
+
+The ``rc_orbbec`` module offers the following services.
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+            
+            .. code-block:: bash
+            
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+            
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_orbbec/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_orbbec_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_orbbec_reset_defaults_response.txt
+

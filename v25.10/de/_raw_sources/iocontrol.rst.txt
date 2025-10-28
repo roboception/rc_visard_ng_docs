@@ -1,0 +1,352 @@
+
+.. include:: global_rst.glb
+
+.. _sect-iocontrol:
+
+IO and Projector Control
+========================
+
+The IOControl module is an on-board module of the |rc_visard|.
+
+The IOControl module allows reading the status of the general purpose
+digital inputs and controlling the digital general purpose outputs (GPIOs)
+of the |rc_visard|.
+The outputs can be set to LOW or HIGH,
+or configured to be HIGH for the exposure time of every image or every second image.
+
+.. only:: rc_cube
+
+   .. note::
+
+      This module is pipeline specific. Changes to its settings or parameters only affect
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+
+The purpose of the IOControl module is the control of an external light source
+or a projector, which is connected to one of the |rc_visard|'s GPIOs to be
+synchronized by the image acquisition trigger.
+In case a pattern projector is used to improve stereo matching, the intensity images
+also show the projected pattern, which might be a disadvantage for image processing
+tasks that are based on the intensity image (e.g. edge detection). For this reason,
+the IOControl module allows setting GPIO outputs to HIGH for the exposure time of
+every second image, so that intensity images without the projected pattern are also available.
+
+.. only:: rc_visard or rc_visard_ng
+
+   .. Note:: For more details on the |rc_xxx|'s GPIOs please refer to
+             :ref:`sect-wiring`:latex:`, Section \ref{hardware_spec:sect-wiring}`.
+
+.. _sect-iocontrol-parameters:
+
+Parameters
+----------
+
+The IOControl module is called ``rc_iocontrol`` in the |rest-api| and is represented in the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+:cubeonly:`in the desired pipeline` under :menuselection:`Configuration --> IOControl`.
+The user can change the parameters via the |webgui|, the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`, or via GigE Vision
+using the DigitalIOControl parameters ``LineSelector`` and ``LineSource``
+(:ref:`sect-genicam-iocontrol`:latex:`, Section \ref{gigevision:sect-genicam-iocontrol}`).
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. only:: rc_cube
+   
+   .. include:: _gen/nodes/params/rc_iocontrol_rc_cube.txt
+
+.. only:: rc_visard
+   
+   .. include:: _gen/nodes/params/rc_iocontrol_rc_visard.txt
+
+.. only:: rc_visard_ng
+   
+   .. include:: _gen/nodes/params/rc_iocontrol_rc_visard_ng.txt
+
+.. _sect-iocontrol-params:
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. _expl-iocontrol-out1-mode:
+
+``out1_mode`` and ``out2_mode`` (*Out1 / Projector* and *Out2*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    The output modes for GPIO Out 1 and Out 2 can be set individually:
+
+    ``Low`` sets the output permanently to LOW. This is the factory default.
+
+    ``High`` sets the output permanently to HIGH.
+
+    ``ExposureActive`` sets the output to HIGH for the exposure time of every
+    image.
+
+    ``ExposureAlternateActive`` sets the output to HIGH for the exposure time
+    of every second image.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. only:: rc_visard or rc_visard_ng
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/0/nodes/rc_iocontrol/parameters/parameters?<out1_mode|out2_mode>=<value>
+
+         .. only:: rc_cube
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_iocontrol/parameters?<out1_mode|out2_mode>=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_iocontrol/parameters?<out1_mode|out2_mode>=<value>
+
+.. only:: rc_cube
+
+   .. _expl-iocontrol-out1-ratio:
+
+   ``out1_ratio`` and ``out2_ratio`` (*Out1 Ratio* and *Out2 Ratio*)
+   '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+      The output ratios for GPIOs Out 1 and Out 2 determine how much of the image exposure time the corresponding output GPIO should be HIGH, when ExposureActive or ExposureAlternateActive are used.
+      When the ratio is set to 1, the output will be HIGH for full amount of exposure time. 
+      In case a projector is connected to the GPIO out1, a lower out1_ratio leads to darker projections.
+
+      .. only:: roboception and schunk
+
+         These parameters are only available in pipelines of type ``rc_viscore`` and ``stereo_ace``.
+
+      .. only:: basler
+
+         These parameters are only available in pipelines of type ``stereo_ace``.
+
+      .. only:: matrixvision
+
+         These parameters are only available in pipelines of type ``rc_viscore``.
+
+
+      Via the |restapi|, this parameter can be set as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_iocontrol/parameters?<out1_ratio|out2_ratio>=<value>
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_iocontrol/parameters?<out1_ratio|out2_ratio>=<value>
+
+   .. _expl-iocontrol-out1-inverted:
+
+   ``out1_inverted`` and ``out2_inverted`` (*Invert Out1* and *Invert Out2*)
+   '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+      The ``out1_inverted`` and ``out2_inverted`` parameters determine whether the corresponding outputs should be inverted.
+
+      .. only:: roboception and schunk
+
+         These parameters are only available in pipelines of type ``rc_viscore`` and ``stereo_ace``.
+
+      .. only:: basler
+
+         These parameters are only available in pipelines of type ``stereo_ace``.
+
+      .. only:: matrixvision
+
+         These parameters are only available in pipelines of type ``rc_viscore``.
+
+
+      Via the |restapi|, this parameter can be set as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_iocontrol/parameters?<out1_inverted|out2_inverted>=<value>
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_iocontrol/parameters?<out1_inverted|out2_inverted>=<value>
+
+
+:numref:`fig-fps-exposure` shows which images are used for stereo
+matching and transmission via GigE Vision in ``ExposureActive`` mode with a
+user-defined frame rate of 8 Hz.
+
+.. _fig-fps-exposure:
+.. figure:: images/fps_exposure.*
+   :width: 100 %
+   :align: center
+
+   Example of using the ``ExposureActive`` mode for GPIO Out 1 with a user-defined
+   frame rate of 8 Hz. The internal image acquisition is always |cam-rate|.
+   GPIO Out 1 is HIGH for the exposure time of every image. A disparity
+   image is computed for camera images that are sent out via GigE Vision according
+   to the user-defined frame rate.
+
+The mode ``ExposureAlternateActive`` is meant to be used when an external random
+dot projector is connected to the |rc_visard|'s GPIO Out 1.
+When setting Out 1 to ``ExposureAlternateActive``, the
+:ref:`stereo matching<sect-stereo-matching>`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`
+module only uses images with GPIO Out 1 being HIGH, i.e. projector is on. The maximum
+frame rate that is used for stereo matching is therefore half of the frame rate
+configured by the user. All
+modules which make use of the intensity image, like
+:ref:`TagDetect<sect-tag-detection>`:latex:`\:(Section \ref{tagdetect:sect-tag-detection})` and
+:ref:`ItemPick<sect-itempick>`:latex:`\:(Section \ref{itempick:sect-itempick})`,
+use the intensity images with GPIO Out 1 being LOW, i.e. projector is off.
+:numref:`fig-fps-alternate` shows an example.
+
+.. _fig-fps-alternate:
+.. figure:: images/fps_alternate.*
+   :width: 100 %
+   :align: center
+
+   Example of using the ``ExposureAlternateActive`` mode for GPIO Out 1 with a
+   user-defined frame rate of 8 Hz. The internal image acquisition is always |cam-rate|.
+   GPIO Out 1 is HIGH for the exposure time of every second image. A disparity
+   image is computed for images where Out 1 is HIGH and that are sent out via GigE
+   Vision according to the user-defined frame rate. In ``ExposureAlternateActive``
+   mode, intensity images are always transmitted pairwise: one with GPIO Out 1 HIGH, for which a
+   disparity image might be available, and one with GPIO Out 1 LOW.
+
+.. Note:: In ``ExposureAlternateActive`` mode, an intensity image with GPIO Out 1 being HIGH (i.e. with
+   projection) is always 40 ms away from an intensity image with Out 1 being LOW (i.e. without
+   projection), regardless of the user-defined frame rate. This needs to be
+   considered when synchronizing disparity images and camera images without projection
+   in this special mode.
+
+The functionality can also be controlled by the DigitalIOControl parameters
+of the GenICam interface (:ref:`sect-genicam-iocontrol`:latex:`, Section \ref{gigevision:sect-genicam-iocontrol}`).
+
+.. _sect-iocontrol-services:
+
+Services
+--------
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+
+The IOControl module offers the following services.
+
+``get_io_values``
+^^^^^^^^^^^^^^^^^
+
+   Retrieves the current state of the |rc_visard|'s general purpose inputs
+   and outputs (GPIOs).
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_iocontrol/services/get_io_values
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_iocontrol/services/get_io_values
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_iocontrol/services/get_io_values
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_iocontrol_get_io_values_request.txt
+
+         .. tab:: **Response**
+
+            The returned ``timestamp`` is the time of measurement.
+
+            ``input_mask`` and ``output_mask`` are bit masks defining which bits are used for input and
+            output values, respectively.
+
+            ``values`` holds the values of the bits corresponding to input and output as given by the
+            ``input_mask`` and ``output_mask``.
+
+            ``return_code`` holds possible warnings or error codes and messages.
+            Possible ``return_code`` values are shown below.
+
+            .. tabularcolumns:: |c|L|
+            .. csv-table::
+               :header:  Code, Description
+
+               "0",  "Success"
+               "-2", "Internal error"
+               "-9", "License for `IOControl` is not available"
+
+            .. include:: _gen/nodes/services/rc_iocontrol_get_io_values_response.txt
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_iocontrol/services/reset_defaults
+
+            .. only:: rc_cube
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_iocontrol/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_iocontrol/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_iocontrol_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_iocontrol_reset_defaults_response.txt

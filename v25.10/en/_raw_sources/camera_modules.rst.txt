@@ -1,0 +1,68 @@
+.. include:: global_rst.glb
+
+.. _sect-3d-camera-modules:
+
+3D modules
+==========
+
+The |rc_xxx|'s 3D camera software consists of the following modules:
+
+.. only:: rc_cube
+
+   - :doc:`stereo_matching` (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`)
+      uses the rectified stereo image pairs of the connected stereo camera, e.g. the |rc_visard|, to compute 3D depth
+      information such as disparity, error, and confidence images.
+      These are provided as GenICam streams, too. This module only runs on pipeline types for stereo cameras, i.e. 
+      |stereo_pipelines|.
+
+.. only:: rc_visard or rc_visard_ng
+
+   - :doc:`stereo_matching` (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`)
+      uses the rectified stereo image pairs to compute 3D depth
+      information such as disparity, error, and confidence images.
+      These are provided as GenICam streams, too.
+
+.. only:: rc_cube and roboception
+
+   - :doc:`zivid` (``rc_zivid``:latex:`, Section \ref{zivid:sect-zivid}`)
+      provides 3D depth information such as disparity, error, and confidence images of the connected
+      |zivid| structured light camera.
+      These are provided as GenICam streams, too. This module only runs on pipelines of type ``zivid``.
+
+.. only:: rc_cube and (roboception or schunk or matrixvision)
+
+   - :doc:`orbbec` (``rc_orbbec``:latex:`, Section \ref{orbbec:sect-orbbec}`)
+      provides 3D depth information such as disparity, error, and confidence images of the connected
+      |orbbec| Gemini 335Le stereo camera.
+      These are provided as GenICam streams, too. This module only runs on pipelines of type ``orbbec``.
+
+.. only:: rc_cube and (roboception or schunk or basler)
+
+   - :doc:`blaze` (``rc_blaze``:latex:`, Section \ref{blaze:sect-blaze}`)
+      provides 3D depth information such as disparity, error, and confidence images of the connected
+      Basler |blaze| RGB-D camera. These are provided as GenICam streams, too. This module only runs 
+      on pipelines of type ``blaze``.
+
+.. only:: rc_cube
+
+   These modules are pipeline specific, which means that they run inside each
+   camera pipeline. Changes to their settings or parameters
+   only affect the corresponding pipeline and have no influence on the other
+   camera pipelines running on the |rc_cube|.
+   
+.. index::
+   pair: point cloud; download
+
+The 3D modules, which provide time-stamped 3D depth information such as disparity,
+error, and confidence images, are also accessible via the |rc_xxx|'s
+:doc:`GigE Vision/GenICam interface<gigevision>`.
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+
+   downloading_3d_data
+   stereo_matching
+   :rc_cube_roboception_only:zivid
+   :rc_cube_roboception_matrixvision_only:orbbec
+   :matrixvision_visard_exclude:blaze
