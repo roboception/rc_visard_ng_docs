@@ -4,12 +4,18 @@ The
 
 rc_visard NG
 
- provides the time-stamped, rectified images over the GenICam
-interface (see
+ provides the time-stamped rectified images over the GenICam interface
+(see
 
 Provided image streams
 
-). Live streams of the images are provided with reduced quality in the
+) or via the
+
+gRPC image stream interface
+
+.
+
+Live streams of the images are provided with reduced quality in the
 
 Web GUI
 

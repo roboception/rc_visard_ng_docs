@@ -185,10 +185,70 @@ gRPC Servicedefinition
 
 Umwandlung von Bild-Streams
 
-Zur Umwandlung von Disparitätsbildern in Punktwolken dient die
-Beschreibung im Kapitel
+Das Disparitätsbild enthält vorzeichenlose 16-Bit-Ganzzahlwerte. Diese
+Werte müssen mit dem "scale" Wert der "DisparityImage" Nachricht
+multipliziert werden, um die Disparitätswerte d in Pixeln zu
+ermitteln. Um die 3D-Objektkoordinaten aus den Disparitätswerten
+berechnen zu können, werden der Basisabstand  "baseline" = t aus der
+"DisparityImage" Nachricht, die Brennweite "focal_length" = f, und der
+Bildhauptpunkt "principal_point_u" = c_x und "principal_point_v" = c_y
+aus der "ImageData" Nachricht benötigt. Die Brennweite und der
+Bildhauptpunkt hängen von der Bildauflösung der Kamera ab und müssen
+auf die Auflösung des Disparitätsbilds skaliert werden. Sind diese
+Werte bekannt, können die Pixel-Koordinaten und die Disparitätswerte
+mithilfe der im Abschnitt
 
-GigE Vision / GenICam Schnittstelle
+Berechnung von Tiefenbildern und Punktwolken
+
+ angegebenen Gleichungen in 3D-Objektkoordination im Kamera-
+Koordinatensystem umgerechnet werden.
+
+Bemerkung: Das Kamera-Koordinatensystem des
+
+  rc_visard NG
+
+   ist in
+
+  Sensor-Koordinatensystem
+
+   definiert.
+
+Unter der Annahme, dass es sich bei d_{ik} um den 16-Bit-
+Disparitätswert in der Spalte i und Zeile k eines Disparitätsbildes
+handelt, ist der Fließkomma-Disparitätswert in Pixeln d_{ik} gegeben
+durch
+
+   d_{ik}=d16_{ik} \cdot \mathrm{scale}
+
+Die 3D-Rekonstruktion (in Metern) kann wie folgt durchgeführt werden:
+
+   P_x&=\left(i+0.5-c_x\right) \frac{t}{d_{ik}},\\
+   P_y&=\left(k+0.5-c_y\right) \frac{t}{d_{ik}},\\ P_z&=f
+   \frac{t}{d_{ik}}.
+
+Das Konfidenzbild umfasst vorzeichenlose 8-Bit-Ganzzahlwerte. Diese
+Werte müssen durch 255 geteilt werden, um die zwischen 0 und 1
+liegenden Konfidenzwerte zu berechnen.
+
+Das Fehlerbild umfasst vorzeichenlose 8-Bit-Ganzzahlwerte. Der Fehler
+e_{ik} muss mit dem im "scale" Wert der "DisparityImage" Nachricht
+angegebenen Skalierungsfaktor multipliziert werden, um die
+Disparitätsfehlerwerte d_{eps} in Pixeln zu ermitteln. Der
+Beschreibung in
+
+Konfidenz- und Fehlerbilder
+
+ zufolge lässt sich der Tiefenfehler z_{eps} (in Metern) wie folgt
+berechnen:
+
+   d_{ik}&=d16_{ik} \cdot \mathrm{scale},\\ z_{eps}&=\frac{e_{ik}
+   \cdot \mathrm{scale} \cdot f               \cdot t}
+   {(d_{ik})^2}.
+
+Für nähere Informationen zu Disparitäts-, Fehler- und Konfidenzbildern
+siehe
+
+Stereo-Matching Modul
 
 .
 

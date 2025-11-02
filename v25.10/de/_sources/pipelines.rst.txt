@@ -16,37 +16,6 @@ Datenaufnahme der mit der Pipeline verbundenen Kamera, für Detektionen
 und für die Konfiguration der Module in dieser Pipeline, z.B. durch
 eine Hand-Auge-Kalibrierung.
 
-Der
-
-rc_visard NG
-
- unterstützt Kameras vom Typ
-
-rc_visard
-
-,
-
-rc_viscore
-
-,
-
-zivid
-
-,
-
-Orbbec
-
-,
-
-Stereo ace
-
- und
-
-blaze
-
-. Der Typ der zugehörigen Kamerapipeline muss so konfiguriert werden,
-dass er zum angeschlossenen Gerät passt.
-
 Konfiguration der Kamerapipelines
 
 Die Kamerapipelines können über die
@@ -62,16 +31,6 @@ Durch Klick auf Pipelines konfigurieren kann die Anzahl und der Typ
 der laufenden Kamerapipelines wie in der nächsten Abbildung gezeigt
 konfiguriert werden.
 
-Bemerkung: Der
-
-  rc_cube I
-
-   bietet vier Kamerapipelines an, der
-
-  rc_cube S
-
-   zwei.
-
 
 Der Typ einer laufenden Pipeline kann geändert werden, indem ein
 anderer Typ im Dropdown-Feld der jeweiligen Pipeline ausgewählt wird.
@@ -79,13 +38,7 @@ Eine laufende Pipeline kann entfernt werden, indem man auf Pipeline
 entfernen klickt. Einzig die Pipeline 0 kann nie gelöscht werden, da
 sie die primäre Pipeline ist. Durch Klick auf + Pipeline hinzufügen
 und anschließendes Auswählen des Pipelinetyps kann eine neue Pipeline
-erstellt werden. Sobald alle Pipelines wie gewünscht konfiguriert
-sind, können die Änderungen durch Klick auf Anwenden & Neustarten
-angewendet werden und der
-
-rc_cube
-
- startet sofort neu.
+erstellt werden.
 
 Konfiguration der verbundenen Kameras
 
@@ -97,7 +50,7 @@ rc_visard
 
  verbunden werden kann. Falls mehrere Kameras desselben Typs am
 
-rc_cube
+rc_visard NG
 
  angeschlossen sind, kann durch Setzen eines Filtertexts eine
 bestimmte Kamera für jede Pipeline ausgewählt werden. Der aktuelle
@@ -157,6 +110,6 @@ Durch Klick auf Speichern wird der eingegebene Filtertext angewendet
 und eine passende Kamera mit dieser Pipeline verbunden, wenn möglich.
 Das Ändern des Filtertext ist ohne Neustart des
 
-rc_cube
+rc_visard NG
 
  möglich.

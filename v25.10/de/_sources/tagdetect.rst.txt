@@ -504,16 +504,13 @@ detect
       rc_visard NG
 
        können Zeitsprünge auftreten, sowohl vorwärts als auch
-      rückwärts (siehe
-
-      Zeitsynchronisierung
-
-      ). Während Vorwärtssprünge keinen Einfluss auf die TagDetect-
-      Module haben, invalidieren Rücksprünge die bereits empfangenen
-      Bilder. Deshalb wird, wenn ein Rücksprung erkannt wird, Fehler
-      -102 beim nächsten "detect"-Aufruf zurückgegeben. Dies geschieht
-      auch, um den Benutzer darauf hinzuweisen, dass die Zeitstempel
-      in der "detect"-Antwort ebenso zurückspringen werden.
+      rückwärts. Während Vorwärtssprünge keinen Einfluss auf die
+      TagDetect-Module haben, invalidieren Rücksprünge die bereits
+      empfangenen Bilder. Deshalb wird, wenn ein Rücksprung erkannt
+      wird, Fehler -102 beim nächsten "detect"-Aufruf zurückgegeben.
+      Dies geschieht auch, um den Benutzer darauf hinzuweisen, dass
+      die Zeitstempel in der "detect"-Antwort ebenso zurückspringen
+      werden.
 
       API Version 2
 

@@ -160,6 +160,60 @@ rc_visard NG
 or do not have a valid license will be skipped. If a backup can only
 be restored partially, the user will be notified by warnings.
 
+Updating the software license
+
+Licenses that are purchased from Roboception for enabling additional
+features can be installed via the
+
+Web GUI
+
+'s  System ‣ Firmware & License page. The
+
+rc_visard NG
+
+ has to be rebooted to apply the licenses.
+
+Downloading log files
+
+During operation, the
+
+rc_visard NG
+
+ logs important information, warnings, and errors into files. If the
+
+rc_visard NG
+
+ exhibits unexpected or erroneous behavior, the log files can be used
+to trace its origin. Log messages can be viewed and filtered using the
+
+Web GUI
+
+'s  System ‣ Logs page. If contacting the support (
+
+Contact
+
+), the log files are very useful for tracking possible problems. To
+download them as a .tar.gz file, click on Download all logs on the Web
+GUI's System ‣ Logs page.
+
+Aside from the Web GUI, the logs are also accessible via the
+
+rc_visard NG
+
+'s
+
+REST-API interface
+
+ using the
+
+GET /logs
+
+ and
+
+GET /logs/{log}
+
+ requests.
+
 Updating the firmware
 
 Information about the current firmware image version can be found on
@@ -401,57 +455,3 @@ System
  page.
 
 The reboot is finished when the LED turns green again.
-
-Updating the software license
-
-Licenses that are purchased from Roboception for enabling additional
-features can be installed via the
-
-Web GUI
-
-'s  System ‣ Firmware & License page. The
-
-rc_visard NG
-
- has to be rebooted to apply the licenses.
-
-Downloading log files
-
-During operation, the
-
-rc_visard NG
-
- logs important information, warnings, and errors into files. If the
-
-rc_visard NG
-
- exhibits unexpected or erroneous behavior, the log files can be used
-to trace its origin. Log messages can be viewed and filtered using the
-
-Web GUI
-
-'s  System ‣ Logs page. If contacting the support (
-
-Contact
-
-), the log files are very useful for tracking possible problems. To
-download them as a .tar.gz file, click on Download all logs on the Web
-GUI's System ‣ Logs page.
-
-Aside from the Web GUI, the logs are also accessible via the
-
-rc_visard NG
-
-'s
-
-REST-API interface
-
- using the
-
-GET /logs
-
- and
-
-GET /logs/{log}
-
- requests.

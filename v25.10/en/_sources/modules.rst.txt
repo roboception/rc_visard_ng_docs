@@ -4,15 +4,18 @@ The
 
 rc_visard NG
 
- comes with several on-board software modules, each of which
-corresponds to a certain functionality and can be interfaced via its
-respective
+ comes with several software modules, each of which corresponds to a
+certain functionality and can be interfaced via its respective
 
 node
 
  in the
 
 REST-API interface
+
+ or in the
+
+Generic Robot Interface
 
 .
 

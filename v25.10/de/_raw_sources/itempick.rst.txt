@@ -10,7 +10,7 @@
    single: bin picking
    single: grasp computation
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
    
    .. index:: ! ItemPickAI
 
@@ -44,12 +44,12 @@ In addition, the module offers:
 - Selection of a sorting strategy to sort the returned grasps.
 - 3D visualization of the detection results with grasp points and gripper animations in the |webgui|.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
 
       This module is pipeline specific. Changes to its settings or parameters only affect
-      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_xxx|.
 
 .. Note::
 
@@ -69,7 +69,7 @@ Computation of grasps
    single: ItemPick; grasp
    single: ItemPick; grasp sorting
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. index::
       single: ItemPickAI; grasp
@@ -83,7 +83,7 @@ flexible and/or deformable items. The ``type`` of these ``item_models`` is
 called ``UNKNOWN`` since they don't need to have a standard geometrical shape.
 Optionally, the user can also specify the minimum and maximum size of the item.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    For ItemPickAI, the grasps are computed in the center of the top surface of the segmented objects (``items``)
    of the given object category. The object category is chosen by setting the ``type`` of ``item_models``. 
@@ -117,7 +117,7 @@ The grasp ``type`` is always set to ``SUCTION``.
 For ItemPick with an ``UNKNOWN`` item model, the computed grasp pose is the center 
 of the biggest ellipse that can be inscribed in each surface.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    For ItemPickAI with the ``BAG`` or ``CONSUMER_GOODS`` item model, the grasp position corresponds to the center of the top surface of the segmented
    objects.
@@ -179,7 +179,7 @@ Setting the preferred orientation of the TCP
 .. index::
    single: ItemPick; preferred orientation
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. index::
       single: ItemPickAI; preferred orientation
@@ -229,17 +229,22 @@ The |itempick| module makes internally use of the following data:
    - Disparity, error, and confidence images from the :doc:`stereo_matching`
      (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`)
 
-.. only:: rc_cube and (roboception or basler or schunk)
+.. only:: (rc_cube or rc_reason_stack) and (roboception or basler or schunk)
 
    - Disparity, error, and confidence images from the :doc:`stereo_matching`
      (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`), in case a stereo camera is used
 
-.. only:: rc_cube and (roboception or basler or schunk)
+.. only:: (rc_cube) and (roboception or basler or schunk)
 
    - Disparity, error, and confidence images from the :doc:`blaze`
      (``rc_blaze``:latex:`, Section \ref{blaze:sect-blaze}`), in case a Basler |blaze| camera is used
 
-.. only:: rc_cube and roboception
+.. only:: (rc_cube or rc_reason_stack) and (roboception or matrixvision or schunk)
+
+   - Disparity, error, and confidence images from the :doc:`orbbec`
+     (``rc_orbbec``:latex:`, Section \ref{orbbec:sect-orbbec}`), in case an |orbbec| camera is used
+
+.. only:: (rc_cube or rc_reason_stack) and roboception
 
    - Disparity, error, and confidence images from the :doc:`zivid`
      (``rc_zivid``:latex:`, Section \ref{zivid:sect-zivid}`), in case a |zivid| camera is used
@@ -346,7 +351,7 @@ The CollisionCheck module's run-time parameters affect the collision detection a
 Parameters
 ----------
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. index:: 
       single: ItemPickAI; parameters
@@ -407,7 +412,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?max_grasps=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -437,7 +442,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?cluster_max_dimension=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -467,7 +472,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?cluster_max_curvature=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -497,7 +502,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?clustering_patch_size=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -527,7 +532,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?clustering_discontinuity_factor=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -557,7 +562,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/parameters/parameters?clustering_max_surface_rmse=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -623,7 +628,7 @@ listed in the order they appear in the |webgui|:
             PUT http://<host>/api/v1/nodes/rc_itempick/parameters?allow_any_grasp_z_rotation=<value>
 
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. _expl-itempick-allow-any-grasp-pose:
 
@@ -684,7 +689,7 @@ Status values
 .. index::
    single: ItemPick; status
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. index::
       single: ItemPickAI; status
@@ -721,7 +726,7 @@ Services
 .. index::
    single: ItemPick; services
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. index::
       single: ItemPickAI; services
@@ -757,7 +762,7 @@ The |itempick| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/services/compute_grasps
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -800,7 +805,7 @@ The |itempick| module offers the following services.
                of type ``UNKNOWN`` with minimum and maximum dimensions is supported, with the
                minimum dimensions strictly smaller than the maximum dimensions.
 
-               .. only:: rc_cube
+               .. only:: rc_cube or rc_reason_stack
 
                   In case of ItemPickAI, currently the item model types ``BAG`` and ``CONSUMER_GOODS`` are supported.
 
@@ -817,7 +822,7 @@ The |itempick| module offers the following services.
 
             ``items``: sorted list of items corresponding to the returned grasps. In case of ItemPick, this list is always empty.
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                In case of ItemPickAI, ``items`` contains the segmented items of type ``BAG`` or ``CONSUMER_GOODS`` with their poses 
                corresponding to the center of the bounding box of the object's visible part and the dimensions of this ``bounding_box``.
@@ -852,7 +857,7 @@ The |itempick| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/services/set_preferred_orientation
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -898,7 +903,7 @@ The |itempick| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/services/get_preferred_orientation
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -943,7 +948,7 @@ The |itempick| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/services/set_sorting_strategies
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -996,7 +1001,7 @@ The |itempick| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/services/get_sorting_strategies
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1042,7 +1047,7 @@ The |itempick| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/services/start
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1089,7 +1094,7 @@ The |itempick| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/services/stop
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1177,7 +1182,7 @@ The |itempick| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_itempick/services/reset_defaults
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1207,7 +1212,7 @@ Return codes
 .. index::
    pair: ItemPick; return codes
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. index::
       pair: ItemPickAI; return codes

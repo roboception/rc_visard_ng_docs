@@ -5,11 +5,11 @@ Einleitung
 Das Measure Modul ermöglicht die Messung von Tiefenwerten in einer
 Region of Interest.
 
-Das Measure Modul ist ein Modul, welches intern auf dem
+Das Measure Modul ist ein Basismodul, welches auf jedem
 
 rc_visard NG
 
- läuft.
+ verfügbar ist.
 
 Tiefe messen
 

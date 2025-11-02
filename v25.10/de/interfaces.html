@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Schnittstellen &mdash; rc_visard NG 25.10.1
+  <title>Schnittstellen &mdash; rc_visard NG 25.10.2
  Dokumentation</title>
   
 
@@ -52,7 +52,7 @@
         <link rel="index" title="Stichwortverzeichnis"
               href="genindex.html"/>
         <link rel="search" title="Suche" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.10.1
+    <link rel="top" title="rc_visard NG 25.10.2
  Dokumentation" href="index.html"/>
         <link rel="next" title="Web GUI" href="webgui.html"/>
         <link rel="prev" title="GripperDB" href="gripper_db.html"/> 
@@ -339,31 +339,6 @@
 <li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Herunterladen von Tiefenbildern und Punktwolken</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
@@ -397,6 +372,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gri.html#job-and-hec-config-api">Job und HEC_config API</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
@@ -414,13 +390,39 @@
 <li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Fehlerbehebung</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC Bilddatenschnittstelle</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC Servicedefinition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC Servicedefinition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grpc.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Beispielclient</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
@@ -445,11 +447,11 @@
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Backup der Einstellungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard NG</em></a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
@@ -599,11 +601,6 @@
 <div><p>Leicht zu bedienendes grafisches Interface zum Konfigurieren und Kalibrieren des <em>rc_visard NG</em>, zum Anzeigen von Livebildern, Aufrufen von Services, Visualisieren von Ergebnissen, usw.</p>
 </div></blockquote>
 </li>
-<li><p class="first"><a class="reference internal" href="gigevision.html"><span class="doc">GigE Vision 2.0/GenICam-Schnittstelle</span></a></p>
-<blockquote>
-<div><p>Konfiguration bild- und kamerabezogener Einstellungen.</p>
-</div></blockquote>
-</li>
 <li><p class="first"><a class="reference internal" href="rest_api.html"><span class="doc">REST-API-Schnittstelle</span></a></p>
 <blockquote>
 <div><p>Programmierschnittstelle zur Konfiguration des <em>rc_visard NG</em>, zur Abfrage von Statusinformationen, zum Anfordern von Datenströmen, usw.</p>
@@ -611,17 +608,38 @@
 </li>
 </ul>
 <ul>
-<li><p class="first"><a class="reference internal" href="eki.html"><span class="doc">Ethernet KRL Schnittstelle (EKI)</span></a></p>
+<li><p class="first"><a class="reference internal" href="gri.html"><span class="doc">Generic Robot Interface</span></a></p>
+<blockquote>
+<div><p>TCP-Socketkommunikationsschnittstelle zur Konfiguration des <em>rc_visard NG</em> und für Serviceaufrufe.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><a class="reference internal" href="opc_ua.html"><span class="doc">OPC UA Interface</span></a></p>
+<blockquote>
+<div><p>OPC UA Schnittstelle zur Konfiguration des <em>rc_visard NG</em> und Ausführen von Service-Anfragen.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><a class="reference internal" href="eki.html"><span class="doc">KUKA Ethernet KRL Schnittstelle</span></a></p>
 <blockquote>
 <div><p>API zum Konfigurieren des <em>rc_visard NG</em> und Ausführen von Service-Anfrage von KUKA KSS Robotern aus.</p>
 </div></blockquote>
 </li>
+</ul>
+<ul>
+<li><p class="first"><a class="reference internal" href="gigevision.html"><span class="doc">GigE Vision 2.0/GenICam-Schnittstelle</span></a></p>
+<blockquote>
+<div><p>Konfiguration bild- und kamerabezogener Einstellungen.</p>
+</div></blockquote>
+</li>
+</ul>
+<ul>
 <li><p class="first"><a class="reference internal" href="grpc.html"><span class="doc">gRPC Bilddatenschnittstelle</span></a></p>
 <blockquote>
 <div><p>Synchronisierte Bilddaten per gRPC.</p>
 </div></blockquote>
 </li>
-<li><p class="first"><a class="reference internal" href="time_sync.html"><span class="doc">Zeitsynchronisation</span></a></p>
+</ul>
+<ul>
+<li><p class="first"><a class="reference internal" href="time_sync.html"><span class="doc">Zeitsynchronisierung</span></a></p>
 <blockquote>
 <div><p>Zeitsynchronisation zwischen dem <em>rc_visard NG</em> und dem Anwendungs-PC.</p>
 </div></blockquote>
@@ -730,7 +748,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.10.1',
+            VERSION:'25.10.2',
             LANGUAGE:'de',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

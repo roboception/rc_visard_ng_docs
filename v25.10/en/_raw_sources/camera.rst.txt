@@ -10,7 +10,7 @@ The camera module is a base module which is available on every |rc_xxx| and
 is responsible for image acquisition and rectification. It provides various
 parameters, e.g. to control exposure and frame rate.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. Note:: Depending on the chosen camera pipeline type, this module offers different run-time parameters. 
 
@@ -24,4 +24,4 @@ parameters, e.g. to control exposure and frame rate.
    :matrixvision_visard_exclude:stereo_ace_camera
    :rc_cube_roboception_matrixvision_only:orbbec_camera
    :rc_cube_roboception_only:zivid_camera
-   :matrixvision_visard_exclude:blaze_camera
+   :matrixvision_visard_container_exclude:blaze_camera

@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; rc_visard NG 25.10.1
+  <title>Index &mdash; rc_visard NG 25.10.2
  documentation</title>
   
 
@@ -61,7 +61,7 @@
         <link rel="index" title="Index"
               href="#"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.10.1
+    <link rel="top" title="rc_visard NG 25.10.2
  documentation" href="index.html"/> 
 
   
@@ -346,31 +346,6 @@
 <li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Downloading depth images and point clouds</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">General API structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Available resources and requests</a><ul>
@@ -404,6 +379,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gri.html#job-and-hec-config-api">Job and HEC_config API</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Ethernet connection configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Generic XML structure</a><ul>
@@ -421,13 +397,39 @@
 <li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Troubleshooting</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC image stream interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Example client</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
@@ -452,11 +454,11 @@
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Lens cleaning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Camera calibration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Creating and restoring backups of settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Rebooting the <em>rc_visard NG</em></a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
@@ -682,7 +684,7 @@
         <li><a href="gigevision.html#index-35">GenICam</a>
 </li>
       </ul></li>
-      <li><a href="maintenance.html#index-2">active partition</a>
+      <li><a href="maintenance.html#index-3">active partition</a>
 </li>
       <li>
     AdaptiveOut1
@@ -1027,6 +1029,13 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    camera connection
+
+      <ul>
+        <li><a href="installation_stack.html#index-1">installation</a>
+</li>
+      </ul></li>
       <li><a href="rectification.html#index-0">camera model</a>
 </li>
       <li><a href="pipelines.html#index-0"><strong>Camera pipelines</strong></a>
@@ -1121,6 +1130,8 @@
 
       <ul>
         <li><a href="gigevision.html#index-59">GenICam image stream</a>
+</li>
+        <li><a href="grpc.html#index-1">gRPC image stream</a>
 </li>
       </ul></li>
       <li><a href="hardware_spec.html#index-5">cooling</a>
@@ -1350,7 +1361,7 @@
       <ul>
         <li><a href="downloading_images.html#index-0">images</a>
 </li>
-        <li><a href="maintenance.html#index-5">log files</a>
+        <li><a href="maintenance.html#index-1">log files</a>
 </li>
         <li><a href="camera_modules.html#index-0">point cloud</a>, <a href="downloading_3d_data.html#index-0">[1]</a>
 </li>
@@ -1514,13 +1525,13 @@
     firmware
 
       <ul>
-        <li><a href="maintenance.html#index-1">mender</a>
+        <li><a href="maintenance.html#index-2">mender</a>
 </li>
-        <li><a href="maintenance.html#index-3">rollback</a>
+        <li><a href="maintenance.html#index-4">rollback</a>
 </li>
-        <li><a href="maintenance.html#index-1">update</a>
+        <li><a href="maintenance.html#index-2">update</a>
 </li>
-        <li><a href="maintenance.html#index-1">version</a>
+        <li><a href="maintenance.html#index-2">version</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1811,6 +1822,13 @@
       </ul></li>
       <li><a href="grpc.html#index-0">gRPC</a>
 </li>
+      <li>
+    gRPC image stream
+
+      <ul>
+        <li><a href="grpc.html#index-1">conversions</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -1892,7 +1910,7 @@
         <li><a href="downloading_images.html#index-0">download</a>
 </li>
       </ul></li>
-      <li><a href="maintenance.html#index-2">inactive partition</a>, <a href="maintenance.html#index-3">[1]</a>
+      <li><a href="maintenance.html#index-3">inactive partition</a>, <a href="maintenance.html#index-4">[1]</a>
 </li>
       <li>
     inner volume
@@ -1901,8 +1919,12 @@
         <li><a href="loadcarrier_db.html#index-2">load carrier</a>
 </li>
       </ul></li>
-      <li><a href="installation.html#index-0">installation</a>
+      <li><a href="installation.html#index-0">installation</a>, <a href="installation_stack.html#index-0">[1]</a>
+
+      <ul>
+        <li><a href="installation_stack.html#index-1">camera connection</a>
 </li>
+      </ul></li>
       <li>
     Intensity
 
@@ -1917,10 +1939,10 @@
         <li><a href="gigevision.html#index-57">GenICam image stream</a>
 </li>
       </ul></li>
-      <li><a href="glossary.html#term-ip"><strong>IP</strong></a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="glossary.html#term-ip"><strong>IP</strong></a>
+</li>
       <li><a href="installation.html#index-4">IP address</a>, <a href="glossary.html#term-ip-address"><strong>[1]</strong></a>
 
       <ul>
@@ -2075,7 +2097,7 @@
     log files
 
       <ul>
-        <li><a href="maintenance.html#index-5">download</a>
+        <li><a href="maintenance.html#index-1">download</a>
 </li>
       </ul></li>
       <li>
@@ -2143,7 +2165,7 @@
     mender
 
       <ul>
-        <li><a href="maintenance.html#index-1">firmware</a>
+        <li><a href="maintenance.html#index-2">firmware</a>
 </li>
       </ul></li>
       <li>
@@ -2448,7 +2470,7 @@
         <li><a href="tagdetect.html#index-4">QR code</a>
 </li>
       </ul></li>
-      <li><a href="maintenance.html#index-4">reboot</a>
+      <li><a href="maintenance.html#index-5">reboot</a>
 </li>
       <li><a href="rectification.html#index-0">rectification</a>
 </li>
@@ -2555,7 +2577,7 @@
     rollback
 
       <ul>
-        <li><a href="maintenance.html#index-3">firmware</a>
+        <li><a href="maintenance.html#index-4">firmware</a>
 </li>
       </ul></li>
   </ul></td>
@@ -3008,7 +3030,7 @@
     update
 
       <ul>
-        <li><a href="maintenance.html#index-1">firmware</a>
+        <li><a href="maintenance.html#index-2">firmware</a>
 </li>
       </ul></li>
       <li>
@@ -3056,7 +3078,7 @@
       <ul>
         <li><a href="rest_api_general.html#index-0">REST-API</a>
 </li>
-        <li><a href="maintenance.html#index-1">firmware</a>
+        <li><a href="maintenance.html#index-2">firmware</a>
 </li>
       </ul></li>
   </ul></td>
@@ -3076,9 +3098,9 @@
 </li>
         <li><a href="blaze.html#index-1">disparity image</a>, <a href="stereo_matching.html#index-1">[1]</a>
 </li>
-        <li><a href="maintenance.html#index-5">logs</a>
+        <li><a href="maintenance.html#index-1">logs</a>
 </li>
-        <li><a href="maintenance.html#index-1">update</a>
+        <li><a href="maintenance.html#index-2">update</a>
 </li>
       </ul></li>
   </ul></td>
@@ -3229,7 +3251,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.10.1',
+            VERSION:'25.10.2',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

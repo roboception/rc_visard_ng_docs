@@ -127,7 +127,7 @@ Parameter:
    wiederherzustellen.
 
 Services:
-   Einige Module bieten auch Services, die sich über die REST-API
+   Die meisten Module bieten auch Services, die sich über die REST-API
    aufrufen lassen. Hierzu gehört beispielsweise das oben bereits
    genannte Wiederherstellen von Parametern oder auch das Starten und
    Stoppen von Modulen. Die

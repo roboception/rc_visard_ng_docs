@@ -1,0 +1,391 @@
+Installation
+
+Warnung: Vor Installation müssen die Hinweise zur
+
+  Sicherheit
+
+   des
+
+  rc_visard NG
+
+   gelesen und verstanden werden.
+
+Der
+
+rc_visard NG
+
+ ist ein Docker-basierter Software-Stack, der auf Rechnern installiert
+werden kann, die die unter
+
+Voraussetzungen
+
+ genannten Systemvoraussetzungen erfüllen. Dieses Kapitel enthält
+detaillierte Informationen zur Installation der
+
+rc_reason_stack
+
+-Software.
+
+Offline Installationsanleitung
+
+Dieser Abschnitt beschreibt die manuelle Installation des
+
+rc_reason_stack
+
+ auf einem Hostsystem. Im Gegensatz zum automatisierten Docker-
+Compose-Workflow werden die Docker-Images zunächst auf den Hostrechner
+kopiert und anschließend manuell in Docker geladen. Führen Sie die
+folgenden Schritte aus, um den Stack für Ihre Entwicklungs- oder
+Produktionsumgebung einzurichten und auszuführen.
+
+Alle Befehle müssen auf dem Host-Rechner ausgeführt werden (nicht
+innerhalb eines Containers).
+
+Voraussetzungen
+
+    Komponente  Minimalversion  Ubuntu  24.04 LTS  NVIDIA GPU  Jede
+RTX mit mindestens 8GB VRAM, oder besser Nvidia RTX A4000, RTX 4000
+Ada, RTX 3080, RTX 4070, RTX 4080  Docker  20.10+  NVIDIA Driver  535+
+(diese Anleitung nutzt nvidia-driver-575-server)
+
+Die folgenden Dateien werden von Roboception bereitgestellt und werden
+für die Installation benötigt.
+
+    Datei  Beschreibung  rc_container-latest.tar  rc_container docker
+image  tritonserver-23.10.tar  Tritonserver Docker Image  docker-
+compose.yml  Die Docker-Compose-Datei
+
+Installation von Ubuntu 24.04
+
+Dieser Abschnitt kann übersprungen werden, wenn eine funktionierende
+Ubuntu 24.04-Installation vorhanden ist.
+
+Folgen Sie zur Installation von Ubuntu der offiziellen Ubuntu-
+Installationsanleitung unter
+
+https://ubuntu.com/download/desktop
+
+ oder
+
+https://ubuntu.com/download/server
+
+.
+
+NVIDIA-Treiberinstallation
+
+Der NVIDIA-Treiber ist erforderlich, damit der Host die GPU für
+Docker-Container freigeben kann. Nach der Installation des Treibers
+sollten die GPU und ihre Funktionen mit "nvidia-smi" sichtbar sein.
+Ist der Treiber nicht installiert oder nicht korrekt geladen, findet
+"nvidia-smi" die GPU entweder nicht oder meldet „No devices were
+found“.
+
+   # Update package lists
+   sudo apt update
+
+   # Install the latest NVIDIA driver (replace 525 with the version that matches your GPU)
+   sudo apt install -y nvidia-driver-525
+
+   # Reboot to load the driver
+   sudo reboot
+
+Überprüfen Sie nach dem Neustart, ob der Treiber aktiv ist:
+
+   $ nvidia-smi
+   +-----------------------------------------------------------------------------+
+   | NVIDIA-SMI 525.125.02   Driver Version: 525.125.02   CUDA Version: 12.5     |
+   |-------------------------------+----------------------+----------------------+
+   | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+   | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+   |                               |                      |               MIG M. |
+   |===============================+======================+======================|
+   |   0  GeForce RTX 3080    Off  | 00000000:01:00.0 Off |                  N/A |
+   | 30%   38C    P8    12W / 350W |   12MiB / 11264MiB   |      0%      Default |
+   +-------------------------------+----------------------+----------------------+
+
+   +-----------------------------------------------------------------------------+
+   | Processes:                                                                  |
+   |  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+   |        ID   ID                                                   Usage      |
+   |=============================================================================|
+   |  No running processes found                                                 |
+   +-----------------------------------------------------------------------------+
+
+Die Tabelle zeigt:
+
+GPU: die Geräte-ID (0, 1, ...)
+
+Name: das GPU Modell (z.B., GeForce RTX 3080)
+
+Driver Version: dre installierte NVIDIA-Treiber
+
+CUDA Version: das CUDA Toolkit, das mit dem Treiber ausgeliefert wurde
+
+Memory-Usage: dem Grafikprozessor zugewiesener Gesamtspeicher
+
+GPU-Util: aktueller Prozentsatz der GPU-Auslastung
+
+Wenn diese Ausgabe angezeigt wird, ist der Treiber korrekt installiert
+und die GPU kann vom NVIDIA Container Toolkit und den Containern
+verwendet werden.
+
+Docker-Installation
+
+   # Update the apt package index and install packages to allow apt to use a repository over HTTPS
+   sudo apt-get update
+   sudo apt-get install \
+      ca-certificates \
+      curl \
+      gnupg \
+      lsb-release
+
+   # Add Docker’s official GPG key
+   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+   # Set up the stable repository
+   echo \
+   "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+   # Install Docker Engine
+   sudo apt-get update
+   sudo apt-get install -y docker-ce docker-ce-cli docker-compose-plugin containerd.io
+
+   # Verify Docker installation
+   sudo docker --version
+
+Installation des NVIDIA Container Toolkit
+
+Das NVIDIA Container Toolkit ermöglicht Docker, NVIDIA-GPUs innerhalb
+von Containern zu erkennen, bereitzustellen und in einer Sandbox
+auszuführen. Ohne dieses Toolkit können CUDA-Workloads nicht im
+Container ausgeführt werden. Es bildet die Brücke zwischen der Docker-
+Container-Laufzeitumgebung und dem NVIDIA-Treiberstack auf dem
+Hostsystem.
+
+   # Add the NVIDIA GPG key
+   sudo curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | \
+      sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+
+   # Add the NVIDIA Container Toolkit repository
+   sudo curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+      sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+      sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+   # Update package lists and install
+   sudo apt update && sudo apt install -y nvidia-container-toolkit
+
+   # Restart Docker to apply changes
+   sudo systemctl restart docker
+
+   # Modify /etc/docker/daemon.json. This is necessary for older docker versions
+   sudo nvidia-ctk runtime configure --runtime=docker
+
+   # Verify that nvidia is now available as docker runtime
+   docker info | grep -i runtime
+
+Um ein Problem zu beheben, das dazu führt, dass die GPU nach einiger
+Zeit im Container ausfällt (erkennbar an einem Fehler von "nvidia-smi"
+im Container), öffnen Sie die Datei "/etc/nvidia-container-
+runtime/config.toml" und setzen Sie "no-cgroups = false". Starten Sie
+Docker nach der Konfigurationsänderung mit folgendem Befehl:
+
+   sudo systemctl restart docker
+
+Testen Sie, ob Docker auf die GPU zugreifen kann:
+
+   sudo docker run --rm --gpus all nvidia/cuda:12.1.1-base-ubuntu22.04 nvidia-smi
+
+Installation der WIBU CodeMeter Runtime
+
+Installieren Sie die CodeMeter Runtime (
+
+https://www.wibu.com/de/support/anwendersoftware/anwendersoftware.html
+
+) auf dem Hostsystem.
+
+Nach der Installation, stoppen Sie die Runtime:
+
+   sudo service codemeter stop
+
+Aktivieren Sie die Netzwerklizenzierung, indem Sie "IsNetworkServer"
+in der Datei "/etc/wibu/CodeMeter/Server.ini" auf 1 setzen.
+
+Starten Sie die Runtime:
+
+   sudo service codemeter start
+
+Um zu verhindern, dass der WIBU-Netzwerklizenzserver im externen
+Netzwerk (WIBU verwendet die Ports 22350-22352) sichtbar ist, kann
+eine Firewall verwendet werden, da der Lizenzserver nur für den
+Docker-Container sichtbar sein darf.
+
+Erstellen eines sensor0 Netzewrks
+
+Beispielhafte Netzwerkkonfiguration mit separatem Ethernet-Port
+(enp9s0) für die "sensor0"-Schnittstelle über macvlan. Passen Sie den
+Namen des Ethernet-Ports entsprechend an; in diesem Beispiel wird Port
+enp9s0 verwendet.
+
+   network:
+   version: 2
+   renderer: networkd
+   ethernets:
+      enp9s0:
+         dhcp4: false
+         dhcp6: false
+         addresses:
+         - 172.23.42.1/28
+
+Berechtigungen ändern und anwenden mit
+
+   sudo chmod 600 /etc/netplan/40-sensor0_enp9s0.yaml
+   sudo netplan apply
+
+Docker-Netzwerk mit dem macvlan-Treiber erstellen:
+
+   sudo docker network create -d macvlan --subnet=172.23.42.0/28 --gateway=172.23.42.1 --ip-range=172.23.42.8/29 -o parent=enp9s0 sensor0
+
+Bemerkung: Bei mehr als einer Sensornetzwerkschnittstelle sollten
+  aussagekräftige IP-Bereiche verwendet und die Docker Compose-Datei
+  entsprechend erweitert werden.
+
+Netzwerkeinstellungen für GigE Vision sicherstellen
+
+GigE-Vision-Kameras streamen Bilder mit hoher Bandbreite über UDP-
+Pakete. Paketverluste führen zu Bildausfällen und beeinträchtigen die
+Anwendungsleistung. Um dies zu vermeiden, sollten die Ethernet-
+Lesepuffer auf dem Host erhöht werden. Erstellen Sie unter Ubuntu die
+Datei "/etc/sysctl.d/10-gev-perf.conf" mit folgendem Inhalt:
+
+   # Increase readbuffer size for GigE Vision
+   net.core.rmem_max=33554432
+
+Übernehmen Sie die Einstellungen mit
+
+   sudo sysctl -p /etc/sysctl.d/10-gev-perf.conf
+
+Laden der Container-Images
+
+   gunzip -c ./rc_container-latest.tar.gz | docker load
+   gunzip -c ./tritonserver-23.10.tar.gz | docker load
+
+Starten des Docker-Stacks
+
+   cd /path/to/rc_container/
+   # use docker-compose.yml
+   docker compose up -d --pull never
+
+oder auf älteren Systemen
+
+   cd /path/to/rc_container/
+   # use docker-compose.json
+   docker compose -f docker-compose.json up -d --pull never
+
+Warten Sie einige Minuten, bis alle Container gestartet sind. Der
+Status kann wie folgt überwacht werden:
+
+   docker compose ps
+
+Zugriff auf die Web GUI
+
+Sobald der Stack läuft, kann die Web GUI wie folgt aufgerufen werden:
+
+   http://<host-ip>:8080/
+
+Fehlerbehebung
+
+      Symptom  Wahrscheinliche Ursache  Fehlerbehebung  docker:
+Fehler: Der Treiber nvidia unterstützt das angeforderte Gerät nicht.
+NVIDIA-Treiber- / Docker-Integrationskonflikt  Führen Sie die
+Installation des NVIDIA Container Toolkits erneut aus und starten Sie
+den Computer neu.  Container starten nicht  Falscher Netzwerkname
+Stellen Sie sicher, dass ein Docker-Netzwerk mit dem Namen sensor0
+existiert  Web GUI nicht erreichbar  Container laufen nicht  docker
+compose logs um Fehler zu untersuchen  Sehr niedrige
+Bildwiederholfrequenz  GPU funktioniert nicht im Container
+Überprüfen, indem nvidia-smi auf dem Host und innerhalb des Containers
+ausgeführt wird, und Probleme beheben [1].
+
+[1]
+
+  Falls "nvidia-smi" auf dem Host fehlschlägt, stellen Sie sicher,
+dass die Pakete konsistent sind, da ein unbeaufsichtigtes Upgrade
+unter Ubuntu möglicherweise den Nvidia-Treiber, aber nicht das Nvidia-
+Toolkit aktualisiert. Dies lässt sich beheben, indem Sie manuell "sudo
+apt update && sudo apt upgrade" ausführen. Unbeaufsichtigte Upgrades
+können deaktiviert werden. Falls "nvidia-smi" im Container
+fehlschlägt, stellen Sie sicher, dass "no-cgroups = false" in "/etc
+/nvidia-container-runtime/config.toml" gesetzt ist, und starten Sie
+Docker neu, falls die Konfiguration geändert werden musste. Diese
+Konfigurationsdatei wurde möglicherweise durch ein Update des Nvidia-
+Container-Toolkits überschrieben.
+
+Softwarelizenz
+
+Jeder
+
+rc_visard NG
+
+ wird mit einem USB-Dongle zur Lizenzierung und zum Schutz der
+installierten Softwarepakete ausgeliefert. Die erworbenen Lizenzen
+sind auf diesem Dongle installiert und somit an ihn und seine ID
+gebunden.
+
+Die Funktionalität des
+
+rc_visard NG
+
+ kann jederzeit durch ein
+
+Upgrade der Lizenz
+
+ erweitert werden -- zum Beispiel für zusätzlich erhältliche,
+optionale Softwaremodule.
+
+Bemerkung: Der
+
+  rc_visard NG
+
+   muss neu gestartet werden, sobald die Softwarelizenz geändert
+  wurde.
+
+Bemerkung: Der Status der Softwarelizenz kann über die verschiedenen
+  Schnittstellen des
+
+  rc_visard NG
+
+   abgefragt werden, zum Beispiel über die Seite System ‣ Firmware &
+  Lizenz in der
+
+  Web GUI
+
+  .
+
+Bemerkung: Damit die Lizenzierung der Softwaremodule ordnungsgemäß
+  funktioniert, muss der USB-Dongle an den
+
+  rc_visard NG
+
+   angesteckt werden, bevor dieser gestartet wird.
+
+Bemerkung: Der
+
+  rc_visard NG
+
+   muss neu gestartet werden, sobald der Dongle eingesteckt oder
+  abgezogen wurde.
+
+Anschluss von Kameras
+
+Der
+
+rc_visard NG
+
+ bietet bis zu vier Software-Kamerapipelines für die Prozessierung der
+Daten der angeschlossenen Sensoren. Die Konfiguration der
+Kamerapipelines wird in
+
+Kamerapipelines
+
+ beschrieben.

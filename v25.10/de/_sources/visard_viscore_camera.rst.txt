@@ -14,10 +14,6 @@ Stereo-Matching-Parameter entweder dort oder über die REST-API (
 
 REST-API-Schnittstelle
 
-) oder über GigE Vision (
-
-GigE Vision 2.0/GenICam-Schnittstelle
-
 ) ändern.
 
 Übersicht über die Parameter
@@ -55,6 +51,14 @@ manuellen Weißabgleichs (nur für Farbkameras)  wb_ratio_blue  float64
 gesetzt ist (nur für Farbkameras)  wb_ratio_red  float64  1.0  1.0
 1.0  Rot-zu-Grün-Verhältnis, falls wb_auto auf false gesetzt ist (nur
 für Farbkameras)
+
+Die gleichen Parameter sind – mit leicht abweichenden Namen und
+teilweise mit anderen Einheiten oder Datentypen – auch über die
+GenICam-Schnittstelle verfügbar (siehe
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+).
 
 Beschreibung der Laufzeitparameter
 
@@ -164,7 +168,7 @@ fps (Bildwiederholrate (Hz))
    um die Funktion von internen Modulen, die eine konstante
    Bildwiederholrate benötigen (wie zum Beispiel die visuelle
    Odometrie), sicherzustellen. Die vom Benutzer definierte
-   Bildwiederholrate wird, wie in Abbildung "fig-fps-ng" gezeigt,
+   Bildwiederholrate wird, wie in der folgenden Abbildung gezeigt,
    durch das Weglassen von Bildern erreicht, die für das Stereo-
    Matching und das Übertragen per GigE Vision benutzt werden.
    Letzteres dient der Reduktion der Bandbreite.
@@ -456,20 +460,12 @@ API Version 1 (veraltet)
 
    PUT http://<host>/api/v1/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
 
-Die gleichen Parameter sind – mit leicht abweichenden Namen und
-teilweise mit anderen Einheiten oder Datentypen – auch über die
-GenICam-Schnittstelle verfügbar (siehe
-
-GigE Vision 2.0/GenICam-Schnittstelle
-
-).
-
 Statuswerte
 
 Dieses Modul meldet folgende Statuswerte:
 
 Statuswerte des rc_camera-Moduls      Name  Beschreibung  baseline
-Basisabstand t der Stereokamera in Metern  brightness   Aktuelle
+Basisabstand t der Stereokamera in Metern  brightness  Aktuelle
 Helligkeit als Wert zwischen 0 und 1  color  0 für monochrome Kameras,
 1 für Farbkameras  device_trigger_sources  Angabe der verfügbaren
 Triggerquellen  exp  Aktuelle Belichtungszeit in Sekunden. Dieser Wert
@@ -483,7 +479,7 @@ angezeigt.  gamma  Aktueller Gammawert  height  Höhe des Kamerabilds
 in Pixeln. Dieser Wert wird unter der Bildvorschau in der Web GUI als
 zweiter Teil von Auflösung (px) angezeigt.  last_timestamp_grabbed
 Zeitstempel des letzten aufgenommenen Bildes, wenn die Kamera im
-Triggermodus ist  out1_reduction   Anteil der Helligkeits-Reduktion
+Triggermodus ist  out1_reduction  Anteil der Helligkeits-Reduktion
 (0.0 - 1.0) für Bilder mit GPIO-Ausgang 1=LOW, wenn
 exp_auto_mode=AdaptiveOut1 oder exp_auto_mode=Out1High. Dieser Wert
 wird unter der Bildvorschau in der Web GUI als Out1 Reduktion (%)

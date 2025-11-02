@@ -27,17 +27,17 @@ The |rc_xxx| offers software modules for different detection and measuring appli
 - :doc:`silhouettematch` (``rc_silhouettematch``:latex:`, Section \ref{silhouettematch:sect-silhouettematch}`)
    provides an object detection solution for objects placed on a plane or stacked planar objects.
 
-.. only:: rc_cube or rc_visard_ng
+.. only:: rc_cube or rc_reason_stack or rc_visard_ng
 
    - :doc:`cadmatch` (``rc_cadmatch``:latex:`, Section \ref{cadmatch:sect-cadmatch}`)
       provides an object detection solution for 3D objects.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    These modules are pipeline specific, which means that they run inside each
    camera pipeline. Changes to their settings or parameters
    only affect the corresponding pipeline and have no influence on the other
-   camera pipelines running on the |rc_cube|.
+   camera pipelines running on the |rc_xxx|.
 
 These modules are optional and can be activated by
 purchasing a separate

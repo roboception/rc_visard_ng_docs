@@ -14,9 +14,15 @@ A camera pipeline contains several software modules which are responsible for
 acquiring data of the camera connected to that pipeline, performing detections or 
 configuring modules used in this pipeline, e.g. by hand-eye calibration.
 
-.. only:: roboception or schunk
+.. only:: rc_cube and (roboception or schunk)
 
    The |rc_xxx| supports cameras of type |rc_visard|, |rc_viscore|, |zivid|, |orbbec|, |stereo_ace| and |blaze|. 
+   The type of the corresponding camera pipeline has to be configured to match
+   the connected device.
+
+.. only:: rc_reason_stack and (roboception or schunk)
+
+   The |rc_xxx| supports cameras of type |rc_visard|, |rc_viscore|, |zivid|, |orbbec| and |stereo_ace|. 
    The type of the corresponding camera pipeline has to be configured to match
    the connected device.
 
@@ -44,12 +50,14 @@ types and the connected devices.
    :width:  100 %
    :align: center
 
-   Example of the *Camera Pipelines* page on an |rc_cube| with two running pipelines of type ``rc_visard``
+   Example of the *Camera Pipelines* page on an |rc_xxx| with two running pipelines of type ``rc_visard``
 
 Clicking on :guilabel:`Configure Camera Pipelines` allows to configure the number and type of running pipelines
 as shown in the next figure.
 
-.. note:: The *rc_cube I* provides four camera pipelines, the *rc_cube S* two.
+.. only:: rc_cube
+
+   .. note:: The *rc_cube I* provides four camera pipelines, the *rc_cube S* two.
 
 .. _fig-pipelines-configuration:
 .. figure:: images/webgui_pipelines_configure.png
@@ -63,15 +71,22 @@ A running pipeline can be removed by clicking :guilabel:`Remove Pipeline`. Only 
 this is the primary pipeline.
 Clicking on :guilabel:`+ Add Pipeline` allows to choose the type for the new pipeline and creates a 
 new pipeline of the chosen type.
-Once the pipelines are configured as desired, clicking :guilabel:`Apply Changes & Reboot` will apply the new configuration
-and immediately reboot the |rc_cube|.
 
+.. only:: rc_cube
+
+   Once the pipelines are configured as desired, clicking :guilabel:`Apply Changes & Reboot` will apply the new configuration
+   and immediately reboot the |rc_cube|.
+
+.. only:: rc_reason_stack
+
+   Once the pipelines are configured as desired, clicking :guilabel:`Apply Changes` will apply the new configuration. Then, 
+   the |rc_reason_stack| has to be restarted for the changes to take effect.
 
 Configuration of connected cameras
 ----------------------------------
 
 A pipeline of a certain type can only discover devices of the same type. That means, a pipeline of type ``rc_visard`` can only
-connect to an |rcvisard|. In case multiple cameras of the same type are connected to the |rc_cube|, the user can set a *device
+connect to an |rcvisard|. In case multiple cameras of the same type are connected to the |rc_xxx|, the user can set a *device
 filter* to choose a specific camera for each pipeline. The current device filter value is displayed for each running pipeline
 as shown in :numref:`fig-pipelines-running`. By default, the device filter is set to ``*``, which means that any device
 matching the pipeline type will automatically be connected, but only if there is a unique match. Otherwise, no camera will be 
@@ -88,7 +103,7 @@ camera.
    :width:  100 %
    :align: center
 
-   Configuring the camera connection of pipeline 1
+   Configuring the camera connection of pipeline 0
 
 Clicking :guilabel:`Choose Camera` opens a dialog to edit the device filter. 
 
@@ -119,4 +134,4 @@ of the desired device in the list. The following table shows possible device fil
     "",    "if empty, no camera will be connected"
     
 By pressing :guilabel:`Save`, the entered device filter is applied and a camera matching the device filter is connected to
-this pipeline, if possible. Changing the device filter does not require a reboot of the |rc_cube|.
+this pipeline, if possible. Changing the device filter does not require a restart of the |rc_xxx|.

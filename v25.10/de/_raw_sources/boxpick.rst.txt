@@ -40,12 +40,12 @@ In addition, the module offers:
 - Selection of a sorting strategy to sort the returned grasps.
 - 3D visualization of the detection results with grasp points and gripper animations in the |webgui|.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
 
       This module is pipeline specific. Changes to its settings or parameters only affect
-      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_xxx|.
 
 .. Note::
 
@@ -317,17 +317,22 @@ The BoxPick module makes internally use of the following data:
    - Disparity, error, and confidence images from the :doc:`stereo_matching`
      (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`)
 
-.. only:: rc_cube and (roboception or basler or schunk)
+.. only:: (rc_cube or rc_reason_stack) and (roboception or basler or schunk)
 
    - Disparity, error, and confidence images from the :doc:`stereo_matching`
      (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`), in case a stereo camera is used
 
-.. only:: rc_cube and (roboception or basler or schunk)
+.. only:: (rc_cube) and (roboception or basler or schunk)
 
    - Disparity, error, and confidence images from the :doc:`blaze`
      (``rc_blaze``:latex:`, Section \ref{blaze:sect-blaze}`), in case a Basler |blaze| camera is used
 
-.. only:: rc_cube and roboception
+.. only:: (rc_cube or rc_reason_stack) and (roboception or matrixvision or schunk)
+
+   - Disparity, error, and confidence images from the :doc:`orbbec`
+     (``rc_orbbec``:latex:`, Section \ref{orbbec:sect-orbbec}`), in case an |orbbec| camera is used
+
+.. only:: (rc_cube or rc_reason_stack) and roboception
 
    - Disparity, error, and confidence images from the :doc:`zivid`
      (``rc_zivid``:latex:`, Section \ref{zivid:sect-zivid}`), in case a |zivid| camera is used
@@ -453,7 +458,7 @@ module's run-time parameters, e.g. for development and testing, using the |webgu
 Parameter overview
 ^^^^^^^^^^^^^^^^^^
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note:: The default values in the parameter table
              below show the values of the |rc_visard|. The values can be
@@ -486,7 +491,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?max_grasps=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -516,7 +521,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?cluster_max_curvature=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -546,7 +551,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?clustering_discontinuity_factor=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -576,7 +581,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?clustering_max_surface_rmse=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -619,7 +624,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?mode=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -656,7 +661,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?manual_line_sensitivity=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -691,7 +696,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?line_sensitivity=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -724,7 +729,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?prefer_splits=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -758,7 +763,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?min_cluster_coverage=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -791,7 +796,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/parameters/parameters?allow_untextured_detections=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -950,7 +955,7 @@ The BoxPick module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/services/detect_items
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1031,7 +1036,7 @@ The BoxPick module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/services/compute_grasps
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1120,7 +1125,7 @@ The BoxPick module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/services/set_preferred_orientation
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1166,7 +1171,7 @@ The BoxPick module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/services/get_preferred_orientation
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1212,7 +1217,7 @@ The BoxPick module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/services/set_sorting_strategies
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1265,7 +1270,7 @@ The BoxPick module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/services/get_sorting_strategies
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1311,7 +1316,7 @@ The BoxPick module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/services/start
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1358,7 +1363,7 @@ The BoxPick module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/services/stop
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1446,7 +1451,7 @@ The BoxPick module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_boxpick/services/reset_defaults
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1540,3 +1545,7 @@ Up to 100 templates can be stored persistently on the |rc_xxx|.
 .. only:: rc_cube
 
    .. include:: _gen/swagger/rc_cube/templates_rc_boxpick.txt
+
+.. only:: rc_reason_stack
+
+   .. include:: _gen/swagger/rc_reason_stack/templates_rc_boxpick.txt

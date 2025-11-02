@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gRPC image stream interface &mdash; rc_visard NG 25.10.1
+  <title>gRPC image stream interface &mdash; rc_visard NG 25.10.2
  documentation</title>
   
 
@@ -52,11 +52,11 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.10.1
+    <link rel="top" title="rc_visard NG 25.10.2
  documentation" href="index.html"/>
         <link rel="up" title="Interfaces" href="interfaces.html"/>
-        <link rel="next" title="OPC UA interface" href="opc_ua.html"/>
-        <link rel="prev" title="KUKA Ethernet KRL Interface" href="eki.html"/> 
+        <link rel="next" title="Time synchronization" href="time_sync.html"/>
+        <link rel="prev" title="GigE Vision 2.0/GenICam image interface" href="gigevision.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -340,31 +340,6 @@
 <li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Downloading depth images and point clouds</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">General API structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Available resources and requests</a><ul>
@@ -398,6 +373,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gri.html#job-and-hec-config-api">Job and HEC_config API</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Ethernet connection configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Generic XML structure</a><ul>
@@ -415,13 +391,39 @@
 <li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Troubleshooting</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">gRPC image stream interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#grpc-service-definition">gRPC service definition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#image-stream-conversions">Image stream conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grpc-service-definition">gRPC service definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#example-client">Example client</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
@@ -446,11 +448,11 @@
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Lens cleaning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Camera calibration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Creating and restoring backups of settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Rebooting the <em>rc_visard NG</em></a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
@@ -598,7 +600,8 @@
 <p id="index-0">The gRPC image streaming interface can be used as an alternative to the
 <a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE Vision / GenICam interface</span></a>
 for getting camera images and synchronized sets of images (e.g. left camera
-image and corresponding disparity image). <a class="reference external" href="https://grpc.io/">gRPC</a> is a
+image and corresponding disparity image).</p>
+<p><a class="reference external" href="https://grpc.io/">gRPC</a> is a
 remote procedure call system that also
 supports streaming. It uses <a class="reference external" href="https://developers.google.com/protocol-buffers/">Protocol Buffers</a>
 (see <a class="reference external" href="https://developers.google.com/protocol-buffers/">https://developers.google.com/protocol-buffers/</a>)
@@ -736,11 +739,47 @@ images and a much denser and more accurate disparity image.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
 <div class="section" id="image-stream-conversions">
-<h2>Image stream conversions<a class="headerlink" href="#image-stream-conversions" title="Permalink to this headline">¶</a></h2>
-<p>The conversion of disparity images into a point cloud can be done as described in the
-<a class="reference internal" href="gigevision.html#sect-image-stream-conversions"><span class="std std-ref">GigE Vision / GenICam interface</span></a>.</p>
+<span id="sect-gri-image-stream-conversions"></span><h3>Image stream conversions<a class="headerlink" href="#image-stream-conversions" title="Permalink to this headline">¶</a></h3>
+<p id="index-1">The disparity image contains 16 bit unsigned integer values. These values must be multiplied by the <code class="docutils literal notranslate"><span class="pre">scale</span></code> value
+given in the <code class="docutils literal notranslate"><span class="pre">DisparityImage</span></code> message to get the disparity values <span class="math notranslate nohighlight">\(d\)</span> in pixels. To
+compute the 3D object coordinates from the disparity values, the baseline and the focal length as well as the
+principal point are required.
+These parameters are transmitted as <code class="docutils literal notranslate"><span class="pre">baseline</span></code> = <span class="math notranslate nohighlight">\(t\)</span> in the <code class="docutils literal notranslate"><span class="pre">DisparityImage</span></code> message, and <code class="docutils literal notranslate"><span class="pre">focal_length</span></code> = <span class="math notranslate nohighlight">\(f\)</span>,
+<code class="docutils literal notranslate"><span class="pre">principal_point_u</span></code> = <span class="math notranslate nohighlight">\(c_x\)</span> and <code class="docutils literal notranslate"><span class="pre">principal_point_v</span></code> = <span class="math notranslate nohighlight">\(c_y\)</span> in the <code class="docutils literal notranslate"><span class="pre">ImageData</span></code> message. The focal length and principal point depend on the
+resolution of the camera image and need to be scaled to the resolution of the disparity image.
+Knowing these values, the pixel coordinates and the disparities can be transformed into 3D
+object coordinates in the camera coordinate frame
+using the equations described in <a class="reference internal" href="stereo_general.html#sect-point-clouds"><span class="std std-ref">Computing depth images and point clouds</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <em>rc_visard NG</em>’s camera coordinate frame is defined as shown in
+<a class="reference internal" href="hardware_spec.html#sect-coordinate-frames"><span class="std std-ref">sensor coordinate frame</span></a>.</p>
+</div>
+<p>Assuming that <span class="math notranslate nohighlight">\(d16_{ik}\)</span> is the 16 bit disparity value at column <span class="math notranslate nohighlight">\(i\)</span> and row <span class="math notranslate nohighlight">\(k\)</span>
+of a disparity image, the float disparity in pixels <span class="math notranslate nohighlight">\(d_{ik}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[d_{ik}=d16_{ik} \cdot \mathrm{scale}\]</div>
+<p>The 3D reconstruction in meters can be written as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}P_x&amp;=\left(i+0.5-c_x\right) \frac{t}{d_{ik}},\\
+P_y&amp;=\left(k+0.5-c_y\right) \frac{t}{d_{ik}},\\
+P_z&amp;=f \frac{t}{d_{ik}}.\end{split}\]</div>
+<p>The confidence image contains 8 bit unsigned integer values. These values have to be divided by 255 to
+get the confidence as value between 0 an 1.</p>
+<p>The error image contains 8 bit unsigned integer values. The error <span class="math notranslate nohighlight">\(e_{ik}\)</span> must be multiplied
+by the <code class="docutils literal notranslate"><span class="pre">scale</span></code> value given in the <code class="docutils literal notranslate"><span class="pre">DisparityImage</span></code> message to get the disparity-error
+values <span class="math notranslate nohighlight">\(d_{eps}\)</span> in pixels. According to the description in
+<a class="reference internal" href="stereo_general.html#sect-confidence-error"><span class="std std-ref">Confidence and error images</span></a>, the
+depth error <span class="math notranslate nohighlight">\(z_{eps}\)</span> in meters can be computed as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}d_{ik}&amp;=d16_{ik} \cdot \mathrm{scale},\\
+z_{eps}&amp;=\frac{e_{ik} \cdot \mathrm{scale} \cdot f
+              \cdot t}
+             {(d_{ik})^2}.\end{split}\]</div>
+<p>For more information about disparity, error, and confidence images, please refer to
+<a class="reference internal" href="stereo_matching.html#sect-stereo-matching"><span class="std std-ref">Stereo matching module</span></a>.</p>
+</div>
 </div>
 <div class="section" id="example-client">
 <h2>Example client<a class="headerlink" href="#example-client" title="Permalink to this headline">¶</a></h2>
@@ -758,10 +797,10 @@ images and a much denser and more accurate disparity image.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="opc_ua.html" class="btn btn-neutral float-right" title="OPC UA interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="time_sync.html" class="btn btn-neutral float-right" title="Time synchronization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="eki.html" class="btn btn-neutral" title="KUKA Ethernet KRL Interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="gigevision.html" class="btn btn-neutral" title="GigE Vision 2.0/GenICam image interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -847,7 +886,7 @@ images and a much denser and more accurate disparity image.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.10.1',
+            VERSION:'25.10.2',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

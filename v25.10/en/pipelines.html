@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Camera pipelines &mdash; rc_visard NG 25.10.1
+  <title>Camera pipelines &mdash; rc_visard NG 25.10.2
  documentation</title>
   
 
@@ -52,7 +52,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.10.1
+    <link rel="top" title="rc_visard NG 25.10.2
  documentation" href="index.html"/> 
 
   
@@ -337,31 +337,6 @@
 <li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Downloading depth images and point clouds</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">General API structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Available resources and requests</a><ul>
@@ -395,6 +370,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gri.html#job-and-hec-config-api">Job and HEC_config API</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Ethernet connection configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Generic XML structure</a><ul>
@@ -412,13 +388,39 @@
 <li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Troubleshooting</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC image stream interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Example client</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
@@ -443,11 +445,11 @@
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Lens cleaning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Camera calibration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Creating and restoring backups of settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Rebooting the <em>rc_visard NG</em></a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
@@ -595,9 +597,6 @@
 <p>A camera pipeline contains several software modules which are responsible for
 acquiring data of the camera connected to that pipeline, performing detections or
 configuring modules used in this pipeline, e.g. by hand-eye calibration.</p>
-<p>The <em>rc_visard NG</em> supports cameras of type <em>rc_visard</em>, <em>rc_viscore</em>, <em>zivid</em>, <em>Orbbec</em>, <em>Stereo ace</em> and <em>blaze</em>.
-The type of the corresponding camera pipeline has to be configured to match
-the connected device.</p>
 <div class="section" id="configuration-of-camera-pipelines">
 <h2>Configuration of camera pipelines<a class="headerlink" href="#configuration-of-camera-pipelines" title="Permalink to this headline">¶</a></h2>
 <p>The camera pipelines can be configured via the <a class="reference internal" href="webgui.html"><span class="doc">Web GUI</span></a>
@@ -605,14 +604,10 @@ under <span class="menuselection">System ‣ Camera Pipelines</span>. This page 
 types and the connected devices.</p>
 <div class="figure align-center" id="id1">
 <span id="fig-pipelines-running"></span><a class="reference internal image-reference" href="images/webgui_pipelines.png"><img alt="images/webgui_pipelines.png" src="images/webgui_pipelines.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text">Example of the <em>Camera Pipelines</em> page on an <em>rc_cube</em> with two running pipelines of type <code class="docutils literal notranslate"><span class="pre">rc_visard</span></code></span></p>
+<p class="caption"><span class="caption-text">Example of the <em>Camera Pipelines</em> page on an <em>rc_visard NG</em> with two running pipelines of type <code class="docutils literal notranslate"><span class="pre">rc_visard</span></code></span></p>
 </div>
 <p>Clicking on <span class="guilabel">Configure Camera Pipelines</span> allows to configure the number and type of running pipelines
 as shown in the next figure.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <em>rc_cube I</em> provides four camera pipelines, the <em>rc_cube S</em> two.</p>
-</div>
 <div class="figure align-center" id="id2">
 <span id="fig-pipelines-configuration"></span><a class="reference internal image-reference" href="images/webgui_pipelines_configure.png"><img alt="images/webgui_pipelines_configure.png" src="images/webgui_pipelines_configure.png" style="width: 60%;" /></a>
 <p class="caption"><span class="caption-text">Configuring the camera pipelines</span></p>
@@ -621,14 +616,12 @@ as shown in the next figure.</p>
 A running pipeline can be removed by clicking <span class="guilabel">Remove Pipeline</span>. Only pipeline 0 can never be removed, because
 this is the primary pipeline.
 Clicking on <span class="guilabel">+ Add Pipeline</span> allows to choose the type for the new pipeline and creates a
-new pipeline of the chosen type.
-Once the pipelines are configured as desired, clicking <span class="guilabel">Apply Changes &amp; Reboot</span> will apply the new configuration
-and immediately reboot the <em>rc_cube</em>.</p>
+new pipeline of the chosen type.</p>
 </div>
 <div class="section" id="configuration-of-connected-cameras">
 <h2>Configuration of connected cameras<a class="headerlink" href="#configuration-of-connected-cameras" title="Permalink to this headline">¶</a></h2>
 <p>A pipeline of a certain type can only discover devices of the same type. That means, a pipeline of type <code class="docutils literal notranslate"><span class="pre">rc_visard</span></code> can only
-connect to an <em>rc_visard</em>. In case multiple cameras of the same type are connected to the <em>rc_cube</em>, the user can set a <em>device
+connect to an <em>rc_visard</em>. In case multiple cameras of the same type are connected to the <em>rc_visard NG</em>, the user can set a <em>device
 filter</em> to choose a specific camera for each pipeline. The current device filter value is displayed for each running pipeline
 as shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">fig-pipelines-running</span></code>. By default, the device filter is set to <code class="docutils literal notranslate"><span class="pre">*</span></code>, which means that any device
 matching the pipeline type will automatically be connected, but only if there is a unique match. Otherwise, no camera will be
@@ -640,7 +633,7 @@ This will show the current device filter value and more information about the co
 camera.</p>
 <div class="figure align-center" id="id3">
 <span id="fig-pipeline-page"></span><a class="reference internal image-reference" href="images/webgui_pipeline.png"><img alt="images/webgui_pipeline.png" src="images/webgui_pipeline.png" style="width: 100%;" /></a>
-<p class="caption"><span class="caption-text">Configuring the camera connection of pipeline 1</span></p>
+<p class="caption"><span class="caption-text">Configuring the camera connection of pipeline 0</span></p>
 </div>
 <p>Clicking <span class="guilabel">Choose Camera</span> opens a dialog to edit the device filter.</p>
 <div class="figure align-center" id="id4">
@@ -688,7 +681,7 @@ of the desired device in the list. The following table shows possible device fil
 </tbody>
 </table>
 <p>By pressing <span class="guilabel">Save</span>, the entered device filter is applied and a camera matching the device filter is connected to
-this pipeline, if possible. Changing the device filter does not require a reboot of the <em>rc_cube</em>.</p>
+this pipeline, if possible. Changing the device filter does not require a restart of the <em>rc_visard NG</em>.</p>
 </div>
 </div>
 
@@ -782,7 +775,7 @@ this pipeline, if possible. Changing the device filter does not require a reboot
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.10.1',
+            VERSION:'25.10.2',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

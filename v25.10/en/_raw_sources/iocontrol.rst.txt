@@ -6,23 +6,23 @@
 IO and Projector Control
 ========================
 
-The IOControl module is an on-board module of the |rc_visard|.
+The IOControl module is a base module which is available on every |rc_xxx|.
 
 The IOControl module allows reading the status of the general purpose
 digital inputs and controlling the digital general purpose outputs (GPIOs)
-of the |rc_visard|.
+of the camera.
 The outputs can be set to LOW or HIGH,
 or configured to be HIGH for the exposure time of every image or every second image.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
 
       This module is pipeline specific. Changes to its settings or parameters only affect
-      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_xxx|.
 
 The purpose of the IOControl module is the control of an external light source
-or a projector, which is connected to one of the |rc_visard|'s GPIOs to be
+or a projector, which is connected to one of the camera's GPIOs to be
 synchronized by the image acquisition trigger.
 In case a pattern projector is used to improve stereo matching, the intensity images
 also show the projected pattern, which might be a disadvantage for image processing
@@ -43,15 +43,24 @@ Parameters
 The IOControl module is called ``rc_iocontrol`` in the |rest-api| and is represented in the
 :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`
 :cubeonly:`in the desired pipeline` under :menuselection:`Configuration --> IOControl`.
-The user can change the parameters via the |webgui|, the
-:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`, or via GigE Vision
-using the DigitalIOControl parameters ``LineSelector`` and ``LineSource``
-(:ref:`sect-genicam-iocontrol`:latex:`, Section \ref{gigevision:sect-genicam-iocontrol}`).
+
+.. only:: rc_cube or rc_visard or rc_visard_ng
+
+   The user can change the parameters via the |webgui|, the
+   :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`, or via GigE Vision
+   using the DigitalIOControl parameters ``LineSelector`` and ``LineSource``
+   (:ref:`sect-genicam-iocontrol`:latex:`, Section \ref{gigevision:sect-genicam-iocontrol}`).
+
+.. only:: rc_reason_stack
+
+   The user can change the parameters via the |webgui| or the
+   :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
 
 Parameter overview
 ^^^^^^^^^^^^^^^^^^
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
    
    .. include:: _gen/nodes/params/rc_iocontrol_rc_cube.txt
 
@@ -96,7 +105,7 @@ Description of run-time parameters
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_iocontrol/parameters/parameters?<out1_mode|out2_mode>=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -108,7 +117,7 @@ Description of run-time parameters
 
             PUT http://<host>/api/v1/nodes/rc_iocontrol/parameters?<out1_mode|out2_mode>=<value>
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. _expl-iocontrol-out1-ratio:
 
@@ -199,7 +208,7 @@ user-defined frame rate of 8 Hz.
    to the user-defined frame rate.
 
 The mode ``ExposureAlternateActive`` is meant to be used when an external random
-dot projector is connected to the |rc_visard|'s GPIO Out 1.
+dot projector is connected to the camera's GPIO Out 1.
 When setting Out 1 to ``ExposureAlternateActive``, the
 :ref:`stereo matching<sect-stereo-matching>`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`
 module only uses images with GPIO Out 1 being HIGH, i.e. projector is on. The maximum
@@ -230,8 +239,10 @@ use the intensity images with GPIO Out 1 being LOW, i.e. projector is off.
    considered when synchronizing disparity images and camera images without projection
    in this special mode.
 
-The functionality can also be controlled by the DigitalIOControl parameters
-of the GenICam interface (:ref:`sect-genicam-iocontrol`:latex:`, Section \ref{gigevision:sect-genicam-iocontrol}`).
+.. only:: rc_cube or rc_visard or rc_visard_ng
+
+   The functionality can also be controlled by the DigitalIOControl parameters
+   of the GenICam interface (:ref:`sect-genicam-iocontrol`:latex:`, Section \ref{gigevision:sect-genicam-iocontrol}`).
 
 .. _sect-iocontrol-services:
 
@@ -249,7 +260,7 @@ The IOControl module offers the following services.
 ``get_io_values``
 ^^^^^^^^^^^^^^^^^
 
-   Retrieves the current state of the |rc_visard|'s general purpose inputs
+   Retrieves the current state of the camera's general purpose inputs
    and outputs (GPIOs).
 
    .. toggle-header::
@@ -267,7 +278,7 @@ The IOControl module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_iocontrol/services/get_io_values
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -329,7 +340,7 @@ The IOControl module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_iocontrol/services/reset_defaults
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 

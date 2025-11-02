@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Web GUI &mdash; rc_visard NG 25.10.1
+  <title>Web GUI &mdash; rc_visard NG 25.10.2
  documentation</title>
   
 
@@ -52,10 +52,10 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.10.1
+    <link rel="top" title="rc_visard NG 25.10.2
  documentation" href="index.html"/>
         <link rel="up" title="Interfaces" href="interfaces.html"/>
-        <link rel="next" title="GigE Vision 2.0/GenICam image interface" href="gigevision.html"/>
+        <link rel="next" title="REST-API interface" href="rest_api.html"/>
         <link rel="prev" title="Interfaces" href="interfaces.html"/> 
 
   
@@ -340,31 +340,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#downloading-depth-images-and-point-clouds">Downloading depth images and point clouds</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">General API structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Available resources and requests</a><ul>
@@ -398,6 +373,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gri.html#job-and-hec-config-api">Job and HEC_config API</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Ethernet connection configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Generic XML structure</a><ul>
@@ -415,13 +391,39 @@
 <li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Troubleshooting</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC image stream interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Example client</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
@@ -446,11 +448,11 @@
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Lens cleaning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Camera calibration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Creating and restoring backups of settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Rebooting the <em>rc_visard NG</em></a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
@@ -620,9 +622,7 @@ and the software modules.</p>
 <p>The page’s side menu permits access to the individual pages of the <em>rc_visard NG</em>’s Web GUI:</p>
 <dl class="docutils">
 <dt><em>Camera</em></dt>
-<dd>shows a live stream of the rectified camera images.
-The frame rate can be reduced to save bandwidth when streaming to a
-GigE Vision® client. Furthermore, exposure can be set manually or automatically.
+<dd>shows a live stream of the rectified camera images and allows changing camera parameters.
 See <a class="reference internal" href="camera.html#sect-camera"><span class="std std-ref">Camera module</span></a> for more information.</dd>
 </dl>
 <dl class="docutils">
@@ -643,6 +643,10 @@ computation and filtering. See <a class="reference internal" href="stereo_matchi
 <dt><em>Database</em></dt>
 <dd>gives access to the database modules of the <em>rc_visard NG</em>
 (see <a class="reference internal" href="database_modules.html"><span class="doc">Database modules</span></a>).</dd>
+<dt><em>Generic Robot Interface</em></dt>
+<dd>shows the jobs and hand-eye calibration configurations defined for the Generic Robot Interface.</dd>
+</dl>
+<dl class="docutils">
 <dt><em>System</em></dt>
 <dd>gives access to general settings, device information and to the log files,
 and permits the firmware or the license file to be updated.</dd>
@@ -728,7 +732,7 @@ which additionally includes a mesh of the point cloud in the current depth quali
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="gigevision.html" class="btn btn-neutral float-right" title="GigE Vision 2.0/GenICam image interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="rest_api.html" class="btn btn-neutral float-right" title="REST-API interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="interfaces.html" class="btn btn-neutral" title="Interfaces" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -817,7 +821,7 @@ which additionally includes a mesh of the point cloud in the current depth quali
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.10.1',
+            VERSION:'25.10.2',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

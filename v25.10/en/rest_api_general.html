@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>General API structure &mdash; rc_visard NG 25.10.1
+  <title>General API structure &mdash; rc_visard NG 25.10.2
  documentation</title>
   
 
@@ -52,7 +52,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.10.1
+    <link rel="top" title="rc_visard NG 25.10.2
  documentation" href="index.html"/>
         <link rel="up" title="REST-API interface" href="rest_api.html"/>
         <link rel="next" title="Nodes, parameters, and services" href="rest_api_nodes.html"/>
@@ -340,31 +340,6 @@
 <li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Downloading depth images and point clouds</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
-</ul>
-</li>
 <li class="toctree-l2 current"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">General API structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#available-resources-and-requests">Available resources and requests</a><ul>
@@ -398,6 +373,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gri.html#job-and-hec-config-api">Job and HEC_config API</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Ethernet connection configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Generic XML structure</a><ul>
@@ -415,13 +391,39 @@
 <li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Troubleshooting</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC image stream interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Example client</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
@@ -446,11 +448,11 @@
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Lens cleaning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Camera calibration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Creating and restoring backups of settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Rebooting the <em>rc_visard NG</em></a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
@@ -605,7 +607,8 @@ Accessing this entry point with a web browser lets the user explore and test
 the full API during run-time using the <a class="reference internal" href="rest_api_swagger_ui.html#sect-swagger-ui"><span class="std std-ref">Swagger UI</span></a>
 .</p>
 <p>For actual HTTP requests, the <strong>current API version is appended</strong> to the entry point
-of the API, i.e., <code class="docutils literal notranslate"><span class="pre">http://&lt;host&gt;/api/v2</span></code>. All data sent to and
+of the API, i.e., <code class="docutils literal notranslate"><span class="pre">http://&lt;host&gt;/api/v2</span></code>.</p>
+<p>All data sent to and
 received by the REST-API follows the JavaScript Object Notation (JSON).
 The API is designed to let the user <strong>create, retrieve, modify, and delete</strong>
 so-called <strong>resources</strong> as listed in <a class="reference internal" href="#sect-rest-resources-and-methods"><span class="std std-ref">Available resources and requests</span></a> using the HTTP requests below.</p>
@@ -733,12 +736,6 @@ for storing data used in
 multiple modules, such as load carriers, grippers and regions of interest.</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">/pipelines</span></code></dt>
-<dd>Access to the status and configuration of the camera pipelines.
-There is always only one camera pipeline with number 0.</dd>
-</dl>
-</li>
 </ul>
 <ul class="simple">
 <li><dl class="first docutils">
@@ -753,8 +750,19 @@ with their run-time status, parameters, and offered services.</dd>
 </ul>
 <ul class="simple">
 <li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">/pipelines</span></code></dt>
+<dd>Access to the status and configuration of the camera pipelines.
+There is always only one camera pipeline with number 0.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
 <dt><code class="docutils literal notranslate"><span class="pre">/templates</span></code></dt>
 <dd>Access the object templates on the <em>rc_visard NG</em>.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">/cad</span></code></dt>
+<dd>Access the cad elements, e.g. for grippers, on the <em>rc_visard NG</em>.</dd>
 </dl>
 </li>
 </ul>
@@ -778,6 +786,11 @@ and manage licenses as well as firmware updates.</dd>
 <li><dl class="first docutils">
 <dt><code class="docutils literal notranslate"><span class="pre">/logs</span></code></dt>
 <dd>Access the log files on the <em>rc_visard NG</em>.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">/generic_robot_interface</span></code></dt>
+<dd>Access the job and hec_configs for the Generic Robot Interface on the <em>rc_visard NG</em>.</dd>
 </dl>
 </li>
 </ul>
@@ -884,7 +897,7 @@ and manage licenses as well as firmware updates.</dd>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.10.1',
+            VERSION:'25.10.2',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

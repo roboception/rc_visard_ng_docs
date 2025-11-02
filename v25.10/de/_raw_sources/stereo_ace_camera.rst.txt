@@ -12,8 +12,7 @@ Parameters
 The camera module on a pipeline of type ``stereo_ace`` is called ``rc_camera`` and is represented by the
 *Camera* page in the desired pipeline in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
 The user can change the camera parameters there, or directly via the |rest-api|
-(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`) or GigE Vision
-(:ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`).
 
 Parameter overview
 ^^^^^^^^^^^^^^^^^^
@@ -22,6 +21,10 @@ Parameter overview
    pair: parameters; stereo ace
 .. include:: _gen/nodes/params/rc_camera_rc_cube_stereo_ace.txt
 
+.. only:: rc_cube
+
+   These parameters are also available over the GenICam interface with slightly different names and partly with different units
+   or data types (see :ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
 
 Description of run-time parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -41,13 +44,13 @@ they appear in the |webgui|.
   acquire images at the specified frame rate ``fps``. In ``Trigger`` mode, images are only 
   acquired when the camera receives a trigger signal.
   
-  .. only:: rc_cube and (roboception or schunk or matrixvision)
+  .. only:: (rc_cube or rc_reason_stack) and (roboception or schunk or matrixvision)
       
       .. note::
 
         This parameter only has an effect when used in a pipeline with an |rc_viscore| or |rc_visard_ng|.
 
-  .. only:: rc_cube and basler
+  .. only:: (rc_cube or rc_reason_stack) and basler
       
       .. note::
 
@@ -620,9 +623,6 @@ Via the |restapi|, this parameter can be set as follows.
 
             PUT http://<host>/api/v1/nodes/rc_camera/parameters?saturation=<value>
 
-These parameters are also available over the GenICam interface with slightly different names and partly with different units
-or data types (see :ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
-
 .. _sect-stereo-ace-status-values:
 
 Status values
@@ -633,7 +633,7 @@ Status values
 
 The ``rc_camera`` module reports the following status values on a pipeline of type ``stereo_ace``.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. tabularcolumns:: |l|L|
    .. csv-table:: The ``rc_camera`` module's status values
@@ -723,7 +723,7 @@ The ``rc_camera`` module offers the following services on a pipeline of type ``s
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/reset_defaults
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 

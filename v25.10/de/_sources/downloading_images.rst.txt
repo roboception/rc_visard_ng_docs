@@ -4,12 +4,17 @@ Der
 
 rc_visard NG
 
- bietet über die GenICam-Schnittstelle zeitgestempelte rektifizierte
-Kamerabilder (siehe
+ liefert über die GenICam Schnittstelle (siehe
 
 Verfügbare Bild-Streams
 
-). Live-Streams in geringerer Qualität werden in der
+) oder über
+
+gRPC Bilddatenschnittstelle
+
+ zeitgestempelte rektifizierte Kamerabilder.
+
+Live-Streams in geringerer Qualität werden in der
 
 Web GUI
 

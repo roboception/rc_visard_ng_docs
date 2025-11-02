@@ -7,7 +7,7 @@
    
    .. include:: visard_viscore_camera.rst
 
-.. only:: rc_cube and (roboception or matrixvision)
+.. only:: (rc_cube or rc_reason_stack) and (roboception or matrixvision)
 
    Pipeline types *rc_visard* and *rc_viscore*
    ===========================================
@@ -15,7 +15,7 @@
    .. include:: visard_viscore_camera.rst
 
 
-.. only:: rc_cube and (basler or schunk)
+.. only:: (rc_cube or rc_reason_stack) and (basler or schunk)
 
    Pipeline type *rc_visard*
    =========================

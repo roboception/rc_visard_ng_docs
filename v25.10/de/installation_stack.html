@@ -1,0 +1,1039 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installation &mdash; rc_visard NG 25.10.2
+ Dokumentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/contentui.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/default.css" type="text/css" />
+  
+
+  
+
+  
+
+  
+
+  
+        <link rel="index" title="Stichwortverzeichnis"
+              href="genindex.html"/>
+        <link rel="search" title="Suche" href="search.html"/>
+    <link rel="top" title="rc_visard NG 25.10.2
+ Dokumentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rc_visard NG
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                25.10
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Suche" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">Einführung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general.html">Überblick</a></li>
+<li class="toctree-l2"><a class="reference internal" href="warranty.html">Garantie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="standards.html">Schnittstellen, Zulassungen und Normen</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#approvals">Zulassungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="standards.html#standards">Normen</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="disposal.html">Informationen zur Entsorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">Glossar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safety.html">Sicherheit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#general-warnings">Allgemeine Sicherheitshinweise</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safety.html#intended-use">Bestimmungsgemäße Verwendung</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware_spec.html">Hardware-Spezifikation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#scope-of-delivery">Lieferumfang</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#technical-specification">Technische Spezifikation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#environmental-and-operating-conditions">Umwelt- und Betriebsbedingungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#power-supply-specifications">Spezifikationen für die Stromversorgung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#wiring">Verkabelung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#mechanical-interface">Mechanische Schnittstelle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware_spec.html#coordinate-frames">Koordinatensysteme</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#software-license">Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#power-up">Einschalten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#discovery-of-rc-xxx-devices">Aufspüren von <em>rc_visard NG</em>-Geräten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#resetting-configuration">Zurücksetzen der Konfiguration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#network-configuration">Netzwerkkonfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#host-name">Host-Name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#automatic-configuration-factory-default">Automatische Konfiguration (werksseitige Voreinstellung)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#manual-configuration">Manuelle Konfiguration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Messprinzipien</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concept_stereo.html">Stereovision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stereo_general.html">Allgemeine Informationen zu 3D Daten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#computing-disparity-images">Berechnung von Disparitätsbildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#computing-depth-images-and-point-clouds">Berechnung von Tiefenbildern und Punktwolken</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_general.html#confidence-and-error-images">Konfidenz- und Fehlerbilder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Softwaremodule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="camera.html">Kamera Modul</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rectification.html">Rektifizierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="downloading_images.html">Anzeigen und Herunterladen von Bildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stereo_camera.html">Parameter, Statuswerte und Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stereo_camera.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="detection_modules.html">Detektions- und Messmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="measure.html">Measure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#measuring-depth">Tiefe messen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="measure.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier.html">LoadCarrier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-load-carriers">Erkennung von Load Carriern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#detection-of-filling-level">Füllstandserkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tagdetect.html">TagDetect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-reading">Tagerkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#pose-estimation">Posenschätzung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#tag-re-identification">Tag-Wiedererkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tagdetect.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="itempick.html">ItemPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="itempick.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="boxpick.html">BoxPick</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#detection-of-items">Erkennung von Rechtecken</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#computation-of-grasps">Berechnung der Greifpunkte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="boxpick.html#boxpick-template-api">BoxPick Template API“</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="silhouettematch.html">SilhouetteMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#introduction">Einführung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#base-plane-calibration">Kalibrierung der Basisebene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-a-region-of-interest">Setzen einer Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="silhouettematch.html#template-api">Template API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cadmatch.html">CADMatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-grasp-points">Setzen von Greifpunkten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-of-pose-priors">Setzen von Posenvorgaben</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-preferred-orientation-of-the-tcp">Setzen der bevorzugten TCP-Orientierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#setting-the-sorting-strategies">Setzen der Sortierstrategie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#detection-of-objects">Objekterkennung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#internal-services">Interne Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cadmatch.html#template-api">Template API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration_modules.html">Konfigurationsmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="handeye_calibration.html">Hand-Auge-Kalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-interfaces">Kalibrierschnittstellen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#camera-mounting">Kameramontage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#calibration-routine">Kalibrierroutine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handeye_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="collisioncheck.html">CollisionCheck</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#collision-checking">Kollisionsprüfung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#status-values">Statuswerte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collisioncheck.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="camera_calibration.html">Kamerakalibrierung</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#self-calibration">Selbstkalibrierung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#calibration-process">Kalibriervorgang</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="camera_calibration.html#services">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iocontrol.html">IOControl und Projektor-Kontrolle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#parameters">Parameter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="iocontrol.html#services">Services</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database_modules.html">Datenbankmodule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loadcarrier_db.html">LoadCarrierDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-definition">Load Carrier Definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#load-carrier-compartments">Load Carrier Abteile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadcarrier_db.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="roi.html">RoiDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#region-of-interest">Region of Interest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#interaction-with-other-modules">Wechselwirkung mit anderen Modulen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="roi.html#return-codes">Rückgabecodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gripper_db.html">GripperDB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#introduction">Einleitung</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#setting-a-gripper">Erstellen eines Greifers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#services">Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#return-codes">Rückgabecodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gripper_db.html#cad-element-api">CAD-Greiferelement API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Schnittstellen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="webgui.html">Web GUI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#accessing-the-web-gui">Zugriff auf die Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#exploring-the-web-gui">Kennenlernen der Web GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#web-gui-access-control">Web GUI Zugriffskontrolle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-camera-images">Herunterladen von Kamerabildern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Herunterladen von Tiefenbildern und Punktwolken</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_nodes.html">Module, Parameter und Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_userspace.html">UserSpace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rest_api_syslogs.html">System und Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_datamodel.html">Datentyp-Definitionen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rest_api_swagger_ui.html">Swagger UI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gri.html">Generic Robot Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gri.html#job-definition">Job Definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#job-types">Job Arten</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#primary-and-related-objects">Primäre und zugehörige Objekte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#execution-modes">Ausführungsmodi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gri.html#hand-eye-calibration">Hand-Auge-Kalibrierung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gri.html#gri-binary-protocol-specification">Spezifikation des Binären GRI Protokolls</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#message-header-8-bytes">Header (8 Bytes)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#pose-formats">Posenformate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#actions">Aktionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#job-status">Jobstatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#body-definitions">Body Definitionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gri.html#error-codes-and-semantics">Fehlercodes und Bedeutung</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gri.html#integration-with-a-robot">Integration mit einem Roboter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gri.html#job-and-hec-config-api">Job und HEC_config API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#return-code">Rückgabecode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#services">Services</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#request-xml-structure">Anfrage-XML-Struktur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="eki.html#response-xml-structure">Antwort-XML-Struktur</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#parameters">Parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#eki-xml-configuration-files">EKI-XML-Konfigurationsdateien</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#example-applications">Beispielanwendungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Fehlerbehebung</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC Bilddatenschnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC Servicedefinition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grpc.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Beispielclient</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_sync.html#setting-time-manually">Manuelles Setzen der Zeit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="userspace.html">UserSpace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configuration">Konfiguration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="userspace.html#configure-userspace-via-the-webgui">Konfiguration des UserSpace über die Web GUI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#configure-http-proxy">HTTP Proxy konfigurieren</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#view-running-applications">Anzeige laufender Apps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#network-access-to-userspace-applications">Netzwerkzugriff auf die UserSpace Anwendungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#interfaces">Schnittstellen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userspace.html#restrictions">Einschränkungen</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintenance.html">Wartung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Backup der Einstellungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard NG</em></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#connectivity-kit">Anschlussset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#wiring">Verkabelung</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#ethernet-connections">Ethernet-Anschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-connections">Stromanschluss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accessories.html#power-supplies">Netzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accessories.html#spare-parts">Ersatzteile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Fehlerbehebung</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#led-colors">LED-Farben</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#hardware-issues">Probleme mit der Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#connectivity-issues">Probleme mit der Konnektivität</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#camera-image-issues">Probleme mit den Kamerabildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#depth-disparity-error-and-confidence-image-issues">Probleme mit Tiefen-/Disparitäts-, Fehler- oder Konfidenzbildern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#gige-vision-genicam-issues">Probleme mit GigE&nbsp;Vision/GenICam</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Kontakt</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#support">Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contact.html#address">Adresse</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Anhang</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#pose-formats">Formate für Posendaten</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_rt.html">Rotationsmatrix und Translationsvektor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-rotation-matrix-to-quaternion">Umrechnung von Rotationsmatrizen in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_rt.html#conversion-from-quaternion-to-rotation-matrix">Umrechnung von Quaternionen in Rotationsmatrizen</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_abb.html">ABB Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fanuc.html">FANUC XYZ-WPR Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-fanuc-wpr-to-quaternion">Umrechnung von FANUC-WPR in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_fanuc.html#conversion-from-quaternion-to-fanuc-wpr">Umrechnung von Quaternionen in FANUC-WPR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_franka_emika.html">Franka Emika Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-transformation-matrix-to-quaternion">Umrechnung von Transformation in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-rotation-xyz-to-quaternion">Umrechnung von Rotation-XYZ in Quaternion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-and-translation-to-transformation">Umrechnung von Quaternion und Translation in Transformation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#conversion-from-quaternion-to-rotation-xyz">Umrechnung von Quaternion in Rotation-XYZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_franka_emika.html#pose-representation-in-racecom-messages-and-state-machines">Posenrepräsentation in RaceCom Messages und Statemachines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_fruitcore_horst.html">Fruitcore HORST Posenformat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kawasaki.html">Kawasaki XYZ-OAT Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-kawasaki-oat-to-quaternion">Umrechnung von Kawasaki-OAT in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kawasaki.html#conversion-from-quaternion-to-kawasaki-oat">Umrechnung von Quaternionen in Kawasaki-OAT</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_kuka.html">KUKA XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-kuka-abc-to-quaternion">Umrechnung von KUKA-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_kuka.html#conversion-from-quaternion-to-kuka-abc">Umrechnung von Quaternionen in KUKA-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_mitsubishi.html">Mitsubishi XYZ-ABC Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-mitsubishi-abc-to-quaternion">Umrechnung von Mitsubishi-ABC in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_mitsubishi.html#conversion-from-quaternion-to-mitsubishi-abc">Umrechnung von Quaternionen in Mitsubishi-ABC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_ur.html">Universal Robots Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-angle-axis-format-to-quaternion">Umrechnung vom Angle-Axis Format in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_ur.html#conversion-from-quaternion-to-angle-axis-format">Umrechnung von Quaternionen ins Angle-Axis Format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pose_format_yaskawa.html">Yaskawa Posenformat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-yaskawa-rx-ry-rz-to-quaternion">Umrechnung von Yaskawa Rx, Ry, Rz in Quaternionen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pose_format_yaskawa.html#conversion-from-quaternion-to-yaskawa-rx-ry-rz">Umrechnung von Quaternionen in Yaskawa Rx, Ry, Rz</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rc_visard NG</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">rc_visard NG</a> &gt;</li>
+        
+      <li>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<span id="sect-installation-stack"></span><h1>Installation<a class="headerlink" href="#installation" title="Link zu dieser Überschrift">¶</a></h1>
+<div class="admonition warning" id="index-0">
+<p class="first admonition-title">Warnung</p>
+<p class="last">Vor Installation müssen die Hinweise zur <a class="reference internal" href="safety.html#sect-safety"><span class="std std-ref">Sicherheit</span></a> des <em>rc_visard NG</em> gelesen und verstanden werden.</p>
+</div>
+<p>Der <em>rc_visard NG</em> ist ein Docker-basierter Software-Stack, der auf Rechnern installiert werden kann, die die unter <a class="reference internal" href="#sect-installation-stack-prerequisites"><span class="std std-ref">Voraussetzungen</span></a> genannten Systemvoraussetzungen erfüllen. Dieses Kapitel enthält detaillierte Informationen zur Installation der <em>rc_reason_stack</em>-Software.</p>
+<div class="section" id="offline-installation-guide">
+<h2>Offline Installationsanleitung<a class="headerlink" href="#offline-installation-guide" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Dieser Abschnitt beschreibt die manuelle Installation des <em>rc_reason_stack</em> auf einem Hostsystem. Im Gegensatz zum automatisierten Docker-Compose-Workflow werden die Docker-Images zunächst auf den Hostrechner kopiert und anschließend manuell in Docker geladen. Führen Sie die folgenden Schritte aus, um den Stack für Ihre Entwicklungs- oder Produktionsumgebung einzurichten und auszuführen.</p>
+<p>Alle Befehle müssen auf dem Host-Rechner ausgeführt werden (nicht innerhalb eines Containers).</p>
+<div class="section" id="prerequisites">
+<span id="sect-installation-stack-prerequisites"></span><h3>Voraussetzungen<a class="headerlink" href="#prerequisites" title="Link zu dieser Überschrift">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Komponente</th>
+<th class="head">Minimalversion</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Ubuntu</td>
+<td>24.04 LTS</td>
+</tr>
+<tr class="row-odd"><td>NVIDIA GPU</td>
+<td>Jede RTX mit mindestens 8GB VRAM, oder besser Nvidia RTX A4000, RTX 4000 Ada, RTX 3080, RTX 4070, RTX 4080</td>
+</tr>
+<tr class="row-even"><td>Docker</td>
+<td>20.10+</td>
+</tr>
+<tr class="row-odd"><td>NVIDIA Driver</td>
+<td>535+ (diese Anleitung nutzt <cite>nvidia-driver-575-server</cite>)</td>
+</tr>
+</tbody>
+</table>
+<p>Die folgenden Dateien werden von Roboception bereitgestellt und werden für die Installation benötigt.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="47%" />
+<col width="53%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Datei</th>
+<th class="head">Beschreibung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rc_container-latest.tar</td>
+<td>rc_container docker image</td>
+</tr>
+<tr class="row-odd"><td>tritonserver-23.10.tar</td>
+<td>Tritonserver Docker Image</td>
+</tr>
+<tr class="row-even"><td>docker-compose.yml</td>
+<td>Die Docker-Compose-Datei</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="install-ubuntu-24-04">
+<h3>Installation von Ubuntu 24.04<a class="headerlink" href="#install-ubuntu-24-04" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Dieser Abschnitt kann übersprungen werden, wenn eine funktionierende Ubuntu 24.04-Installation vorhanden ist.</p>
+<p>Folgen Sie zur Installation von Ubuntu der offiziellen Ubuntu-Installationsanleitung unter <a class="reference external" href="https://ubuntu.com/download/desktop">https://ubuntu.com/download/desktop</a> oder <a class="reference external" href="https://ubuntu.com/download/server">https://ubuntu.com/download/server</a>.</p>
+</div>
+<div class="section" id="install-nvidia-driver">
+<h3>NVIDIA-Treiberinstallation<a class="headerlink" href="#install-nvidia-driver" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Der NVIDIA-Treiber ist erforderlich, damit der Host die GPU für Docker-Container freigeben kann. Nach der Installation des Treibers sollten die GPU und ihre Funktionen mit <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> sichtbar sein. Ist der Treiber nicht installiert oder nicht korrekt geladen, findet <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> die GPU entweder nicht oder meldet „No devices were found“.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update package lists</span>
+sudo apt update
+
+<span class="c1"># Install the latest NVIDIA driver (replace 525 with the version that matches your GPU)</span>
+sudo apt install -y nvidia-driver-525
+
+<span class="c1"># Reboot to load the driver</span>
+sudo reboot
+</pre></div>
+</div>
+<p>Überprüfen Sie nach dem Neustart, ob der Treiber aktiv ist:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ nvidia-smi
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 525.125.02   Driver Version: 525.125.02   CUDA Version: 12.5     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  GeForce RTX 3080    Off  | 00000000:01:00.0 Off |                  N/A |
+| 30%   38C    P8    12W / 350W |   12MiB / 11264MiB   |      0%      Default |
++-------------------------------+----------------------+----------------------+
+
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
+</pre></div>
+</div>
+<p>Die Tabelle zeigt:</p>
+<ul class="simple">
+<li><strong>GPU</strong>: die Geräte-ID (0, 1, …)</li>
+<li><strong>Name</strong>: das GPU Modell (z.B., GeForce RTX 3080)</li>
+<li><strong>Driver Version</strong>: dre installierte NVIDIA-Treiber</li>
+<li><strong>CUDA Version</strong>: das CUDA Toolkit, das mit dem Treiber ausgeliefert wurde</li>
+<li><strong>Memory-Usage</strong>: dem Grafikprozessor zugewiesener Gesamtspeicher</li>
+<li><strong>GPU-Util</strong>: aktueller Prozentsatz der GPU-Auslastung</li>
+</ul>
+<p>Wenn diese Ausgabe angezeigt wird, ist der Treiber korrekt installiert und die GPU kann vom NVIDIA Container Toolkit und den Containern verwendet werden.</p>
+</div>
+<div class="section" id="install-docker">
+<h3>Docker-Installation<a class="headerlink" href="#install-docker" title="Link zu dieser Überschrift">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update the apt package index and install packages to allow apt to use a repository over HTTPS</span>
+sudo apt-get update
+sudo apt-get install <span class="se">\</span>
+   ca-certificates <span class="se">\</span>
+   curl <span class="se">\</span>
+   gnupg <span class="se">\</span>
+   lsb-release
+
+<span class="c1"># Add Docker’s official GPG key</span>
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg <span class="p">|</span> sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+<span class="c1"># Set up the stable repository</span>
+<span class="nb">echo</span> <span class="se">\</span>
+<span class="s2">&quot;deb [arch=</span><span class="k">$(</span>dpkg --print-architecture<span class="k">)</span><span class="s2"> signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \</span>
+<span class="k">$(</span>lsb_release -cs<span class="k">)</span><span class="s2"> stable&quot;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+
+<span class="c1"># Install Docker Engine</span>
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli docker-compose-plugin containerd.io
+
+<span class="c1"># Verify Docker installation</span>
+sudo docker --version
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-nvidia-container-toolkit">
+<h3>Installation des NVIDIA Container Toolkit<a class="headerlink" href="#install-nvidia-container-toolkit" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Das NVIDIA Container Toolkit ermöglicht Docker, NVIDIA-GPUs innerhalb von Containern zu erkennen, bereitzustellen und in einer Sandbox auszuführen. Ohne dieses Toolkit können CUDA-Workloads nicht im Container ausgeführt werden. Es bildet die Brücke zwischen der Docker-Container-Laufzeitumgebung und dem NVIDIA-Treiberstack auf dem Hostsystem.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add the NVIDIA GPG key</span>
+sudo curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey <span class="p">|</span> <span class="se">\</span>
+   sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+
+<span class="c1"># Add the NVIDIA Container Toolkit repository</span>
+sudo curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list <span class="p">|</span> <span class="se">\</span>
+   sed <span class="s1">&#39;s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g&#39;</span> <span class="p">|</span> <span class="se">\</span>
+   sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+<span class="c1"># Update package lists and install</span>
+sudo apt update <span class="o">&amp;&amp;</span> sudo apt install -y nvidia-container-toolkit
+
+<span class="c1"># Restart Docker to apply changes</span>
+sudo systemctl restart docker
+
+<span class="c1"># Modify /etc/docker/daemon.json. This is necessary for older docker versions</span>
+sudo nvidia-ctk runtime configure --runtime<span class="o">=</span>docker
+
+<span class="c1"># Verify that nvidia is now available as docker runtime</span>
+docker info <span class="p">|</span> grep -i runtime
+</pre></div>
+</div>
+<p>Um ein Problem zu beheben, das dazu führt, dass die GPU nach einiger Zeit im Container ausfällt (erkennbar an einem Fehler von <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> im Container), öffnen Sie die Datei <code class="docutils literal notranslate"><span class="pre">/etc/nvidia-container-runtime/config.toml</span></code> und setzen Sie <code class="docutils literal notranslate"><span class="pre">no-cgroups</span> <span class="pre">=</span> <span class="pre">false</span></code>. Starten Sie Docker nach der Konfigurationsänderung mit folgendem Befehl:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo systemctl restart docker
+</pre></div>
+</div>
+<p>Testen Sie, ob Docker auf die GPU zugreifen kann:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo docker run --rm --gpus all nvidia/cuda:12.1.1-base-ubuntu22.04 nvidia-smi
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-wibu-codemeter-runtime">
+<h3>Installation der WIBU CodeMeter Runtime<a class="headerlink" href="#install-wibu-codemeter-runtime" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Installieren Sie die CodeMeter Runtime (<a class="reference external" href="https://www.wibu.com/de/support/anwendersoftware/anwendersoftware.html">https://www.wibu.com/de/support/anwendersoftware/anwendersoftware.html</a>) auf dem Hostsystem.</p>
+<p>Nach der Installation, stoppen Sie die Runtime:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo service codemeter stop
+</pre></div>
+</div>
+<p>Aktivieren Sie die Netzwerklizenzierung, indem Sie <code class="docutils literal notranslate"><span class="pre">IsNetworkServer</span></code> in der Datei <code class="docutils literal notranslate"><span class="pre">/etc/wibu/CodeMeter/Server.ini</span></code> auf 1 setzen.</p>
+<p>Starten Sie die Runtime:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo service codemeter start
+</pre></div>
+</div>
+<p>Um zu verhindern, dass der WIBU-Netzwerklizenzserver im externen Netzwerk (WIBU verwendet die Ports 22350-22352) sichtbar ist, kann eine Firewall verwendet werden, da der Lizenzserver nur für den Docker-Container sichtbar sein darf.</p>
+</div>
+<div class="section" id="create-a-sensor0-network">
+<h3>Erstellen eines <code class="docutils literal notranslate"><span class="pre">sensor0</span></code> Netzewrks<a class="headerlink" href="#create-a-sensor0-network" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Beispielhafte Netzwerkkonfiguration mit separatem Ethernet-Port (enp9s0) für die <code class="docutils literal notranslate"><span class="pre">sensor0</span></code>-Schnittstelle über macvlan. Passen Sie den Namen des Ethernet-Ports entsprechend an; in diesem Beispiel wird Port enp9s0 verwendet.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">network</span><span class="p">:</span>
+<span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">renderer</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">networkd</span>
+<span class="nt">ethernets</span><span class="p">:</span>
+   <span class="nt">enp9s0</span><span class="p">:</span>
+      <span class="nt">dhcp4</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+      <span class="nt">dhcp6</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+      <span class="nt">addresses</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">172.23.42.1/28</span>
+</pre></div>
+</div>
+<p>Berechtigungen ändern und anwenden mit</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo chmod <span class="m">600</span> /etc/netplan/40-sensor0_enp9s0.yaml
+sudo netplan apply
+</pre></div>
+</div>
+<p>Docker-Netzwerk mit dem macvlan-Treiber erstellen:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo docker network create -d macvlan --subnet<span class="o">=</span><span class="m">172</span>.23.42.0/28 --gateway<span class="o">=</span><span class="m">172</span>.23.42.1 --ip-range<span class="o">=</span><span class="m">172</span>.23.42.8/29 -o <span class="nv">parent</span><span class="o">=</span>enp9s0 sensor0
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Bei mehr als einer Sensornetzwerkschnittstelle sollten aussagekräftige IP-Bereiche verwendet und die Docker Compose-Datei entsprechend erweitert werden.</p>
+</div>
+</div>
+<div class="section" id="ensure-network-settings-for-gige-vision">
+<h3>Netzwerkeinstellungen für GigE Vision sicherstellen<a class="headerlink" href="#ensure-network-settings-for-gige-vision" title="Link zu dieser Überschrift">¶</a></h3>
+<p>GigE-Vision-Kameras streamen Bilder mit hoher Bandbreite über UDP-Pakete. Paketverluste führen zu Bildausfällen und beeinträchtigen die Anwendungsleistung. Um dies zu vermeiden, sollten die Ethernet-Lesepuffer auf dem Host erhöht werden. Erstellen Sie unter Ubuntu die Datei <code class="docutils literal notranslate"><span class="pre">/etc/sysctl.d/10-gev-perf.conf</span></code> mit folgendem Inhalt:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Increase readbuffer size for GigE Vision</span>
+net.core.rmem_max<span class="o">=</span><span class="m">33554432</span>
+</pre></div>
+</div>
+<p>Übernehmen Sie die Einstellungen mit</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo sysctl -p /etc/sysctl.d/10-gev-perf.conf
+</pre></div>
+</div>
+</div>
+<div class="section" id="load-container-images">
+<h3>Laden der Container-Images<a class="headerlink" href="#load-container-images" title="Link zu dieser Überschrift">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gunzip -c ./rc_container-latest.tar.gz <span class="p">|</span> docker load
+gunzip -c ./tritonserver-23.10.tar.gz <span class="p">|</span> docker load
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-the-docker-stack">
+<h3>Starten des Docker-Stacks<a class="headerlink" href="#start-the-docker-stack" title="Link zu dieser Überschrift">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> /path/to/rc_container/
+<span class="c1"># use docker-compose.yml</span>
+docker compose up -d --pull never
+</pre></div>
+</div>
+<p>oder auf älteren Systemen</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> /path/to/rc_container/
+<span class="c1"># use docker-compose.json</span>
+docker compose -f docker-compose.json up -d --pull never
+</pre></div>
+</div>
+<p>Warten Sie einige Minuten, bis alle Container gestartet sind. Der Status kann wie folgt überwacht werden:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker compose ps
+</pre></div>
+</div>
+</div>
+<div class="section" id="access-the-web-gui">
+<h3>Zugriff auf die Web GUI<a class="headerlink" href="#access-the-web-gui" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Sobald der Stack läuft, kann die Web GUI wie folgt aufgerufen werden:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>http://&lt;host-ip&gt;:8080/
+</pre></div>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<h3>Fehlerbehebung<a class="headerlink" href="#troubleshooting" title="Link zu dieser Überschrift">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="21%" />
+<col width="45%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Symptom</th>
+<th class="head">Wahrscheinliche Ursache</th>
+<th class="head">Fehlerbehebung</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>docker: Fehler: Der Treiber nvidia unterstützt das angeforderte Gerät nicht.</td>
+<td>NVIDIA-Treiber- / Docker-Integrationskonflikt</td>
+<td>Führen Sie die Installation des NVIDIA Container Toolkits erneut aus und starten Sie den Computer neu.</td>
+</tr>
+<tr class="row-odd"><td>Container starten nicht</td>
+<td>Falscher Netzwerkname</td>
+<td>Stellen Sie sicher, dass ein Docker-Netzwerk mit dem Namen <code class="docutils literal notranslate"><span class="pre">sensor0</span></code> existiert</td>
+</tr>
+<tr class="row-even"><td>Web GUI nicht erreichbar</td>
+<td>Container laufen nicht</td>
+<td><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">logs</span></code> um Fehler zu untersuchen</td>
+</tr>
+<tr class="row-odd"><td>Sehr niedrige Bildwiederholfrequenz</td>
+<td>GPU funktioniert nicht im Container</td>
+<td>Überprüfen, indem <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> auf dem Host und innerhalb des Containers ausgeführt wird, und Probleme beheben [1].</td>
+</tr>
+</tbody>
+</table>
+<p><strong>[1]</strong>  Falls <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> auf dem Host fehlschlägt, stellen Sie sicher, dass die Pakete konsistent sind, da ein unbeaufsichtigtes Upgrade unter Ubuntu möglicherweise den Nvidia-Treiber, aber nicht das Nvidia-Toolkit aktualisiert. Dies lässt sich beheben, indem Sie manuell <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">update</span> <span class="pre">&amp;&amp;</span> <span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">upgrade</span></code> ausführen. Unbeaufsichtigte Upgrades können deaktiviert werden. Falls <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> im Container fehlschlägt, stellen Sie sicher, dass <code class="docutils literal notranslate"><span class="pre">no-cgroups</span> <span class="pre">=</span> <span class="pre">false</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/nvidia-container-runtime/config.toml</span></code> gesetzt ist, und starten Sie Docker neu, falls die Konfiguration geändert werden musste. Diese Konfigurationsdatei wurde möglicherweise durch ein Update des Nvidia-Container-Toolkits überschrieben.</p>
+</div>
+</div>
+<div class="section" id="software-license">
+<h2>Softwarelizenz<a class="headerlink" href="#software-license" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Jeder <em>rc_visard NG</em> wird mit einem USB-Dongle zur Lizenzierung und zum Schutz der installierten Softwarepakete ausgeliefert. Die erworbenen Lizenzen sind auf diesem Dongle installiert und somit an ihn und seine ID gebunden.</p>
+<p>Die Funktionalität des <em>rc_visard NG</em> kann jederzeit durch ein <a class="reference internal" href="maintenance.html#sect-updating-license"><span class="std std-ref">Upgrade der Lizenz</span></a> erweitert werden – zum Beispiel für zusätzlich erhältliche, optionale Softwaremodule.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Der <em>rc_visard NG</em> muss neu gestartet werden, sobald die Softwarelizenz geändert wurde.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Der Status der Softwarelizenz kann über die verschiedenen Schnittstellen des <em>rc_visard NG</em> abgefragt werden, zum Beispiel über die Seite <span class="menuselection">System ‣ Firmware &amp; Lizenz</span> in der <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Damit die Lizenzierung der Softwaremodule ordnungsgemäß funktioniert, muss der USB-Dongle an den <em>rc_visard NG</em> angesteckt werden, bevor dieser gestartet wird.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Der <em>rc_visard NG</em> muss neu gestartet werden, sobald der Dongle eingesteckt oder abgezogen wurde.</p>
+</div>
+</div>
+<div class="section" id="connection-of-cameras">
+<span id="sect-camera-connection-stack"></span><h2>Anschluss von Kameras<a class="headerlink" href="#connection-of-cameras" title="Link zu dieser Überschrift">¶</a></h2>
+<p id="index-1">Der <em>rc_visard NG</em> bietet bis zu vier Software-Kamerapipelines für die Prozessierung der Daten der angeschlossenen Sensoren. Die Konfiguration der Kamerapipelines wird in <a class="reference internal" href="pipelines.html"><span class="doc">Kamerapipelines</span></a> beschrieben.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2025, Roboception GmbH.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-cog"> Optionen</span>
+      de
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Sprachen</dt>
+        
+          
+          <dd><a href="../en/installation_stack.html">en</a></dd>
+          
+        
+          
+          <dd><a href="../de/installation_stack.html">de</a></dd>
+          
+        
+      </dl>
+      
+        <dl>
+          <dt>Versionen</dt>
+          
+            <dd><a href="../../v23.10/index.html">v23.10</a></dd>
+          
+            <dd><a href="../../v24.01/index.html">v24.01</a></dd>
+          
+            <dd><a href="../../v24.04/index.html">v24.04</a></dd>
+          
+            <dd><a href="../../v24.07/index.html">v24.07</a></dd>
+          
+            <dd><a href="../../v24.10/index.html">v24.10</a></dd>
+          
+            <dd><a href="../../v25.01/index.html">v25.01</a></dd>
+          
+            <dd><a href="../../v25.04/index.html">v25.04</a></dd>
+          
+            <dd><a href="../../v25.07/index.html">v25.07</a></dd>
+          
+            <dd><a href="../../v25.10/index.html">v25.10</a></dd>
+          
+        </dl>
+      
+      
+        <dl>
+          <dt>Downloads</dt>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_en.pdf">PDF (en)</a></dd>
+          
+            <dd><a href="../pdf/rc_visard_ng_manual_de.pdf">PDF (de)</a></dd>
+          
+        </dl>
+      
+
+    </div>
+  </div>
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'25.10.2',
+            LANGUAGE:'de',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="_static/translations.js"></script>
+      <script type="text/javascript" src="_static/contentui.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

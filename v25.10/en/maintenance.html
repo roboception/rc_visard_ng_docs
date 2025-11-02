@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Maintenance &mdash; rc_visard NG 25.10.1
+  <title>Maintenance &mdash; rc_visard NG 25.10.2
  documentation</title>
   
 
@@ -52,7 +52,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.10.1
+    <link rel="top" title="rc_visard NG 25.10.2
  documentation" href="index.html"/>
         <link rel="next" title="Accessories" href="accessories.html"/>
         <link rel="prev" title="UserSpace" href="userspace.html"/> 
@@ -339,31 +339,6 @@
 <li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Downloading depth images and point clouds</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">General API structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Available resources and requests</a><ul>
@@ -397,6 +372,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gri.html#job-and-hec-config-api">Job and HEC_config API</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Ethernet connection configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Generic XML structure</a><ul>
@@ -414,13 +390,39 @@
 <li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Troubleshooting</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC image stream interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Example client</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
@@ -445,11 +447,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#lens-cleaning">Lens cleaning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#camera-calibration">Camera calibration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#creating-and-restoring-backups-of-settings">Creating and restoring backups of settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#downloading-log-files">Downloading log files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#updating-the-firmware">Updating the firmware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rebooting-the-rcxxx">Rebooting the <em>rc_visard NG</em></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#updating-the-software-license">Updating the software license</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#downloading-log-files">Downloading log files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
@@ -651,9 +653,28 @@ restoring grippers and regions of interest.</p>
 for modules that do not exist on the device or do not have a valid license will be skipped. If a
 backup can only be restored partially, the user will be notified by warnings.</p>
 </div>
+<div class="section" id="updating-the-software-license">
+<span id="sect-updating-license"></span><h2>Updating the software license<a class="headerlink" href="#updating-the-software-license" title="Permalink to this headline">¶</a></h2>
+<p>Licenses that are purchased from Roboception for enabling additional features can be installed
+via the <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>’s  <span class="menuselection">System ‣ Firmware &amp; License</span> page.
+The <em>rc_visard NG</em> has to be rebooted to apply the licenses.</p>
+</div>
+<div class="section" id="downloading-log-files">
+<span id="sect-downloading-log-files"></span><h2>Downloading log files<a class="headerlink" href="#downloading-log-files" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">During operation, the <em>rc_visard NG</em> logs important information, warnings, and errors into files. If the <em>rc_visard NG</em> exhibits unexpected
+or erroneous behavior, the log files can be used to trace its origin.
+Log messages can be viewed and filtered using
+the <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>’s  <span class="menuselection">System ‣ Logs</span> page. If contacting the
+support (<a class="reference internal" href="contact.html#sect-contact"><span class="std std-ref">Contact</span></a>), the log files
+are very useful for tracking possible problems. To download them as a .tar.gz file,
+click on <span class="guilabel">Download all logs</span> on the Web GUI’s <span class="menuselection">System ‣ Logs</span> page.</p>
+<p>Aside from the Web GUI, the logs are also accessible via the <em>rc_visard NG</em>’s
+<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>
+using the <a class="reference internal" href="rest_api_syslogs.html#get--logs" title="GET /logs"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/logs</span></code></a> and <a class="reference internal" href="rest_api_syslogs.html#get--logs-log" title="GET /logs/{log}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/logs/{log}</span></code></a> requests.</p>
+</div>
 <div class="section" id="updating-the-firmware">
 <span id="sect-updating-the-firmware"></span><h2>Updating the firmware<a class="headerlink" href="#updating-the-firmware" title="Permalink to this headline">¶</a></h2>
-<p id="index-1">Information about the current firmware image version can be found on the
+<p id="index-2">Information about the current firmware image version can be found on the
 <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>’s  <span class="menuselection">System ‣ Firmware &amp; License</span> page.
 It can also be accessed via the <em>rc_visard NG</em>’s
 <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>
@@ -723,7 +744,7 @@ repeat the update procedure from the beginning.</p>
 <dt>Step 3: Reboot the <em>rc_visard NG</em>.</dt>
 <dd><p class="first">To apply a firmware update to the <em>rc_visard NG</em>
 device, a reboot is required after having uploaded the new image version.</p>
-<div class="admonition note" id="index-2">
+<div class="admonition note" id="index-3">
 <p class="first admonition-title">Note</p>
 <p class="last">The new image version is uploaded to the inactive partition of the <em>rc_visard NG</em>. Only after rebooting
 will the inactive partition be activated, and the active partition will become inactive.
@@ -748,7 +769,7 @@ Web GUI’s <span class="menuselection">System ‣ Firmware &amp; License</span>
 </div>
 <div class="section" id="restoring-the-previous-firmware-version">
 <span id="sect-restoring-the-previous-firmware-version"></span><h2>Restoring the previous firmware version<a class="headerlink" href="#restoring-the-previous-firmware-version" title="Permalink to this headline">¶</a></h2>
-<p id="index-3">After a successful firmware update, the previous firmware image is stored on
+<p id="index-4">After a successful firmware update, the previous firmware image is stored on
 the inactive partition of the <em>rc_visard NG</em> and can be restored in case needed.
 This procedure is called a <em>rollback</em>.</p>
 <div class="admonition note">
@@ -767,32 +788,13 @@ to activate the restored firmware version.</p>
 </div>
 <div class="section" id="rebooting-the-rcxxx">
 <span id="sect-rebooting"></span><h2>Rebooting the <em>rc_visard NG</em><a class="headerlink" href="#rebooting-the-rcxxx" title="Permalink to this headline">¶</a></h2>
-<p id="index-4">An <em>rc_visard NG</em> reboot is necessary after updating the firmware or
+<p id="index-5">An <em>rc_visard NG</em> reboot is necessary after updating the firmware or
 performing a software rollback. It can be issued either
 programmatically, via the <em>rc_visard NG</em>’s
 <a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>
 using the <a class="reference internal" href="rest_api_syslogs.html#put--system-reboot" title="PUT /system/reboot"><code class="xref http http-put docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/system/reboot</span></code></a> request, or manually on the
 <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>’s  <em>System</em> page.</p>
 <p>The reboot is finished when the LED turns green again.</p>
-</div>
-<div class="section" id="updating-the-software-license">
-<span id="sect-updating-license"></span><h2>Updating the software license<a class="headerlink" href="#updating-the-software-license" title="Permalink to this headline">¶</a></h2>
-<p>Licenses that are purchased from Roboception for enabling additional features can be installed
-via the <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>’s  <span class="menuselection">System ‣ Firmware &amp; License</span> page.
-The <em>rc_visard NG</em> has to be rebooted to apply the licenses.</p>
-</div>
-<div class="section" id="downloading-log-files">
-<span id="sect-downloading-log-files"></span><h2>Downloading log files<a class="headerlink" href="#downloading-log-files" title="Permalink to this headline">¶</a></h2>
-<p id="index-5">During operation, the <em>rc_visard NG</em> logs important information, warnings, and errors into files. If the <em>rc_visard NG</em> exhibits unexpected
-or erroneous behavior, the log files can be used to trace its origin.
-Log messages can be viewed and filtered using
-the <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>’s  <span class="menuselection">System ‣ Logs</span> page. If contacting the
-support (<a class="reference internal" href="contact.html#sect-contact"><span class="std std-ref">Contact</span></a>), the log files
-are very useful for tracking possible problems. To download them as a .tar.gz file,
-click on <span class="guilabel">Download all logs</span> on the Web GUI’s <span class="menuselection">System ‣ Logs</span> page.</p>
-<p>Aside from the Web GUI, the logs are also accessible via the <em>rc_visard NG</em>’s
-<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>
-using the <a class="reference internal" href="rest_api_syslogs.html#get--logs" title="GET /logs"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/logs</span></code></a> and <a class="reference internal" href="rest_api_syslogs.html#get--logs-log" title="GET /logs/{log}"><code class="xref http http-get docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/logs/{log}</span></code></a> requests.</p>
 </div>
 </div>
 
@@ -895,7 +897,7 @@ using the <a class="reference internal" href="rest_api_syslogs.html#get--logs" t
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.10.1',
+            VERSION:'25.10.2',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

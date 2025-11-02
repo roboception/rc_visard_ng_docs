@@ -168,6 +168,66 @@ keine gültige Lizenz haben, werden ignoriert. Wenn ein Backup nur
 teilweise eingespielt werden konnte, wird der Benutzer über Warnungen
 darüber informiert.
 
+Aktualisierung der Softwarelizenz
+
+Lizenzen, die von Roboception zur Aktivierung zusätzlicher Funktionen
+erworben werden, können über die Seite System ‣ Firmware & Lizenz der
+
+Web GUI
+
+ installiert werden. Der
+
+rc_visard NG
+
+ muss neu gestartet werden, um die Lizenz nutzen zu können.
+
+Download der Logdateien
+
+Während des Betriebs dokumentiert der
+
+rc_visard NG
+
+ wichtige Informationen, Hinweise und Fehler in sogenannten
+Logdateien. Zeigt der
+
+rc_visard NG
+
+ ein unerwartetes oder fehlerhaftes Verhalten, kann mithilfe der
+Logdateien nach der Fehlerursache geforscht werden. Logeinträge lassen
+sich über die Seite System ‣ Logs auf der
+
+Web GUI
+
+  ansehen und filtern. Wird der Support kontaktiert (
+
+Kontakt
+
+), sind die Logdateien sehr hilfreich, um Probleme aufzuspüren. Um
+diese als tar.gz-Datei herunterzuladen, ist der Button Alle Logs
+herunterladen auf der Seite System ‣ Logs der Web GUI unter
+
+System
+
+ zu klicken.
+
+Die Logs sind nicht nur über die Web GUI, sondern auch über die
+
+REST-API-Schnittstelle
+
+ des
+
+rc_visard NG
+
+ zugänglich. Hierfür können die Anfragen des Typs
+
+GET /logs
+
+ und
+
+GET /logs/{log}
+
+ verwendet werden.
+
 Aktualisierung der Firmware
 
 Angaben zur aktuellen Firmware-Version sind auf der Seite System ‣
@@ -419,63 +479,3 @@ Web GUI
  vornehmen.
 
 Der Neustart ist abgeschlossen, wenn die LED wieder grün leuchtet.
-
-Aktualisierung der Softwarelizenz
-
-Lizenzen, die von Roboception zur Aktivierung zusätzlicher Funktionen
-erworben werden, können über die Seite System ‣ Firmware & Lizenz der
-
-Web GUI
-
- installiert werden. Der
-
-rc_visard NG
-
- muss neu gestartet werden, um die Lizenz nutzen zu können.
-
-Download der Logdateien
-
-Während des Betriebs dokumentiert der
-
-rc_visard NG
-
- wichtige Informationen, Hinweise und Fehler in sogenannten
-Logdateien. Zeigt der
-
-rc_visard NG
-
- ein unerwartetes oder fehlerhaftes Verhalten, kann mithilfe der
-Logdateien nach der Fehlerursache geforscht werden. Logeinträge lassen
-sich über die Seite System ‣ Logs auf der
-
-Web GUI
-
-  ansehen und filtern. Wird der Support kontaktiert (
-
-Kontakt
-
-), sind die Logdateien sehr hilfreich, um Probleme aufzuspüren. Um
-diese als tar.gz-Datei herunterzuladen, ist der Button Alle Logs
-herunterladen auf der Seite System ‣ Logs der Web GUI unter
-
-System
-
- zu klicken.
-
-Die Logs sind nicht nur über die Web GUI, sondern auch über die
-
-REST-API-Schnittstelle
-
- des
-
-rc_visard NG
-
- zugänglich. Hierfür können die Anfragen des Typs
-
-GET /logs
-
- und
-
-GET /logs/{log}
-
- verwendet werden.

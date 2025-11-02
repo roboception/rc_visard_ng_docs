@@ -9,7 +9,13 @@ the GenICam interface (see
 
 Provided image streams
 
-). Live streams of the images are provided with reduced quality on the
+) or via the
+
+gRPC image stream interface
+
+.
+
+Live streams of the images are provided with reduced quality on the
 
 Depth Image
 

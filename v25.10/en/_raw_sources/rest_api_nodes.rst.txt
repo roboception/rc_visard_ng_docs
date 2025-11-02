@@ -24,7 +24,7 @@ Information about a specific node (e.g., ``rc_load_carrier_db``) can be retrieve
 
    curl -X GET http://<host>/api/v2/nodes/rc_load_carrier_db
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    All available 3D camera, detection and configuration |restapi| nodes
    can be listed with their service calls and parameters using
@@ -65,7 +65,7 @@ Status:
    so-called **status values**. As an example, the ``rc_camera`` values
    can be retrieved using
 
-   .. only:: rc_cube
+   .. only:: rc_cube or rc_reason_stack
    
       .. code-block:: bash
 
@@ -98,7 +98,7 @@ Parameters:
    As an example, the ``rc_stereomatching`` parameters can be
    retrieved using
 
-   .. only:: rc_cube
+   .. only:: rc_cube or rc_reason_stack
 
       .. code-block:: bash
 
@@ -112,7 +112,7 @@ Parameters:
 
    Its ``quality`` parameter could be set to ``Full`` using
 
-   .. only:: rc_cube
+   .. only:: rc_cube or rc_reason_stack
 
       .. code-block:: bash
 
@@ -146,11 +146,13 @@ Parameters:
       explored and tested via the |rcxxx|'s user-friendly :ref:`Web GUI<sect-web-gui>`
       :latex:`\ (Section \ref{webgui:sect-web-gui})`.
 
-   .. note:: Some parameters exposed via the |rcxxx|'s |restapi| are also
-      available from the
-      :ref:`sect-genicam` :latex:`\:(Section \ref{gigevision:sect-genicam})`.
-      Please note that setting those parameters via the |rest-api| or |webgui| is
-      prohibited if a GenICam client is connected.
+   .. only:: rc_cube or rc_visard or rc_visard_ng
+      
+      .. note:: Some parameters exposed via the |rcxxx|'s |restapi| are also
+         available from the
+         :ref:`sect-genicam` :latex:`\:(Section \ref{gigevision:sect-genicam})`.
+         Please note that setting those parameters via the |rest-api| or |webgui| is
+         prohibited if a GenICam client is connected.
 
    In addition, each node that offers run-time parameters also features
    a service to restore the default values for all of its parameters.
@@ -159,14 +161,14 @@ Parameters:
    pair: REST-API; services
 
 Services:
-   Some nodes also offer services that can be called via |restapi|, e.g., to
+   Most nodes also offer services that can be called via |restapi|, e.g., to
    restore parameters as discussed above, or to start and stop nodes.
    As an example, the
    :ref:`services of the hand-eye calibration module <sect-handeye-calibration-services>`
    :latex:`(Section \ref{handeye_calibration:sect-handeye-calibration-services})`
    could be listed using
 
-   .. only:: rc_cube
+   .. only:: rc_cube or rc_reason_stack
 
       .. code-block:: bash
 
@@ -184,7 +186,7 @@ Services:
    :ref:`Service data model <sect-rest-datamodel-service>`:latex:`, Section \ref{rest_api_datamodel:sect-rest-datamodel-service}`).
    As an example, the stereo matching module can be triggered to do an acquisition by:
 
-   .. only:: rc_cube
+   .. only:: rc_cube or rc_reason_stack
 
       .. code-block:: bash
 
@@ -218,6 +220,10 @@ parameters, and services calls:
 
     .. include:: _gen/swagger/rc_cube/global_nodes.txt
 
+.. only:: rc_reason_stack
+
+    .. include:: _gen/swagger/rc_reason_stack/global_nodes.txt
+
 .. only:: rc_visard
 
    The following list includes all |restapi| requests regarding the 3D camera, navigation, detection and configuration nodes' status,
@@ -232,9 +238,15 @@ parameters, and services calls:
 
    .. include:: _gen/swagger/rc_visard_ng/pipeline_nodes.txt
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    The following list includes all |restapi| requests regarding the pipeline-specific 3D camera, detection and configuration nodes' status,
    parameters, and services calls:
 
-   .. include:: _gen/swagger/rc_cube/pipeline_nodes.txt
+   .. only:: rc_cube
+
+      .. include:: _gen/swagger/rc_cube/pipeline_nodes.txt
+
+   .. only:: rc_reason_stack
+      
+      .. include:: _gen/swagger/rc_reason_stack/pipeline_nodes.txt

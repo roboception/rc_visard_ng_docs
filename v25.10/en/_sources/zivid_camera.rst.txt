@@ -81,10 +81,6 @@ REST-API (
 
 REST-API interface
 
-) or GigE Vision (
-
-GigE Vision 2.0/GenICam image interface
-
 ).
 
 Parameter overview

@@ -29,6 +29,6 @@ Durchführung der Kamerakalibrierung über die Web GUI\:(Abschnitt
 
 IOControl und Projektor-Kontrolle (rc_iocontrol, Abschnitt
 \ref{iocontrol:sect-iocontrol})  bietet die Kontrolle über die Ein-
-und Ausgänge des Sensors mit speziellen Betriebsarten zur Kontrolle
+und Ausgänge der Kamera mit speziellen Betriebsarten zur Kontrolle
 eines externen Musterprojektors.
 

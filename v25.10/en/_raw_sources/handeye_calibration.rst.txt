@@ -16,12 +16,12 @@ reference frames. For this purpose, the |rcxxx| is shipped with an on-board
 calibration routine called the *hand-eye calibration* module. It is a base
 module which is available on every |rcxxx|.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
    
       This module is pipeline specific. Changes to its settings or parameters only affect
-      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_xxx|.
 
 .. note:: The implemented calibration routine is
    completely agnostic about the user-defined robot frame to which the camera is
@@ -170,7 +170,7 @@ Calibration with a robot-mounted camera
       center of the left camera. The approximate location is given in section
       :ref:`sect-coordinate-frames`:latex:`\:(Section \ref{hardware_spec:sect-coordinate-frames})`.
 
-   .. only:: rc_cube
+   .. only:: rc_cube or rc_reason_stack
 
       For the |rc_visard| or |rc_visard_ng|, the camera coordinate system is located in the optical
       center of the left camera. The approximate location is given in :ref:`Coordinate frames<rcvisard:sect-coordinate-frames>` :cubeonly:`in the rc_visard manual`.
@@ -541,7 +541,7 @@ brackets.
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/parameters?grid_width=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
             
             .. code-block:: bash
             
@@ -572,7 +572,7 @@ brackets.
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/parameters?grid_height=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
             
             .. code-block:: bash
             
@@ -603,7 +603,7 @@ brackets.
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/parameters?robot_mounted=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
             
             .. code-block:: bash
             
@@ -637,7 +637,7 @@ brackets.
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/parameters?tcp_offset=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
             
             .. code-block:: bash
             
@@ -672,7 +672,7 @@ brackets.
    
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/parameters?tcp_rotation_axis=<value>
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
                
                .. code-block:: bash
                
@@ -713,7 +713,7 @@ explained below.
    
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/get_calibration
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
                
                .. code-block:: bash
                
@@ -770,7 +770,7 @@ explained below.
    
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/remove_calibration
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
                
                .. code-block:: bash
                
@@ -822,7 +822,7 @@ explained below.
    
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/set_pose
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
                
                .. code-block:: bash
                
@@ -882,7 +882,7 @@ explained below.
    
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/get_poses
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
                
                .. code-block:: bash
                
@@ -934,7 +934,7 @@ explained below.
    
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/delete_poses
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
                
                .. code-block:: bash
                
@@ -989,7 +989,7 @@ explained below.
    
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/reset_calibration
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
                
                .. code-block:: bash
                
@@ -1041,7 +1041,7 @@ explained below.
    
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/calibrate
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
                
                .. code-block:: bash
                
@@ -1104,7 +1104,7 @@ explained below.
    
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/save_calibration
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
                
                .. code-block:: bash
                
@@ -1159,7 +1159,7 @@ explained below.
    
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/set_calibration
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
                
                .. code-block:: bash
                
@@ -1211,7 +1211,7 @@ explained below.
    
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services/reset_defaults
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
                
                .. code-block:: bash
                

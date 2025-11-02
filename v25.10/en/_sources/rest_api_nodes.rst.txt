@@ -119,7 +119,7 @@ Parameters:
    parameters.
 
 Services:
-   Some nodes also offer services that can be called via REST-API,
+   Most nodes also offer services that can be called via REST-API,
    e.g., to restore parameters as discussed above, or to start and
    stop nodes. As an example, the
 

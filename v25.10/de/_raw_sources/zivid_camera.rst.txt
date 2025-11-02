@@ -33,8 +33,7 @@ Parameters
 The camera module on a pipeline of type ``zivid`` is called ``rc_camera`` and is represented by the
 *Camera* page in the desired pipeline in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
 The user can change the camera parameters there, or directly via the |rest-api|
-(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`) or GigE Vision
-(:ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`).
 
 Parameter overview
 ^^^^^^^^^^^^^^^^^^
@@ -60,7 +59,7 @@ they appear in the |webgui|.
    acquire images at the specified frame rate ``fps``. In ``Trigger`` mode, images are only 
    acquired when the camera receives a software trigger signal, either by clicking on the :guilabel:`Acquire` button in the 
    |webgui|, or by calling the ``rc_camera/acquisition_trigger`` service 
-   (see :ref:`sect-cam-services`:latex:`\:(Section \ref{stereo_camera:sect-cam-services})`).
+   (see :ref:`sect-zivid-camera-services`:latex:`\:(Section \ref{zivid_camera:sect-zivid-camera-services})`).
 
 
    Via the |restapi|, this parameter can be set as follows.
@@ -101,7 +100,7 @@ they appear in the |webgui|.
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?fps=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -227,7 +226,7 @@ In a pipeline of type ``zivid`` the ``rc_camera`` module offers the following se
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/reset_defaults
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -262,3 +261,7 @@ The 2D presets can be set, retrieved and deleted via the following |rest-api| en
 .. only:: rc_cube
 
    .. include:: _gen/swagger/rc_cube/presets_2d.txt
+
+.. only:: rc_reason_stack
+
+   .. include:: _gen/swagger/rc_reason_stack/presets_2d.txt

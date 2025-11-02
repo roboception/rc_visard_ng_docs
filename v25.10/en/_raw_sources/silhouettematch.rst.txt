@@ -17,7 +17,7 @@ Introduction
 The |silm| module is an optional on-board module of the |rc_xxx| and requires a separate |silm| :ref:`license<sect-updating-license>`
 :latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note:: This module is not available in camera pipelines of type |rgbd_only|.
 
@@ -84,12 +84,12 @@ The |silm| module offers:
 - Selection of a sorting strategy to sort the detected objects and returned grasps.
 - 3D visualization of the detection results with grasp points and gripper animations in the |webgui|.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
 
       This module is pipeline specific. Changes to its settings or parameters only affect
-      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_xxx|.
 
       However, the object templates and grasp points are stored globally. Setting, changing
       or deleting an object template or its grasps affects all camera pipelines.
@@ -714,7 +714,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?max_number_of_detected_objects=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -748,7 +748,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?quality=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -782,7 +782,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?match_max_distance=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -814,7 +814,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?match_percentile=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -847,7 +847,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?edge_sensitivity=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -932,7 +932,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?check_collisions_with_base_plane=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -968,7 +968,7 @@ listed in the order they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/parameters/parameters?check_collisions_with_matches=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -1124,7 +1124,7 @@ The |silm| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/detect_object
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1214,7 +1214,7 @@ The |silm| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/calibrate_base_plane
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1287,7 +1287,7 @@ The |silm| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_base_plane_calibration
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1340,7 +1340,7 @@ The |silm| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/delete_base_plane_calibration
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1387,7 +1387,7 @@ The |silm| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/set_preferred_orientation
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1433,7 +1433,7 @@ The |silm| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_preferred_orientation
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1478,7 +1478,7 @@ The |silm| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/set_sorting_strategies
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1534,7 +1534,7 @@ The |silm| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_sorting_strategies
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1622,7 +1622,7 @@ The |silm| module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/reset_defaults
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1652,11 +1652,11 @@ Internal services
 The following services for configuring grasps can change in future without notice.
 Setting, retrieving and deleting grasps is recommend to be done via the |webgui|.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
 
-      Configuring grasps is global for all templates on the |rc_cube| and affects all
+      Configuring grasps is global for all templates on the |rc_xxx| and affects all
       camera pipelines.
 
 .. _expl-silhouettematch-srv-set-grasp:
@@ -1682,7 +1682,7 @@ Setting, retrieving and deleting grasps is recommend to be done via the |webgui|
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/set_grasp
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1730,7 +1730,7 @@ Setting, retrieving and deleting grasps is recommend to be done via the |webgui|
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/set_all_grasps
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1777,7 +1777,7 @@ Setting, retrieving and deleting grasps is recommend to be done via the |webgui|
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_grasps
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1825,7 +1825,7 @@ Setting, retrieving and deleting grasps is recommend to be done via the |webgui|
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/delete_grasps
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1872,7 +1872,7 @@ Setting, retrieving and deleting grasps is recommend to be done via the |webgui|
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_silhouettematch/services/get_symmetric_grasps
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1977,3 +1977,7 @@ Up to 50 templates can be stored persistently on the |rc_xxx|.
 .. only:: rc_cube
 
    .. include:: _gen/swagger/rc_cube/templates_rc_silhouettematch.txt
+
+.. only:: rc_reason_stack
+
+   .. include:: _gen/swagger/rc_reason_stack/templates_rc_silhouettematch.txt

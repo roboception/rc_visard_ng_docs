@@ -59,10 +59,8 @@ rc_visard NG
 
 Camera
 
-   shows a live stream of the rectified camera images. The frame rate
-   can be reduced to save bandwidth when streaming to a GigE Vision®
-   client. Furthermore, exposure can be set manually or automatically.
-   See
+   shows a live stream of the rectified camera images and allows
+   changing camera parameters. See
 
    Camera module
 
@@ -113,6 +111,11 @@ Database
    Database modules
 
    ).
+
+Generic Robot Interface
+
+   shows the jobs and hand-eye calibration configurations defined for
+   the Generic Robot Interface.
 
 System
 

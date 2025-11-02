@@ -16,37 +16,6 @@ responsible for acquiring data of the camera connected to that
 pipeline, performing detections or configuring modules used in this
 pipeline, e.g. by hand-eye calibration.
 
-The
-
-rc_visard NG
-
- supports cameras of type
-
-rc_visard
-
-,
-
-rc_viscore
-
-,
-
-zivid
-
-,
-
-Orbbec
-
-,
-
-Stereo ace
-
- and
-
-blaze
-
-. The type of the corresponding camera pipeline has to be configured
-to match the connected device.
-
 Configuration of camera pipelines
 
 The camera pipelines can be configured via the
@@ -60,29 +29,13 @@ pipelines with their types and the connected devices.
 Clicking on Configure Camera Pipelines allows to configure the number
 and type of running pipelines as shown in the next figure.
 
-Note: The
-
-  rc_cube I
-
-   provides four camera pipelines, the
-
-  rc_cube S
-
-   two.
-
 
 The type of a running pipeline can be changed by selecting a different
 type in the drop down field. A running pipeline can be removed by
 clicking Remove Pipeline. Only pipeline 0 can never be removed,
 because this is the primary pipeline. Clicking on + Add Pipeline
 allows to choose the type for the new pipeline and creates a new
-pipeline of the chosen type. Once the pipelines are configured as
-desired, clicking Apply Changes & Reboot will apply the new
-configuration and immediately reboot the
-
-rc_cube
-
-.
+pipeline of the chosen type.
 
 Configuration of connected cameras
 
@@ -94,7 +47,7 @@ rc_visard
 
 . In case multiple cameras of the same type are connected to the
 
-rc_cube
+rc_visard NG
 
 , the user can set a
 
@@ -151,8 +104,8 @@ if empty, no camera will be connected
 
 By pressing Save, the entered device filter is applied and a camera
 matching the device filter is connected to this pipeline, if possible.
-Changing the device filter does not require a reboot of the
+Changing the device filter does not require a restart of the
 
-rc_cube
+rc_visard NG
 
 .

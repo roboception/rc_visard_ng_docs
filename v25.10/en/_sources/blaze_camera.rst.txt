@@ -16,10 +16,6 @@ REST-API (
 
 REST-API interface
 
-) or GigE Vision (
-
-GigE Vision 2.0/GenICam image interface
-
 ).
 
 Parameter overview
@@ -228,14 +224,6 @@ API version 2
 API version 1 (deprecated)
 
    PUT http://<host>/api/v1/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
-
-These parameters are also available over the GenICam interface with
-slightly different names and partly with different units or data types
-(see
-
-GigE Vision 2.0/GenICam image interface
-
-).
 
 Status values
 

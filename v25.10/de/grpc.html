@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gRPC Bilddatenschnittstelle &mdash; rc_visard NG 25.10.1
+  <title>gRPC Bilddatenschnittstelle &mdash; rc_visard NG 25.10.2
  Dokumentation</title>
   
 
@@ -52,11 +52,11 @@
         <link rel="index" title="Stichwortverzeichnis"
               href="genindex.html"/>
         <link rel="search" title="Suche" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.10.1
+    <link rel="top" title="rc_visard NG 25.10.2
  Dokumentation" href="index.html"/>
         <link rel="up" title="Schnittstellen" href="interfaces.html"/>
-        <link rel="next" title="OPC UA Interface" href="opc_ua.html"/>
-        <link rel="prev" title="KUKA Ethernet KRL Schnittstelle" href="eki.html"/> 
+        <link rel="next" title="Zeitsynchronisierung" href="time_sync.html"/>
+        <link rel="prev" title="GigE Vision 2.0/GenICam-Schnittstelle" href="gigevision.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -340,31 +340,6 @@
 <li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Herunterladen von Tiefenbildern und Punktwolken</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
@@ -398,6 +373,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gri.html#job-and-hec-config-api">Job und HEC_config API</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
@@ -415,13 +391,39 @@
 <li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Fehlerbehebung</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">gRPC Bilddatenschnittstelle</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#grpc-service-definition">gRPC Servicedefinition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grpc-service-definition">gRPC Servicedefinition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#example-client">Beispielclient</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
@@ -446,11 +448,11 @@
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Backup der Einstellungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard NG</em></a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
@@ -595,7 +597,8 @@
             
   <div class="section" id="grpc-image-stream-interface">
 <span id="sect-grpc"></span><h1>gRPC Bilddatenschnittstelle<a class="headerlink" href="#grpc-image-stream-interface" title="Link zu dieser Überschrift">¶</a></h1>
-<p id="index-0">Die gRPC Bilddatenschnittstelle ist eine Alternative zur <a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE Vision / GenICam Schnittstelle</span></a> zum Streamen von Kamerabildern und synchronisierten Bilddaten (z.B. linkes Kamerabild und das dazugehörige Disparitätsbild). <a class="reference external" href="https://grpc.io/">gRPC</a> ist ein System zur Interprozesskommunikation über Rechnergrenzen hinweg, welches auch das Streamen von Daten unterstützt. Es benutzt  <a class="reference external" href="https://developers.google.com/protocol-buffers/">Protocol Buffers</a> (siehe <a class="reference external" href="https://developers.google.com/protocol-buffers/">https://developers.google.com/protocol-buffers/</a>) als Beschreibungssprache und zur Datenserialisierung. Eine Einführung und mehr Details zu gRPC sind auf der offiziellen Webseite verfügbar (<a class="reference external" href="https://grpc.io/">https://grpc.io/</a>).</p>
+<p id="index-0">Die gRPC Bilddatenschnittstelle ist eine Alternative zur <a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE Vision / GenICam Schnittstelle</span></a> zum Streamen von Kamerabildern und synchronisierten Bilddaten (z.B. linkes Kamerabild und das dazugehörige Disparitätsbild).</p>
+<p><a class="reference external" href="https://grpc.io/">gRPC</a> ist ein System zur Interprozesskommunikation über Rechnergrenzen hinweg, welches auch das Streamen von Daten unterstützt. Es benutzt  <a class="reference external" href="https://developers.google.com/protocol-buffers/">Protocol Buffers</a> (siehe <a class="reference external" href="https://developers.google.com/protocol-buffers/">https://developers.google.com/protocol-buffers/</a>) als Beschreibungssprache und zur Datenserialisierung. Eine Einführung und mehr Details zu gRPC sind auf der offiziellen Webseite verfügbar (<a class="reference external" href="https://grpc.io/">https://grpc.io/</a>).</p>
 <p>Die Vorteile der gRPC Schnittstelle gegenüber GigE Vision sind:</p>
 <blockquote>
 <div><ul class="simple">
@@ -712,10 +715,30 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
 <div class="section" id="image-stream-conversions">
-<h2>Umwandlung von Bild-Streams<a class="headerlink" href="#image-stream-conversions" title="Link zu dieser Überschrift">¶</a></h2>
-<p>Zur Umwandlung von Disparitätsbildern in Punktwolken dient die Beschreibung im Kapitel <a class="reference internal" href="gigevision.html#sect-image-stream-conversions"><span class="std std-ref">GigE Vision / GenICam Schnittstelle</span></a>.</p>
+<span id="sect-gri-image-stream-conversions"></span><h3>Umwandlung von Bild-Streams<a class="headerlink" href="#image-stream-conversions" title="Link zu dieser Überschrift">¶</a></h3>
+<p id="index-1">Das Disparitätsbild enthält vorzeichenlose 16-Bit-Ganzzahlwerte. Diese Werte müssen mit dem <code class="docutils literal notranslate"><span class="pre">scale</span></code> Wert der <code class="docutils literal notranslate"><span class="pre">DisparityImage</span></code> Nachricht multipliziert werden, um die Disparitätswerte <span class="math notranslate nohighlight">\(d\)</span> in Pixeln zu ermitteln. Um die 3D-Objektkoordinaten aus den Disparitätswerten berechnen zu können, werden der Basisabstand  <code class="docutils literal notranslate"><span class="pre">baseline</span></code> = <span class="math notranslate nohighlight">\(t\)</span> aus der <code class="docutils literal notranslate"><span class="pre">DisparityImage</span></code> Nachricht, die Brennweite <code class="docutils literal notranslate"><span class="pre">focal_length</span></code> = <span class="math notranslate nohighlight">\(f\)</span>, und der Bildhauptpunkt <code class="docutils literal notranslate"><span class="pre">principal_point_u</span></code> = <span class="math notranslate nohighlight">\(c_x\)</span> und <code class="docutils literal notranslate"><span class="pre">principal_point_v</span></code> = <span class="math notranslate nohighlight">\(c_y\)</span> aus der <code class="docutils literal notranslate"><span class="pre">ImageData</span></code> Nachricht benötigt. Die Brennweite und der Bildhauptpunkt hängen von der Bildauflösung der Kamera ab und müssen auf die Auflösung des Disparitätsbilds skaliert werden. Sind diese Werte bekannt, können die Pixel-Koordinaten und die Disparitätswerte mithilfe der im Abschnitt <a class="reference internal" href="stereo_general.html#sect-point-clouds"><span class="std std-ref">Berechnung von Tiefenbildern und Punktwolken</span></a> angegebenen Gleichungen in 3D-Objektkoordination im Kamera-Koordinatensystem umgerechnet werden.</p>
+<div class="admonition note">
+<p class="first admonition-title">Bemerkung</p>
+<p class="last">Das Kamera-Koordinatensystem des <em>rc_visard NG</em> ist in <a class="reference internal" href="hardware_spec.html#sect-coordinate-frames"><span class="std std-ref">Sensor-Koordinatensystem</span></a> definiert.</p>
+</div>
+<p>Unter der Annahme, dass es sich bei <span class="math notranslate nohighlight">\(d_{ik}\)</span> um den 16-Bit-Disparitätswert in der Spalte <span class="math notranslate nohighlight">\(i\)</span> und Zeile <span class="math notranslate nohighlight">\(k\)</span> eines Disparitätsbildes handelt, ist der Fließkomma-Disparitätswert in Pixeln <span class="math notranslate nohighlight">\(d_{ik}\)</span> gegeben durch</p>
+<div class="math notranslate nohighlight">
+\[d_{ik}=d16_{ik} \cdot \mathrm{scale}\]</div>
+<p>Die 3D-Rekonstruktion (in Metern) kann wie folgt durchgeführt werden:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}P_x&amp;=\left(i+0.5-c_x\right) \frac{t}{d_{ik}},\\
+P_y&amp;=\left(k+0.5-c_y\right) \frac{t}{d_{ik}},\\
+P_z&amp;=f \frac{t}{d_{ik}}.\end{split}\]</div>
+<p>Das Konfidenzbild umfasst vorzeichenlose 8-Bit-Ganzzahlwerte. Diese Werte müssen durch 255 geteilt werden, um die zwischen 0 und 1 liegenden Konfidenzwerte zu berechnen.</p>
+<p>Das Fehlerbild umfasst vorzeichenlose 8-Bit-Ganzzahlwerte. Der Fehler <span class="math notranslate nohighlight">\(e_{ik}\)</span> muss mit dem im <code class="docutils literal notranslate"><span class="pre">scale</span></code> Wert der <code class="docutils literal notranslate"><span class="pre">DisparityImage</span></code> Nachricht angegebenen Skalierungsfaktor multipliziert werden, um die Disparitätsfehlerwerte <span class="math notranslate nohighlight">\(d_{eps}\)</span> in Pixeln zu ermitteln. Der Beschreibung in <a class="reference internal" href="stereo_general.html#sect-confidence-error"><span class="std std-ref">Konfidenz- und Fehlerbilder</span></a> zufolge lässt sich der Tiefenfehler <span class="math notranslate nohighlight">\(z_{eps}\)</span> (in Metern) wie folgt berechnen:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}d_{ik}&amp;=d16_{ik} \cdot \mathrm{scale},\\
+z_{eps}&amp;=\frac{e_{ik} \cdot \mathrm{scale} \cdot f
+              \cdot t}
+             {(d_{ik})^2}.\end{split}\]</div>
+<p>Für nähere Informationen zu Disparitäts-, Fehler- und Konfidenzbildern siehe <a class="reference internal" href="stereo_matching.html#sect-stereo-matching"><span class="std std-ref">Stereo-Matching Modul</span></a>.</p>
+</div>
 </div>
 <div class="section" id="example-client">
 <h2>Beispielclient<a class="headerlink" href="#example-client" title="Link zu dieser Überschrift">¶</a></h2>
@@ -733,10 +756,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="opc_ua.html" class="btn btn-neutral float-right" title="OPC UA Interface" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="time_sync.html" class="btn btn-neutral float-right" title="Zeitsynchronisierung" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="eki.html" class="btn btn-neutral" title="KUKA Ethernet KRL Schnittstelle" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
+        <a href="gigevision.html" class="btn btn-neutral" title="GigE Vision 2.0/GenICam-Schnittstelle" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
       
     </div>
   
@@ -822,7 +845,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.10.1',
+            VERSION:'25.10.2',
             LANGUAGE:'de',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

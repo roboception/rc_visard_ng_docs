@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Parameters, status values and services &mdash; rc_visard NG 25.10.1
+  <title>Parameters, status values and services &mdash; rc_visard NG 25.10.2
  documentation</title>
   
 
@@ -60,7 +60,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.10.1
+    <link rel="top" title="rc_visard NG 25.10.2
  documentation" href="index.html"/>
         <link rel="up" title="Camera module" href="camera.html"/>
         <link rel="next" title="Detection &amp; Measure modules" href="detection_modules.html"/>
@@ -348,31 +348,6 @@
 <li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Downloading depth images and point clouds</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">General API structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Available resources and requests</a><ul>
@@ -406,6 +381,7 @@
 <li class="toctree-l3"><a class="reference internal" href="gri.html#job-and-hec-config-api">Job and HEC_config API</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Interface</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Ethernet connection configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Generic XML structure</a><ul>
@@ -423,13 +399,39 @@
 <li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Troubleshooting</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE Vision 2.0/GenICam image interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Important GenICam parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Important standard GenICam features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Category: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Category: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Category: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Category: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Category: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Custom GenICam features of the <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Category: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Category: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Category: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Category: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Provided image streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC image stream interface</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC service definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grpc.html#image-stream-conversions">Image stream conversions</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Example client</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_sync.html">Time synchronization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
@@ -454,11 +456,11 @@
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Lens cleaning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Camera calibration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Creating and restoring backups of settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Updating the firmware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Restoring the previous firmware version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Rebooting the <em>rc_visard NG</em></a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Updating the software license</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Downloading log files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="accessories.html">Accessories</a><ul>
@@ -610,8 +612,7 @@
 <p>The camera module is called <code class="docutils literal notranslate"><span class="pre">rc_camera</span></code> and is represented by the
 <em>Camera</em> page in the desired pipeline in the <a class="reference internal" href="webgui.html#sect-web-gui"><span class="std std-ref">Web GUI</span></a>.
 The user can change the camera parameters there, or directly via the REST-API
-(<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>) or GigE Vision
-(<a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE Vision 2.0/GenICam image interface</span></a>).</p>
+(<a class="reference internal" href="rest_api.html#sect-rest-api"><span class="std std-ref">REST-API interface</span></a>).</p>
 <div class="section" id="parameter-overview">
 <span id="index-0"></span><h3>Parameter overview<a class="headerlink" href="#parameter-overview" title="Permalink to this headline">¶</a></h3>
 <p>This module offers the following run-time parameters:</p>
@@ -777,6 +778,8 @@ The user can change the camera parameters there, or directly via the REST-API
 </tr>
 </tbody>
 </table>
+<p>These parameters are also available over the GenICam interface with slightly different names and partly with different units
+or data types (see <a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE Vision 2.0/GenICam image interface</span></a>).</p>
 </div>
 <div class="section" id="description-of-run-time-parameters">
 <h3>Description of run-time parameters<a class="headerlink" href="#description-of-run-time-parameters" title="Permalink to this headline">¶</a></h3>
@@ -921,7 +924,7 @@ mode to ensure proper working of internal modules such as visual
 odometry that need a constant frame rate.
 The user frame rate setting is implemented by excluding frames
 for stereo matching and transmission via GigE Vision to reduce
-bandwidth as shown in figure <code class="xref std std-numref docutils literal notranslate"><span class="pre">fig-fps-ng</span></code>.</p>
+bandwidth as shown in the following figure.</p>
 <div class="figure align-center" id="id3">
 <span id="fig-fps-ng"></span><a class="reference internal image-reference" href="_images/fps_ng_en.png"><img alt="_images/fps_ng_en.png" src="_images/fps_ng_en.png" style="width: 100%;" /></a>
 <p class="caption"><span class="caption-number">Fig. 17 </span><span class="caption-text">Images are internally always captured with 25 Hz. The <code class="docutils literal notranslate"><span class="pre">fps</span></code> parameter
@@ -1285,8 +1288,6 @@ cameras and will not be displayed in the Web GUI in this case.</p>
 </div>
 </div>
 </div>
-<p>These parameters are also available over the GenICam interface with slightly different names and partly with different units
-or data types (see <a class="reference internal" href="gigevision.html#sect-genicam"><span class="std std-ref">GigE Vision 2.0/GenICam image interface</span></a>).</p>
 </div>
 </div>
 </div>
@@ -1309,7 +1310,7 @@ or data types (see <a class="reference internal" href="gigevision.html#sect-geni
 <td>Stereo baseline <span class="math notranslate nohighlight">\(t\)</span> in meters</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">brightness</span></code></td>
-<td> Current brightness of the image as value between 0 and 1</td>
+<td>Current brightness of the image as value between 0 and 1</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">color</span></code></td>
 <td>0 for monochrome cameras, 1 for color cameras</td>
@@ -1339,7 +1340,7 @@ or data types (see <a class="reference internal" href="gigevision.html#sect-geni
 <td>Timestamp of the last image acquired in case the camera is in trigger mode</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">out1_reduction</span></code></td>
-<td> Fraction of reduction (0.0 - 1.0) of brightness for images with GPIO Out1=LOW in exp_auto_mode=AdaptiveOut1 or exp_auto_mode=Out1High. This value is shown in the Web GUI below the image preview as <em>Out1 Reduction (%)</em>.</td>
+<td>Fraction of reduction (0.0 - 1.0) of brightness for images with GPIO Out1=LOW in exp_auto_mode=AdaptiveOut1 or exp_auto_mode=Out1High. This value is shown in the Web GUI below the image preview as <em>Out1 Reduction (%)</em>.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">params_override_active</span></code></td>
 <td>1 if parameters are temporarily overwritten by a calibration process</td>
@@ -1594,7 +1595,7 @@ This service has no arguments.</div>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.10.1',
+            VERSION:'25.10.2',
             LANGUAGE:'en',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -23,7 +23,7 @@ KUKA.EthernetKRL XML.
     The KUKA.EthernetKRL add-on software package version 2.2 or newer must be
     activated on the robot controller to use this component.
 
-The |eki-bridge| can be used to programmatically
+The |eki-bridge| can be used to programmatically to
 
 *  do service calls, e.g. to start and stop individual computational nodes,
    or to use offered services such as the hand-eye calibration or the
@@ -74,9 +74,15 @@ These are named following the scheme ``<node_name>-parameters.xml``.
 Each node's service has its own XML configuration file.
 These are named following the scheme ``<node_name>-<service_name>.xml``.
 
-The IP of the |rc_xxx| in the network needs to be filled in the XML file.
+.. only:: rc_cube or rc_visard or rc_visard_ng
 
-.. only:: rc_cube
+  The IP of the |rc_xxx| in the network needs to be filled into the XML file.
+
+.. only:: rc_reason_stack
+
+  The IP of the host PC running the |rc_xxx| needs to be filled into the XML file.
+
+.. only:: rc_cube or rc_reason_stack
 
   The port is already set to 7000, which corresponds to pipeline 0.
   This needs to be adjusted if a different pipeline should be used.

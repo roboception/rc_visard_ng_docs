@@ -12,7 +12,7 @@ LoadCarrier
    pair: ItemPick; load carrier
    pair: SilhouetteMatch; load carrier
 
-.. only:: rc_cube or rc_visard_ng
+.. only:: rc_cube or rc_reason_stack or rc_visard_ng
 
    .. index::
       single: CADMatch; load carrier
@@ -31,12 +31,12 @@ separate LoadCarrier
 :ref:`license<sect-updating-license>`:latex:`\:(Section \ref{maintenance:sect-updating-license})`
 to be purchased.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
 
       This module is pipeline specific. Changes to its settings or parameters only affect
-      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_xxx|.
 
 .. _sect-loadcarrier-detect-lc:
 
@@ -111,7 +111,7 @@ Detection of filling level
    pair: SilhouetteMatch; filling level
    pair: LoadCarrier; filling level
 
-.. only:: rc_cube or rc_visard_ng
+.. only:: rc_cube or rc_reason_stack or rc_visard_ng
 
    .. index::
       single: CADMatch; filling level
@@ -183,17 +183,22 @@ The LoadCarrier module makes internally use of the following data:
    - Disparity, error, and confidence images from the :doc:`stereo_matching`
      (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`)
 
-.. only:: rc_cube and (roboception or basler or schunk)
+.. only:: (rc_cube or rc_reason_stack) and (roboception or basler or schunk)
 
    - Disparity, error, and confidence images from the :doc:`stereo_matching`
      (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`), in case a stereo camera is used
 
-.. only:: rc_cube and (roboception or basler or schunk)
+.. only:: (rc_cube) and (roboception or basler or schunk)
 
    - Disparity, error, and confidence images from the :doc:`blaze`
      (``rc_blaze``:latex:`, Section \ref{blaze:sect-blaze}`), in case a Basler |blaze| camera is used
 
-.. only:: rc_cube and roboception
+.. only:: (rc_cube or rc_reason_stack) and (roboception or matrixvision or schunk)
+
+   - Disparity, error, and confidence images from the :doc:`orbbec`
+     (``rc_orbbec``:latex:`, Section \ref{orbbec:sect-orbbec}`), in case an |orbbec| camera is used
+
+.. only:: (rc_cube or rc_reason_stack) and roboception
 
    - Disparity, error, and confidence images from the :doc:`zivid`
      (``rc_zivid``:latex:`, Section \ref{zivid:sect-zivid}`), in case a |zivid| camera is used
@@ -281,7 +286,7 @@ module's run-time parameters, e.g. for development and testing, using the
 Parameter overview
 ^^^^^^^^^^^^^^^^^^
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note:: The default values in the parameter table
                below show the values of the |rc_visard|. The values can be
@@ -308,7 +313,7 @@ using the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
 
    This parameter is ignored for load carriers with an orientation prior.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. Note::
       Gravity alignment is only available for pipelines of type ``rc_visard``.
@@ -326,7 +331,7 @@ using the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/parameters?assume_gravity_aligned=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -356,7 +361,7 @@ using the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/parameters?model_tolerance=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -387,7 +392,7 @@ using the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/parameters?crop_distance=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -418,7 +423,7 @@ using the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/parameters?min_plausibility=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -485,7 +490,7 @@ The LoadCarrier module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/services/detect_load_carriers
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -555,7 +560,7 @@ The LoadCarrier module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/services/detect_filling_level
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -626,7 +631,7 @@ The LoadCarrier module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_load_carrier/services/reset_defaults
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 

@@ -60,11 +60,8 @@ rc_visard NG
 
 Kamera
 
-   zeigt einen Live-Stream der rektifizierten Kamerabilder. Die
-   Bildwiederholrate lässt sich reduzieren, um Bandbreite zu sparen,
-   wenn über einen GigE Vision®-Client gestreamt wird. Außerdem lässt
-   sich die Belichtung manuell oder automatisch einstellen. Für nähere
-   Informationen siehe
+   bietet einen Live-Stream der rektifizierten Bilder und ermöglicht
+   das Einstellen der Kameraparameter. Für nähere Informationen siehe
 
    Kamera Modul
 
@@ -115,6 +112,11 @@ Datenbank
    Datenbankmodule
 
    ).
+
+Generic Robot Interface
+
+   zeigt die Jobs und Hand-Auge-Kalibrierkonfigurationen, die für das
+   Generic Robot Interface definiert wurden.
 
 System
 

@@ -14,7 +14,7 @@ Introduction
 
 The Measure module allows measuring of depth values in a specific region of interest.
 
-The Measure module is an on-board module of the |rc_xxx|.
+The Measure module is a base module which is available on every |rc_xxx|.
 
 .. _sect-measure-measure-depth:
 
@@ -63,17 +63,22 @@ The Measure module internally makes use of the following data:
    - Disparity images from the :doc:`stereo_matching`
      (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`)
 
-.. only:: rc_cube and (roboception or basler or schunk)
+.. only:: (rc_cube or rc_reason_stack) and (roboception or basler or schunk)
 
    - Disparity images from the :doc:`stereo_matching`
      (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`), in case a stereo camera is used
 
-.. only:: rc_cube and (roboception or basler or schunk)
+.. only:: (rc_cube) and (roboception or basler or schunk)
    
    - Disparity images from the :doc:`blaze`
      (``rc_blaze``:latex:`, Section \ref{blaze:sect-blaze}`), in case a Basler |blaze| camera is used
 
-.. only:: rc_cube and roboception
+.. only:: (rc_cube or rc_reason_stack) and (roboception or matrixvision or schunk)
+
+   - Disparity, error, and confidence images from the :doc:`orbbec`
+     (``rc_orbbec``:latex:`, Section \ref{orbbec:sect-orbbec}`), in case an |orbbec| camera is used
+
+.. only:: (rc_cube or rc_reason_stack) and roboception
 
    - Disparity images from the :doc:`zivid`
      (``rc_zivid``:latex:`, Section \ref{zivid:sect-zivid}`), in case a |zivid| camera is used
@@ -187,7 +192,7 @@ The Measure module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_measure/services/measure_depth
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 

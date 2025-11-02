@@ -22,16 +22,16 @@ The configuration modules are:
    :ref:`WEB GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
 
 - :doc:`iocontrol` (``rc_iocontrol``:latex:`, Section \ref{iocontrol:sect-iocontrol}`)
-   provides control over the sensor's general purpose inputs and outputs with special modes
+   provides control over the camera's general purpose inputs and outputs with special modes
    for controlling an external random dot projector.
 
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    These modules are pipeline specific, which means that they run inside each
    camera pipeline. Changes to their settings or parameters
    only affect the corresponding pipeline and have no influence on the other
-   camera pipelines running on the |rc_cube|.
+   camera pipelines running on the |rc_xxx|.
 
 .. toctree-filt::
    :maxdepth: 2

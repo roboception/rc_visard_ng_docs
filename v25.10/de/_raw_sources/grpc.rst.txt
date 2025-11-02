@@ -8,10 +8,19 @@ gRPC image stream interface
 .. index::
    single: gRPC
 
-The gRPC image streaming interface can be used as an alternative to the
-:ref:`GigE Vision / GenICam interface <sect-genicam>`:latex:`\ (Section \ref{gigevision:sect-genicam})`
-for getting camera images and synchronized sets of images (e.g. left camera
-image and corresponding disparity image). `gRPC <https://grpc.io/>`_ is a
+.. only:: rc_cube or rc_visard or rc_visard_ng
+
+   The gRPC image streaming interface can be used as an alternative to the
+   :ref:`GigE Vision / GenICam interface <sect-genicam>`:latex:`\ (Section \ref{gigevision:sect-genicam})`
+   for getting camera images and synchronized sets of images (e.g. left camera
+   image and corresponding disparity image). 
+
+.. only:: rc_reason_stack
+
+   The gRPC image streaming interface can be used for getting camera images and synchronized sets of images (e.g. left camera
+   image and corresponding disparity image). 
+
+`gRPC <https://grpc.io/>`_ is a
 remote procedure call system that also
 supports streaming. It uses `Protocol Buffers <https://developers.google.com/protocol-buffers/>`_
 (see https://developers.google.com/protocol-buffers/)
@@ -29,7 +38,7 @@ The disadvantages of the gRPC interface in comparison to GigE Vision are:
   * It does not support changing parameters, but the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` can be used for changing parameters.
   * It is not a standard vision interface like GigE Vision.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    The |rc_xxx| provides synchronized image sets via gRPC server side streams on
    a separate port for each pipeline. The port is 50051 + pipeline number,
@@ -69,11 +78,64 @@ gRPC service definition
 .. literalinclude:: _protobuf/image_interface.proto
    :language: protobuf
 
-Image stream conversions
-------------------------
+.. _sect-gri-image-stream-conversions:
 
-The conversion of disparity images into a point cloud can be done as described in the
-:ref:`GigE Vision / GenICam interface <sect-image-stream-conversions>`:latex:`\ (Section \ref{gigevision:sect-image-stream-conversions})`.
+Image stream conversions
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+   pair: conversions; gRPC image stream
+
+The disparity image contains 16 bit unsigned integer values. These values must be multiplied by the ``scale`` value
+given in the ``DisparityImage`` message to get the disparity values :math:`d` in pixels. To
+compute the 3D object coordinates from the disparity values, the baseline and the focal length as well as the
+principal point are required.
+These parameters are transmitted as ``baseline`` = :math:`t` in the ``DisparityImage`` message, and ``focal_length`` = :math:`f`, 
+``principal_point_u`` = :math:`c_x` and ``principal_point_v`` = :math:`c_y` in the ``ImageData`` message. The focal length and principal point depend on the
+resolution of the camera image and need to be scaled to the resolution of the disparity image.
+Knowing these values, the pixel coordinates and the disparities can be transformed into 3D
+object coordinates in the camera coordinate frame
+using the equations described in :ref:`sect-point-clouds`:latex:`\:(Section \ref{stereo_general:sect-point-clouds})`.
+
+.. only:: rc_visard or rc_visard_ng
+
+   .. note:: The |rc_xxx|'s camera coordinate frame is defined as shown in
+             :ref:`sensor coordinate frame<sect-coordinate-frames>`:latex:`\:(Section \ref{hardware_spec:sect-coordinate-frames})`.
+
+Assuming that :math:`d16_{ik}` is the 16 bit disparity value at column :math:`i` and row :math:`k`
+of a disparity image, the float disparity in pixels :math:`d_{ik}` is given by
+
+.. math::
+
+  d_{ik}=d16_{ik} \cdot \mathrm{scale}
+
+The 3D reconstruction in meters can be written as:
+
+.. math::
+
+  P_x&=\left(i+0.5-c_x\right) \frac{t}{d_{ik}},\\
+  P_y&=\left(k+0.5-c_y\right) \frac{t}{d_{ik}},\\
+  P_z&=f \frac{t}{d_{ik}}.
+
+The confidence image contains 8 bit unsigned integer values. These values have to be divided by 255 to
+get the confidence as value between 0 an 1.
+
+The error image contains 8 bit unsigned integer values. The error :math:`e_{ik}` must be multiplied
+by the ``scale`` value given in the ``DisparityImage`` message to get the disparity-error
+values :math:`d_{eps}` in pixels. According to the description in
+:ref:`sect-confidence-error`:latex:`\:(Section \ref{stereo_general:sect-confidence-error})`, the
+depth error :math:`z_{eps}` in meters can be computed as
+
+.. math::
+
+  d_{ik}&=d16_{ik} \cdot \mathrm{scale},\\
+  z_{eps}&=\frac{e_{ik} \cdot \mathrm{scale} \cdot f
+                \cdot t}
+               {(d_{ik})^2}.
+
+For more information about disparity, error, and confidence images, please refer to
+:ref:`sect-stereo-matching`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`.
+
 
 .. only:: roboception or schunk or matrixvision
 

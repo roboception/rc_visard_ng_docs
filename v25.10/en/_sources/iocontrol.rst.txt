@@ -1,27 +1,21 @@
 IO and Projector Control
 
-The IOControl module is an on-board module of the
+The IOControl module is a base module which is available on every
 
-rc_visard
+rc_visard NG
 
 .
 
 The IOControl module allows reading the status of the general purpose
 digital inputs and controlling the digital general purpose outputs
-(GPIOs) of the
-
-rc_visard
-
-. The outputs can be set to LOW or HIGH, or configured to be HIGH for
-the exposure time of every image or every second image.
+(GPIOs) of the camera. The outputs can be set to LOW or HIGH, or
+configured to be HIGH for the exposure time of every image or every
+second image.
 
 The purpose of the IOControl module is the control of an external
-light source or a projector, which is connected to one of the
-
-rc_visard
-
-'s GPIOs to be synchronized by the image acquisition trigger. In case
-a pattern projector is used to improve stereo matching, the intensity
+light source or a projector, which is connected to one of the camera's
+GPIOs to be synchronized by the image acquisition trigger. In case a
+pattern projector is used to improve stereo matching, the intensity
 images also show the projected pattern, which might be a disadvantage
 for image processing tasks that are based on the intensity image (e.g.
 edge detection). For this reason, the IOControl module allows setting
@@ -46,8 +40,9 @@ represented in the
 
 Web GUI
 
-  under Configuration ‣ IOControl. The user can change the parameters
-via the Web GUI, the
+  under Configuration ‣ IOControl.
+
+The user can change the parameters via the Web GUI, the
 
 REST-API interface
 
@@ -104,11 +99,8 @@ GigE Vision in "ExposureActive" mode with a user-defined frame rate of
 
 
 The mode "ExposureAlternateActive" is meant to be used when an
-external random dot projector is connected to the
-
-rc_visard
-
-'s GPIO Out 1. When setting Out 1 to "ExposureAlternateActive", the
+external random dot projector is connected to the camera's GPIO Out 1.
+When setting Out 1 to "ExposureAlternateActive", the
 
 stereo matching
 
@@ -157,11 +149,8 @@ The IOControl module offers the following services.
 
 get_io_values
 
-   Retrieves the current state of the
-
-   rc_visard
-
-   's general purpose inputs and outputs (GPIOs).
+   Retrieves the current state of the camera's general purpose inputs
+   and outputs (GPIOs).
 
    Details
 

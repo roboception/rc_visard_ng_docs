@@ -12,21 +12,29 @@ grafisches Interface zum Konfigurieren und Kalibrieren des rc_visard
 NG, zum Anzeigen von Livebildern, Aufrufen von Services, Visualisieren
 von Ergebnissen, usw.
 
-GigE Vision 2.0/GenICam-Schnittstelle\:(Abschnitt \ref{gigevision
-:sect-genicam})  Konfiguration bild- und kamerabezogener
-Einstellungen.
-
 REST-API-Schnittstelle\:(Abschnitt \ref{rest_api:sect-rest-api})
 Programmierschnittstelle zur Konfiguration des rc_visard NG, zur
 Abfrage von Statusinformationen, zum Anfordern von Datenströmen, usw.
 
-Ethernet KRL Schnittstelle (EKI)\:(Abschnitt \ref{eki:sect-eki})  API
+Generic Robot Interface\:(Abschnitt \ref{gri:sect-gri})  TCP-
+Socketkommunikationsschnittstelle zur Konfiguration des rc_visard NG
+und für Serviceaufrufe.
+
+OPC UA Interface\:(Abschnitt \ref{opc_ua:sect-opc-ua})  OPC UA
+Schnittstelle zur Konfiguration des rc_visard NG und Ausführen von
+Service-Anfragen.
+
+KUKA Ethernet KRL Schnittstelle\:(Abschnitt \ref{eki:sect-eki})  API
 zum Konfigurieren des rc_visard NG und Ausführen von Service-Anfrage
 von KUKA KSS Robotern aus.
+
+GigE Vision 2.0/GenICam-Schnittstelle\:(Abschnitt \ref{gigevision
+:sect-genicam})  Konfiguration bild- und kamerabezogener
+Einstellungen.
 
 gRPC Bilddatenschnittstelle\:(Abschnitt \ref{grpc:sect-grpc})
 Synchronisierte Bilddaten per gRPC.
 
-Zeitsynchronisation\:(Abschnitt \ref{time_sync:sect-time-sync})
+Zeitsynchronisierung\:(Abschnitt \ref{time_sync:sect-time-sync})
 Zeitsynchronisation zwischen dem rc_visard NG und dem Anwendungs-PC.
 

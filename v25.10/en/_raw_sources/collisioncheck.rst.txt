@@ -35,12 +35,12 @@ defined in the :doc:`gripper_db`:latex:`\:(Section \ref{gripper_db:sect-gripper-
    also collisions between the gripper and other *detected* objects will be checked.
    Collisions with objects that cannot be detected will not be checked.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
 
       This module is pipeline specific. Changes to its settings or parameters only affect
-      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_xxx|.
 
 
 .. tabularcolumns:: |l|L|
@@ -102,7 +102,7 @@ Collision checking is integrated in the following modules' services:
    - :ref:`sect-silhouettematch`:latex:`\:(Section \ref{silhouettematch:sect-silhouettematch})`: ``detect_object``
      (see :ref:`expl-silhouettematch-srv-detect-objects`:latex:`, Section \ref{silhouettematch:expl-silhouettematch-srv-detect-objects}`)
 
-.. only:: rc_cube or rc_visard_ng
+.. only:: rc_cube or rc_reason_stack or rc_visard_ng
 
    - :ref:`sect-itempick`:latex:`\:(Section \ref{itempick:sect-itempick})`: ``compute_grasps``
      (see :ref:`compute_grasps<expl-itempick-srv-compute-grasps>`:latex:`, Section \ref{itempick:expl-itempick-srv-compute-grasps}`)
@@ -156,7 +156,7 @@ if ``check_collisions_with_point_cloud`` is enabled in the respective module.
    also collisions between the gripper and other *detected* objects are checked.
    Collisions with objects that cannot be detected will not be checked.
 
-   .. only:: rc_cube or rc_visard_ng
+   .. only:: rc_cube or rc_reason_stack or rc_visard_ng
 
       Only in combination with :doc:`cadmatch`:latex:`, Section \ref{cadmatch:sect-cadmatch}` and
       only if ``check_collisions_during_retraction`` is enabled
@@ -218,7 +218,7 @@ The name in the |webgui| is given in brackets behind the parameter name:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/parameters?collision_dist=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -250,7 +250,7 @@ The name in the |webgui| is given in brackets behind the parameter name:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/parameters?check_flange=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -269,7 +269,7 @@ The name in the |webgui| is given in brackets behind the parameter name:
    When this check is enabled the collisions will be checked not only with the side walls of the load carrier but also with its bottom.
    It might be necessary to disable this check if the TCP is inside the collision geometry (e.g. is defined inside a suction cup).
 
-   .. only:: rc_cube or rc_visard_ng
+   .. only:: rc_cube or rc_reason_stack or rc_visard_ng
 
       The load carrier bottom will always be excluded for the collision check between the object in the gripper and the load carrier 
       during retraction in combination with :doc:`cadmatch`:latex:`, Section \ref{cadmatch:sect-cadmatch}` when
@@ -287,7 +287,7 @@ The name in the |webgui| is given in brackets behind the parameter name:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/parameters?check_bottom=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -350,7 +350,7 @@ The CollisionCheck module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/services/reset_defaults
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -395,7 +395,7 @@ The CollisionCheck module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_collision_check/services/check_collisions
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 

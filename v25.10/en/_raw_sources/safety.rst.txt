@@ -8,9 +8,9 @@ Safety
 .. Warning:: The operator must have read and understood all of the instructions in this
    manual before handling the |rc_xxx| product.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
-    .. Warning:: If operating the |rc_cube| with |rc_visard| product(s),
+    .. Warning:: If operating the |rc_xxx| with |rc_visard| product(s),
         the operator must have read and understood all of the safety, installation,
         and maintenance instructions given in the |rc_visard| manual.
 

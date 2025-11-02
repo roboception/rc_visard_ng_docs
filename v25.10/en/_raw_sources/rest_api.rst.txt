@@ -8,8 +8,7 @@
 .. index::
    single: REST-API
 
-Aside from the :ref:`GenICam interface <sect-genicam>`:latex:`\ (Section
-\ref{gigevision:sect-genicam})`, the |rc_xxx| offers a comprehensive RESTful web
+The |rc_xxx| offers a comprehensive RESTful web
 interface (|rest-api|) which any HTTP client or library can access.
 Whereas most of the provided parameters, services, and functionalities can also
 be accessed via the user-friendly :ref:`Web GUI<sect-web-gui>`:latex:`\ (Section

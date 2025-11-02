@@ -15,7 +15,7 @@ The stereo matching module is a base module which is available on every |rc_xxx|
 and uses the rectified stereo-image pair to compute
 disparity, error, and confidence images.
 
-.. only:: rc_cube and (roboception or schunk or basler)
+.. only:: (rc_cube or rc_reason_stack) and (roboception or schunk or basler)
 
    .. note:: This module is not available in camera pipelines of type |rgbd_only|.
 
@@ -38,13 +38,17 @@ Parameters
 The stereo matching module is called ``rc_stereomatching`` in the |rest-api| and it is represented by the
 *Depth Image* page :cubeonly:`in the desired pipeline` in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
 The user can change the stereo matching parameters there, or use the |rest-api|
-(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`) or GigE Vision
-(:ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`).
 
 Parameter overview
 ^^^^^^^^^^^^^^^^^^
 
 .. include:: _gen/nodes/params/rc_stereomatching.txt
+
+.. only:: rc_cube or rc_visard or rc_visard_ng
+
+   These parameters are also available over the GenICam interface with slightly different names and partly with different data types
+   (see :ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
 
 Description of run-time parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -91,7 +95,7 @@ they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?acquisition_mode=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -130,7 +134,7 @@ they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?exposure_adapt_timeout=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -189,7 +193,7 @@ they appear in the |webgui|:
          "Quality",    "**Full**",    "**High**",    "**Medium**",    "**Low**"
          "Resolution (pixel)",    "1440 x 1080",    "720 x 540",    "360 x 270",    "240 x 180"
 
-   .. only:: rc_cube and (roboception or schunk or matrixvision)
+   .. only:: (rc_cube or rc_reason_stack) and (roboception or schunk or matrixvision)
 
       .. tabularcolumns:: |l|L|L|L|L|
       .. _tab-stereo-quality-spec:
@@ -200,7 +204,7 @@ they appear in the |webgui|:
             "rc_visard_ng",    "1440 x 1080",    "720 x 540",    "360 x 270",    "240 x 180"
             "rc_viscore",    "4112 x 3008",    "2056 x 1504",    "1028 x 752",    "686 x 502"
 
-   .. only:: rc_cube and basler
+   .. only:: (rc_cube or rc_reason_stack) and basler
 
       .. tabularcolumns:: |l|L|L|L|L|
       .. _tab-stereo-quality-spec:
@@ -222,7 +226,7 @@ they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?quality=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -263,7 +267,7 @@ they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?double_shot=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -301,7 +305,7 @@ they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?static_scene=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -347,7 +351,7 @@ they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?mindepth=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -391,7 +395,7 @@ they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?maxdepth=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -425,7 +429,7 @@ they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?smooth=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -464,7 +468,7 @@ they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?fill=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -503,7 +507,7 @@ they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?seg=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -539,7 +543,7 @@ they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?minconf=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -577,7 +581,7 @@ they appear in the |webgui|:
 
                PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/parameters?maxdeptherr=<value>
 
-         .. only:: rc_cube
+         .. only:: rc_cube or rc_reason_stack
 
             .. code-block:: bash
 
@@ -589,8 +593,6 @@ they appear in the |webgui|:
 
             PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?maxdeptherr=<value>
 
-The same parameters are also available over the GenICam interface with slightly different names and partly with different data types
-(see :ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
 
 Status values
 -------------
@@ -642,7 +644,7 @@ The stereo matching module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/services/acquisition_trigger
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -698,7 +700,7 @@ The stereo matching module offers the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/services/reset_defaults
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 

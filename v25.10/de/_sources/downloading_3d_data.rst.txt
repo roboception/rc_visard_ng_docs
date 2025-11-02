@@ -4,12 +4,18 @@ Der
 
 rc_visard NG
 
- stellt über die GenICam-Schnittstelle zeitgestempelte Disparitäts-,
-Fehler- und Konfidenzbilder zur Verfügung (siehe
+ stellt zeitgestempelte Disparitäts-, Fehler- und Konfidenzbilder über
+die GenICam-Schnittstelle (siehe
 
 Verfügbare Bild-Streams
 
-). Live-Streams in geringerer Qualität werden auf der
+) oder über
+
+gRPC Bilddatenschnittstelle
+
+ zur Verfügung.
+
+Live-Streams in geringerer Qualität werden auf der
 
 Tiefenbild
 

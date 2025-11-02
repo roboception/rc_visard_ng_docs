@@ -14,10 +14,10 @@ rc_visard NG
  stellt Echtzeit-Kamerabilder und Tiefenbilder bereit, die zur
 Berechnung von 3D-Punktwolken verwendet werden können. Zudem erstellt
 er Konfidenz- und Fehlerbilder, mit denen sich die Qualität der
-Bilderfassung messen lässt. Dank der standardisierten GenICam-
-Schnittstelle ist er mit allen großen Bildverarbeitungsbibliotheken
-kompatibel und bietet darüber hinaus eine intuitive, web-basierte
-Bedienoberfläche an.
+Bilderfassung messen lässt. Dank der standardisierten Schnittstellen
+ist er mit allen großen Bildverarbeitungsbibliotheken kompatibel und
+bietet darüber hinaus eine intuitive, web-basierte Bedienoberfläche
+an.
 
 Mit optional erhältlichen Softwaremodulen bietet der
 

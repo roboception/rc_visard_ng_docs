@@ -9,7 +9,7 @@ angegebene Versionsnummer.
 
 DOKUMENTATIONSVERSION
 
-  25.10.1  28.10.2025
+  25.10.2  02.11.2025
 
 Gültig für
 

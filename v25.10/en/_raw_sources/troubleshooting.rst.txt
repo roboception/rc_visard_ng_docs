@@ -330,10 +330,12 @@ All these guidelines also apply to error and confidence images, because they cor
     - Use the real-time pose stream. See
       :ref:`sect-stereo-ins`:latex:`\:(Section \ref{stereo_ins:sect-stereo-ins})`.
 
-GigE Vision/GenICam issues
---------------------------
+.. only:: rc_cube or rc_visard or rc_visard_ng
 
-**No images**
+  GigE Vision/GenICam issues
+  --------------------------
 
-- Check that the modules are enabled. See ``ComponentSelector`` and ``ComponentEnable`` in
-  :ref:`sect-genicam-params`:latex:`\:(Section \ref{gigevision:sect-genicam-params})`.
+  **No images**
+
+  - Check that the modules are enabled. See ``ComponentSelector`` and ``ComponentEnable`` in
+    :ref:`sect-genicam-params`:latex:`\:(Section \ref{gigevision:sect-genicam-params})`.

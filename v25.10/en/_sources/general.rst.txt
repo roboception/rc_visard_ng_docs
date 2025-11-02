@@ -14,9 +14,8 @@ rc_visard NG
  provides real-time camera images and depth images, which can be used
 to compute 3D point clouds. Additionally, it provides confidence and
 error images as quality measures for each image acquisition. It offers
-an intuitive web UI (user interface) and a standardized GenICam
-interface, making it compatible with all major image processing
-libraries.
+an intuitive web UI (user interface) and standardized interfaces,
+making it compatible with all major image processing libraries.
 
 With optionally available software modules the
 

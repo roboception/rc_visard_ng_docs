@@ -12,7 +12,7 @@ LoadCarrierDB
    pair: ItemPick; load carrier
    pair: SilhouetteMatch; load carrier
 
-.. only:: rc_cube or rc_visard_ng
+.. only:: rc_cube or rc_reason_stack or rc_visard_ng
 
    .. index::
       single: CADMatch; load carrier
@@ -24,12 +24,12 @@ The LoadCarrierDB module (Load carrier database module) allows the global defini
 which can then be used in many detection modules. The specified load carriers are available for all
 modules supporting load carriers on the |rc_xxx|.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
    
-      This module is global on the |rc_cube|. Changes to its settings or parameters affect
-      every camera pipeline running on the |rc_cube|.
+      This module is global on the |rc_xxx|. Changes to its settings or parameters affect
+      every camera pipeline running on the |rc_xxx|.
 
 The LoadCarrierDB module is a base module which is available on every |rc_xxx|.
 

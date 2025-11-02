@@ -28,7 +28,7 @@ camera calibration via the WEB GUI\:(Section \ref{webgui:sect-web-
 gui}).
 
 IO and Projector Control (rc_iocontrol, Section \ref{iocontrol:sect-
-iocontrol})  provides control over the sensor's general purpose inputs
+iocontrol})  provides control over the camera's general purpose inputs
 and outputs with special modes for controlling an external random dot
 projector.
 

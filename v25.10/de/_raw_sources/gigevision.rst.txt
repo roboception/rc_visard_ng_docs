@@ -299,7 +299,7 @@ Category: Scan3dControl
 
 ``Scan3dPrinciplePointU`` (read-only)
   - type: Float
-  - description: Horizontal location of the principle point in pixel of image stream selected by
+  - description: Horizontal location of the principal point in pixel of image stream selected by
     ``ComponentSelector``. In case of the component ``Disparity``, ``Confidence`` and ``Error``,
     the value also depends on the resolution that is implicitly selected by ``DepthQuality``.
 
@@ -308,7 +308,7 @@ Category: Scan3dControl
 
 ``Scan3dPrinciplePointV`` (read-only)
   - type: Float
-  - description: Vertical location of the principle point in pixel of image stream selected by
+  - description: Vertical location of the principal point in pixel of image stream selected by
     ``ComponentSelector``. In case of the component ``Disparity``, ``Confidence`` and ``Error``,
     the value also depends on the resolution that is implicitly selected by ``DepthQuality``.
 
@@ -711,7 +711,7 @@ Image stream conversions
 The disparity image contains 16 bit unsigned integer values. These values must be multiplied by the scale value
 given in the GenICam feature *Scan3dCoordinateScale* to get the disparity values :math:`d` in pixels. To
 compute the 3D object coordinates from the disparity values, the focal length and the baseline as well as the
-principle point are required.
+principal point are required.
 These parameters are transmitted as GenICam features *Scan3dFocalLength*, *Scan3dBaseline*,
 *Scan3dPrincipalPointU* and *Scan3dPrincipalPointV*. The focal length and principal point depend on the image
 resolution of the selected component.

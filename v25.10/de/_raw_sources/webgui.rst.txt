@@ -12,18 +12,29 @@ The |rc_xxx|'s |webgui| can be used to test, calibrate, and configure the device
 Accessing the Web GUI
 ---------------------
 
-The |webgui| can be accessed from any web browser, such as Firefox, Google Chrome, or Microsoft Edge, via
-the |rc_xxx|'s IP address. The easiest way to access the |webgui| is to simply double click on the
-desired device using the ``rcdiscover-gui`` tool as explained in :ref:`sect-discovery-of-rcvisard-devices`:latex:`\:(Section \ref{installation:sect-discovery-of-rcvisard-devices})`.
+.. only:: rc_reason_stack
 
-Alternatively, some network environments automatically configure the unique host name of
-the |rc_xxx| in their Domain Name Server (:term:`DNS`). In this case, the |webgui| can also be
-accessed directly using the :term:`URL` ``http://<host-name>`` by
-replacing ``<host-name>`` with the device's host name.
+  The |webgui| of the |rc_reason_stack| can be accessed from any web browser, such as Firefox, Google Chrome, or Microsoft Edge, via
+  the host PC's IP address with the port number 8080:
+  
+  .. code-block:: bash
 
-For Linux and Mac operating systems, this even works without DNS via the multicast
-Domain Name System (:term:`mDNS`), which is automatically used if ``.local`` is appended to the
-host name. Thus, the URL simply becomes ``http://<host-name>.local``.
+    http://<host-ip>:8080/
+
+.. only:: rc_visard or rc_visard_ng or rc_cube
+
+  The |webgui| can be accessed from any web browser, such as Firefox, Google Chrome, or Microsoft Edge, via
+  the |rc_xxx|'s IP address. The easiest way to access the |webgui| is to simply double click on the
+  desired device using the ``rcdiscover-gui`` tool as explained in :ref:`sect-discovery-of-rcvisard-devices`:latex:`\:(Section \ref{installation:sect-discovery-of-rcvisard-devices})`.
+
+  Alternatively, some network environments automatically configure the unique host name of
+  the |rc_xxx| in their Domain Name Server (:term:`DNS`). In this case, the |webgui| can also be
+  accessed directly using the :term:`URL` ``http://<host-name>`` by
+  replacing ``<host-name>`` with the device's host name.
+
+  For Linux and Mac operating systems, this even works without DNS via the multicast
+  Domain Name System (:term:`mDNS`), which is automatically used if ``.local`` is appended to the
+  host name. Thus, the URL simply becomes ``http://<host-name>.local``.
 
 .. only:: rc_cube
 
@@ -57,7 +68,7 @@ Exploring the Web GUI
   The |webgui|'s dashboard page gives the most important information about the device
   and the software modules.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
   The |webgui|'s dashboard page gives the most important information about the device
   and the running camera pipelines.
@@ -69,7 +80,7 @@ Exploring the Web GUI
 
 The page's side menu permits access to the individual pages of the |rc_xxx|'s |webgui|:
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
   *Pipeline*
     gives access to the respective camera pipeline and its camera, detection and configuration modules.
@@ -84,12 +95,10 @@ The page's side menu permits access to the individual pages of the |rc_xxx|'s |w
   Each pipeline provides a sub-menu with the individual pages for the modules running in the pipeline:
 
 *Camera*
-  shows a live stream of the rectified camera images.
-  The frame rate can be reduced to save bandwidth when streaming to a
-  GigE Vision\ |reg| client. Furthermore, exposure can be set manually or automatically.
+  shows a live stream of the rectified camera images and allows changing camera parameters.
   See :ref:`sect-camera`:latex:`\:(Section \ref{camera:sect-camera})` for more information.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
     *Depth Image*
       shows a live stream of the left rectified, disparity, and
@@ -118,7 +127,7 @@ The page's side menu permits access to the individual pages of the |rc_xxx|'s |w
   gives access to the configuration modules of the |rcxxx|
   (see :doc:`configuration_modules`:latex:`, Section \ref{configuration_modules:sect-configuration-modules}`).
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
   The following modules running outside the pipelines can be accessed in the side menu:
 
@@ -126,9 +135,21 @@ The page's side menu permits access to the individual pages of the |rc_xxx|'s |w
   gives access to the database modules of the |rcxxx|
   (see :doc:`database_modules`:latex:`, Section \ref{database_modules:sect-database-modules}`).
 
-*System*
-  gives access to general settings, device information and to the log files,
-  and permits the firmware or the license file to be updated.
+
+*Generic Robot Interface*
+  shows the jobs and hand-eye calibration configurations defined for the Generic Robot Interface.
+
+.. only:: rc_visard or rc_visard_ng or rc_cube
+
+  *System*
+    gives access to general settings, device information and to the log files,
+    and permits the firmware or the license file to be updated.
+
+.. only:: rc_reason_stack
+
+  *System*
+    gives access to general settings, software information and to the log files,
+    and shows license information.
 
 .. only:: rc_cube
 

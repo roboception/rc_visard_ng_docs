@@ -11,12 +11,12 @@ Camera calibration
 
 The camera calibration module is a base module which is available on every |rc_xxx|.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
    
       This module is pipeline specific. Changes to its settings or parameters only affect
-      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_xxx|.
 
 To use the camera as measuring instrument, camera parameters such as focal length,
 lens distortion, and the relationship of the cameras to each other must be exactly known. The
@@ -99,7 +99,7 @@ Calibration grids can be obtained from |company|.
 
 In the first step, the calibration grid must be specified. The *Next* button proceeds to the next step.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    Adjust focus
    ^^^^^^^^^^^^
@@ -117,7 +117,7 @@ In the first step, the calibration grid must be specified. The *Next* button pro
          to values that allow for easier calibration. The exposure settings can still be changed and
          will be reset when the calibration is done or cancelled.
 
-   .. only:: roboception or basler or schunk
+   .. only:: rc_cube and (roboception or basler or schunk)
 
       For calibrating the Basler *blaze* sensor, the color camera should be focussed to close distance so that the calibration
       grid can be detected when it almost fills the image. The camera can be refocussed to working
@@ -179,7 +179,7 @@ skipped by default during a recalibration, but can be performed by clicking :gui
 in the *Calibrate* tab. This should only be done if the result of the stereo calibration is
 not satisfactory. 
 
-.. only:: rc_cube and (roboception or basler or schunk)
+.. only:: (rc_cube) and (roboception or basler or schunk)
 
    When a Basler |blaze| sensor is connected to the |rc_cube| for the first time, it is uncalibrated and needs to 
    be fully calibrated. In this case, monocalibration is offered automatically and cannot be skipped to ensure
@@ -221,7 +221,7 @@ by the calibration grid. This is visualized by filling the covered cells in gree
 
    For the |rc_xxx| all cells can be covered at once by holding the grid close enough.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    Depending on the camera, the grid has to be held at different positions until all grid cells
    have been covered and filled in green.

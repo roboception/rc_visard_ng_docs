@@ -8,17 +8,29 @@ General API structure
    single: REST-API; entry point
    pair: REST-API; version
 
-The general **entry point** to the |rc-xxx|'s API is ``http://<host>/api/``,
-where ``<host>`` is either the device's IP address or its :ref:`host name<sect-network-hostname>` as known
-by the respective DHCP server, as explained in
-:ref:`network configuration<sect-network-configuration>`:latex:`\ (Section
-\ref{installation:sect-network-configuration})`.
-Accessing this entry point with a web browser lets the user explore and test
-the full API during run-time using the :ref:`sect-swagger-ui`
-:latex:`\ (Section  \ref{rest_api_swagger_ui:sect-swagger-ui})`.
+.. only:: rc_visard or rc_visard_ng or rc_cube
+
+   The general **entry point** to the |rc-xxx|'s API is ``http://<host>/api/``,
+   where ``<host>`` is either the device's IP address or its :ref:`host name<sect-network-hostname>` as known
+   by the respective DHCP server, as explained in
+   :ref:`network configuration<sect-network-configuration>`:latex:`\ (Section
+   \ref{installation:sect-network-configuration})`.
+   Accessing this entry point with a web browser lets the user explore and test
+   the full API during run-time using the :ref:`sect-swagger-ui`
+   :latex:`\ (Section  \ref{rest_api_swagger_ui:sect-swagger-ui})`.
+
+.. only:: rc_reason_stack
+
+   The general **entry point** to the |rc-xxx|'s API is ``http://<host>/api/``,
+   where ``<host>`` is the IP address of the host PC that runs the |rc_reason_stack| combined with the port 8080,
+   i.e. ``<host-ip>::8080``. Accessing this entry point with a web browser lets the user explore and test
+   the full API during run-time using the :ref:`sect-swagger-ui`
+   :latex:`\ (Section  \ref{rest_api_swagger_ui:sect-swagger-ui})`.
 
 For actual HTTP requests, the **current API version is appended** to the entry point
-of the API, i.e., ``http://<host>/api/v2``. All data sent to and
+of the API, i.e., ``http://<host>/api/v2``. 
+
+All data sent to and
 received by the |rest-api| follows the JavaScript Object Notation (JSON).
 The API is designed to let the user **create, retrieve, modify, and delete**
 so-called **resources** as listed in :ref:`Available resources and requests<sect-rest-resources-and-methods>`:latex:`\ (Section
@@ -130,10 +142,10 @@ information about the ``rc_stereomatching`` node's ``minconf`` parameter:
    API version 1 has become deprecated with the 22.01 firmware release of the |rc_xxx|. The following
    changes were introduced in API version 2.
 
-   .. only:: rc_cube
+   .. only:: rc_cube or rc_reason_stack
 
       * All 3D-camera, detection and configuration modules which were located under ``/nodes`` in API version 1
-        are now under ``/pipelines/<pipeline number>/nodes`` to support multiple pipelines running on the |rc_cube|, e.g.
+        are now under ``/pipelines/<pipeline number>/nodes`` to support multiple pipelines running on the |rc_xxx|, e.g.
         ``/pipelines/1/nodes/rc_camera``.
 
    .. only:: rc_visard or rc_visard_ng
@@ -162,9 +174,14 @@ The available |restapi| resources are structured into the following parts:
       for storing data used in :cubeonly:`all camera pipelines and`
       multiple modules, such as load carriers, grippers and regions of interest.
 
-* ``/pipelines``
-      Access to the status and configuration of the camera pipelines.
-      :visardsonly:`There is always only one camera pipeline with number 0.`
+.. only:: rc_cube or rc_reason_stack
+
+   * ``/pipelines/<number>/nodes``
+      Access the |rcxxx|'s 3D-camera, detection and configuration
+      :ref:`software modules<sect-modules>`
+      :latex:`\:(Section \ref{modules:sect-modules})`
+      of the camera pipeline with the specified number,
+      with their run-time status, parameters, and offered services.
 
 .. only:: rc_visard or rc_visard_ng
 
@@ -175,17 +192,20 @@ The available |restapi| resources are structured into the following parts:
       :latex:`\:(Section \ref{modules:sect-modules})`
       with their run-time status, parameters, and offered services.
 
-.. only:: rc_cube
-
-   * ``/pipelines/<number>/nodes``
-      Access the |rcxxx|'s 3D-camera, detection and configuration
-      :ref:`software modules<sect-modules>`
-      :latex:`\:(Section \ref{modules:sect-modules})`
-      of the camera pipeline with the specified number,
-      with their run-time status, parameters, and offered services.
+* ``/pipelines``
+      Access to the status and configuration of the camera pipelines.
+      :visardsonly:`There is always only one camera pipeline with number 0.`
 
 *  ``/templates``
       Access the object templates on the |rcxxx|.
+
+*  ``/cad``
+      Access the cad elements, e.g. for grippers, on the |rcxxx|.
+
+.. only:: (rc_cube or rc_reason_stack) and (schunk or matrixvision or roboception)
+
+   *  ``/presets``
+         Access the 2D and 3D user-defined presets for |zivid| cameras.
 
 .. only:: rc_visard
 
@@ -206,6 +226,9 @@ The available |restapi| resources are structured into the following parts:
 *  ``/logs``
       Access the log files on the |rcxxx|.
 
+*  ``/generic_robot_interface``
+      Access the job and hec_configs for the Generic Robot Interface on the |rcxxx|.
+
 
 .. toctree-filt::
    :maxdepth: 2
@@ -213,6 +236,6 @@ The available |restapi| resources are structured into the following parts:
 
    rest_api_nodes
    :rc_cube_only:rest_api_pipelines
-   :rc_cube_exclude:rest_api_datastreams
+   :rc_cube_container_exclude:rest_api_datastreams
    :rc_visard_exclude:rest_api_userspace
    rest_api_syslogs

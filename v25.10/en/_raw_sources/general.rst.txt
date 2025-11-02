@@ -5,6 +5,12 @@
 Overview
 ========
 
+.. only:: rc_reason_stack
+
+    The |rc_xxx| is a high-performance 3D-image-processing Docker software stack for deployment on Ubuntu machines. 
+    It enhances the computing capabilities of the |company| stereo camera |rc_visard| and
+    supports the |rc_viscore|, the Basler |stereo_ace| camera, the |orbbec| camera and the |zivid| camera.
+
 .. only:: rc_cube
 
 
@@ -12,8 +18,8 @@ Overview
 
         The |rc_xxx| is a high-performance 3D-image-processing device. 
         It enhances the computing capabilities of the |company| stereo camera |rc_visard| and
-        supports the |rc_viscore|, the Basler |blaze| camera in an RGB-D setup, the Basler |stereo_ace| camera and
-        the |zivid| camera.
+        supports the |rc_viscore|, the Basler |blaze| camera in an RGB-D setup, the Basler |stereo_ace| camera,
+        the |orbbec| camera and the |zivid| camera.
 
     .. only:: basler
 
@@ -57,8 +63,8 @@ Overview
 The |rc_xxx| provides real-time camera images and depth images, which can
 be used to compute 3D point clouds. Additionally, it provides
 confidence and error images as quality measures for each image acquisition.
-It offers an intuitive web UI (user interface) and a standardized
-GenICam interface, making it compatible with all major image processing
+It offers an intuitive web UI (user interface) and standardized
+interfaces, making it compatible with all major image processing
 libraries.
 
 With optionally available software modules the |rc_xxx| provides out-of-the-box solutions

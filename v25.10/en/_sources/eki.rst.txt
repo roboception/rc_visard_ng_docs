@@ -22,7 +22,7 @@ Note: The KUKA.EthernetKRL add-on software package version 2.2 or
   newer must be activated on the robot controller to use this
   component.
 
-The EKI Bridge can be used to programmatically
+The EKI Bridge can be used to programmatically to
 
 do service calls, e.g. to start and stop individual computational
 nodes, or to use offered services such as the hand-eye calibration or
@@ -72,7 +72,7 @@ The IP of the
 
 rc_visard NG
 
- in the network needs to be filled in the XML file.
+ in the network needs to be filled into the XML file.
 
 These files must be stored in the directory
 "C:\KRC\ROBOTER\Config\User\Common\EthernetKRL" of the robot

@@ -9,8 +9,17 @@ Viewing and downloading images and point clouds
    pair: timestamp; image
    pair: point cloud; download
 
-The |rc_xxx| provides time-stamped disparity, error, and confidence images over the
-GenICam interface (see :ref:`sect-provided-image-streams`:latex:`, \:Section \ref{gigevision:sect-provided-image-streams}`).
+.. only:: rc_cube or rc_visard or rc_visard_ng
+
+   The |rc_xxx| provides time-stamped disparity, error, and confidence images over the
+   GenICam interface (see :ref:`sect-provided-image-streams`:latex:`, Section \ref{gigevision:sect-provided-image-streams}`)
+   or via the :doc:`grpc`:latex:`\:(see Section \ref{grpc:sect-grpc})`.
+
+.. only:: rc_reason_stack
+
+   The |rc_xxx| provides time-stamped disparity, error, and confidence images 
+   via the :doc:`grpc`:latex:`\:(see Section \ref{grpc:sect-grpc})`.
+   
 Live streams of the images are provided with reduced quality on the *Depth Image* page :cubeonly:`in the desired pipeline` of the
 :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
 

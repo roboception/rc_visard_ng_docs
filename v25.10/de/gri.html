@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Generic Robot Interface &mdash; rc_visard NG 25.10.1
+  <title>Generic Robot Interface &mdash; rc_visard NG 25.10.2
  Dokumentation</title>
   
 
@@ -52,10 +52,10 @@
         <link rel="index" title="Stichwortverzeichnis"
               href="genindex.html"/>
         <link rel="search" title="Suche" href="search.html"/>
-    <link rel="top" title="rc_visard NG 25.10.1
+    <link rel="top" title="rc_visard NG 25.10.2
  Dokumentation" href="index.html"/>
         <link rel="up" title="Schnittstellen" href="interfaces.html"/>
-        <link rel="next" title="KUKA Ethernet KRL Schnittstelle" href="eki.html"/>
+        <link rel="next" title="OPC UA Interface" href="opc_ua.html"/>
         <link rel="prev" title="Swagger UI" href="rest_api_swagger_ui.html"/> 
 
   
@@ -340,31 +340,6 @@
 <li class="toctree-l3"><a class="reference internal" href="webgui.html#downloading-depth-images-and-point-clouds">Herunterladen von Tiefenbildern und Punktwolken</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
-<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="rest_api.html">REST-API-Schnittstelle</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html">Allgemeine Struktur der Programmierschnittstelle (API)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rest_api_general.html#available-resources-and-requests">Verfügbare Ressourcen und Anfragen</a><ul>
@@ -398,6 +373,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#job-and-hec-config-api">Job und HEC_config API</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eki.html">KUKA Ethernet KRL Schnittstelle</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#ethernet-connection-configuration">Konfiguration der Ethernet-Verbindung</a></li>
 <li class="toctree-l3"><a class="reference internal" href="eki.html#generic-xml-structure">Allgemeine XML-Struktur</a><ul>
@@ -415,13 +391,39 @@
 <li class="toctree-l3"><a class="reference internal" href="eki.html#troubleshooting">Fehlerbehebung</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="gigevision.html">GigE&nbsp;Vision&nbsp;2.0/GenICam-Schnittstelle</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#gige-vision-ports">GigE Vision Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-genicam-parameters">Wichtige Parameter der GenICam-Schnittstelle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#important-standard-genicam-features">Wichtige Standardparameter der GenICam-Schnittstelle</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-imageformatcontrol">Kategorie: ImageFormatControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-acquisitioncontrol">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-analogcontrol">Kategorie: AnalogControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-digitaliocontrol">Kategorie: DigitalIOControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-transportlayercontrol-ptpcontrol">Kategorie: TransportLayerControl / PtpControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-scan3dcontrol">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-chunkdatacontrol">Kategorie: ChunkDataControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#custom-genicam-features-of-the-rc-xxx">Besondere Parameter der GenICam-Schnittstelle des <em>rc_visard NG</em></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-devicecontrol">Kategorie: DeviceControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id1">Kategorie: AcquisitionControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#id2">Kategorie: Scan3dControl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gigevision.html#category-depthcontrol">Kategorie: DepthControl</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#chunk-data">Chunk-Daten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#provided-image-streams">Verfügbare Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gigevision.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="grpc.html">gRPC Bilddatenschnittstelle</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC Servicedefinition</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grpc.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grpc.html#grpc-service-definition">gRPC Servicedefinition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="grpc.html#image-stream-conversions">Umwandlung von Bild-Streams</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="grpc.html#example-client">Beispielclient</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="opc_ua.html">OPC UA Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="time_sync.html">Zeitsynchronisierung</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ntp">NTP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="time_sync.html#ptp">PTP</a></li>
@@ -446,11 +448,11 @@
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#lens-cleaning">Reinigung der Kameralinsen</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#camera-calibration">Kamerakalibrierung</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#creating-and-restoring-backups-of-settings">Backup der Einstellungen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-firmware">Aktualisierung der Firmware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#restoring-the-previous-firmware-version">Wiederherstellung der vorherigen Firmware-Version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintenance.html#rebooting-the-rcxxx">Neustart des <em>rc_visard NG</em></a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#updating-the-software-license">Aktualisierung der Softwarelizenz</a></li>
-<li class="toctree-l2"><a class="reference internal" href="maintenance.html#downloading-log-files">Download der Logdateien</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="accessories.html">Zubehör</a><ul>
@@ -723,7 +725,7 @@
 <div class="section" id="message-header-8-bytes">
 <span id="sect-gri-header"></span><h3>Header (8 Bytes)<a class="headerlink" href="#message-header-8-bytes" title="Link zu dieser Überschrift">¶</a></h3>
 <span id="tab-gri-message-header-definition"></span><table border="1" class="docutils" id="header-definition">
-<caption><span class="caption-number">Tab. 57 </span><span class="caption-text">Header Definition</span><a class="headerlink" href="#header-definition" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 56 </span><span class="caption-text">Header Definition</span><a class="headerlink" href="#header-definition" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="20%" />
 <col width="9%" />
@@ -770,7 +772,7 @@
 <span id="sect-gri-pose-formats"></span><h3>Posenformate<a class="headerlink" href="#pose-formats" title="Link zu dieser Überschrift">¶</a></h3>
 <p>Das GRI verwendet zur Positionsdarstellung immer <strong>Millimeter</strong>. Die folgenden Tabellen zeigen verschiedene Rotationsformate, die passend zur Rotationsdarstellung des verwendeten Roboters ausgewählt werden können. Die Formate sind in Nicht-Euler-Rotationsformate, Tait-Bryan-Euler-Rotationsformate (alle drei Achsen werden verwendet) und reine Euler-Rotationsformate (erste und letzte Rotationsachse sind identisch) unterteilt.</p>
 <span id="tab-gri-pose-formats-non-euler"></span><table border="1" class="docutils" id="nicht-euler-rotationsformate">
-<caption><span class="caption-number">Tab. 58 </span><span class="caption-text">Nicht-Euler Rotationsformate</span><a class="headerlink" href="#nicht-euler-rotationsformate" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 57 </span><span class="caption-text">Nicht-Euler Rotationsformate</span><a class="headerlink" href="#nicht-euler-rotationsformate" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="21%" />
 <col width="9%" />
@@ -824,7 +826,7 @@
 </table>
 <p>In der folgenden Notation kennzeichnen Hochstriche aufeinanderfolgende Rotationen im intrinsischen Bezugssystem (z. B. Y‘ = Rotation um die neue Y-Achse nach der ersten Rotation). <code class="docutils literal notranslate"><span class="pre">_B</span></code> und <code class="docutils literal notranslate"><span class="pre">_F</span></code> bestimmen die Reihenfolge der Rotationskomponenten. <code class="docutils literal notranslate"><span class="pre">F</span></code> steht für vorwärts (forward), d.h. die Rotationskomponenten werden in derselben Reihenfolge angegeben, in der die Rotation angewendet wird, und <code class="docutils literal notranslate"><span class="pre">B</span></code> steht für rückwärts (backward), d.h. die Rotationskomponenten werden in umgekehrter Reihenfolge angegeben. <code class="docutils literal notranslate"><span class="pre">_RAD</span></code> und <code class="docutils literal notranslate"><span class="pre">_DEG</span></code> bestimmen, ob die Rotationskomponenten gegebenenfalls in Radian oder Grad angegeben werden. Das Format <code class="docutils literal notranslate"><span class="pre">EULER_ZYX_B_DEG</span></code> bedeutet also, dass die intrinsische Rotationsreihenfolge z-y‘-x‘ ist (zuerst Rotation um die z-Achse, dann Rotation um die neue y-Achse, dann Rotation um die neue x-Achse), die Reihenfolge der Rotationskomponenten rückwärts ist (das erste Rotationselement ist also der Winkel um die x-Achse), und die Winkel in Grad angegeben werden.</p>
 <span id="tab-gri-pose-formats-tait-bryan"></span><table border="1" class="docutils" id="tait-bryan-euler-rotationsformate-hochstriche-zeigen-aufeinanderfolgende-rotationen-im-intrinsischen-koordinatensystem-an-z-b-ist-y-eine-rotation-um-die-neue-y-achse-nach-der-ersten-rotation-f-forward-1-2-3-b-backward-3-2-1-deg-degrees-grad-rad-radian-radian">
-<caption><span class="caption-number">Tab. 59 </span><span class="caption-text">Tait-Bryan-Euler-Rotationsformate. Hochstriche zeigen aufeinanderfolgende Rotationen im intrinsischen Koordinatensystem an (z.B. ist Y‘ eine Rotation um die neue Y-Achse nach der ersten Rotation). <strong>_F (Forward)</strong>: <cite>[1., 2., 3.]</cite> | <strong>_B (Backward)</strong>: <cite>[3., 2., 1.]</cite>,  <strong>_DEG (degrees): Grad</strong> | <strong>_RAD (radian): Radian</strong>.</span><a class="headerlink" href="#tait-bryan-euler-rotationsformate-hochstriche-zeigen-aufeinanderfolgende-rotationen-im-intrinsischen-koordinatensystem-an-z-b-ist-y-eine-rotation-um-die-neue-y-achse-nach-der-ersten-rotation-f-forward-1-2-3-b-backward-3-2-1-deg-degrees-grad-rad-radian-radian" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 58 </span><span class="caption-text">Tait-Bryan-Euler-Rotationsformate. Hochstriche zeigen aufeinanderfolgende Rotationen im intrinsischen Koordinatensystem an (z.B. ist Y‘ eine Rotation um die neue Y-Achse nach der ersten Rotation). <strong>_F (Forward)</strong>: <cite>[1., 2., 3.]</cite> | <strong>_B (Backward)</strong>: <cite>[3., 2., 1.]</cite>,  <strong>_DEG (degrees): Grad</strong> | <strong>_RAD (radian): Radian</strong>.</span><a class="headerlink" href="#tait-bryan-euler-rotationsformate-hochstriche-zeigen-aufeinanderfolgende-rotationen-im-intrinsischen-koordinatensystem-an-z-b-ist-y-eine-rotation-um-die-neue-y-achse-nach-der-ersten-rotation-f-forward-1-2-3-b-backward-3-2-1-deg-degrees-grad-rad-radian-radian" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="19%" />
 <col width="8%" />
@@ -1066,7 +1068,7 @@
 </tbody>
 </table>
 <span id="tab-gri-pose-formats-euler"></span><table border="1" class="docutils" id="euler-rotationsformate-hochstriche-zeigen-aufeinanderfolgende-rotationen-im-intrinsischen-koordinatensystem-an-z-b-ist-y-eine-rotation-um-die-neue-y-achse-nach-der-ersten-rotation-f-forward-1-2-3-b-backward-3-2-1-deg-degrees-grad-rad-radian-radian">
-<caption><span class="caption-number">Tab. 60 </span><span class="caption-text">Euler-Rotationsformate. Hochstriche zeigen aufeinanderfolgende Rotationen im intrinsischen Koordinatensystem an (z.B. ist Y‘ eine Rotation um die neue Y-Achse nach der ersten Rotation). <strong>_F (Forward)</strong>: <cite>[1., 2., 3.]</cite> | <strong>_B (Backward)</strong>: <cite>[3., 2., 1.]</cite>,  <strong>_DEG (degrees): Grad</strong> | <strong>_RAD (radian): Radian</strong>.</span><a class="headerlink" href="#euler-rotationsformate-hochstriche-zeigen-aufeinanderfolgende-rotationen-im-intrinsischen-koordinatensystem-an-z-b-ist-y-eine-rotation-um-die-neue-y-achse-nach-der-ersten-rotation-f-forward-1-2-3-b-backward-3-2-1-deg-degrees-grad-rad-radian-radian" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 59 </span><span class="caption-text">Euler-Rotationsformate. Hochstriche zeigen aufeinanderfolgende Rotationen im intrinsischen Koordinatensystem an (z.B. ist Y‘ eine Rotation um die neue Y-Achse nach der ersten Rotation). <strong>_F (Forward)</strong>: <cite>[1., 2., 3.]</cite> | <strong>_B (Backward)</strong>: <cite>[3., 2., 1.]</cite>,  <strong>_DEG (degrees): Grad</strong> | <strong>_RAD (radian): Radian</strong>.</span><a class="headerlink" href="#euler-rotationsformate-hochstriche-zeigen-aufeinanderfolgende-rotationen-im-intrinsischen-koordinatensystem-an-z-b-ist-y-eine-rotation-um-die-neue-y-achse-nach-der-ersten-rotation-f-forward-1-2-3-b-backward-3-2-1-deg-degrees-grad-rad-radian-radian" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="19%" />
 <col width="8%" />
@@ -1321,7 +1323,7 @@
 <span id="sect-gri-ac"></span><h3>Aktionen<a class="headerlink" href="#actions" title="Link zu dieser Überschrift">¶</a></h3>
 <p>Die folgenden Aktionen können gesendet werden.</p>
 <span id="tab-gri-ac"></span><table border="1" class="docutils" id="gri-aktionen">
-<caption><span class="caption-number">Tab. 61 </span><span class="caption-text">GRI Aktionen</span><a class="headerlink" href="#gri-aktionen" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 60 </span><span class="caption-text">GRI Aktionen</span><a class="headerlink" href="#gri-aktionen" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="22%" />
 <col width="8%" />
@@ -1417,7 +1419,7 @@
 <span id="sect-gri-job-status"></span><h3>Jobstatus<a class="headerlink" href="#job-status" title="Link zu dieser Überschrift">¶</a></h3>
 <p>Die folgenden Statuswerte für Jobs können zurückgeliefert werden.</p>
 <span id="tab-gri-status-values"></span><table border="1" class="docutils" id="job-statuswerte">
-<caption><span class="caption-number">Tab. 62 </span><span class="caption-text">Job Statuswerte</span><a class="headerlink" href="#job-statuswerte" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 61 </span><span class="caption-text">Job Statuswerte</span><a class="headerlink" href="#job-statuswerte" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="59%" />
 <col width="41%" />
@@ -1447,7 +1449,7 @@
 <h3>Body Definitionen<a class="headerlink" href="#body-definitions" title="Link zu dieser Überschrift">¶</a></h3>
 <p>Es gibt unterschiedliche Body-Definitionen, je nachdem, ob eine Anfrage gesendet oder eine Antwort empfangen wird. Der Anfrage-Body besteht aus insgesamt 54 Bytes und seine Definition ist in der Tabelle <a class="reference internal" href="#tab-gri-request-body"><span class="std std-ref">Anfrage-Body Definition</span></a> angegeben.</p>
 <span id="tab-gri-request-body"></span><table border="1" class="docutils" id="anfrage-body-definition">
-<caption><span class="caption-number">Tab. 63 </span><span class="caption-text">Anfrage-Body Definition</span><a class="headerlink" href="#anfrage-body-definition" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 62 </span><span class="caption-text">Anfrage-Body Definition</span><a class="headerlink" href="#anfrage-body-definition" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="13%" />
 <col width="10%" />
@@ -1532,7 +1534,7 @@
 <p>Die Job-ID ist die eindeutige Kennung aus der Job-Konfiguration. Die Verwendung der Felder <code class="docutils literal notranslate"><span class="pre">data_1...data_4</span></code> ist abhängig von der Aktion und vom Job. Bei Nichtverwendung werden sie auf <cite>0</cite> gesetzt.</p>
 <p>Der Antwort-Body besteht aus insgesamt 80 Bytes, Seine Definition ist in Tabelle <a class="reference internal" href="#tab-gri-response-body"><span class="std std-ref">Antwort-Body Definition</span></a> angegeben.</p>
 <span id="tab-gri-response-body"></span><table border="1" class="docutils" id="antwort-body-definition">
-<caption><span class="caption-number">Tab. 64 </span><span class="caption-text">Antwort-Body Definition</span><a class="headerlink" href="#antwort-body-definition" title="Link zu dieser Tabelle">¶</a></caption>
+<caption><span class="caption-number">Tab. 63 </span><span class="caption-text">Antwort-Body Definition</span><a class="headerlink" href="#antwort-body-definition" title="Link zu dieser Tabelle">¶</a></caption>
 <colgroup>
 <col width="21%" />
 <col width="9%" />
@@ -2237,7 +2239,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="eki.html" class="btn btn-neutral float-right" title="KUKA Ethernet KRL Schnittstelle" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="opc_ua.html" class="btn btn-neutral float-right" title="OPC UA Interface" accesskey="n" rel="next">Weiter <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="rest_api_swagger_ui.html" class="btn btn-neutral" title="Swagger UI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Zurück</a>
@@ -2326,7 +2328,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'25.10.1',
+            VERSION:'25.10.2',
             LANGUAGE:'de',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

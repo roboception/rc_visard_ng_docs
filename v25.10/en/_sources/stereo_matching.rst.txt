@@ -35,10 +35,6 @@ REST-API (
 
 REST-API interface
 
-) or GigE Vision (
-
-GigE Vision 2.0/GenICam image interface
-
 ).
 
 Parameter overview
@@ -63,6 +59,13 @@ Minimum size of valid disparity segments in pixels  smooth  bool
 false  true  true  Smoothing of disparity image (requires
 'stereo_plus' license)  static_scene  bool  false  true  false
 Accumulation of images in static scenes to reduce noise
+
+These parameters are also available over the GenICam interface with
+slightly different names and partly with different data types (see
+
+GigE Vision 2.0/GenICam image interface
+
+).
 
 Description of run-time parameters
 
@@ -372,13 +375,6 @@ maxdeptherr (Maximum Depth Error)
    API version 1 (deprecated)
 
       PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?maxdeptherr=<value>
-
-The same parameters are also available over the GenICam interface with
-slightly different names and partly with different data types (see
-
-GigE Vision 2.0/GenICam image interface
-
-).
 
 Status values
 

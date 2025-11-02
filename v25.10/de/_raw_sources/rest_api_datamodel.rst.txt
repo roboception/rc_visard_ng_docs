@@ -25,3 +25,7 @@ required attributes/parameters of the requests or as return types.
 .. only:: rc_cube
 
     .. include:: _gen/swagger/rc_cube/definitions.txt
+
+.. only:: rc_reason_stack
+
+    .. include:: _gen/swagger/rc_reason_stack/definitions.txt

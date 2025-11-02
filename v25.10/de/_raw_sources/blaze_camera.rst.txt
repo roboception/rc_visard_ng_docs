@@ -12,8 +12,7 @@ Parameters
 The camera module on a pipeline of type ``blaze`` is called ``rc_camera`` and is represented by the
 *Camera* page in the desired pipeline in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
 The user can change the camera parameters there, or directly via the |rest-api|
-(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`) or GigE Vision
-(:ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`).
 
 .. index::
    pair: parameters; blaze camera
@@ -23,6 +22,10 @@ Parameter overview
 
 .. include:: _gen/nodes/params/rc_camera_rc_cube_blaze.txt
 
+.. only:: rc_cube
+
+   These parameters are also available over the GenICam interface with slightly different names and partly with different units
+   or data types (see :ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
 
 Description of run-time parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -268,9 +271,6 @@ Via the |restapi|, this parameter can be set as follows.
       .. code-block:: bash
 
          PUT http://<host>/api/v1/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
-
-These parameters are also available over the GenICam interface with slightly different names and partly with different units
-or data types (see :ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
 
 
 .. _sect-blaze-camera-status-values:

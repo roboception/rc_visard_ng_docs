@@ -21,7 +21,7 @@ Introduction
 The |cadm| module is an optional module of the |rc_xxx| and requires a separate |cadm| :ref:`license<sect-updating-license>`
 :latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
 
-.. only:: rc_cube and (roboception or schunk or basler)
+.. only:: (rc_cube) and (roboception or schunk or basler)
 
    .. note:: This module is not available in camera pipelines of type ``blaze``.
 
@@ -34,12 +34,12 @@ For the |cadm| module to work, special object templates are required for each ty
 be detected. Please get in touch with the |manufacturer| support (:ref:`sect-contact`:latex:`,
 Section \ref{contact:sect-contact}`) to order a template for your CAD file.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
 
       This module is pipeline specific. Changes to its settings or parameters only affect
-      the respective camera pipeline and have no influence on other pipelines running on the |rc_cube|.
+      the respective camera pipeline and have no influence on other pipelines running on the |rc_xxx|.
 
       However, the object templates, grasp points and pose priors are stored globally. Setting, changing
       or deleting an object template, its grasps or pose priors affects all camera pipelines.
@@ -192,7 +192,7 @@ camera images. |cadm| also supports partial object templates, which contain only
 part of the object that can be detected well, e.g., in case of occlusions. 
 :cubeonly:`Furthermore, templates can require a pose prior for the detection which is then only refined using the image data.`
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    The object detection is a two-stage process consisting of a prior estimation step and a pose refinement step.
    First, a pose prior is computed based on the appearance
@@ -214,14 +214,14 @@ can be provided to the |cadm| module:
    - The IDs of the pose priors which approximately match the poses of the objects to be detected.
    - The coordinate frame in which the poses of the detected objects and the grasp points shall be returned (ref. :ref:`sect-cadmatch-hand-eye-dep`:latex:`, Section \ref{cadmatch:sect-cadmatch-hand-eye-dep}`).
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    - The template ID of the object to be detected in the scene
    - The coordinate frame in which the poses of the detected objects and the grasp points shall be returned (ref. :ref:`sect-cadmatch-hand-eye-dep`:latex:`, Section \ref{cadmatch:sect-cadmatch-hand-eye-dep}`).
 
 Optionally, further information can be given to the |cadm| module:
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
   
   - The IDs of the pose priors which approximately match the poses of the objects to be detected. In case a template is used that requires a pose prior, one or more pose prior IDs have to be provided.
 
@@ -273,7 +273,7 @@ are visualized with red edges in the result image and the overlapped area is mar
 that were filtered out due to low scores, overlaps or the maximum number of matches are visualized in the *Discarded Matches*
 image.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
  
    .. Note::
       The first detection call with a new object template takes longer than the following detection calls,
@@ -312,7 +312,7 @@ The |cadm| module makes internally use of the following data:
      or higher (see :ref:`sect-disp-image-parameters`:latex:`, Section \ref{stereo_matching:sect-disp-image-parameters}`). 
      We recommend ``Full`` or ``High`` quality for using |cadm|.
 
-.. only:: rc_cube and (roboception or basler or schunk)
+.. only:: (rc_cube or rc_reason_stack) and (roboception or basler or schunk)
 
    - Disparity, error, and confidence images from the :doc:`stereo_matching`
      (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`), in case a stereo camera is used.
@@ -320,12 +320,17 @@ The |cadm| module makes internally use of the following data:
      or higher (see :ref:`sect-disp-image-parameters`:latex:`, Section \ref{stereo_matching:sect-disp-image-parameters}`). 
      We recommend ``Full`` or ``High`` quality for using |cadm|.
 
-.. only:: rc_cube and (roboception or basler or schunk)
+.. only:: (rc_cube) and (roboception or basler or schunk)
 
    - Disparity, error, and confidence images from the :doc:`blaze`
      (``rc_blaze``:latex:`, Section \ref{blaze:sect-blaze}`), in case a Basler |blaze| camera is used
 
-.. only:: rc_cube and roboception
+.. only:: (rc_cube or rc_reason_stack) and (roboception or matrixvision or schunk)
+
+   - Disparity, error, and confidence images from the :doc:`orbbec`
+     (``rc_orbbec``:latex:`, Section \ref{orbbec:sect-orbbec}`), in case an |orbbec| camera is used
+     
+.. only:: (rc_cube or rc_reason_stack) and roboception
 
    - Disparity, error, and confidence images from the :doc:`zivid`
      (``rc_zivid``:latex:`, Section \ref{zivid:sect-zivid}`), in case a |zivid| camera is used
@@ -470,7 +475,7 @@ module's run-time parameters, e.g. for development and testing, using the |webgu
 Parameter overview
 ^^^^^^^^^^^^^^^^^^
 
-.. only:: rc_cube
+.. only:: (rc_cube or rc_reason_stack)
    
    .. include:: _gen/nodes/params/rc_cadmatch_rc_cube.txt
 
@@ -597,7 +602,7 @@ listed in the order they appear in the |webgui|:
 
             PUT http://<host>/api/v1/nodes/rc_cadmatch/parameters?grasp_filter_orientation_threshold=<value>
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. _expl-cadmatch-prior_selection_mode:
 
@@ -854,7 +859,7 @@ The |cadm| modules offer the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/detect_object
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -884,7 +889,7 @@ The |cadm| modules offer the following services.
 
                ``robot_pose``: see :ref:`sect-cadmatch-hand-eye-dep`:latex:`\:(Section \ref{cadmatch:sect-cadmatch-hand-eye-dep})`.
 
-               .. only:: rc_cube
+               .. only:: rc_cube or rc_reason_stack
 
                  ``pose_prior_ids``: IDs of the pose priors for the items to be detected. In case the chosen template requires a pose prior for the detection, this argument must be provided.
 
@@ -950,7 +955,7 @@ The |cadm| modules offer the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/set_preferred_orientation
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -996,7 +1001,7 @@ The |cadm| modules offer the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/get_preferred_orientation
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1042,7 +1047,7 @@ The |cadm| modules offer the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/set_sorting_strategies
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1098,7 +1103,7 @@ The |cadm| modules offer the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/get_sorting_strategies
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1122,7 +1127,7 @@ The |cadm| modules offer the following services.
 
             .. include:: _gen/nodes/services/rc_cadmatch_get_sorting_strategies_response.txt
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. _expl-cadmatch-srv-warmup-template:
 
@@ -1148,7 +1153,7 @@ The |cadm| modules offer the following services.
 
                      PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/warmup_template
 
-               .. only:: rc_cube
+               .. only:: rc_cube or rc_reason_stack
 
                   .. code-block:: bash
 
@@ -1198,7 +1203,7 @@ The |cadm| modules offer the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/start
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1246,7 +1251,7 @@ The |cadm| modules offer the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/stop
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1332,7 +1337,7 @@ The |cadm| modules offer the following services.
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/reset_defaults
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1362,7 +1367,7 @@ Internal services
 The following services for configuring grasps and pose priors can change in future without notice.
 Setting, retrieving and deleting grasps and pose priors is recommended to be done via the |webgui|.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
 
@@ -1392,7 +1397,7 @@ Setting, retrieving and deleting grasps and pose priors is recommended to be don
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/set_grasp
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1439,7 +1444,7 @@ Setting, retrieving and deleting grasps and pose priors is recommended to be don
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/set_all_grasps
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1487,7 +1492,7 @@ Setting, retrieving and deleting grasps and pose priors is recommended to be don
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/get_grasps
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1535,7 +1540,7 @@ Setting, retrieving and deleting grasps and pose priors is recommended to be don
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/delete_grasps
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1582,7 +1587,7 @@ Setting, retrieving and deleting grasps and pose priors is recommended to be don
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/get_symmetric_grasps
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1638,7 +1643,7 @@ Setting, retrieving and deleting grasps and pose priors is recommended to be don
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/set_pose_prior
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1685,7 +1690,7 @@ Setting, retrieving and deleting grasps and pose priors is recommended to be don
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/set_all_pose_priors
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1733,7 +1738,7 @@ Setting, retrieving and deleting grasps and pose priors is recommended to be don
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/get_pose_priors
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1781,7 +1786,7 @@ Setting, retrieving and deleting grasps and pose priors is recommended to be don
 
                   PUT http://<host>/api/v2/pipelines/0/nodes/rc_cadmatch/services/delete_pose_priors
 
-            .. only:: rc_cube
+            .. only:: rc_cube or rc_reason_stack
 
                .. code-block:: bash
 
@@ -1870,6 +1875,10 @@ Up to 50 templates can be stored persistently on the |rc_xxx|.
 .. only:: rc_cube
 
    .. include:: _gen/swagger/rc_cube/templates_rc_cadmatch.txt
+
+.. only:: rc_reason_stack
+
+   .. include:: _gen/swagger/rc_reason_stack/templates_rc_cadmatch.txt
 
 .. only:: rc_visard_ng
 

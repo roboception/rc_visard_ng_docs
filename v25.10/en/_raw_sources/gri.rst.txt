@@ -726,3 +726,7 @@ The job definitions and the definitions of HEC_configs for hand-eye calibration 
 .. only:: rc_cube
 
    .. include:: _gen/swagger/rc_cube/generic_robot_interface.txt
+
+.. only:: rc_reason_stack
+
+   .. include:: _gen/swagger/rc_reason_stack/generic_robot_interface.txt

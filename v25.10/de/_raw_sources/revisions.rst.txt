@@ -179,8 +179,8 @@ To prevent damage to the equipment and ensure the user's safety, this manual ind
    :hidden:
 
    general
-   warranty
-   standards
-   :rc_cube_exclude:disposal
-   glossary
+   :rc_container_exclude:warranty
+   :rc_container_exclude:standards
+   :rc_cube_container_exclude:disposal
+   :rc_container_exclude:glossary
 

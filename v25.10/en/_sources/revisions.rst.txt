@@ -8,7 +8,7 @@ revision information.
 
 DOCUMENTATION REVISION
 
-  25.10.1  Oct 28, 2025
+  25.10.2  Nov 02, 2025
 
 Applicable to
 

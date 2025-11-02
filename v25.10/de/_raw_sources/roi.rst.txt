@@ -12,7 +12,7 @@ RoiDB
    single: ItemPick; region of interest
    single: SilhouetteMatch; region of interest
 
-.. only:: rc_cube or rc_visard_ng
+.. only:: rc_cube or rc_visard_ng or rc_reason_stack
 
    .. index::
       single: CADMatch; region of interest
@@ -30,12 +30,12 @@ The RoiDB module (region of interest database module) allows the global definiti
 which can then be used in many detection modules. The ROIs are available for all
 modules supporting 2D or 3D ROIs on the |rc_xxx|.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
    
-      This module is global on the |rc_cube|. Changes to its settings or parameters affect
-      every camera pipeline running on the |rc_cube|.
+      This module is global on the |rc_xxx|. Changes to its settings or parameters affect
+      every camera pipeline running on the |rc_xxx|.
 
 The RoiDB module is a base module which is available on every |rc_xxx|.
 

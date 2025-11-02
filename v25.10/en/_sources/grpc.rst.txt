@@ -174,10 +174,67 @@ gRPC service definition
 
 Image stream conversions
 
-The conversion of disparity images into a point cloud can be done as
-described in the
+The disparity image contains 16 bit unsigned integer values. These
+values must be multiplied by the "scale" value given in the
+"DisparityImage" message to get the disparity values d in pixels. To
+compute the 3D object coordinates from the disparity values, the
+baseline and the focal length as well as the principal point are
+required. These parameters are transmitted as "baseline" = t in the
+"DisparityImage" message, and "focal_length" = f, "principal_point_u"
+= c_x and "principal_point_v" = c_y in the "ImageData" message. The
+focal length and principal point depend on the resolution of the
+camera image and need to be scaled to the resolution of the disparity
+image. Knowing these values, the pixel coordinates and the disparities
+can be transformed into 3D object coordinates in the camera coordinate
+frame using the equations described in
 
-GigE Vision / GenICam interface
+Computing depth images and point clouds
+
+.
+
+Note: The
+
+  rc_visard NG
+
+  's camera coordinate frame is defined as shown in
+
+  sensor coordinate frame
+
+  .
+
+Assuming that d16_{ik} is the 16 bit disparity value at column i and
+row k of a disparity image, the float disparity in pixels d_{ik} is
+given by
+
+   d_{ik}=d16_{ik} \cdot \mathrm{scale}
+
+The 3D reconstruction in meters can be written as:
+
+   P_x&=\left(i+0.5-c_x\right) \frac{t}{d_{ik}},\\
+   P_y&=\left(k+0.5-c_y\right) \frac{t}{d_{ik}},\\ P_z&=f
+   \frac{t}{d_{ik}}.
+
+The confidence image contains 8 bit unsigned integer values. These
+values have to be divided by 255 to get the confidence as value
+between 0 an 1.
+
+The error image contains 8 bit unsigned integer values. The error
+e_{ik} must be multiplied by the "scale" value given in the
+"DisparityImage" message to get the disparity-error values d_{eps} in
+pixels. According to the description in
+
+Confidence and error images
+
+, the depth error z_{eps} in meters can be computed as
+
+   d_{ik}&=d16_{ik} \cdot \mathrm{scale},\\ z_{eps}&=\frac{e_{ik}
+   \cdot \mathrm{scale} \cdot f               \cdot t}
+   {(d_{ik})^2}.
+
+For more information about disparity, error, and confidence images,
+please refer to
+
+Stereo matching module
 
 .
 

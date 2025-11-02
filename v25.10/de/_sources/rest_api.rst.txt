@@ -1,15 +1,11 @@
 REST-API-Schnittstelle
 
-Neben der
-
-GenICam-Schnittstelle
-
- bietet der
+Der
 
 rc_visard NG
 
- eine umfassende RESTful-Web-Schnittstelle (REST-API), auf die jeder
-HTTP-Client und jede HTTP-Bibliothek zugreifen kann. Während die
+ bietet eine umfassende RESTful-Web-Schnittstelle (REST-API), auf die
+jeder HTTP-Client und jede HTTP-Bibliothek zugreifen kann. Während die
 meisten Parameter, Services und Funktionen auch über die
 benutzerfreundliche
 

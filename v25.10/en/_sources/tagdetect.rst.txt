@@ -469,16 +469,12 @@ detect
       rc_visard NG
 
        there might occur jumps of timestamps, forward as well as
-      backward (see
-
-      Time synchronization
-
-      ). Forward jumps do not have an effect on the TagDetect module.
-      Backward jumps, however, invalidate already received images.
-      Therefore, in case a backwards time jump is detected, an error
-      of value -102 will be issued on the next "detect" call, also to
-      inform the user that the timestamps included in the response
-      will jump back. This service can be called as follows.
+      backward. Forward jumps do not have an effect on the TagDetect
+      module. Backward jumps, however, invalidate already received
+      images. Therefore, in case a backwards time jump is detected, an
+      error of value -102 will be issued on the next "detect" call,
+      also to inform the user that the timestamps included in the
+      response will jump back. This service can be called as follows.
 
       API version 2
 

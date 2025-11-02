@@ -15,3 +15,7 @@ The following list includes all |restapi| requests regarding the camera pipeline
 .. only:: rc_cube
 
    .. include:: _gen/swagger/rc_cube/pipelines.txt
+
+.. only:: rc_reason_stack
+
+   .. include:: _gen/swagger/rc_reason_stack/pipelines.txt

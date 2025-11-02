@@ -5,15 +5,16 @@
 Software modules
 ================
 
-The |rc_xxx| comes with several on-board software modules, each of which
+The |rc_xxx| comes with several software modules, each of which
 corresponds to a certain functionality and can be interfaced via its respective
-*node* in the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+*node* in the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or in the
+:doc:`gri`:latex:`\:(Section \ref{gri:sect-gri})`.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. index:: ! Camera pipelines
 
-   The |rc_cube| offers the possibility to connect multiple 3D cameras such as the
+   The |rc_xxx| offers the possibility to connect multiple 3D cameras such as the
    |rc_visard|. The image data from each device is processed in a separate *camera pipeline*,
    which consists of several different software modules. The modules inside each pipeline are pipeline specific,
    which means that they can have different parameters for each pipeline. The modules running outside the 
@@ -33,27 +34,33 @@ corresponds to a certain functionality and can be interfaced via its respective
 
    The |rc_xxx|'s software modules can be divided into
 
-- :doc:`camera`:latex:`\:(Section \ref{camera:sect-camera})`
-   acquires images and performs planar rectification for using the
-   camera as a measurement device.
-   Images are provided both for further internal processing by other modules
-   and for external use as :ref:`GenICam image streams <sect-genicam>`.
-   :cubeonly:`Depending on the chosen camera pipeline type, this module offers different run-time parameters.`
 
+.. only:: rc_visard or rc_visard_ng or rc_cube
 
-.. only:: rc_cube
+   - :doc:`camera`:latex:`\:(Section \ref{camera:sect-camera})`
+      acquires images and performs planar rectification for using the
+      camera as a measurement device.
+      Images are provided both for further internal processing by other modules
+      and for external use as :ref:`GenICam image streams <sect-genicam>`.
+      :cubeonly:`Depending on the chosen camera pipeline type, this module offers different run-time parameters.`
+
+.. only:: rc_reason_stack
+
+   - :doc:`camera`:latex:`\:(Section \ref{camera:sect-camera})`
+      acquires images and performs planar rectification for using the
+      camera as a measurement device. Depending on the chosen camera pipeline type, this module offers different run-time parameters.
+
+.. only:: rc_cube or rc_reason_stack
 
    - :doc:`camera_modules`:latex:`\:(Section \ref{camera_modules:sect-3d-camera-modules})`
       which provide 3D depth information such as disparity,
-      error, and confidence images, and are also accessible via the |rc_xxx|'s
-      :doc:`GigE Vision/GenICam interface<gigevision>`,
+      error, and confidence images,
 
 .. only:: rc_visard
 
    - :doc:`stereo_matching`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`
       which provides 3D depth information such as disparity,
-      error, and confidence images, and is also accessible via the |rc_xxx|'s
-      :doc:`GigE Vision/GenICam interface<gigevision>`,
+      error, and confidence images,
 
    - :doc:`navigation_modules`:latex:`\:(Section \ref{navigation_modules:sect-navigation-modules})`
       which provide estimates of |rc_visard|'s current pose,
@@ -65,9 +72,9 @@ corresponds to a certain functionality and can be interfaced via its respective
 - :doc:`configuration_modules`:latex:`\:(Section \ref{configuration_modules:sect-configuration-modules})`
    which enable the user to perform calibrations and configure the |rc_xxx| for specific applications.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
-   The modules that are global for all camera pipelines running on the |rc_cube| are the
+   The modules that are global for all camera pipelines running on the |rc_xxx| are the
 
 - :doc:`database_modules`:latex:`\:(Section \ref{database_modules:sect-database-modules})`
    which enable the user to configure global data available to all other modules, such as load carriers, regions

@@ -21,12 +21,12 @@ for checking collisions with a load carrier or other detected objects
 (only in combination with |match_modules|). The specified grippers are available for all
 modules supporting collision checking on the |rc_xxx|.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
    
-      This module is global on the |rc_cube|. Changes to its settings or parameters affect
-      every camera pipeline running on the |rc_cube|.
+      This module is global on the |rc_xxx|. Changes to its settings or parameters affect
+      every camera pipeline running on the |rc_xxx|.
 
 .. tabularcolumns:: |l|L|
 .. _tab-gripperdb-spec:
@@ -329,3 +329,7 @@ The maximum file size to be uploaded is limited to :visardonly:`10` :cubeonly:`3
 .. only:: rc_cube
 
    .. include:: _gen/swagger/rc_cube/cad.txt
+
+.. only:: rc_reason_stack
+
+   .. include:: _gen/swagger/rc_reason_stack/cad.txt

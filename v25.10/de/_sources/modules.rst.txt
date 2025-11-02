@@ -4,17 +4,20 @@ Der
 
 rc_visard NG
 
- wird mit einer Reihe von On-Board-Softwaremodulen mit verschiedenen
-Funktionalitäten ausgeliefert. Jedes Softwaremodul bietet über seinen
-zugehörigen
+ beinhaltet eine Reihe von Softwaremodulen mit verschiedenen
+Funktionalitäten. Jedes Softwaremodul bietet über seine zugehörige
 
 Node
 
- eine
+ eine Schnittstelle über
 
 REST-API-Schnittstelle
 
- als Programmierschnittstelle an.
+ oder das
+
+Generic Robot Interface
+
+ an.
 
 Die Softwaremodule des
 

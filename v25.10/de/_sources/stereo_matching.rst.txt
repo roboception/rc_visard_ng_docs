@@ -34,10 +34,6 @@ entweder dort oder über die REST-API (
 
 REST-API-Schnittstelle
 
-) oder über GigE Vision (
-
-GigE Vision 2.0/GenICam-Schnittstelle
-
 ) ändern.
 
 Übersicht über die Parameter
@@ -63,6 +59,14 @@ gültigen Disparitätssegmente in Pixeln  smooth  bool  false  true
 true  Glättung von Disparitätsbildern (benötigt eine
 'StereoPlus'-Lizenz)  static_scene  bool  false  true  false  Mitteln
 von Bildern in statischen Szenen, um Rauschen zu reduzieren
+
+Diese Parameter sind – mit leicht abweichenden Namen und teilweise mit
+anderen Einheiten oder Datentypen – auch über die GenICam-
+Schnittstelle verfügbar (siehe
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+).
 
 Beschreibung der Laufzeitparameter
 
@@ -407,14 +411,6 @@ maxdeptherr (Maximaler Fehler)
    API Version 1 (veraltet)
 
       PUT http://<host>/api/v1/nodes/rc_stereomatching/parameters?maxdeptherr=<value>
-
-Die gleichen Parameter sind – mit leicht abweichenden Namen und
-teilweise mit anderen Einheiten oder Datentypen – auch über die
-GenICam-Schnittstelle verfügbar (siehe
-
-GigE Vision 2.0/GenICam-Schnittstelle
-
-).
 
 Statuswerte
 

@@ -29,10 +29,11 @@ Programmierschnittstelle die
 
 aktuelle Version der Schnittstelle als Postfix angehangen
 
-, d.h. "http://<host>/api/v2". Alle Daten, die an die REST-API gesandt
-und von ihr empfangen werden, entsprechen dem JSON-Datenformat
-(JavaScript Object Notation). Die Programmierschnittstelle ist so
-gestaltet, dass der Benutzer die in
+, d.h. "http://<host>/api/v2".
+
+Alle Daten, die an die REST-API gesandt und von ihr empfangen werden,
+entsprechen dem JSON-Datenformat (JavaScript Object Notation). Die
+Programmierschnittstelle ist so gestaltet, dass der Benutzer die in
 
 Verfügbare Ressourcen und Anfragen
 
@@ -162,16 +163,18 @@ ihren Laufzeitzuständen, Parametern und angebotenen Services, um Daten
 zu speichern, die in  mehreren Modulen genutzt werden, z.B. Load
 Carrier, Greifer und Regions of Interest.
 
-/pipelines  Zugriff auf den Status und die Konfiguration der
-Kamerapipelines. Es gibt immer nur eine Pipeline mit der Nummer 0.
-
 /pipelines/0/nodes  Zugriff auf die 3D-Kamera-, Navigations-,
 Detektions- und Konfigurations-Softwaremodule \:(Abschnitt
 \ref{modules:sect-modules}) des rc_visard NG mit ihren jeweiligen
 Laufzeitzuständen, Parametern und verfügbaren Services.
 
+/pipelines  Zugriff auf den Status und die Konfiguration der
+Kamerapipelines. Es gibt immer nur eine Pipeline mit der Nummer 0.
+
 /templates  Zugriff auf die im rc_visard NG hinterlegten
 Objekttemplates.
+
+/cad  Zugriff auf die CAD-Elemente, z.B. für Greifer, im rc_visard NG.
 
 /system  Zugriff auf Systemzustand, Netzwerkkonfiguration,  und
 Verwaltung der Lizenzen sowie der Firmware-Updates.
@@ -179,4 +182,8 @@ Verwaltung der Lizenzen sowie der Firmware-Updates.
 /userspace  Zugriff auf den UserSpace des rc_visard NG.
 
 /logs  Zugriff auf die im rc_visard NG hinterlegten Logdateien.
+
+/generic_robot_interface  Zugriff auf die Jobs und Hand-Auge-
+Kalibrierkonfigurationen für das Generic Robot Interface auf dem
+rc_visard NG.
 

@@ -18,7 +18,7 @@ To browse the OPC UA Address Space use e.g. the freely available `UAExpert GUI c
 The OPC UA server uses the ``DataTypeDefinition`` attribute (available in OPC UA version 1.04) for custom datatypes and also uses methods and variable length arrays.
 Please check if your OPC UA client supports this.
 
-.. only:: rc_cube
+.. only:: rc_cube or rc_reason_stack
 
    .. note::
 

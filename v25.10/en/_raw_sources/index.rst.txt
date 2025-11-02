@@ -14,15 +14,16 @@
 
    revisions
    safety
-   :rc_cube_exclude:hardware_spec
-   installation
+   :rc_cube_container_exclude:hardware_spec
+   :rc_container_exclude:installation
+   :rc_container_only:installation_stack
    concepts
    :rc_cube_only:pipelines
    modules
    interfaces
-   :rc_visard_exclude:userspace
+   :rc_visard_container_exclude:userspace
    maintenance
-   :rc_cube_exclude:accessories
+   :rc_cube_container_exclude:accessories
    troubleshooting
    contact
    appendix

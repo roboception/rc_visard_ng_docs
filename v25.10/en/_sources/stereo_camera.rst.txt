@@ -15,10 +15,6 @@ REST-API (
 
 REST-API interface
 
-) or GigE Vision (
-
-GigE Vision 2.0/GenICam image interface
-
 ).
 
 Parameter overview
@@ -53,6 +49,14 @@ camera)  wb_ratio_blue  float64  1.0  1.0  1.0  Blue to green balance
 ratio if wb_auto is false (only for color camera)  wb_ratio_red
 float64  1.0  1.0  1.0  Red to green balance ratio if wb_auto is false
 (only for color camera)
+
+These parameters are also available over the GenICam interface with
+slightly different names and partly with different units or data types
+(see
+
+GigE Vision 2.0/GenICam image interface
+
+).
 
 Description of run-time parameters
 
@@ -149,8 +153,8 @@ fps (FPS (Hz))
    mode to ensure proper working of internal modules such as visual
    odometry that need a constant frame rate. The user frame rate
    setting is implemented by excluding frames for stereo matching and
-   transmission via GigE Vision to reduce bandwidth as shown in figure
-   "fig-fps-ng".
+   transmission via GigE Vision to reduce bandwidth as shown in the
+   following figure.
 
 
 gamma (Gamma)
@@ -413,20 +417,12 @@ API version 1 (deprecated)
 
    PUT http://<host>/api/v1/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
 
-These parameters are also available over the GenICam interface with
-slightly different names and partly with different units or data types
-(see
-
-GigE Vision 2.0/GenICam image interface
-
-).
-
 Status values
 
 This module reports the following status values:
 
 The rc_camera module's status values      Name  Description  baseline
-Stereo baseline t in meters  brightness   Current brightness of the
+Stereo baseline t in meters  brightness  Current brightness of the
 image as value between 0 and 1  color  0 for monochrome cameras, 1 for
 color cameras  device_trigger_sources  Gives the available trigger
 sources  exp  Current exposure time in seconds. This value is shown
@@ -439,7 +435,7 @@ Gain (dB).  gamma  Current gamma value.  height  Height of the camera
 image in pixels. This value is shown in the Web GUI below the image
 preview as the second part of Resolution (px).  last_timestamp_grabbed
 Timestamp of the last image acquired in case the camera is in trigger
-mode  out1_reduction   Fraction of reduction (0.0 - 1.0) of brightness
+mode  out1_reduction  Fraction of reduction (0.0 - 1.0) of brightness
 for images with GPIO Out1=LOW in exp_auto_mode=AdaptiveOut1 or
 exp_auto_mode=Out1High. This value is shown in the Web GUI below the
 image preview as Out1 Reduction (%).  params_override_active  1 if

@@ -5,7 +5,7 @@ Introduction
 The Measure module allows measuring of depth values in a specific
 region of interest.
 
-The Measure module is an on-board module of the
+The Measure module is a base module which is available on every
 
 rc_visard NG
 

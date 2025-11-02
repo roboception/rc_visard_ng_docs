@@ -35,6 +35,7 @@ Installation
    .. note:: If a screen is used on the |rc_cube|, it must be connected before booting,
             or the |rc_cube| must be restarted to activate the screen.
 
+
 Software license
 ----------------
 

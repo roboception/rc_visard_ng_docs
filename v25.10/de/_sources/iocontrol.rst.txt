@@ -1,27 +1,20 @@
 IOControl und Projektor-Kontrolle
 
-Das IOControl Modul ist ein Modul, welches intern auf dem
+Das IOControl Modul ist ein Basismodul, welches auf jedem
 
-rc_visard
+rc_visard NG
 
  läuft.
 
 Das IOControl-Modul ermöglicht das Lesen der digitalen Eingänge und
-die Kontrolle der digitalen Ausgänge (GPIOs) des
-
-rc_visard
-
-. Die Ausgänge können auf *aus* (LOW) oder *an* (HIGH) gesetzt werden.
-Sie können auch so konfiguriert werden, dass sie genau für die
-Belichtungszeit jedes Bildes, oder auch nur jedes zweiten Bildes, *an*
-sind.
+die Kontrolle der digitalen Ausgänge (GPIOs) der Kamera. Die Ausgänge
+können auf *aus* (LOW) oder *an* (HIGH) gesetzt werden. Sie können
+auch so konfiguriert werden, dass sie genau für die Belichtungszeit
+jedes Bildes, oder auch nur jedes zweiten Bildes, *an* sind.
 
 Das IOControl-Modul dient der Ansteuerung einer externen Lichtquelle
-oder eines Projektors, der an einen der GPIO-Ausgänge des
-
-rc_visard
-
- angeschlossen wird, und der mit der Bildaufnahme synchronisiert ist.
+oder eines Projektors, der an einen der GPIO-Ausgänge der Kamera
+angeschlossen wird, und der mit der Bildaufnahme synchronisiert ist.
 Für den Fall, dass ein Musterprojektor für die Verbesserung des
 Stereo-Matchings verwendet wird, ist das projizierte Muster auch in
 den Intensitätsbildern sichtbar. Das kann für Bildverarbeitungs-
@@ -48,8 +41,9 @@ und in der
 
 Web GUI
 
-  unter Konfiguration ‣ IOControl dargestellt. Der Benutzer kann die
-Parameter über die Web GUI, die REST-API (
+  unter Konfiguration ‣ IOControl dargestellt.
+
+Der Benutzer kann die Parameter über die Web GUI, die REST-API (
 
 REST-API-Schnittstelle
 
@@ -108,11 +102,8 @@ benutzerdefinierten Bildwiederholrate von 8 Hz benutzt werden.
 
 
 Die Betriebsart "ExposureAlternateActive" ist gedacht, um einen
-externen Musterprojektor anzusteuern, der am GPIO-Ausgang 1 des
-
-rc_visard
-
- angeschlossen ist. In diesem Fall nutzt das
+externen Musterprojektor anzusteuern, der am GPIO-Ausgang 1 der Kamera
+angeschlossen ist. In diesem Fall nutzt das
 
 Stereo-Matching-Modul
 
@@ -167,11 +158,7 @@ Dieses Softwaremodul bietet folgende Services.
 get_io_values
 
    Mit diesem Aufruf kann der aktuelle Zustand der Ein- und Ausgänge
-   (GPIOs) des
-
-   rc_visard
-
-    abgefragt werden.
+   (GPIOs) der Kamera abgefragt werden.
 
    Details
 

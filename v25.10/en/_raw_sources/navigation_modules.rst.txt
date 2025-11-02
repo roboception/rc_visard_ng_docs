@@ -34,8 +34,8 @@ The |rc_xxx|'s navigation modules contain:
    :maxdepth: 2
    :hidden:
 
-   :rc_cube_exclude:dynamics
-   :rc_cube_exclude:stereo_visodo
-   :rc_cube_exclude:stereo_ins
-   :rc_cube_exclude:slam
+   :rc_cube_container_exclude:dynamics
+   :rc_cube_container_exclude:stereo_visodo
+   :rc_cube_container_exclude:stereo_ins
+   :rc_cube_container_exclude:slam
 
