@@ -1,0 +1,98 @@
+.. include:: global_rst.glb
+
+.. _sect-safety:
+
+Safety
+======
+
+.. Warning:: The operator must have read and understood all of the instructions in this
+   manual before handling the |rc_xxx| product.
+
+.. only:: rc_cube or rc_reason_stack
+
+    .. Warning:: If operating the |rc_xxx| with |rc_visard| product(s),
+        the operator must have read and understood all of the safety, installation,
+        and maintenance instructions given in the |rc_visard| manual.
+
+.. Note:: The term "operator" refers to anyone responsible for any of the following tasks
+   performed in conjunction with |rc_xxx|:
+
+    * Installation
+    * Maintenance
+    * Inspection
+    * Calibration
+    * Programming
+    * Decommissioning
+
+This manual explains the |rc_xxx|'s various components and general operations regarding the
+product's whole life-cycle, from installation through operation to decommissioning.
+
+The drawings and photos in this documentation are representative examples; differences may exist
+between them and the delivered product.
+
+General warnings
+----------------
+
+.. Note:: Any use of the |rc_xxx| in noncompliance with these warnings is inappropriate and
+   may cause injury or damage as well as void the warranty.
+
+.. only:: rc_visard or rc_visard_ng
+
+    .. Warning::
+        * The |rc_xxx| needs to be properly mounted before use.
+        * All cable sets need to be secured to the |rc_xxx| and the mount.
+        * Cords must be at most 30 m long.
+        * An appropriate DC power source must supply power to the |rc_xxx|.
+        * Each |rc_xxx| must be connected to a separate power supply.
+        * The |rc_xxx|'s housing must be grounded.
+        * The |rc_xxx|'s and any related equipment's safety guidelines must always be satisfied.
+        * The |rc_xxx| does not fall under the purview of the machinery, low voltage, or medical directives.
+
+.. only:: rc_cube
+
+    .. Warning::
+        * The |rc_xxx|'s and any related equipment's safety guidelines must always be satisfied.
+        * The |rc_xxx| does not fall under the purview of the machinery or medical directives.
+
+.. only:: rc_visard or rc_visard_ng
+
+    .. rubric:: Risk assessment and final application:
+
+    The |rc_xxx| may be used on a robot. Robot, |rc_xxx|, and any other equipment used in the final
+    application must be evaluated with a risk assessment. The system integrator's duty is to
+    ensure respect for all local safety measures and regulations. Depending on the application,
+    there may be risks that need additional protection/safety measures.
+
+Intended use
+------------
+
+.. only:: rc_visard or rc_visard_ng
+
+    The |rc_xxx| is intended for data acquisition (e.g., images, :visardonly:`egomotion and` disparity images)
+    in stationary and mobile robotic applications. The |rc_xxx| is intended for installation on a
+    robot, automated machinery, mobile platform, or stationary equipment. It can also be used for data
+    acquisition in other applications.
+
+.. only:: rc_cube
+
+    The |rc_cube| is intended to be used in combination with a 3D camera for data
+    acquisition (e.g., stereo images). It is furthermore intended to process that data using
+    3D-image processing algorithms to serve in applications such as object detection or robotic pick-and-place.
+
+    .. Warning:: The |rc_cube| is only intended for stationary installation.
+
+.. Warning:: The |rc_xxx| is **NOT** intended for safety critical applications.
+
+The GigE Vision\ |reg| industry standard used by the |rc_xxx| does not support authentication and encryption.
+All data from and to the device is transmitted without authentication and encryption and could be
+monitored or manipulated by a third party. It is the operator's responsibility to connect the
+|rc_xxx| only to a secured internal network.
+
+.. Warning:: The |rc_xxx| must be connected to secured internal networks.
+
+The |rc_xxx| may be used only within the scope of its technical specification. Any other use of the
+product is deemed unintended use. |company| will not be liable for any damages resulting from any
+improper or unintended use.
+
+.. Warning:: Always comply with local and/or national laws, regulations and directives on automation
+   safety and general machine safety.

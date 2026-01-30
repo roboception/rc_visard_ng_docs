@@ -1,0 +1,265 @@
+Pipeline type orbbec
+
+Note: The firmware version of the connected
+
+  Orbbec
+
+   camera must be at least 1.6.00, otherwise the
+
+  Orbbec
+
+   cannot be used.
+
+Parameters
+
+The camera module on a pipeline of type "orbbec" is called "rc_camera"
+and is represented by the
+
+Camera
+
+ page in the desired pipeline in the
+
+Web GUI
+
+. The user can change the camera parameters there, or directly via the
+REST-API (
+
+REST-API interface
+
+).
+
+Parameter overview
+
+This module offers the following run-time parameters:
+
+The rc_camera module's run-time parameters on a pipeline of type
+orbbec              Name  Type  Min  Max  Default  Description
+exp_control  string  -  -  Auto  Exposure control mode: [Manual, Auto]
+exp_height  int32  0  799  0  Height of auto exposure region. 0 for
+whole image.  exp_max  float64  1.0  1999.0  665.0  Maximum exposure
+time in seconds in Auto exposure mode  exp_offset_x  int32  0  1279  0
+First column of auto exposure region  exp_offset_y  int32  0  799  0
+First row of auto exposure region  exp_value  float64  1.0  1999.0
+156.0  Exposure time in seconds in Manual exposure mode  exp_width
+int32  0  1279  0  Width of auto exposure region. 0 for whole image.
+gain_value  float64  0.0  128.0  16.0  Gain value in decibel if not in
+Auto exposure mode  gamma  float64  100.0  500.0  300.0  Gamma factor
+wb_auto  bool  false  true  true  Switching white balance on and off
+wb_value  float64  2800.0  6500.0  4600.0  White balance value
+
+Description of run-time parameters
+
+Each run-time parameter is represented by a row on the Web GUI's
+
+Camera
+
+ page. The name in the Web GUI is given in brackets behind the
+parameter name and the parameters are listed in the order they appear
+in the Web GUI.
+
+gamma (Gamma)
+
+   The gamma value determines the mapping of perceived light to the
+   brightness of a pixel. Lower gamma values let dark image parts
+   appear brighter.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gamma=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?gamma=<value>
+
+exp_control (Exposure Auto or Manual)
+
+   The exposure control mode can be set to *Auto* or *Manual*.
+
+   *Auto*: This is the default mode in which the exposure time and
+   gain factor is chosen automatically to correctly expose the image.
+   The last automatically determined exposure and gain values are set
+   into "exp_value" and "gain_value" when switching auto-exposure off.
+
+   *Manual*: In the manual exposure mode the exposure time and gain
+   are kept fixed independent of the resulting image brightness.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_control=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_control=<value>
+
+exp_max (Max Exposure)
+
+   This value is the maximal exposure in auto-exposure mode in
+   seconds. The actual exposure time is adjusted automatically so that
+   the images are exposed correctly. If the maximum exposure is
+   reached, but the images are still underexposed, the gain is
+   stepwise increased to increase the image brightness. Limiting the
+   exposure is useful for avoiding or reducing motion blur during fast
+   movements. However, higher gain introduces noise into the image.
+   The best trade-off depends on the application.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_max=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_max=<value>
+
+exp_offset_x, exp_offset_y, exp_width, exp_height (Exposure Region)
+
+   These values define a rectangular region in the left rectified
+   image for limiting the area used for computing the auto exposure.
+   The exposure time and gain factor of both images are chosen to
+   optimally expose the defined region. This can lead to over- or
+   underexposure of image parts outside the defined region. If either
+   the width or height is 0, then the whole left and right images are
+   considered by the auto exposure function. This is the default.
+
+   The region is visualized in the Web GUI by a rectangle in the left
+   rectified image. It can be defined using the sliders or by
+   selecting it in the image after pressing the button "Select Region
+   in Image".
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+exp_value (Exposure)
+
+      This value is the exposure in manual exposure mode. This
+      exposure is kept constant even if the images are underexposed.
+
+      Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_value=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_value=<value>
+
+gain_value (Gain)
+
+   This value is the gain factor that can be set in manual exposure
+   mode. Higher gain factors reduce the required exposure time but
+   introduce noise.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gain_value=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?gain_value=<value>
+
+wb_auto (White Balance Auto or Manual)
+
+   This value can be set to *true* for automatic white balancing or
+   *false* for manually setting the white balance using "wb_value".
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?wb_auto=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/parameters?wb_auto=<value>
+
+wb_value (White Balance Manual Value)
+
+This value determines the white balance when "wb_auto" is *false*.
+
+Via the REST-API, this parameter can be set as follows.
+
+API version 2
+
+   PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+API version 1 (deprecated)
+
+   PUT http://<host>/api/v1/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+Status values
+
+The "rc_camera" module of an "orbbec" pipeline reports the following
+status values:
+
+The rc_camera module's status values      Name  Description  baseline
+Internally assumed stereo baseline t in meters for disparity image
+computation  brightness  Current brightness of the image as value
+between 0 and 1  color  0 for monochrome cameras, 1 for color cameras
+exp  Current exposure. This value is shown below the image preview in
+the Web GUI as Exposure.  focal  Focal length factor normalized to an
+image width of 1  fps  Current frame rate of the camera images in
+Hertz. This value is shown in the Web GUI below the image preview as
+FPS (Hz).  gain  Current gain factor. This value is shown in the Web
+GUI below the image preview as Gain.  height  Height of the camera
+image in pixels. This value is shown in the Web GUI below the image
+preview as the second part of Resolution (px).  last_capture_ok  1 if
+the last image capture was successful  last_timestamp_grabbed
+Timestamp of the last image acquired  test  0 for live images and 1
+for test images  width  Width of the camera image in pixels. This
+value is shown in the Web GUI below the image preview as the first
+part of Resolution (px).
+
+Services
+
+In a pipeline of type "orbbec" the "rc_camera" module offers the
+following services.
+
+reset_defaults
+
+   Restores and applies the default values for this module's
+   parameters ("factory reset").
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/reset_defaults
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_camera/services/reset_defaults
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

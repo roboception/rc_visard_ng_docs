@@ -1,0 +1,41 @@
+.. include:: global_rst.glb
+
+.. _sect-navigation-modules:
+
+Navigation modules
+==================
+
+The |rc_xxx|'s navigation modules contain:
+
+- :doc:`dynamics` (``rc_dynamics``:latex:`, Section \ref{dynamics:sect-dynamics}`)
+   provides estimates of |rc_visard|'s dynamic state such as its pose,
+   velocity, and acceleration. These states are transmitted
+   as continuous data streams via the :doc:`rc_dynamics interface<rc_dynamics>`.
+   For this purpose, the dynamics module manages and fuses data from the following individual
+   subcomponents:
+
+   
+   - :doc:`stereo_visodo` (``rc_stereovisodo``:latex:`, Section \ref{stereo_visodo:sect-visual-odometry}`)
+      estimates the motion of the |rc_visard| device based on the motion of characteristic
+      visual features in the left camera images.
+
+   - :doc:`stereo_ins` (``rc_stereo_ins``:latex:`, Section \ref{stereo_ins:sect-stereo-ins}`)
+      combines visual odometry measurements with readings from the on-board
+      Inertial Measurement Unit (IMU) to provide
+      accurate and high-frequency state estimates in real time.
+
+   - :doc:`slam` (``rc_slam``:latex:`, Section \ref{slam:sect-slam}`)
+      performs simultaneous localization and mapping for correcting
+      accumulated poses. The |rcvisard|'s covered trajectory is offered via the
+      :ref:`sect-rest-api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+
+   :rc_cube_container_exclude:dynamics
+   :rc_cube_container_exclude:stereo_visodo
+   :rc_cube_container_exclude:stereo_ins
+   :rc_cube_container_exclude:slam
+

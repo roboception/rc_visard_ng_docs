@@ -1,0 +1,343 @@
+.. include:: global_rst.glb
+
+.. _sect-gripper-db:
+
+GripperDB
+=========
+
+.. index:: ! GripperDB
+   single: collision check
+
+Introduction
+------------
+
+The GripperDB module (gripper database module) is an optional on-board module of the |rcxxx| and is licensed with 
+any of the modules |pick_modules| or |match_modules|. 
+Otherwise it requires a separate CollisionCheck :ref:`license<sect-updating-license>`
+:latex:`(Section \ref{maintenance:sect-updating-license})` to be purchased.
+
+The module provides services to set, retrieve and delete grippers which can then be used
+for checking collisions with a load carrier or other detected objects 
+(only in combination with |match_modules|). The specified grippers are available for all
+modules supporting collision checking on the |rc_xxx|.
+
+.. only:: rc_cube or rc_reason_stack
+
+   .. note::
+   
+      This module is global on the |rc_xxx|. Changes to its settings or parameters affect
+      every camera pipeline running on the |rc_xxx|.
+
+.. tabularcolumns:: |l|L|
+.. _tab-gripperdb-spec:
+.. csv-table:: Specifications of the GripperDB module 
+
+    "Max. number of grippers",   "50"
+    "Supported gripper element geometries",   "Box, Cylinder, CAD Element"
+    "Max. number of elements per gripper",   "15"
+    "Collision checking available in",   "|pick_modules|, |match_modules|"
+    
+.. _sect-gripper-db-gripper:
+
+Setting a gripper
+------------------
+
+The gripper is a collision geometry used to determine whether the grasp is in collision with the load carrier.
+The gripper consists of up to 15 elements connected to each other.
+
+At this point, the gripper can be built of elements of the following types:
+
+ - ``BOX``, with dimensions ``box.x``, ``box.y``, ``box.z``.
+ - ``CYLINDER``, with radius ``cylinder.radius`` and height ``cylinder.height``.
+ - ``CAD``, with the id ``cad.id`` of the chosen CAD element.
+
+Each gripper element can be assigned one of the following ``function_type`` values:
+
+ - ``NONE``: default, same as empty. This element has no special function and will be considered during collision checking as modelled.
+ - ``FINGER``: This element is a movable finger or jaw and has a ``zero_pose`` in addition to its default ``pose``. It can move linearly from the zero pose towards the default pose by the stroke defined for each grasp.
+ - ``SUCTION_CUP``: This element is a deformable suction cup and will hence be ignored during collision checking. It serves purely for visualization.
+
+Additionally, for each gripper the flange radius, and information about the Tool Center Point (TCP) have to
+be defined.
+
+The configuration of the gripper is normally performed offline during the setup of the desired application.
+This can be done via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or the |rcxxx|
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+.. _sect-gripperdb-flange:
+
+Robot flange radius
+^^^^^^^^^^^^^^^^^^^
+
+Collisions are checked only with the gripper, the robot body is not considered.
+As a safety feature, to prevent collisions between the load carrier and the robot, all grasps having any part of the
+robot's flange inside the load carrier can be designated as colliding (see :numref:`fig-collision-check-gripper-flange-radius`).
+This check is based on the defined gripper geometry and the flange radius value. It is optional to use
+this functionality, and it can be turned on and off with the CollisionCheck module's run-time parameter ``check_flange`` as described
+in :ref:`sect-collisioncheck-parameters`:latex:`\:(Section \ref{collisioncheck:sect-collisioncheck-parameters})`.
+
+.. _fig-collision-check-gripper-flange-radius:
+.. figure:: images/check_flange.*
+   :width: 50%
+   :align: center
+
+   Case A would be marked as collision only if ``check_flange`` is true, because the robot's flange (red) is inside the 
+   load carrier. Case B is collision free independent of ``check_flange``.
+
+
+.. _sect-gripperdb-cad-elements:
+
+Uploading gripper CAD elements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A gripper can consist of boxes, cylinders and CAD elements. While boxes and cylinders can be parameterized when
+the gripper is created, the CAD elements must be uploaded beforehand to be available during gripper creation.
+A CAD element can be uploaded via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` as described
+in Section :ref:`sect-gripperdb-cad-element-upload`:latex:`\:(Section \ref{gripper_db:sect-gripperdb-cad-element-upload})`
+or via the |rcxxx| :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+Supported file formats are STEP (\*.stp, \*.step), STL (\*.stl), OBJ (\*.obj) and PLY (\*.ply). 
+The maximum file size to be uploaded is limited to :visardonly:`10` :ngonly:`30` :cubeonly:`30` MB.
+The files are internally converted to PLY and, if necessary, simplified. 
+The CAD elements can be referenced during gripper creation by their ID.
+
+.. _sect-gripperdb-gripper-creation:
+
+Creating a gripper via the |rest-api| or the |webgui|
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When creating a gripper via the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`,
+each element of the gripper has a `parent` element, which defines how they are connected.
+The gripper is always built in the direction from the robot flange to the TCP, and at least one element must
+have 'flange' as parent. The elements' IDs must be unique and must not be 'tcp' or 'flange'.
+The pose of the child element has to be given in the coordinate frame of the parent element.
+The coordinate frame of a ``CYLINDER`` or ``BOX`` element is always in its
+geometric center. Accordingly, for a child element to be exactly below the parent element, the position of
+the child element must be computed from the heights of both parent and child element
+(see :numref:`fig-collision-check-gripper-frames-restapi`).
+
+.. _fig-collision-check-gripper-frames-restapi:
+.. figure:: images/gripper_frames_restapi.*
+   :width: 50%
+   :align: center
+
+   Reference frames for gripper creation via the |rest-api| and the |webgui|
+
+In case a CAD element is used, the element's origin is defined in the CAD data and is not necessarily located
+in the center of the element's bounding box.
+
+It is recommended to create a gripper via the |webgui|, because it provides a 3D visualization of the
+gripper geometry and also allows to automatically attach the child element to the bottom of its parent element, when the
+corresponding option for this element is activated. In this case, the elements also stay attached when
+any of their sizes change. Automatic attachment of CAD elements uses the element's bounding box as reference.
+Automatic attachment is only possible when the child element is not rotated around the x or y axis with respect to its parent.
+
+The reference frame for the first element for the gripper creation is always the center of the robot's flange
+with the z axis pointing outwards. It is possible to create a gripper with a tree structure,
+corresponding to multiple elements having the same parent element, as long as they are all connected.
+
+Calculated TCP position
+^^^^^^^^^^^^^^^^^^^^^^^
+
+After gripper creation via the ``set_gripper`` service call, the TCP position in the flange coordinate
+system is calculated and returned as ``tcp_pose_flange``.
+It is important to check if this value is the same as the robot's true TCP position. When creating a 
+gripper in the |webgui| the current TCP position is always displayed in the 3D gripper visualization.
+
+Creating rotationally asymmetric grippers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For grippers which are not rotationally symmetric around the z axis, it is crucial to ensure that the gripper is properly mounted,
+so that the representation stored in the GripperDB module corresponds to reality.
+
+.. _sect-gripperdb-services:
+
+Services
+--------
+
+The GripperDB module is called ``rc_gripper_db`` in the |rest-api| and is represented in the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})` under 
+:menuselection:`Database --> Grippers`.
+The user can explore and call the GripperDB module's services,
+e.g. for development and testing, using the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |webgui|.
+
+The GripperDB module offers the following services.
+
+.. _expl-gripper-db-srv-set-gripper:
+
+``set_gripper``
+^^^^^^^^^^^^^^^
+
+   Persistently stores a gripper on the |rc_xxx|.
+   All configured grippers are persistent over firmware updates and rollbacks.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/nodes/rc_gripper_db/services/set_gripper
+
+      .. tabs::
+      
+         .. tab:: **Request**
+         
+            Required arguments:
+
+               ``elements``: list of geometric elements for the gripper.
+               Each element must be of ``type`` 'CYLINDER' or 'BOX' with the corresponding dimensions in
+               the ``cylinder`` or ``box`` field, or of type 'CAD' with the corresponding ``id`` in the ``cad`` field.
+               The pose of each element must be given in the coordinate frame
+               of the parent element (see :ref:`sect-gripper-db-gripper`:latex:`\:(Section \ref{gripper_db:sect-gripper-db-gripper})`
+               for an explanation of the coordinate frames). The element's ``id`` must be unique and must not be
+               'tcp' or 'flange'. The ``parent_id`` is the ID of the parent element. It can either be 'flange'
+               or it must correspond to another element in list. Each element can have a ``function_type`` which is either ``NONE``, ``FINGER`` or ``SUCTION_CUP``.
+               Elements of type ``FINGER`` additionally need a ``zero_pose`` whose orientation has to be the same as in the element's ``pose``. 
+               ``SUCTION_CUP`` elements cannot have child elements.
+
+               ``flange_radius``: radius of the flange used in case the ``check_flange`` run-time parameter is active.
+
+               ``id``: unique name of the gripper
+
+               ``tcp_parent_id``: ID of the element on which the TCP is defined
+
+               ``tcp_pose_parent``: The pose of the TCP with respect to the coordinate frame of the element specified in ``tcp_parent_id``.
+
+            .. include:: _gen/nodes/services/rc_collision_check_set_gripper_request.txt
+
+         .. tab:: **Response**
+
+            ``gripper``: returns the gripper as defined in the request with an additional field ``tcp_pose_flange``.
+            This gives the coordinates of the TCP in the flange coordinate frame for comparison with the true
+            settings of the robot's TCP.
+
+            ``return_code``: holds possible warnings or error codes and messages.
+
+            .. include:: _gen/nodes/services/rc_collision_check_set_gripper_response.txt
+
+.. _expl-gripper-db-srv-get-grippers:
+
+``get_grippers``
+^^^^^^^^^^^^^^^^
+
+   Returns the configured grippers with the requested ``gripper_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/nodes/rc_gripper_db/services/get_grippers
+
+      .. tabs::
+      
+         .. tab:: **Request**
+         
+            If no ``gripper_ids`` are provided, all configured grippers are returned.
+
+            .. include:: _gen/nodes/services/rc_collision_check_get_grippers_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_collision_check_get_grippers_response.txt
+
+.. _expl-gripper-db-srv-delete-grippers:
+
+``delete_grippers``
+^^^^^^^^^^^^^^^^^^^
+
+   Deletes the configured grippers with the requested ``gripper_ids``.
+
+   .. toggle-header::
+      :header: **Details**
+
+
+      This service can be called as follows.
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/nodes/rc_gripper_db/services/delete_grippers
+
+      .. tabs::
+      
+         .. tab:: **Request**
+
+            All grippers to be deleted must be explicitly stated in ``gripper_ids``.
+
+            .. include:: _gen/nodes/services/rc_collision_check_delete_grippers_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_collision_check_delete_grippers_response.txt
+
+
+.. _sect-gripper-db-return-codes:
+
+Return codes
+------------
+
+.. index::
+   pair: GripperDB; return codes
+
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common codes:
+
+.. tabularcolumns:: |c|L|
+.. _tab-gripperdb-return-codes:
+.. csv-table:: Return codes of the GripperDB services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+    "-7",   "Data could not be read or written to persistent storage"
+    "-9",   "No valid license for the module"
+    "-10",  "New gripper could not be added as the maximum storage capacity of grippers has been exceeded"
+    "10",  "The maximum storage capacity of grippers has been reached"
+    "11",  "Existing gripper was overwritten"
+
+.. _sect-gripperdb-cad-element-upload:
+
+CAD element API
+---------------
+
+.. index::
+  single: gripper CAD element api
+  single: gripper CAD element download
+  single: gripper CAD element upload
+  single: gripper CAD element deletion
+
+For gripper CAD element upload, download, listing and removal, special |rest-api| endpoints are provided.
+CAD elements can also be uploaded, downloaded and removed via the |webgui|.
+Up to 50 CAD elements can be stored persistently on the |rc_xxx|.
+
+The maximum file size to be uploaded is limited to :visardonly:`10` :cubeonly:`30` MB.
+
+.. only:: rc_visard
+
+   .. include:: _gen/swagger/rc_visard/cad.txt
+
+.. only:: rc_visard_ng
+
+   .. include:: _gen/swagger/rc_visard_ng/cad.txt
+
+.. only:: rc_cube
+
+   .. include:: _gen/swagger/rc_cube/cad.txt
+
+.. only:: rc_reason_stack
+
+   .. include:: _gen/swagger/rc_reason_stack/cad.txt

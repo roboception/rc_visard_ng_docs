@@ -1,0 +1,25 @@
+3D modules
+
+The
+
+rc_visard NG
+
+'s 3D camera software consists of the following modules:
+
+Stereo matching module (rc_stereomatching, Section
+\ref{stereo_matching:sect-stereo-matching})  uses the rectified stereo
+image pairs to compute 3D depth information such as disparity, error,
+and confidence images. These are provided as GenICam streams, too.
+
+The 3D modules, which provide time-stamped 3D depth information such
+as disparity, error, and confidence images, are also accessible via
+the
+
+rc_visard NG
+
+'s
+
+GigE Vision/GenICam interface
+
+.
+

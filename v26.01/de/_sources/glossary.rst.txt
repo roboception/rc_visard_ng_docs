@@ -1,0 +1,177 @@
+Glossar
+
+DHCP
+   Das Dynamic Host Configuration Protocol (DHCP) wird verwendet, um
+   einem Netzwerkgerät automatisch eine
+
+   IP
+
+   -Adresse zuzuweisen. Einige DHCP-Server akzeptieren lediglich
+   bekannte Geräte. In diesem Fall muss der Administrator die feste
+
+   MAC-Adresse
+
+    eines Gerätes im DHCP-Server erfassen.
+
+DNS
+mDNS
+   Das Domain Name System (DNS) verwaltet die Host-Namen und
+
+   IP
+
+   -Adressen aller Netzwerkgeräte. Es dient dazu, den Host-Namen zur
+   Kommunikation mit einem Gerät in die IP-Adresse zu übersetzen. Das
+   DNS kann so konfiguriert werden, dass diese Informationen entweder
+   automatisch abgerufen werden, wenn ein Gerät in einem Netzwerk
+   erscheint, oder manuell von einem Administrator zu erfassen sind.
+   Im Gegensatz hierzu arbeitet
+
+   multicast DNS
+
+    (mDNS) ohne einen zentralen Server, wobei jedes Mal, wenn ein
+   Host-Name aufgelöst werden muss, alle Geräte in einem Netzwerk
+   abgefragt werden. mDNS ist standardmäßig für die Betriebssysteme
+   Linux und macOS verfügbar und wird verwendet, wenn '.local' an
+   einen Host-Namen angehängt wird.
+
+DOF
+   Als Freiheitsgrade (Degrees of Freedom, DOF) wird die Anzahl
+   unabhängiger Translations- und Rotationsparameter bezeichnet. Im
+   3D-Raum genügen 6 Freiheitsgrade (drei für Translation und drei für
+   Rotation), um eine beliebige Position und Orientierung zu
+   definieren.
+
+GenICam
+   GenICam ist eine generische Standard-Schnittstelle für Kameras. Sie
+   fungiert als einheitliche Schnittstelle für andere Standards, wie
+
+   GigE Vision
+
+   , Camera Link, USB, usw. Für nähere Informationen siehe
+
+   http://genicam.org
+
+   .
+
+GigE
+   Gigabit Ethernet (GigE) ist eine Netzwerktechnologie, die mit einer
+   Übertragungsrate von einem Gigabit pro Sekunde arbeitet.
+
+GigE Vision
+   GigE Vision® ist ein Standard für die Konfiguration von Kameras und
+   Übertragung der Bilder über eine
+
+   GigE
+
+    Netzwerkverbindung. Für nähere Informationen siehe
+
+   http://gigevision.com
+
+   .
+
+IP
+IP-Adresse
+   Das Internet Protocol (IP) ist ein Standard für die Übertragung von
+   Daten zwischen verschiedenen Geräten in einem Computernetzwerk.
+   Jedes Gerät benötigt eine IP-Adresse, die innerhalb des Netzwerks
+   nur einmal vergeben werden darf. Die IP-Adresse lässt sich über
+
+   DHCP
+
+   , über
+
+   Link-Local
+
+    oder manuell konfigurieren.
+
+Link-Local
+   Link-Local ist eine Technologie, mit der sich ein Netzwerkgerät
+   selbst eine
+
+   IP-Adresse
+
+    aus dem Adressbereich 169.254.0.0/16 zuweist und überprüft, ob
+   diese im lokalen Netzwerk eindeutig ist. Link-Local kann verwendet
+   werden, wenn
+
+   DHCP
+
+    nicht verfügbar ist oder die manuelle IP-Konfiguration nicht
+   vorgenommen wurde bzw. werden kann. Link-Local ist besonders
+   nützlich, wenn ein Netzwerkgerät direkt an einen Host-Computer
+   angeschlossen werden soll. Windows 10 greift automatisch auf Link-
+   Local zurück, wenn DHCP nicht verfügbar ist (Fallback-Option).
+   Unter Linux muss Link-Local manuell im Netzwerkmanager aktiviert
+   werden.
+
+MAC-Adresse
+   Bei der MAC-Adresse (Media Access Control Address) handelt es sich
+   um die eindeutige und feste Adresse eines Netzwerkgerätes. Sie wird
+   auch als Hardware-Adresse bezeichnet. Im Gegensatz zur
+
+   IP-Adresse
+
+    wird die MAC-Adresse einem Gerät (normalerweise) fest zugewiesen;
+   sie ändert sich nicht.
+
+NTP
+   Das Network Time Protocol (NTP) ist ein TCP/IP Protokoll, um Zeit
+   über ein Netzwerk zu synchronisieren. Im Wesentlichen fordert ein
+   Client die aktuelle Zeit von einem Server an und nutzt diese, um
+   seine eigene Uhr zu stellen.
+
+SDK
+   Ein Software Development Kit (SDK) ist eine Sammlung von
+   Softwareentwicklungswerkzeugen bzw. von Softwaremodulen.
+
+SGM
+   SGM steht für Semi-Global Matching, einen hochmodernen Stereo-
+   Matching-Algorithmus, der sich durch kurze Laufzeiten und eine hohe
+   Genauigkeit – insbesondere an Objekträndern, bei feinen Strukturen
+   und in schwach texturierten Bildbereichen – auszeichnet.
+
+TCP
+   Der Tool Center Point (TCP) ist die Position des Werkzeugs am
+   Endeffektor eines Roboters. Die Position und Orientierung des TCP
+   definiert die Position und Orientierung des Werkzeugs im 3D-Raum.
+
+URI
+URL
+   Ein Uniform Resource Identifier (URI) ist eine Zeichenfolge, mit
+   der sich Ressourcen in der REST-API des
+
+   rc_visard NG
+
+    identifizieren lassen. Ein Beispiel für eine solche URI ist die
+   Zeichenkette "/nodes/rc_camera/parameters/fps", die auf die
+   "fps"-Laufzeitparameter des Stereokamera-Moduls verweist.
+
+   Ein Uniform Resource Locator (URL) gibt zudem die vollständige
+   Netzwerkadresse und das Netzwerkprotokoll an. Die oben angeführte
+   Ressource könnte beispielsweise über
+   "https://<ip>/api/v1/nodes/rc_camera/parameters/fps" lokalisiert
+   werden, wobei sich "<ip>" auf die
+
+   IP-Adresse
+
+    des
+
+   rc_visard NG
+
+    bezieht.
+
+XYZ+Quaternion
+   Format zur Darstellung von Posen (Positionen und Orientierungen).
+   Für eine Definition siehe
+
+   Rotationsmatrix und Translationsvektor
+
+   .
+
+XYZABC
+   Format zur Darstellung von Posen (Positionen und Orientierungen).
+   Für eine Definition siehe
+
+   KUKA XYZ-ABC Format
+
+   .

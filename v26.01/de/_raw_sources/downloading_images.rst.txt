@@ -1,0 +1,27 @@
+
+.. include:: global_rst.glb
+
+.. _sect-camera-accessing-images:
+
+Viewing and downloading images
+------------------------------
+
+.. index::
+   pair: images; download
+
+.. only:: rc_cube or rc_visard or rc_visard_ng
+
+   The |rc_xxx| provides the time-stamped rectified images
+   over the GenICam interface (see :ref:`sect-provided-image-streams`:latex:`,
+   Section \ref{gigevision:sect-provided-image-streams}`) or via the :doc:`grpc`:latex:`\:(see Section \ref{grpc:sect-grpc})`. 
+
+.. only:: rc_reason_stack
+
+   The |rc_xxx| provides time-stamped rectified images
+   via the :doc:`grpc`:latex:`\:(see Section \ref{grpc:sect-grpc})`.
+
+Live streams of the images are provided
+with reduced quality in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+The |webgui| also provides the possibility to download a snapshot of the current scene as a .tar.gz file
+as described in :ref:`sect-webgui-camera-snapshot`:latex:`\:(Section \ref{webgui:sect-webgui-camera-snapshot})`.

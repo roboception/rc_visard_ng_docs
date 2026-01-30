@@ -1,0 +1,750 @@
+.. include:: global_rst.glb
+
+.. _sect-gri:
+
+Generic Robot Interface
+=======================
+
+.. index::
+   single: GRI
+   single: Generic Robot Interface
+
+The Generic Robot Interface (GRI) is an integration layer that bridges the 
+:doc:`REST-API v2<rest_api>`:latex:`\:(Section \ref{rest_api:sect-rest-api})` and 
+provides a standardized way to communicate with the software modules using simple TCP socket communication
+on port 7100. It can be activated via a separate :ref:`license<sect-updating-license>`
+:latex:`(Section \ref{maintenance:sect-updating-license})`.
+
+The GRI enables the user to create configurations and save them as numbered jobs.
+These jobs can be triggered by simple commands from the robot using TCP socket communication.
+The GRI internally manages the |rest-api| communication and delivers the selected pose results 
+in a format that can be chosen specifically for the robot.
+
+Job definition
+--------------
+
+Jobs are pre-configured tasks that can be triggered by the robot application. Each job has a unique ID and contains 
+all the necessary information for a specific operation, e.g. computing grasps for bin picking or changing
+run-time parameters of a module. 
+Once configured, the robot can execute these jobs using simple socket commands and, if applicable,
+receive the returned poses.
+
+.. _sect-gri-job-types:
+
+Job Types
+^^^^^^^^^
+
+The Generic Robot Interface supports three types of jobs:
+
+**Pipeline service job (CALL_PIPELINE_SERVICE)**
+
+This job calls a service on a specific camera pipeline, e.g. to detect objects or compute grasps, and returns
+pose data to the robot (e.g. grasp poses).
+
+A pipeline service job consists of:
+
+- ``job_type``: the job type ``CALL_PIPELINE_SERVICE``
+- ``name``: name of the job (descriptive name to distinguish jobs)
+- ``pipeline``: the camera pipeline to be used for the job (e.g. "0")
+- ``node``: the |rest-api| name of the pipeline node that should be used (e.g. ``rc_load_carrier``)
+- ``service``: the |rest-api| name of the service to call
+- ``args``: the |rest-api| json arguments to pass to the service
+- ``selected_return``: the |rest-api| name of the field to return
+
+A sample pipeline service job definition is:
+
+.. code-block:: bash
+
+   {
+      "args": {
+         "pose_frame": "external",
+         "suction_surface_length": 0.02,
+         "suction_surface_width": 0.02
+      },
+      "job_type": "CALL_PIPELINE_SERVICE",
+      "name": "Compute Grasps",
+      "node": "rc_itempick",
+      "pipeline": "0",
+      "selected_return": "grasps",
+      "service": "compute_grasps"
+   }
+
+The available values for ``selected_return`` depend on the chosen node and can be e.g. ``grasps`` or ``matches``. 
+Refer to the service definitions of the corresponding module for details about ``node``, ``service``, ``args`` and ``selected_return``.
+
+**Global service job (CALL_GLOBAL_SERVICE)**
+
+This job calls a service that is not tied to a specific pipeline, e.g. database services for setting regions of interest or load carriers.
+Global service jobs do not return any poses.
+
+A global service job consists of:
+
+- ``job_type``: the job type ``CALL_GLOBAL_SERVICE``
+- ``name``: name of the job (descriptive name to distinguish jobs)
+- ``node``: the |rest-api| name of the global node that should be used (e.g. ``rc_load_carrier_db``)
+- ``service``: the |rest-api| name of the service to call
+- ``args``: the |rest-api| json arguments to pass to the service
+
+A sample global job definition is:
+
+.. code-block:: bash
+
+   {
+      "args": {
+         "region_of_interest_2d": {
+            "id": "2d_roi", 
+            "width": 526, 
+            "height": 501, 
+            "offset_x": 558, 
+            "offset_y": 307
+         }
+      },
+      "job_type": "CALL_GLOBAL_SERVICE",
+      "name": "Set 2D ROI",
+      "node": "rc_roi_db",
+      "service": "set_region_of_interest_2d"
+   }
+
+Refer to the service definitions of the corresponding module for details about ``node``, ``service`` and ``args``.
+
+**Parameter setting job (SET_PIPELINE_PARAMETER)**
+
+This job sets run-time parameters on pipeline nodes, e.g. for adjusting camera or detection module settings. Parameter setting services 
+do not return any poses.
+
+A parameter setting job consists of:
+
+- ``job_type``: the job type ``SET_PIPELINE_PARAMETER``
+- ``name``: name of the job (descriptive name to distinguish jobs)
+- ``pipeline``: the camera pipeline to be used for the job (e.g. "0")
+- ``node``: the |rest-api| name of the pipeline node that should be used (e.g. ``rc_stereomatching``)
+- ``parameters``: the parameters to set as key-value pairs
+
+A sample parameter job definition is:
+
+.. code-block:: bash
+   
+   {
+      "job_type": "SET_PIPELINE_PARAMETERS",
+      "name": "Set Stereo Parameters",
+      "node": "rc_stereomatching",
+      "parameters": {
+         "maxdepth": 2,
+         "quality": "High"
+      },
+      "pipeline": "0"
+   }
+
+Refer to the run-time parameter definitions of the corresponding module for details about ``node`` and ``parameters``.
+
+The jobs can be defined via the |webgui| or via the |rest-api| (see :ref:`sect_gri_api`).
+
+.. _sect-gri-primary-related:
+
+Primary and related objects
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The *primary objects* are the ``selected_return`` objects, e.g. ``grasps``. The *related objects* are then the ``items`` or 
+``matches`` that correspond to the returned grasp. While a primary object *grasp* as exactly one related object *item* or
+*match*, a primary object *match* can have multiple related objects *grasps*.
+
+.. _sect-gri-execution-modes:
+
+Execution modes
+^^^^^^^^^^^^^^^
+
+The Generic Robot Interface supports two execution modes to optimize the robot's cycle time:
+
+- Synchronous Execution: The robot triggers a job and waits for the first result to arrive. This mode should be chosen when results are required immediately.
+- Asynchronous Execution: The robot starts a job and can continue with other operations while the job is running in the background. The job status can be queried and results can be retrieved when ready. This mode maximizes efficiency during long detection times.
+
+.. _sect-gri-hand-eye-calibration:
+
+Hand-Eye Calibration
+--------------------
+
+A hand-eye calibration configuration can be defined for each camera pipeline to allow for programmatic 
+hand-eye calibration using the GRI.
+Each hand-eye calibration configuration consists of the following information:
+
+- ``grid_height``: height of the calibration grid in meters
+- ``grid_width``:  width of the calibration grid in meters
+- ``robot_mounted``: boolean that determines whether the camera is mounted on the robot
+- ``tcp_offset``: 0 for 6DOF robots. For 4DOF robots: the signed offset from the TCP to the camera coordinate system (robot-mounted sensor) or the visible surface of the calibration grid (statically mounted sensor) along the TCP rotation axis in meters.
+- ``tcp_rotation_axis``: -1 for 6DOF robots. For 4DOF robots: determines the axis of the robot frame around which the robot can rotate its TCP (0 is used for X, 1 for Y and 2 for the Z axis).
+
+More detailed information about these settings and the hand-eye calibration in general is given in :doc:`handeye_calibration`. 
+
+The hand-eye calibration configurations can be set via the |webgui| or via the |rest-api| (see :ref:`sect_gri_api`).
+
+.. _sect-gri-protocol-specification:
+
+GRI binary protocol specification
+---------------------------------
+
+This specification defines the exact on-wire format for client-server messages. A message consists of a fixed 
+8-byte header and a body whose layout depends on the protocol version. Currently, there is only protocol version 1.
+
+.. note:: All multi-byte integers are **little-endian**. Types are ``uint8`` (8-bit unsigned), ``int16`` (16-bit signed), ``int32`` (32-bit signed).
+
+.. _sect-gri-header:
+
+Message header (8 bytes)
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. _tab-gri-message-header-definition:
+
+.. table:: Message header definition
+   
+   +-------------------+--------+------+------------------------------------------------------------+
+   | Field             | Type   | Size | Description                                                |
+   +===================+========+======+============================================================+
+   | magic_number      | uint32 | 4    | ASCII tag `"GRI\0"`, bytes `47 52 49 00` (little-endian)   |
+   +-------------------+--------+------+------------------------------------------------------------+
+   | protocol_version  | uint8  | 1    | Protocol version: currently `1`                            |
+   +-------------------+--------+------+------------------------------------------------------------+
+   | message_length    | uint8  | 1    | Total message size (bytes), incl. header + body            |
+   +-------------------+--------+------+------------------------------------------------------------+
+   | pose_format       | uint8  | 1    | Pose data format (see :ref:`sect-gri-pose-formats`)        |
+   +-------------------+--------+------+------------------------------------------------------------+
+   | action            | uint8  | 1    | Command/action (see :ref:`sect-gri-ac`)                    |
+   +-------------------+--------+------+------------------------------------------------------------+
+
+
+.. _sect-gri-pose-formats:
+
+Pose formats
+^^^^^^^^^^^^
+
+The GRI always uses **millimeters** for representing a position. The following tables show different rotation formats that 
+can be chosen to match to the rotation representation of the used robot. The formats are grouped by non-Euler rotation formats,
+Tait-Bryan-Euler rotation formats (all three axes are used) and proper Euler rotation formats (first and last rotation axis are the same).
+
+.. _tab-gri-pose-formats-non-euler:
+
+.. table:: Non-Euler rotation formats
+
+   +-----------------+-------+-------+-------+-------+---------+---------+------------------+
+   | Name            | Value | rot_1 | rot_2 | rot_3 | rot_4   | Units   | Robot Example    |
+   +=================+=======+=======+=======+=======+=========+=========+==================+
+   | QUAT_WXYZ       |   1   | w     | x     | y     | z       | --      | ABB              |
+   +-----------------+-------+-------+-------+-------+---------+---------+------------------+
+   | QUAT_XYZW       |   2   | x     | y     | z     | w       | --      | Fruitcore HORST  |
+   +-----------------+-------+-------+-------+-------+---------+---------+------------------+
+   | AXIS_ANGLE_RAD  |   3   | rx    | ry    | rz    | --      | rad     | Universal Robots |
+   +-----------------+-------+-------+-------+-------+---------+---------+------------------+
+
+In the following notation primes indicate successive rotations in the intrinsic frame (e.g., Y' = rotation about Y-axis after first rotation). 
+``_B`` and ``_F`` determine the order in which the rotation components are given. ``F`` stands for *forward*, meaning that the rotation components are given
+in the same order as the rotation is applied, and ``B`` stands for *backward*, meaning the rotation components are given in reverse order. ``_RAD`` and ``_DEG`` 
+determine whether the rotation components are given in radians or degrees, respectively, if applicable. So the format ``EULER_ZYX_B_DEG`` means
+that the intrinsic rotation order is z-y'-x'' (first rotate around the z axis, then rotate around the new y axis, then rotate around the
+new x axis), the order in which the rotation components are given is backward (so the first rotation element is the angle around the x axis), and
+the angels are given in degrees.
+
+.. _tab-gri-pose-formats-tait-bryan:
+
+.. table:: Tait-Bryan-Euler rotation formats. 
+   Primes indicate successive rotations in the intrinsic frame (e.g., Y' = rotation about Y-axis after first rotation).
+   **_F (Forward)**: `[1st, 2nd, 3rd]` | **_B (Backward)**: `[3rd, 2nd, 1st]`,  **_DEG: degrees** | **_RAD: radian**.
+
+
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | Name            | Value | rot_1 | rot_2 | rot_3 | rot_4   | Units   | Robot Example              |
+   +=================+=======+=======+=======+=======+=========+=========+============================+
+   | EULER_XYZ_F_DEG |   4   | X     | Y'    | Z''   | --      | deg     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_XYZ_F_RAD |   5   | X     | Y'    | Z''   | --      | rad     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_XYZ_B_DEG |   6   | Z''   | Y'    | X     | --      | deg     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_XYZ_B_RAD |   7   | Z''   | Y'    | X     | --      | rad     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_XZY_F_DEG |   8   | X     | Z'    | Y''   | --      | deg     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_XZY_F_RAD |   9   | X     | Z'    | Y''   | --      | rad     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_XZY_B_DEG |  10   | Y''   | Z'    | X     | --      | deg     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_XZY_B_RAD |  11   | Y''   | Z'    | X     | --      | rad     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_YXZ_F_DEG |  12   | Y     | X'    | Z''   | --      | deg     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_YXZ_F_RAD |  13   | Y     | X'    | Z''   | --      | rad     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_YXZ_B_DEG |  14   | Z''   | X'    | Y     | --      | deg     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_YXZ_B_RAD |  15   | Z''   | X'    | Y     | --      | rad     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_YZX_F_DEG |  16   | Y     | Z'    | X''   | --      | deg     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_YZX_F_RAD |  17   | Y     | Z'    | X''   | --      | rad     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_YZX_B_DEG |  18   | X''   | Z'    | Y     | --      | deg     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_YZX_B_RAD |  19   | X''   | Z'    | Y     | --      | rad     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_ZXY_F_DEG |  20   | Z     | X'    | Y''   | --      | deg     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_ZXY_F_RAD |  21   | Z     | X'    | Y''   | --      | rad     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_ZXY_B_DEG |  22   | Y''   | X'    | Z     | --      | deg     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_ZXY_B_RAD |  23   | Y''   | X'    | Z     | --      | rad     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_ZYX_F_DEG |  24   | Z     | Y'    | X''   | --      | deg     | KUKA                       |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_ZYX_F_RAD |  25   | Z     | Y'    | X''   | --      | rad     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_ZYX_B_DEG |  26   | X''   | Y'    | Z     | --      | deg     | FANUC, Mitsubishi, Yaskawa |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+   | EULER_ZYX_B_RAD |  27   | X''   | Y'    | Z     | --      | rad     |                            |
+   +-----------------+-------+-------+-------+-------+---------+---------+----------------------------+
+
+
+.. _tab-gri-pose-formats-euler:
+
+.. table:: Euler rotation formats. 
+   Primes indicate successive rotations in the intrinsic frame (e.g., Y' = rotation about Y-axis after first rotation).
+   **_F (Forward)**: `[1st, 2nd, 3rd]` | **_B (Backward)**: `[3rd, 2nd, 1st]`,  **_DEG: degrees** | **_RAD: radian**.
+
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | Name            | Value | rot_1 | rot_2 | rot_3 | rot_4   | Units   | Robot Example           |
+   +=================+=======+=======+=======+=======+=========+=========+=========================+
+   | EULER_XYX_F_DEG |  28   | X     | Y'    | X''   | --      | deg     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_XYX_F_RAD |  29   | X     | Y'    | X''   | --      | rad     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_XYX_B_DEG |  30   | X''   | Y'    | X     | --      | deg     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_XYX_B_RAD |  31   | X''   | Y'    | X     | --      | rad     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_XZX_F_DEG |  32   | X     | Z'    | X''   | --      | deg     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_XZX_F_RAD |  33   | X     | Z'    | X''   | --      | rad     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_XZX_B_DEG |  34   | X''   | Z'    | X     | --      | deg     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_XZX_B_RAD |  35   | X''   | Z'    | X     | --      | rad     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_YXY_F_DEG |  36   | Y     | X'    | Y''   | --      | deg     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_YXY_F_RAD |  37   | Y     | X'    | Y''   | --      | rad     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_YXY_B_DEG |  38   | Y''   | X'    | Y     | --      | deg     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_YXY_B_RAD |  39   | Y''   | X'    | Y     | --      | rad     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_YZY_F_DEG |  40   | Y     | Z'    | Y''   | --      | deg     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_YZY_F_RAD |  41   | Y     | Z'    | Y''   | --      | rad     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_YZY_B_DEG |  42   | Y''   | Z'    | Y     | --      | deg     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_YZY_B_RAD |  43   | Y''   | Z'    | Y     | --      | rad     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_ZXZ_F_DEG |  44   | Z     | X'    | Z''   | --      | deg     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_ZXZ_F_RAD |  45   | Z     | X'    | Z''   | --      | rad     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_ZXZ_B_DEG |  46   | Z''   | X'    | Z     | --      | deg     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_ZXZ_B_RAD |  47   | Z''   | X'    | Z     | --      | rad     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_ZYZ_F_DEG |  48   | Z     | Y'    | Z''   | --      | deg     | Kawasaki                |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_ZYZ_F_RAD |  49   | Z     | Y'    | Z''   | --      | rad     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_ZYZ_B_DEG |  50   | Z''   | Y'    | Z     | --      | deg     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+   | EULER_ZYZ_B_RAD |  51   | Z''   | Y'    | Z     | --      | rad     |                         |
+   +-----------------+-------+-------+-------+-------+---------+---------+-------------------------+
+
+All pose components (position **and** rotation) are ``int32`` scaled by **1,000,000**.
+
+- Float to Int: ``int = round(float * 1000000)``
+- Int to Float: ``float = int / 1000000.0``
+- Positions in **millimeters** before scaling
+- Angles in **degrees/radians** (per format) before scaling  
+- Quaternions unitless, same scaling
+- ``rot_4`` unused for Euler/axis-angle (set to 0)
+
+
+
+.. _sect-gri-ac:
+
+Actions
+^^^^^^^
+
+The following actions can be sent.
+
+.. _tab-gri-ac:
+
+.. table:: GRI actions
+
+   +--------------------+-------+---------------------------------------------------------------+
+   | Name               | Value | Description                                                   |
+   +====================+=======+===============================================================+
+   | STATUS             | 1     | Get system readiness; maps readiness to ``data_2`` (1 or 0)   |
+   +--------------------+-------+---------------------------------------------------------------+
+   | TRIGGER_JOB_SYNC   | 2     | Execute job synchronously                                     |
+   +--------------------+-------+---------------------------------------------------------------+
+   | TRIGGER_JOB_ASYNC  | 3     | Start job asynchronously                                      |
+   +--------------------+-------+---------------------------------------------------------------+
+   | GET_JOB_STATUS     | 4     | Query async job status (see :ref:`sect-gri-job-status`)       |
+   +--------------------+-------+---------------------------------------------------------------+
+   | GET_NEXT_POSE      | 5     | Retrieve next available result                                |
+   +--------------------+-------+---------------------------------------------------------------+
+   | GET_RELATED_POSE   | 6     | Retrieve next related pose                                    |
+   +--------------------+-------+---------------------------------------------------------------+
+   | HEC_INIT           | 7     | Initialize hand-eye calibration                               |
+   +--------------------+-------+---------------------------------------------------------------+
+   | HEC_SET_POSE       | 8     | Provide/store calibration pose                                |
+   +--------------------+-------+---------------------------------------------------------------+
+   | HEC_CALIBRATE      | 9     | Run calibration and save results                              |
+   +--------------------+-------+---------------------------------------------------------------+
+
+
+**STATUS (1)**
+
+Returns system readiness information fetched from the |rcxxx| in ``data_2`` (1 if ready, 0 if not).
+
+**TRIGGER_JOB_SYNC (2)**
+
+Runs the job and returns the **first** result immediately; additional results are stored for later retrieval.
+On success with results, ``error_code`` will be zero and the pose will be filled. If no results are returned, ``error_code``
+will be ``NO_POSES_FOUND`` (positive warning). It also reports:
+
+- ``data_1`` = node's ``return_code`` value
+- ``data_2`` = number of remaining *primary objects* (ref. :ref:`sect-gri-primary-related`)
+- ``data_3`` = number of remaining *related objects* (ref. :ref:`sect-gri-primary-related`)
+
+**TRIGGER_JOB_ASYNC (3)**
+
+Starts the job and returns immediately. The job's status can be polled with ``GET_JOB_STATUS`` (4) (see :ref:`sect-gri-job-status`) 
+and the results can be fetched with ``GET_NEXT_POSE`` (5), as soon as the job is ``DONE``.
+
+**GET_JOB_STATUS (4)**
+
+Returns the job status. It reports:
+
+- ``data_1`` = node's ``return_code`` value
+- ``data_2`` = job status (see table :ref:`tab-gri-status-values`)
+
+Error details flow through ``error_code``.
+
+**GET_NEXT_POSE (5)**
+
+Returns the next result of the *primary object*. It also reports: 
+
+- ``data_1`` = node's ``return_code`` value
+- ``data_2`` = number of remaining *primary objects* (ref. :ref:`sect-gri-primary-related`)
+- ``data_3`` = number of remaining *related objects* (ref. :ref:`sect-gri-primary-related`)
+
+When no more primary objects are available, it returns ``NO_POSES_FOUND`` and resets the job.
+
+**GET_RELATED_POSE (6)**
+
+Returns the next pose of the *related object* corresponding to the current *primary object*. It also reports:
+
+- ``data_1`` = node's ``return_code`` value
+- ``data_2`` = number of remaining *primary objects* (ref. :ref:`sect-gri-primary-related`)
+- ``data_3`` = number of remaining *related objects* (ref. :ref:`sect-gri-primary-related`)
+
+If no related poses were found, it returns ``NO_RELATED_POSES``.
+
+**HEC_INIT (7)**
+
+This action initializes the hand-eye calibration. It clears any existing calibration data, 
+applies the pipeline's configuration parameters and prepares the system for recording new poses.
+``data_1`` specifies the target pipeline.
+
+**HEC_SET_POSE (8)**
+
+This action is to be used eight times to record distinct robot poses with visible calibration pattern. The field ``data_2`` is used to specify the 
+image storage slot (0-7). A previous pose in a slot will be overwritten if a slot is reused. Each pose must provide a different view 
+of the calibration pattern, as described in :doc:`handeye_calibration`. ``data_1`` specifies the target pipeline.
+ 
+**HEC_CALIBRATE (9)**
+
+This action processes all recorded poses and calculates the transformation between camera and robot. It automatically saves successful calibration 
+results. ``data_1`` specifies the target pipeline.
+
+.. _sect-gri-job-status:
+
+Job status
+^^^^^^^^^^
+
+The following job status values can be returned.
+
+.. _tab-gri-status-values:
+
+.. table:: Job status values
+      
+   +----------+-------+
+   | Name     | Value |
+   +==========+=======+
+   | INACTIVE | 1     |
+   +----------+-------+
+   | RUNNING  | 2     |
+   +----------+-------+
+   | DONE     | 3     |
+   +----------+-------+
+   | FAILED   | 4     |
+   +----------+-------+
+
+Body definitions
+^^^^^^^^^^^^^^^^
+
+There are different body definitions depending on whether it is a request that is sent or a response that is received.
+The request body consists of 54 bytes in total and its definition is given in table :ref:`tab-gri-request-body`.
+
+.. _tab-gri-request-body:
+
+.. table:: Request body definition
+
+   +---------+-------+------+----------------------------------------------+
+   | Field   | Type  | Size | Description                                  |
+   +=========+=======+======+==============================================+
+   | header  | struct| 8    | Message header (see :ref:`sect-gri-header`)  |
+   +---------+-------+------+----------------------------------------------+
+   | job_id  | uint16| 2    | Unique job ID from job configuration         |
+   +---------+-------+------+----------------------------------------------+
+   | pos_x   | int32 | 4    | Position X (scaled by 10^6)                  |
+   +---------+-------+------+----------------------------------------------+
+   | pos_y   | int32 | 4    | Position Y (scaled by 10^6)                  |
+   +---------+-------+------+----------------------------------------------+
+   | pos_z   | int32 | 4    | Position Z (scaled by 10^6)                  |
+   +---------+-------+------+----------------------------------------------+
+   | rot_1   | int32 | 4    | Rotation component 1 (scaled by 10^6)        |
+   +---------+-------+------+----------------------------------------------+
+   | rot_2   | int32 | 4    | Rotation component 2 (scaled by 10^6)        |
+   +---------+-------+------+----------------------------------------------+
+   | rot_3   | int32 | 4    | Rotation component 3 (scaled by 10^6)        |
+   +---------+-------+------+----------------------------------------------+
+   | rot_4   | int32 | 4    | Rotation component 4 (scaled by 10^6)        |
+   +---------+-------+------+----------------------------------------------+
+   | data_1  | int32 | 4    | Additional parameter 1                       |
+   +---------+-------+------+----------------------------------------------+
+   | data_2  | int32 | 4    | Additional parameter 2                       |
+   +---------+-------+------+----------------------------------------------+
+   | data_3  | int32 | 4    | Additional parameter 3                       |
+   +---------+-------+------+----------------------------------------------+
+   | data_4  | int32 | 4    | Additional parameter 4                       |
+   +---------+-------+------+----------------------------------------------+
+
+The job ID is the unique identifier from the job configuration.
+The usage of the fields ``data_1...data_4`` depends on the action and job. They are set to `0` if unused. 
+
+The response body consists of 80 bytes in total. Its definition is given in table :ref:`tab-gri-response-body`.
+
+.. _tab-gri-response-body:
+
+.. table:: Response body definition
+
+   +----------------+-------+------+-----------------------------------------------+
+   | Field          | Type  | Size | Description                                   |
+   +================+=======+======+===============================================+
+   | header         | struct| 8    | Protocol header                               |
+   +----------------+-------+------+-----------------------------------------------+
+   | job_id         | uint16| 2    | Processed job number                          |
+   +----------------+-------+------+-----------------------------------------------+
+   | error_code     | int16 | 2    | GRI result status (severity by sign)          |
+   +----------------+-------+------+-----------------------------------------------+
+   | pos_x          | int32 | 4    | Position X (scaled by 10^6)                   |
+   +----------------+-------+------+-----------------------------------------------+
+   | pos_y          | int32 | 4    | Position Y (scaled by 10^6)                   |
+   +----------------+-------+------+-----------------------------------------------+
+   | pos_z          | int32 | 4    | Position Z (scaled by 10^6)                   |
+   +----------------+-------+------+-----------------------------------------------+
+   | rot_1          | int32 | 4    | Rotation component 1 (scaled by 10^6)         |
+   +----------------+-------+------+-----------------------------------------------+
+   | rot_2          | int32 | 4    | Rotation component 2 (scaled by 10^6)         |
+   +----------------+-------+------+-----------------------------------------------+
+   | rot_3          | int32 | 4    | Rotation component 3 (scaled by 10^6)         |
+   +----------------+-------+------+-----------------------------------------------+
+   | rot_4          | int32 | 4    | Rotation component 4 (scaled by 10^6)         |
+   +----------------+-------+------+-----------------------------------------------+
+   | data_1         | int32 | 4    | Node's return code (0 if none)                |
+   +----------------+-------+------+-----------------------------------------------+
+   | data_2         | int32 | 4    | Additional result 2                           |
+   +----------------+-------+------+-----------------------------------------------+
+   | data_3         | int32 | 4    | Additional result 3                           |
+   +----------------+-------+------+-----------------------------------------------+
+   | data_4         | int32 | 4    | Additional result 4                           |
+   +----------------+-------+------+-----------------------------------------------+
+   | data_5         | int32 | 4    | Additional result 5                           |
+   +----------------+-------+------+-----------------------------------------------+
+   | data_6         | int32 | 4    | Additional result 6                           |
+   +----------------+-------+------+-----------------------------------------------+
+   | data_7         | int32 | 4    | Additional result 7                           |
+   +----------------+-------+------+-----------------------------------------------+
+   | data_8         | int32 | 4    | Additional result 8                           |
+   +----------------+-------+------+-----------------------------------------------+
+   | data_9         | int32 | 4    | Additional result 9                           |
+   +----------------+-------+------+-----------------------------------------------+
+   | data_10        | int32 | 4    | Additional result 10                          |
+   +----------------+-------+------+-----------------------------------------------+
+
+.. note:: For ``rc_measure``, mean_z is mapped to pos_x/pos_y/pos_z.
+
+
+Error codes and semantics
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``error_code`` is ``int16`` and encodes errors/warnings by sign:
+
+- Negative `< 0` = **error** (failure)
+- Zero `= 0` = **success**
+- Positive `> 0` = **warning** (success with caveat)
+
+The tables below give the different error codes and are split by sign and sorted.
+
+**Success**
+
++-----------+-------+----------------------+
+| Name      | Value | Description          |
++===========+=======+======================+
+| NO_ERROR  |   0   | Operation successful |
++-----------+-------+----------------------+
+
+**Negative error codes**
+
++----------------------------+-------+---------------------------------------------------+
+| Name                       | Value | Description                                       |
++============================+=======+===================================================+
+| UNKNOWN_ERROR              |  -1   | GRI internal, unspecified                         |
++----------------------------+-------+---------------------------------------------------+
+| INTERNAL_ERROR             |  -2   | GRI internal system error                         |
++----------------------------+-------+---------------------------------------------------+
+| API_NOT_REACHABLE          |  -3   | Cannot reach API                                  |
++----------------------------+-------+---------------------------------------------------+
+| API_RESPONSE_ERROR         |  -4   | API returned a negative code                      |
++----------------------------+-------+---------------------------------------------------+
+| PIPELINE_NOT_AVAILABLE     |  -5   | Processing pipeline unavailable                   |
++----------------------------+-------+---------------------------------------------------+
+| INVALID_REQUEST_ERROR      |  -6   | Malformed request                                 |
++----------------------------+-------+---------------------------------------------------+
+| INVALID_REQUEST_LENGTH     |  -7   | Wrong message length                              |
++----------------------------+-------+---------------------------------------------------+
+| INVALID_ACTION             |  -8   | Unsupported action                                |
++----------------------------+-------+---------------------------------------------------+
+| PROCESSING_TIMEOUT         |  -9   | Operation timed out                               |
++----------------------------+-------+---------------------------------------------------+
+| UNKNOWN_PROTOCOL_VERSION   | -10   | Protocol version not supported                    |
++----------------------------+-------+---------------------------------------------------+
+| WRONG_PROTOCOL_FOR_JOB     | -11   | Job does not match protocol version               |
++----------------------------+-------+---------------------------------------------------+
+| JOB_DOES_NOT_EXIST         | -12   | Invalid job ID                                    |
++----------------------------+-------+---------------------------------------------------+
+| MISCONFIGURED_JOB          | -13   | Invalid job configuration                         |
++----------------------------+-------+---------------------------------------------------+
+| HEC_CONFIG_ERROR           | -14   | Invalid configuration parameters                  |
++----------------------------+-------+---------------------------------------------------+
+| HEC_INIT_ERROR             | -15   | Calibration init failed                           |
++----------------------------+-------+---------------------------------------------------+
+| HEC_SET_POSE_ERROR         | -16   | Failed to record pose in specified slot           |
++----------------------------+-------+---------------------------------------------------+
+| HEC_CALIBRATE_ERROR        | -17   | Unable to compute calibration from recorded poses |
++----------------------------+-------+---------------------------------------------------+
+| HEC_INSUFFICIENT_DETECTION | -18   | Calibration grid not visible or not detected      |
++----------------------------+-------+---------------------------------------------------+
+
+**Positive codes**
+
++-----------------------+-------+------------------------------------+
+| Name                  | Value | Description                        |
++=======================+=======+====================================+
+| NO_POSES_FOUND        |   1   | No results available               |
++-----------------------+-------+------------------------------------+
+| NO_RELATED_POSES      |   2   | No related data found              |
++-----------------------+-------+------------------------------------+
+| NO_RETURN_SPECIFIED   |   3   | Job configured with no return type |
++-----------------------+-------+------------------------------------+
+| JOB_STILL_RUNNING     |   4   | Async job not complete             |
++-----------------------+-------+------------------------------------+
+
+**Node return code semantics**
+
+The modules/nodes may return a ``return_code``. This node return code is placed in the response ``data_1`` field (defaults to 0 if no code).
+The GRI's primary status is in ``error_code`` (sign-based semantics).
+
+.. _sect-gri-robot-integration:
+
+Integration with a robot
+------------------------
+
+The Generic Robot Interface offers communication on port 7100.
+
+.. only:: roboception or schunk or matrixvision
+
+   For integrating the GRI communication with a robot, examples for different robot languages are given in 
+   https://github.com/roboception/rc_generic_robot_interface_robot.
+
+Different robot platforms can be supported by implementing a TCP socket client following the GRI binary protocol 
+(ref. :ref:`sect-gri-protocol-specification`).
+This requires a robot controller with TCP/IP support and the ability to pack robot poses into binary messages and
+to parse binary messages into robot poses.
+
+The implementation steps are as follows:
+
+   1. Create TCP socket connection
+   2. Compose request message:
+
+      - Set message header (8 bytes)
+      - Set job ID (2 bytes)
+      - Pack position (12 bytes, 3x int32)
+      - Pack rotation (16 bytes, 4x int32)
+      - Pack additional data (16 bytes, 4x int32)
+   3. Send request (54 bytes total)
+   4. Receive response (80 bytes total)
+   5. Parse response:
+
+      - Message header (8 bytes)
+      - Job ID (2 bytes)
+      - Error code (2 bytes)
+      - Position (12 bytes, 3x int32)
+      - Rotation (16 bytes, 4x int32)
+      - Additional data (40 bytes, 10x int32)
+
+
+Byte interpretation in socket communication
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Some robot scripting languages interpret individual socket bytes as signed values in the range ``[-128, 127]`` 
+instead of unsigned ``[0, 255]``. If this is the case, each byte has to be converted to unsigned **before** 
+reconstructing ``int32`` values:
+
+.. code-block:: none
+
+   # Convert signed byte to unsigned
+   if byte_value < 0:
+       byte_value = byte_value + 256
+
+After conversion, reconstruct the ``int32`` using little-endian byte order, then apply signed interpretation to the 
+most significant byte (MSB) to determine if the overall ``int32`` value is negative.
+
+.. note:: All pose components use scaling as described in :ref:`sect-gri-pose-formats`.
+
+.. _sect_gri_api:
+
+Job and HEC_config API
+----------------------
+
+The job definitions and the definitions of HEC_configs for hand-eye calibration can be set, retrieved and deleted via the following |rest-api| endpoints.
+
+.. only:: rc_visard
+
+   .. include:: _gen/swagger/rc_visard/generic_robot_interface.txt
+
+.. only:: rc_visard_ng
+
+   .. include:: _gen/swagger/rc_visard_ng/generic_robot_interface.txt
+
+.. only:: rc_cube
+
+   .. include:: _gen/swagger/rc_cube/generic_robot_interface.txt
+
+.. only:: rc_reason_stack
+
+   .. include:: _gen/swagger/rc_reason_stack/generic_robot_interface.txt

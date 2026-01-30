@@ -1,0 +1,216 @@
+Orbbec module
+
+Note: The firmware version of the connected
+
+  Orbbec
+
+   camera has to be at least 1.6.00, otherwise the
+
+  Orbbec
+
+   cannot be used.
+
+The orbbec module is a base module which is available on every
+
+rc_visard NG
+
+ and provides disparity, confidence and error images of a connected
+
+Orbbec
+
+ stereo camera. It only runs in camera pipelines of type "orbbec".
+
+Parameters
+
+The orbbec module is called "rc_orbbec" in the REST-API and it is
+represented by the
+
+Depth Image
+
+ page in the desired pipeline in the
+
+Web GUI
+
+, when an
+
+Orbbec
+
+ camera is connected and running in the corresponding pipeline. The
+user can change the orbbec parameters there, or use the REST-API (
+
+REST-API interface
+
+).
+
+Parameter overview
+
+This module offers the following run-time parameters:
+
+The rc_orbbec module's run-time parameters              Name  Type
+Min  Max  Default  Description  fill  int32  0  4  3  Disparity
+tolerance for hole filling in pixels  maxdepth  float64  0.1  100.0
+100.0  Maximum depth in meters  mindepth  float64  0.1  100.0  0.1
+Minimum depth in meters  seg  int32  0  4000  200  Minimum size of
+valid disparity segments in pixels  smooth  bool  false  true  true
+Smoothing of disparity image (requires 'stereo_plus' license)
+
+Description of run-time parameters
+
+Each run-time parameter is represented by a row on the Web GUI's
+
+Depth Image
+
+ page. The name in the Web GUI is given in brackets behind the
+parameter name and the parameters are listed in the order they appear
+in the Web GUI.
+
+mindepth (Minimum Distance)
+
+   The minimum distance is the smallest distance from the camera at
+   which measurements should be possible. The minimum distance is
+   given in meters.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?mindepth=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?mindepth=<value>
+
+maxdepth (Maximum Distance)
+
+   The maximum distance is the largest distance from the camera at
+   which measurements should be possible. Pixels with larger distance
+   values are set to invalid in the disparity image. Setting this
+   value to its maximum permits values up to infinity. The maximum
+   distance is given in meters.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?maxdepth=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?maxdepth=<value>
+
+smooth (Smoothing)
+
+   This option activates advanced smoothing of disparity values.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?smooth=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?smooth=<value>
+
+fill (Fill-in)
+
+   This option is used to fill holes in the disparity image by
+   interpolation. The fill-in value is the maximum allowed disparity
+   step on the border of the hole. Larger fill-in values can decrease
+   the number of holes, but the interpolated values can have larger
+   errors. At most 5% of pixels are interpolated. Interpolation of
+   small holes is preferred over interpolation of larger holes. The
+   confidence for the interpolated pixels is set to a low value of
+   0.5. A fill-in value of 0 switches hole filling off.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?fill=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?fill=<value>
+
+seg (Segmentation)
+
+   The segmentation parameter is used to set the minimum number of
+   pixels that a connected disparity region in the disparity image
+   must fill. Isolated regions that are smaller are set to invalid in
+   the disparity image. The value is related to the high quality
+   disparity image with half resolution and does not have to be scaled
+   when a different quality is chosen. Segmentation is useful for
+   removing erroneous disparities. However, larger values may also
+   remove real objects.
+
+   Via the REST-API, this parameter can be set as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/parameters?seg=<value>
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_orbbec/parameters?seg=<value>
+
+Status values
+
+The "rc_orbbec" module reports the following status values:
+
+The rc_orbbec module's status values      Name  Description  fps
+Actual frame rate of the disparity, error, and confidence images. This
+value is shown in the Web GUI below the image preview as FPS (Hz).
+height  Current height of the disparity, error, and confidence images
+in pixels. This value is shown in the Web GUI below the image preview
+as the second number of Resolution (px).  last_capture_ok  1 if the
+last image capture was successful  last_timestamp_grabbed  Timestamp
+of the last depth data acquired  latency  Time in seconds between
+image acquisition and publishing of disparity image. This value is
+shown in the Web GUI below the image preview as Latency (s).  mindepth
+Actual minimum working distance in meters. This value is shown in the
+Web GUI below the image preview as Minimum Distance (m).  maxdepth
+Actual maximum working distance in meters. This value is shown in the
+Web GUI below the image preview as Maximum Distance (m).  width
+Current width of the disparity, error, and confidence images in
+pixels. This value is shown in the Web GUI below the image preview as
+the first number of Resolution (px).
+
+Services of the rc_orbbec module
+
+The "rc_orbbec" module offers the following services.
+
+reset_defaults
+
+   Restores and applies the default values for this module's
+   parameters ("factory reset").
+
+   Details
+
+   This service can be called as follows.
+
+   API version 2
+
+      PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_orbbec/services/reset_defaults
+
+   API version 1 (deprecated)
+
+      PUT http://<host>/api/v1/nodes/rc_orbbec/services/reset_defaults
+
+   Request
+
+   This service has no arguments.
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "reset_defaults",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }

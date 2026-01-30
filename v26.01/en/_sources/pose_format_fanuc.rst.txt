@@ -1,0 +1,37 @@
+FANUC XYZ-WPR format
+
+The pose format that is used by FANUC robots consists of a position
+XYZ in millimeters and an orientation WPR that is given by three
+angles in degrees, with W rotating around x-axis, P rotating around
+y-axis and R rotating around z-axis. The rotation order is x-y-z and
+computed by r_z(R) r_y(P) r_x(W).
+
+Conversion from FANUC-WPR to quaternion
+
+The conversion from the WPR angles in degrees to a quaternion
+q=(\begin{array}{cccc}x & y & z & w\end{array}) can be done by first
+converting all angles to radians
+
+   W_r = W \frac{\pi}{180} \text{,} \\ P_r = P \frac{\pi}{180}
+   \text{,} \\ R_r = R \frac{\pi}{180} \text{,} \\
+
+and then calculating the quaternion with
+
+   x = \cos{(R_r/2)}\cos{(P_r/2)}\sin{(W_r/2)} -
+   \sin{(R_r/2)}\sin{(P_r/2)}\cos{(W_r/2)} \text{,} \\ y =
+   \cos{(R_r/2)}\sin{(P_r/2)}\cos{(W_r/2)} +
+   \sin{(R_r/2)}\cos{(P_r/2)}\sin{(W_r/2)} \text{,} \\ z =
+   \sin{(R_r/2)}\cos{(P_r/2)}\cos{(W_r/2)} -
+   \cos{(R_r/2)}\sin{(P_r/2)}\sin{(W_r/2)} \text{,} \\ w =
+   \cos{(R_r/2)}\cos{(P_r/2)}\cos{(W_r/2)} +
+   \sin{(R_r/2)}\sin{(P_r/2)}\sin{(W_r/2)} \text{.}
+
+Conversion from quaternion to FANUC-WPR
+
+The conversion from a quaternion q=(\begin{array}{cccc}x & y & z &
+w\end{array}) with ||q||=1 to the WPR angles in degrees can be done as
+follows.
+
+   R &= \text{atan}_2{(2(wz + xy), 1 - 2(y^2 + z^2))} \frac{180}{\pi}
+   \\ P &= \text{asin}{(2(wy - zx))} \frac{180}{\pi} \\ W &=
+   \text{atan}_2{(2(wx + yz), 1 - 2(x^2 + y^2))} \frac{180}{\pi}

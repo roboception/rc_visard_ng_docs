@@ -1,0 +1,451 @@
+.. include:: global_rst.glb
+
+.. _sect-installation-stack:
+
+Installation
+============
+
+.. index::
+   single: installation
+
+.. Warning:: The instructions on :ref:`sect-safety`:latex:`\:(Section \ref{safety:sect-safety})` related to the |rc_xxx| must be read and understood prior to installation.
+
+The |rc_xxx| is a Docker-based software stacks that can be installed on machines meeting the prerequisites given 
+in :ref:`sect-installation-stack_prerequisites`. This chapter provides detailed information about installing the |rc_reason_stack| software.
+
+Offline installation guide
+--------------------------
+
+This section explains the manual installation of |rc_reason_stack| on a host system.
+Unlike the automated Docker-compose workflow, the Docker images are first copied to the host machine and then loaded into Docker manually.
+Follow the steps below to get the stack up and running, ready for your development or production environment.
+
+All commands must be executed on the host machine (not inside a container).
+
+.. _sect-installation-stack_prerequisites:
+
+Prerequisites
+^^^^^^^^^^^^^
++-----------------+-------------------------------------------------------------------------------------------------------+
+| Component       | Minimum Version                                                                                       |
++=================+=======================================================================================================+
+| Ubuntu          | 24.04 LTS                                                                                             |
++-----------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA GPU      | Any RTX with minimum 8GB VRAM, or better Nvidia RTX A4000, RTX 4000 Ada, RTX 3080, RTX 4070, RTX 4080 |
++-----------------+-------------------------------------------------------------------------------------------------------+
+| Docker          | 20.10+                                                                                                |
++-----------------+-------------------------------------------------------------------------------------------------------+
+| NVIDIA Driver   | 535+ (the guide uses `nvidia-driver-575-server`)                                                      |
++-----------------+-------------------------------------------------------------------------------------------------------+
+
+
+The following files are provided by |company| and needed for installation.
+
++-------------------------+----------------------------------------+
+| File                    | Description                            |
++=========================+========================================+
+| rc_container-latest.tar | rc_container docker image              |
++-------------------------+----------------------------------------+
+| tritonserver-23.10.tar  | triton server docker image             |
++-------------------------+----------------------------------------+
+| docker-compose.yml      | The docker compose file                |
++-------------------------+----------------------------------------+
+| docker-compose.json     | The docker compose file in JSON format |
++-------------------------+----------------------------------------+
+
+Install Ubuntu 24.04
+^^^^^^^^^^^^^^^^^^^^
+
+This section can be skipped if a working Ubuntu 24.04 installation is present.
+
+For installing Ubuntu, follow the official Ubuntu installation guide under https://ubuntu.com/download/desktop or https://ubuntu.com/download/server.
+
+Install NVIDIA driver
+^^^^^^^^^^^^^^^^^^^^^
+
+The NVIDIA driver is required for the host to expose the GPU to Docker containers.
+After installing the driver, the GPU and its capabilities should be visible with ``nvidia-smi``.  
+If the driver is not installed or not loaded correctly, ``nvidia-smi`` will either not be found or will report “No devices were found”.
+
+.. code-block:: bash
+
+   # Update package lists
+   sudo apt update
+
+   # run nvidia-detector to find the correct driver
+   sudo nvidia-detector
+
+   # Install the latest NVIDIA driver (replace 525 with the version that matches your GPU)
+   sudo apt install -y nvidia-driver-525-server
+
+   # Reboot to load the driver
+   sudo reboot
+
+After the reboot, verify that the driver is active:
+
+.. code-block:: none
+
+   $ nvidia-smi
+   +-----------------------------------------------------------------------------+
+   | NVIDIA-SMI 525.125.02   Driver Version: 525.125.02   CUDA Version: 12.5     |
+   |-------------------------------+----------------------+----------------------+
+   | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+   | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+   |                               |                      |               MIG M. |
+   |===============================+======================+======================|
+   |   0  GeForce RTX 3080    Off  | 00000000:01:00.0 Off |                  N/A |
+   | 30%   38C    P8    12W / 350W |   12MiB / 11264MiB   |      0%      Default |
+   +-------------------------------+----------------------+----------------------+
+
+   +-----------------------------------------------------------------------------+
+   | Processes:                                                                  |
+   |  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+   |        ID   ID                                                   Usage      |
+   |=============================================================================|
+   |  No running processes found                                                 |
+   +-----------------------------------------------------------------------------+
+
+The table shows:
+
+- **GPU**: the device ID (0, 1, ...)
+- **Name**: the GPU model (e.g., GeForce RTX 3080)
+- **Driver Version**: the installed NVIDIA driver
+- **CUDA Version**: the CUDA toolkit that ships with the driver
+- **Memory-Usage**: total RAM allocated to the GPU
+- **GPU-Util**: current GPU utilization percentage
+
+If this output is displayed, the driver is correctly installed and the GPU is ready to be used by the NVIDIA Container Toolkit and the containers.
+
+Install Docker
+^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+   # Update the apt package index and install packages to allow apt to use a repository over HTTPS
+   sudo apt-get update
+   sudo apt-get install \
+      ca-certificates \
+      curl \
+      gnupg \
+      lsb-release
+
+   # Add Docker’s official GPG key
+   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+   # Set up the stable repository
+   echo \
+   "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+   # Install Docker Engine
+   sudo apt-get update
+   sudo apt-get install -y docker-ce docker-ce-cli docker-compose-plugin containerd.io
+
+   # Verify Docker installation
+   sudo docker --version
+
+Install NVIDIA Container Toolkit
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The NVIDIA Container Toolkit gives Docker the ability to see, expose, and sandbox NVIDIA GPUs inside containers.
+Without it CUDA workloads cannot run in the container.
+The toolkit is the bridge between Docker's container runtime and the NVIDIA driver stack on the host
+
+.. code-block:: bash
+
+   # Add the NVIDIA GPG key
+   sudo curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | \
+      sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+
+   # Add the NVIDIA Container Toolkit repository
+   sudo curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+      sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+      sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+   # Update package lists and install
+   sudo apt update && sudo apt install -y nvidia-container-toolkit
+
+   # Restart Docker to apply changes
+   sudo systemctl restart docker
+
+   # Modify /etc/docker/daemon.json. This is necessary for older docker versions
+   sudo nvidia-ctk runtime configure --runtime=docker
+
+   # Verify that nvidia is now available as docker runtime
+   docker info | grep -i runtime
+
+
+For fixing an issue that lets the GPU fail after some time in the container (can be seen when ``nvidia-smi`` in the container fails),
+open the file ``/etc/nvidia-container-runtime/config.toml`` and set ``no-cgroups = false``. After changing the configuration, start
+docker with:
+
+.. code-block:: bash
+
+   sudo systemctl restart docker
+
+
+Test that Docker can access the GPU:
+
+.. code-block:: bash
+
+   sudo docker run --rm --gpus all nvidia/cuda:12.1.1-base-ubuntu22.04 nvidia-smi
+   
+
+Install WIBU CodeMeter runtime
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Install the CodeMeter runtime (https://www.wibu.com/de/support/anwendersoftware/anwendersoftware.html) on the host system.
+
+After installing, stop the runtime:
+
+.. code-block:: bash
+
+   sudo service codemeter stop
+   
+Switch network licensing on by setting ``IsNetworkServer`` to 1 in the file ``/etc/wibu/CodeMeter/Server.ini``.
+
+Start the runtime:
+
+.. code-block:: bash
+
+   sudo service codemeter start
+
+A firewall may be used to not expose the WIBU network license server in the external network (WIBU uses the ports 22350-22352), 
+since the license server must only be visible to the docker container.
+
+Create a ``sensor0`` network
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Example network setup using separate ethernet port (``enp9s0``) for ``sensor0`` interface via macvlan.
+Adjust the name of the ethernet port accordingly, in this example port ``enp9s0`` will be used.
+For multiple cameras (e.g. |rc_viscore| or multiple |rc_visard|s) create a separate network for each camera.
+
+Create ``/etc/netplan/40-sensor0.yaml`` with content
+
+.. code-block:: yaml
+
+   network:
+   version: 2
+   renderer: networkd
+   ethernets:
+      enp9s0:
+         dhcp4: false
+         dhcp6: false
+         addresses:
+         - 172.23.42.1/28
+
+Alternative network configuration for multiple cameras can be created as follows.
+In this example the interfaces `enp7s0` is used for an |rc_visard| and interfaces `ens4f0` and `ens4f1` are used for an |rc_viscore|.
+
+.. code-block:: yaml
+
+   network:
+      version: 2
+      renderer: networkd
+      ethernets:
+         enp7s0:
+            dhcp4: false
+            dhcp6: false
+            addresses:
+            - 172.23.42.1/28
+         ens4f0:
+            dhcp4: false
+            dhcp6: false
+            addresses:
+            - 172.23.43.1/28
+         ens4f1:
+            dhcp4: false
+            dhcp6: false
+            addresses:
+            - 172.23.44.1/28
+
+
+Change permissions and apply with:
+
+.. code-block:: bash
+
+   sudo chmod 600 /etc/netplan/40-sensor0.yaml
+   sudo netplan apply
+
+Create docker network with macvlan driver:
+
+.. code-block:: bash
+
+   sudo docker network create -d macvlan --subnet=172.23.42.0/28 --gateway=172.23.42.1 --ip-range=172.23.42.8/29 -o parent=enp9s0 sensor0
+   # or for multiple interfaces
+   sudo docker network create -d macvlan --subnet=172.23.42.0/28 --gateway=172.23.42.1 --ip-range=172.23.42.8/29 -o parent=enp7s0 sensor0
+   sudo docker network create -d macvlan --subnet=172.23.43.0/28 --gateway=172.23.43.1 --ip-range=172.23.43.8/29 -o parent=ens4f0 sensor1
+   sudo docker network create -d macvlan --subnet=172.23.44.0/28 --gateway=172.23.44.1 --ip-range=172.23.44.8/29 -o parent=ens4f1 sensor2
+
+Verify in docker-compose.yml (or docker-compose.json):
+
+.. code-block:: yaml
+
+   # docker-compose.yml with multiple sensor interfaces
+   #... config truncated - for readability
+   networks:
+   back-tier:
+      driver: bridge
+   sensor0:
+      external: true
+      name: sensor0
+   #... config truncated - for readability
+   services:
+   rc-container:
+   #... config truncated - for readability
+      networks:
+         - back-tier
+         - sensor0
+   #... config truncated - for readability
+
+The docker-compose.yml for multiple interfaces is as follows.
+
+.. code-block:: yaml
+   # docker-compose.yml with multiple sensor interfaces
+   #... config truncated - for readability
+   networks:
+   back-tier:
+      driver: bridge
+   sensor0:
+      external: true
+      name: sensor0
+   sensor1:
+      external: true
+      name: sensor1
+   sensor2:
+      external: true
+      name: sensor2
+   #... config truncated - for readability
+   services:
+   rc-container:
+   #... config truncated - for readability
+      networks:
+         - back-tier
+         - sensor0
+         - sensor1
+         - sensor2
+   #... config truncated - for readability
+
+Ensure network settings for GigE Vision
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+GigE Vision cameras stream images with high bandwidth via UDP packages. Lost packages lead to image loss that 
+degrades the performance of the application. To avoid that, the Ethernet read buffers should be increased on the host. 
+For Ubuntu, create the file ``/etc/sysctl.d/10-gev-perf.conf`` with the following content:
+
+.. code-block:: bash
+
+   # Increase readbuffer size for GigE Vision
+   net.core.rmem_max=33554432
+
+Apply settings with:
+
+.. code-block:: bash
+
+   sudo sysctl -p /etc/sysctl.d/10-gev-perf.conf
+
+Load container images
+^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+   gunzip -c ./rc_container-latest.tar.gz | docker load
+   gunzip -c ./tritonserver-23.10.tar.gz | docker load
+
+Start the Docker stack
+^^^^^^^^^^^^^^^^^^^^^^
+
+The preferred method to start the docker-compose stack is
+
+.. code-block:: bash
+
+   cd /path/to/rc_container/
+   # use docker-compose.yml
+   docker compose up -d --pull never
+
+If the host system requires a docker-compose file in JSON format, use the following command.
+
+.. code-block:: bash
+
+   cd /path/to/rc_container/
+   # use docker-compose.json
+   docker compose -f docker-compose.json up -d --pull never
+
+Wait a few minutes for all containers to start. The status can be monitored with:
+
+.. code-block:: bash
+
+   docker compose ps
+
+Access the Web GUI
+^^^^^^^^^^^^^^^^^^
+
+Once the stack is running, the |webgui| can be accessed via:
+
+.. code-block:: bash
+
+   http://<host-ip>:8080/
+
+Troubleshooting
+^^^^^^^^^^^^^^^
+
++-----------------------------------------------------------------------+---------------------------------------------+------------------------------------------------------------------------------------------------+
+| Symptom                                                               | Likely Cause                                | Fix                                                                                            |
++=======================================================================+=============================================+================================================================================================+
+| docker: error: driver nvidia does not support the requested device    | NVIDIA driver / Docker integration mismatch | Re-run the NVIDIA Container Toolkit installation and reboot                                    |
++-----------------------------------------------------------------------+---------------------------------------------+------------------------------------------------------------------------------------------------+
+| Containers fail to start                                              | Wrong network name                          | Ensure a Docker network named ``sensor0`` exists                                               |
++-----------------------------------------------------------------------+---------------------------------------------+------------------------------------------------------------------------------------------------+
+| |webgui| not reachable                                                | Containers not up                           | ``docker compose logs`` to inspect errors                                                      |
++-----------------------------------------------------------------------+---------------------------------------------+------------------------------------------------------------------------------------------------+
+| Very low depth image frame rate                                       | GPU does not work in container              | Verify by running ``nvidia-smi`` on the host and inside the container and fix problems **[1]** |
++-----------------------------------------------------------------------+---------------------------------------------+------------------------------------------------------------------------------------------------+
+
+**[1]** If ``nvidia-smi`` on the host fails, ensure that packages are consistent, because an unattended upgrade under 
+Ubuntu may upgrade the Nvidia driver, but not the Nvidia toolkit. 
+This can be fixed by running ``sudo apt update && sudo apt upgrade`` manually. 
+Unattended upgrades may be disabled. If ``nvidia-smi`` fails inside the container, 
+ensure that ``no-cgroups = false`` in ``/etc/nvidia-container-runtime/config.toml`` and 
+restart docker if the configuration had to be changed. This configuration file may 
+have been overwritten by an update of the Nvidia container toolkit.
+
+
+Software license
+----------------
+
+The |rc_xxx| ships with a USB dongle for licensing
+and protection of the installed software packages. The purchased
+software licenses are installed on and are bound to this dongle and
+its ID.
+
+The functionality of the |rc_xxx| can
+be enhanced anytime by
+:ref:`upgrading the license<sect-updating-license>`:latex:`\:(Section \ref{maintenance:sect-updating-license})`,
+e.g., for optionally available software modules.
+
+.. note:: The |rc_xxx| requires to be restarted whenever the installed
+          licenses have changed.
+
+.. note:: The dongle ID and the license status can be retrieved
+         via the |rc_xxx|'s various interfaces
+         such as the :menuselection:`System --> Firmware & License` page of the
+         :ref:`Web GUI<sect-web-gui>`:latex:`\ (Section \ref{webgui:sect-web-gui})`.
+
+.. note:: For the software components to be properly licensed, the USB dongle
+         must be plugged to the |rc_xxx| **before power up**.
+
+.. note:: The |rc_xxx| requires to be restarted, whenever the license
+         dongle is plugged to or unplugged from the device.
+
+
+.. _sect-camera-connection-stack:
+
+Connection of cameras
+---------------------
+
+.. index::
+   pair: camera connection; installation
+
+
+The |rc_xxx| offers up to four software *camera pipelines* for processing data from the connected sensors.
+The configuration of the camera pipelines is explained in :doc:`pipelines`:latex:`\:(see Section \ref{pipelines:sect-pipelines})`.

@@ -1,0 +1,51 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="1"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_qr_code_detect" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/detect_inverted_tags/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/forget_after_n_detections/@value" Type="INT"/>
+      <ELEMENT Tag="req/parameters/max_corner_distance/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/quality/@value" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/use_cached_images/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/parameters/detect_inverted_tags/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/detect_inverted_tags/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/detect_inverted_tags/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/detect_inverted_tags/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/forget_after_n_detections/@value" Type="INT"/>
+      <ELEMENT Tag="res/parameters/forget_after_n_detections/@default" Type="INT"/>
+      <ELEMENT Tag="res/parameters/forget_after_n_detections/@min" Type="INT"/>
+      <ELEMENT Tag="res/parameters/forget_after_n_detections/@max" Type="INT"/>
+      <ELEMENT Tag="res/parameters/max_corner_distance/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/max_corner_distance/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/max_corner_distance/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/max_corner_distance/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/quality/@value" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/quality/@default" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/quality/@min" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/quality/@max" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/use_cached_images/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/use_cached_images/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/use_cached_images/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/use_cached_images/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

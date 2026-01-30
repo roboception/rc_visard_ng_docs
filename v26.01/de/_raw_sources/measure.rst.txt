@@ -1,0 +1,324 @@
+
+.. include:: global_rst.glb
+
+.. _sect-measure:
+
+Measure
+=======
+
+.. index:: ! Measure
+   single: depth measurement
+
+Introduction
+------------
+
+The Measure module allows measuring of depth values in a specific region of interest.
+
+The Measure module is a base module which is available on every |rc_xxx|.
+
+.. _sect-measure-measure-depth:
+
+Measuring Depth
+---------------
+
+The Measure module provides functionality to measure depth values in the current scene in a 2D region of interest.
+Optionally, the region of interest can be subdivided into up to 100 cells, for which separate depth measurements
+are returned in addition to the overall depth measurements of the whole region.
+
+A depth measurement consist of the average depth ``mean_z``,
+the minimum depth ``min_z`` and the maximum depth ``max_z``, each containing 3D coordinates. 
+The coordinates of the ``min_z`` and ``max_z`` measurements correspond to the point in the cell or overall region with
+the minimum and maximum distance from the camera, respectively. The ``x`` and ``y`` coordinates of the ``mean_z`` measurements 
+define a point in the center of the cell or the overall region and the ``z`` coordinate is determined by the 
+average of all depth value measurements (distances from the camera) in this region. Additionally, a ``coverage`` value is
+returned for each cell and the overall region, which is a number between 0 and 1 that reflects the fraction 
+of valid depth values inside the respective region. A coverage value of 0 means that the cell is invalid and no
+depth value could be computed.
+
+When the external ``pose_frame`` is used for the depth measurements, all 3D coordinates are computed as described above,
+but then transformed to the external frame. That means, the depth is always measured along the line of sight of 
+the camera, independently of the chosen pose frame.
+
+.. _sect-measure-dependencies:
+
+Interaction with other modules
+------------------------------
+
+Internally, the Measure module depends on, and interacts with other on-board
+modules as listed below.
+
+.. Note::
+  All changes and configuration updates to these modules will affect
+  the performance of the Measure module.
+
+.. _sect-measure-stereo-camera-matching:
+
+Depth Images
+^^^^^^^^^^^^
+
+The Measure module internally makes use of the following data:
+
+.. only:: rc_visard or rc_visard_ng or matrixvision
+
+   - Disparity images from the :doc:`stereo_matching`
+     (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`)
+
+.. only:: (rc_cube or rc_reason_stack) and (roboception or basler or schunk)
+
+   - Disparity images from the :doc:`stereo_matching`
+     (``rc_stereomatching``:latex:`, Section \ref{stereo_matching:sect-stereo-matching}`), in case a stereo camera is used
+
+.. only:: (rc_cube) and (roboception or basler or schunk)
+   
+   - Disparity images from the :doc:`blaze`
+     (``rc_blaze``:latex:`, Section \ref{blaze:sect-blaze}`), in case a Basler |blaze| camera is used
+
+.. only:: (rc_cube or rc_reason_stack) and (roboception or matrixvision or schunk)
+
+   - Disparity, error, and confidence images from the :doc:`orbbec`
+     (``rc_orbbec``:latex:`, Section \ref{orbbec:sect-orbbec}`), in case an |orbbec| camera is used
+
+.. only:: (rc_cube or rc_reason_stack) and roboception
+
+   - Disparity images from the :doc:`zivid`
+     (``rc_zivid``:latex:`, Section \ref{zivid:sect-zivid}`), in case a |zivid| camera is used
+
+
+.. _sect-measure-hand-eye-dep:
+
+Hand-eye calibration
+^^^^^^^^^^^^^^^^^^^^
+
+In case the camera has been calibrated to a robot, the Measure module
+can automatically provide points in the robot coordinate frame.
+For the Measure node's :ref:`sect-measure-services`:latex:`\:(Section \ref{measure:sect-measure-services})`, the frame of the
+output points can be controlled with the ``pose_frame`` argument.
+
+Two different ``pose_frame`` values can be chosen:
+
+1. **Camera frame** (``camera``).
+   All points provided by the module are in the camera frame,
+   and no prior knowledge about the pose of the camera in the environment is required.
+   It is the user's responsibility to update the configured points
+   if the camera frame moves (e.g. with a robot-mounted camera).
+
+2. **External frame** (``external``).
+   All points provided by the module are in the external frame,
+   configured by the user during the hand-eye calibration process.
+   The module relies on the on-board
+   :doc:`Hand-eye calibration module<handeye_calibration>`:latex:`\:(Section \ref{handeye_calibration:sect-handeye-calibration})`
+   to retrieve the sensor mounting (static or robot mounted) and
+   the hand-eye transformation.
+   If the mounting is static, no further information is needed.
+   If the sensor is robot-mounted, the ``robot_pose`` is required
+   to transform poses to and from the ``external`` frame.
+
+.. Note::
+   If no hand-eye calibration is available, all ``pose_frame`` values should be set to ``camera``.
+
+All ``pose_frame`` values that are not ``camera`` or ``external`` are rejected.
+
+.. _sect-measure-parameters:
+
+Parameters
+----------
+
+.. index::
+   single: Measure; parameters
+
+The Measure module is called ``rc_measure``
+in the |rest-api| and is represented in the
+:ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+:cubeonly:`in the desired pipeline` under
+:menuselection:`Modules --> Measure`.
+
+.. The user can explore and configure the Measure
+.. module's run-time parameters, e.g. for development and testing, using the |webgui| or the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`.
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+.. include:: _gen/nodes/params/rc_measure.txt
+
+.. _sect-measure-status-values:
+
+Status values
+-------------
+
+The Measure module reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_measure`` module's status values
+	:header:  Name, Description
+
+	"``data_acquisition_time``","Time in seconds required to acquire depth image"
+	"``last_timestamp_processed``","The timestamp of the last processed depth image"
+	"``processing_time``","Processing time of the last measurement in seconds"
+
+.. _sect-measure-services:
+
+Services
+--------
+
+.. index::
+   single: Measure; services
+
+The user can explore and call the Measure module's services,
+e.g. for development and testing, using the
+:doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or
+the |rc_xxx|
+:ref:`sect-web-gui`:latex:`\:(Section \ref{webgui:sect-web-gui})` on the
+*Measure* page under *Modules*.
+
+The Measure module offers the following services.
+
+.. _expl-measure-srv-measure-depth:
+
+``measure_depth``
+^^^^^^^^^^^^^^^^^
+   Computes the mean, minimum and maximum depth in a given region of interest, which can optionally be subdivided into cells.
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_measure/services/measure_depth
+
+            .. only:: rc_cube or rc_reason_stack
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_measure/services/measure_depth
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_measure/services/measure_depth
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            Required arguments:
+
+               ``pose_frame``: see :ref:`sect-measure-hand-eye-dep`:latex:`\:(Section \ref{measure:sect-measure-hand-eye-dep})`.
+
+            Optional arguments:
+      
+               ``region_of_interest_2d_id`` is the ID of the 2D region of interest (see :ref:`sect-roi`:latex:`, Section \ref{roi:sect-roi}`)
+               that will be used for the depth measurements.
+
+               ``region_of_interest_2d`` is an alternative on-the-fly definition of the region of interest for the depth measurements. 
+               This region of interest will be ignored if a ``region_of_interest_2d_id`` is given. The region of interest is always defined
+               on the camera image with full resolution, where ``offset_x`` and ``offset_y`` are the pixel coordinates of the upper left corner
+               of the rectangular region of interest, and ``width`` and ``height`` are the width and height of it in pixels.
+               Default is a region of interest covering the whole image.
+
+               ``cell_count`` is the number of cells in x and y direction into which the region of interest is divided. 
+               If not given, a cell count of 0, 0 is assumed and only the overall values will be computed. The total cell count is
+               computed as product of the x and y values must not exceed 100.
+
+               ``data_acquisition_mode``: if set to ``CAPTURE_NEW`` (default), a new image dataset will be used for the measurement.
+               If set to ``USE_LAST``, the previous dataset will be used for the measurement.
+
+            Potentially required arguments:
+
+               ``robot_pose``: see :ref:`sect-measure-hand-eye-dep`:latex:`\:(Section \ref{measure:sect-measure-hand-eye-dep})`.
+
+
+            .. include:: _gen/nodes/services/rc_measure_measure_depth_request.txt
+
+         .. tab:: **Response**
+
+            ``cells`` contains the depth measurements of all requested cells. The cells are always ordered from left to right and top
+            to bottom in image coordinates.
+            
+            ``overall`` contains the depth measurements of the full region of interest.
+
+            ``coverage`` contains the valid pixel ratio as described in 
+            :ref:`sect-measure-measure-depth`:latex:`\:(Section \ref{measure:sect-measure-measure-depth})`.
+
+            ``mean_z``, ``min_z`` and ``max_z`` contains the measurement coordinates as described in 
+            :ref:`sect-measure-measure-depth`:latex:`\:(Section \ref{measure:sect-measure-measure-depth})`.
+
+            ``region_of_interest_2d`` returns the definition of the requested region of interest for the depth measurement.
+
+            ``pose_frame`` contains the pose frame of the depth measurement coordinates.
+
+            .. include:: _gen/nodes/services/rc_measure_measure_depth_response.txt
+
+.. only:: rc_cube or rc_reason_stack
+
+   .. _expl-measure-srv-trigger-dump:
+
+   ``trigger_dump``
+   ^^^^^^^^^^^^^^^^
+      Triggers dumping of the measurement that corresponds to the given timestamp, 
+      or the latest measurement, if no timestamp is given. The dumps are saved to the
+      connected USB drive.
+
+      .. toggle-header::
+         :header: **Details**
+
+         This service can be called as follows.
+
+         .. tabs::
+
+            .. tab:: **API version 2**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_measure/services/trigger_dump
+
+            .. tab:: **API version 1 (deprecated)**
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v1/nodes/rc_measure/services/trigger_dump
+
+         .. tabs::
+
+            .. tab:: **Request**
+
+               .. include:: _gen/nodes/services/rc_measure_trigger_dump_request.txt
+
+            .. tab:: **Response**
+
+               .. include:: _gen/nodes/services/rc_measure_trigger_dump_response.txt
+
+
+.. _sect-measure-return-codes:
+
+Return codes
+------------
+
+.. index::
+   pair: Measure; return codes
+
+Each service response contains a ``return_code``,
+which consists of a ``value`` plus an optional ``message``.
+A successful service returns with a ``return_code`` value of ``0``.
+Negative ``return_code`` values indicate that the service failed.
+Positive ``return_code`` values indicate that the service succeeded with additional information.
+The smaller value is selected in case a service has multiple ``return_code`` values,
+but all messages are appended in the ``return_code`` message.
+
+The following table contains a list of common codes:
+
+.. tabularcolumns:: |c|L|
+.. _tab-measure-return-codes:
+.. csv-table:: Return codes of the Measure module's services
+    :header:  Code, Description
+
+    "0",    "Success"
+    "-1",   "An invalid argument was provided"
+

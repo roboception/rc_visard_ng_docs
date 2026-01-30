@@ -1,0 +1,20 @@
+Rectification
+
+To simplify image processing, the camera module rectifies all camera
+images based on the camera calibration. This means that lens
+distortion is removed and the principal point is located exactly in
+the middle of the image.
+
+The model of a rectified camera is described with just one value,
+which is the focal length. The
+
+rc_visard NG
+
+ reports a focal length factor via its various interfaces. It relates
+to the image width for supporting different image resolutions. The
+focal length f in pixels can be easily obtained by multiplying the
+focal length factor by the image width in pixels.
+
+In case of a stereo camera, rectification also aligns images such that
+an object point is always projected onto the same image row in both
+images. The cameras' optical axes become exactly parallel.

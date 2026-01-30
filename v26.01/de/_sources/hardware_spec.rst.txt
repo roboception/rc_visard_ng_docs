@@ -1,0 +1,399 @@
+Hardware-Spezifikation
+
+Bemerkung: Die folgenden Hardware-Spezifikationen sind als
+  allgemeine Richtlinie angegeben. Das Produkt kann hiervon abweichen.
+
+Lieferumfang
+
+Der Lieferumfang eines
+
+rc_visard NG
+
+ umfasst üblicherweise lediglich den
+
+rc_visard NG
+
+-Sensor und die Kurzanleitung. Das Handbuch liegt in digitaler Form
+vor, ist im Sensor hinterlegt und lässt sich zudem über die
+
+Web GUI
+
+ oder über die Roboception-Homepage
+
+https://roboception.com/resources/knowledge-base/
+
+ aufrufen.
+
+Bemerkung: Folgende Elemente sind, sofern nicht anders angegeben,
+  NICHT im Lieferumfang enthalten:
+
+  Kupplungen, Adapter, Halterungen,
+
+  Netzteil, Kabel und Sicherungen,
+
+  Netzwerkkabel.
+
+  In Abschnitt
+
+  Zubehör
+
+   ist angegeben, welche Kabelanbieter empfohlen werden.
+
+Für den
+
+rc_visard NG
+
+ ist ein Anschlussset verfügbar. Dieses Set umfasst das
+M12/RJ45-Netzwerkkabel, ein 24-V-Netzteil und einen DC/M12-Adapter.
+Für nähere Informationen siehe
+
+Zubehör
+
+.
+
+Bemerkung: Das Anschlussset ist lediglich für die Ersteinrichtung,
+  nicht jedoch für die dauerhafte Installation im industriellen Umfeld
+  gedacht.
+
+Das folgende Bild zeigt die wichtigsten Bauteile des
+
+rc_visard NG
+
+, auf die in diesem Handbuch Bezug genommen wird.
+
+
+Technische Spezifikation
+
+Die technischen Spezifikationen für den
+
+rc_visard NG
+
+ sind in
+
+Tab. 1
+
+ angegeben. Die Framerate für die Berechnung des Tiefenbilds in hoher
+Auflösung (High: 720 x 540 Pixel) ist signifikant höher, wenn der
+Minimale Abstand auf 1.2 Meter verringert werden kann.
+
+Technische Spezifikation für den rc_visard NG        rc_visard NG
+160-6  Bildauflösung  1440 x 1080 Pixel, monochrom  Sichtfeld  6 mm
+Objektiv: Horizontal: 43°, Vertikal: 33°  IR Filter  650 nm
+Tiefenbild (mit Minimalem  Abstand von 0.5 m)  1440 x 1080 Pixel
+(Full) bei 3 Hz  720 x 540 Pixel (High) bei 7 Hz  360 x 270 Pixel
+(Medium) bei 25 Hz  240 x 180 Pixel (Low) bei 25 Hz  Tiefenbild (mit
+Minimalem  Abstand von 1.2 m)  1440 x 1080 Pixel (Full) bei 3 Hz  720
+x 540 Pixel (High) bei 16 Hz  360 x 270 Pixel (Medium) bei 25 Hz  240
+x 180 Pixel (Low) bei 25 Hz  GPU/CPU  Orin Nano 8GB  Stromversorgung
+18–30 V  Kühlung  Passiv  Basisabstand  160 mm  Tiefenmessbereich  0,5
+m bis unendlich  Abmessungen (B x H x L)  230 mm x 75 mm x 84 mm
+Gewicht  0,965 kg
+
+Die folgende Tabelle zeigt die Auflösungen und Genauigkeiten bei
+verschiedenen Abständen.
+
+Auflösung und Genauigkeit des rc_visard NG in Millimetern, mit Stereo-
+Matching in voller Auflösung und Random-Dot-Projektion auf nicht-
+reflektierenden und nicht-transparenten Objekten.          Abstand
+(mm)  rc_visard NG 160-6  laterale Auflösung (mm)  500  1000  2000
+3000  0.3  0.6  1.1  1.7  Tiefenauflösung (mm)  500  1000  2000  3000
+0.05  0.2  0.9  2.0  Mittlere Tiefengenauigkeit (mm)  500  1000  2000
+3000  0.2  0.9  3.5  7.8
+
+Der
+
+rc_visard NG
+
+ kann für zusätzliche Funktionalitäten mit On-Board-Softwaremodulen
+ausgestattet werden. Diese Softwaremodule können bei Roboception
+bestellt werden und benötigen ein Lizenz-Update.
+
+
+CAD-Modelle des
+
+rc_visard NG
+
+ können von der Roboception-Homepage heruntergeladen werden:
+
+http://www.roboception.com/download
+
+. Die CAD-Modelle werden nach bestem Wissen und Gewissen, aber ohne
+Garantie für die Richtigkeit bereitgestellt. Wird als
+Materialeigenschaft Aluminium zugewiesen (Dichte:
+2.76\mathrm{g\over{cm}^3}), weicht das CAD-Modell in Bezug auf Gewicht
+und Massenschwerpunkt nicht mehr als fünf Prozent und in Bezug auf das
+Trägheitsmoment nicht mehr als zehn Prozent vom Produkt ab.
+
+Umwelt- und Betriebsbedingungen
+
+Der
+
+rc_visard NG
+
+ ist für industrielle Anwendungen konzipiert worden. Die in
+
+Tab. 3
+
+ angegebenen Umweltbedingungen für die Lagerung, den Transport und den
+Betrieb sind ausnahmslos einzuhalten.
+
+Umweltbedingungen        rc_visard NG  Lager-/Transporttemperatur
+-25–70 °C  Betriebstemperatur  0–50 °C  Relative Feuchte (nicht
+kondensierend)  20–80 %  Schwingungen  5 g  Erschütterungen  50 g
+Schutzklasse  IP 54  Sonstiges  Von korrosiven Flüssigkeiten oder
+Gasen fernhalten.  Von explosiven Flüssigkeiten oder Gasen fernhalten.
+Von starken elektromagnetischen Störungen fernhalten.
+
+Der
+
+rc_visard NG
+
+ ist für den Betrieb bei einer Umgebungstemperatur zwischen 0 und 50
+°C ausgelegt und arbeitet mit konvektiver (passiver) Kühlung. Während
+der Verwendung muss, insbesondere im Bereich der Kühlrippen, ein
+ungehinderter Luftstrom sichergestellt sein. Der
+
+rc_visard NG
+
+ sollte nur mithilfe der vorgesehenen mechanischen
+Montageschnittstelle montiert werden. Kein Teil des Gehäuses darf
+während des Betriebs abgedeckt werden. Das Gehäuse muss in alle
+Richtungen mindestens zehn Zentimeter Abstand zu angrenzenden
+Elementen haben und es ist ein ausreichender Luftaustausch mit der
+Umgebung nötig, um eine angemessene Kühlung sicherzustellen. Die
+Kühlrippen müssen frei von Schmutz und anderen Verunreinigungen
+gehalten werden.
+
+Die Gehäusetemperatur richtet sich nach der Verarbeitungslast, der
+Sensororientierung und der Umgebungstemperatur. Erreichen die frei
+liegenden Gehäuseflächen des Sensors eine Temperatur von mehr als 60
+°C, wechselt die LED von Grün auf Rot.
+
+Warnung: Für handgeführte Anwendungen sollte ein wärmeisolierter
+  Griff am Sensor angebracht werden. So wird das bei Kontakt mit der
+  60 °C heißen Oberfläche bestehende Risiko für Brandverletzungen
+  reduziert.
+
+Spezifikationen für die Stromversorgung
+
+Der
+
+rc_visard NG
+
+ muss an eine Gleichspannungsquelle angeschlossen werden. Der
+Lieferumfang des
+
+rc_visard NG
+
+ umfasst standardmäßig kein Netzteil. Das im Anschlussset enthaltene
+Netzteil kann für die Ersteinrichtung verwendet werden. Der Kunde ist
+dafür verantwortlich, bei einer dauerhaften Installation für eine
+geeignete Gleichspannungsquelle zu sorgen. Jeder
+
+rc_visard NG
+
+ muss an eine eigene Stromquelle angeschlossen werden. Der Anschluss
+an ein Gebäudenetz darf nur über ein Netzteil erfolgen, das gemäß
+EN55011 Klasse B zertifiziert ist.
+
+Grenzwerte für die Stromversorgung            Minimum  Bemessungswert
+Maximum  Versorgungsspannung  18 V  24 V  30 V  Max. Leistungsaufnahme
+25 W  Überstromschutz  Schutz der Stromversorgung mit einer
+2-A-Sicherung
+
+Warnung: Die Überschreitung der maximalen Bemessungswerte kann zu
+  Schäden am
+
+  rc_visard NG
+
+  , am Netzteil und an angeschlossener Ausrüstung führen.
+
+Warnung: Jeder
+
+  rc_visard NG
+
+   muss von einem eigenen Netzteil versorgt werden.
+
+Warnung: Der Anschluss an das Gebäudenetz darf nur über Netzteile
+  erfolgen, die gemäß EN 55011 als Gerät der Klasse B zertifiziert
+  sind.
+
+Verkabelung
+
+Die Kabel sind nicht im Standardlieferumfang des
+
+rc_visard NG
+
+ enthalten. Es obliegt dem Kunden, geeignete Kabel zu beschaffen. In
+
+Zubehör
+
+ ist eine Übersicht über die empfohlenen Komponenten enthalten.
+
+Warnung: Die Richtlinien zum Kabelmanagement sind zwingend
+  einzuhalten. Kabel sind immer mit einer Zugentlastung an der
+  Halterung des
+
+  rc_visard NG
+
+   zu befestigen, sodass durch Kabelbewegungen keine Kräfte auf die
+  M12-Anschlüsse des
+
+  rc_visard NG
+
+   wirken. Die verwendeten Kabel müssen lang genug sein, damit sich
+  der
+
+  rc_visard NG
+
+   voll bewegen kann, ohne dass das Kabel zu stark belastet wird. Der
+  minimale Biegeradius des Kabels muss beachtet werden.
+
+Der
+
+rc_visard NG
+
+ besitzt eine industrielle, achtpolige M12-Buchse (A-kodiert) für die
+Ethernet-Verbindung und einen achtpoligen M12-Stecker (A-kodiert) für
+den Stromanschluss und die GPIO-Konnektivität. Beide Anschlüsse
+befinden sich an der Rückwand des Geräts.  Die Lage der beiden
+Anschlüsse am
+
+rc_visard NG
+
+ wird in
+
+Abb. 4
+
+ dargestellt.
+
+
+Die Anschlüsse sind so gedreht, dass die üblicherweise 90°
+abgewinkelten Stecker horizontal abgehen und von der Kamera (und den
+Kühlrippen) wegzeigen.
+
+
+Die Steckerbelegung für den Ethernetanschluss ist in
+
+Abb. 6
+
+ angegeben.
+
+
+Die Steckerbelegung für den Stromanschluss ist in
+
+Tab. 5
+
+ angegeben.
+
+Steckerbelegung für den Stromanschluss      Pos.  Belegung  1  GPIO
+Eingang 2  2  Stromzufuhr  3  GPIO Eingang 1  4  GPIO Masse  5  GPIO
+Vcc  6  GPIO Ausgang 1 (Bildbelichtung)  7  Masse  8  GPIO Ausgang 2
+
+Die GPIO-Signale werden über Optokoppler entkoppelt.
+
+GPIO Ausgang 1
+
+ bietet standardmäßig ein Signal zur Belichtungssynchronisierung und
+hat für die Dauer der Belichtung einen logischen HIGH-Pegel. Alle
+GPIOs können über das IOControl-Modul kontrolliert werden (
+
+IOControl und Projektor-Kontrolle
+
+). Pins von unbenutzten GPIOs sollten ungeerdet bleiben.
+
+Warnung: Es ist besonders wichtig, dass
+
+  GPIO Eingang 1
+
+   während des Boot-Vorgangs ungeerdet oder auf LOW gesetzt ist. Der
+
+  rc_visard NG
+
+   fährt nicht hoch, wenn der Pin während des Boot-Vorgangs auf HIGH
+  gesetzt ist.
+
+Das GPIO-Schaltschema und die zugehörigen Spezifikationen sind in
+
+Abb. 7
+
+ angegeben. Die maximale Spannung für
+
+GPIO Eingang
+
+ und
+
+GPIO Vcc
+
+ beträgt 30 V.
+
+
+Warnung: Schließen Sie keine Signale mit Spannungen über 30 V an den
+
+  rc_visard NG
+
+   an.
+
+Mechanische Schnittstelle
+
+Der
+
+rc_visard NG
+
+ verfügt an der Unterseite über eine Montageschnittstelle.
+
+
+Zur Fehlerbehebung sowie zu Konfigurationszwecken kann der Sensor über
+die am Koordinatenursprung angegebene, genormte Stativaufnahme
+(Gewinde: 1/4 Zoll x 20) montiert werden. Für dynamische Anwendungen,
+wie für die Montage an einem Roboterarm, muss der Sensor mit drei
+M4-8.8-Maschinenschrauben befestigt werden, die mit einem Drehmoment
+von 2,5 Nm anzuziehen und mit einer mittelfesten Gewindesicherung, wie
+Loctite 243, zu sichern sind. Die maximale Einschraubtiefe beträgt 6
+mm. Die beiden Löcher mit einem Durchmesser von 4 mm können für
+Positionsstifte (ISO 2338 4 m6) verwendet werden, damit der Sensor
+präzise positioniert wird.
+
+Warnung: Für dynamische Anwendungen muss der
+
+  rc_visard NG
+
+   mit drei M4-8.8-Maschinenschrauben befestigt werden, die mit einem
+  Drehmoment von 2,5 Nm anzuziehen und mit einer mittelfesten
+  Gewindesicherung zu sichern sind. Es dürfen keine hochfesten
+  Schrauben verwendet werden. Die  Einschraubtiefe muss wenigstens 5
+  mm betragen.
+
+Koordinatensysteme
+
+Der Ursprung des
+
+rc_visard NG
+
+-Koordinatensystems liegt in der Austrittspupille der linken
+Kameralinse. Dieses System wird auch als Sensor- oder
+Kamerakoordinatensystem bezeichnet. Die ungefähre Lage für den
+
+rc_visard NG
+
+ wird auf dem nächsten Bild gezeigt.
+
+Das Montagepunkt-Koordinatensystem für den
+
+rc_visard NG
+
+ sitzt an der Unterseite, zentriert auf dem Gewinde, wobei die
+Ausrichtung der des Sensor-Koordinatensystems entspricht.
+
+Abb. 9
+
+ zeigt den ungefähren Versatz.
+
+
+Bemerkung: Der korrekte Versatz zwischen dem
+  Sensor-/Kamerakoordinatensystem und einem Roboterkoordinatensystem
+  kann über die
+
+  Hand-Auge Kalibrierung
+
+   bestimmt werden.

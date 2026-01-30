@@ -1,0 +1,29 @@
+.. include:: global_rst.glb
+
+.. _sect-opc-ua:
+
+OPC UA interface
+================
+
+.. index::
+   single: OPC UA
+
+The |rc_xxx| also offers an optional OPC UA interface running on TCP port 4840.
+The OPC UA server can be activated via a separate :ref:`license<sect-updating-license>`
+:latex:`(Section \ref{maintenance:sect-updating-license})`.
+
+The OPC UA server provides access to parameters and services of all available software modules analogous to the |rest-api|.
+To browse the OPC UA Address Space use e.g. the freely available `UAExpert GUI client <https://www.unified-automation.com/products/development-tools/uaexpert.html>`_.
+
+The OPC UA server uses the ``DataTypeDefinition`` attribute (available in OPC UA version 1.04) for custom datatypes and also uses methods and variable length arrays.
+Please check if your OPC UA client supports this.
+
+.. only:: rc_cube or rc_reason_stack
+
+   .. note::
+
+      The OPC UA server currently only supports the equivalent of API version 1 (i.e. only camera pipeline 0).
+
+.. only:: roboception
+
+    Please contact support@roboception.de if you are interested in using the OPC UA server.

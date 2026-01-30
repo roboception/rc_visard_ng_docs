@@ -1,0 +1,342 @@
+.. include:: global_rst.glb
+
+Pipeline type *orbbec*
+======================
+
+.. Note:: The firmware version of the connected |orbbec| camera must be at least 1.6.00, 
+   otherwise the |orbbec| cannot be used.
+
+.. _sect-orbbec-camera-parameters:
+
+Parameters
+----------
+
+The camera module on a pipeline of type ``orbbec`` is called ``rc_camera`` and is represented by the
+*Camera* page in the desired pipeline in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+The user can change the camera parameters there, or directly via the |rest-api|
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`).
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_camera_rc_cube_orbbec.txt
+
+.. only:: rc_cube
+   
+   These parameters are also available over the GenICam interface with slightly different names and partly with different units
+   or data types (see :ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+   
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the |webgui|'s *Camera* page. The name in the
+|webgui| is given in brackets behind the parameter name and the parameters are listed in the order
+they appear in the |webgui|.
+
+.. _orbbec-gamma:
+
+.. index::
+   pair: camera; gamma
+
+``gamma`` (*Gamma*)
+'''''''''''''''''''
+   The gamma value determines the mapping of perceived light to the brightness of a pixel.
+   Lower gamma values let dark image parts appear brighter.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gamma=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?gamma=<value>
+
+.. _orbbec-exp-control:
+
+.. index::
+   single: exposure; auto
+   single: exposure; manual
+   single: exposure; HDR
+   single: manual exposure
+   single: auto exposure
+
+``exp_control`` (Exposure *Auto* or *Manual*)
+'''''''''''''''''''''''''''''''''''''''''''''
+   The exposure control mode can be set to `Auto` or `Manual`.
+
+   `Auto`: This is the default mode in which the exposure time and gain
+   factor is chosen automatically to correctly expose the image.
+   The last automatically determined exposure and gain values are set into
+   ``exp_value`` and ``gain_value`` when switching auto-exposure off.
+
+   `Manual`: In the manual exposure mode the exposure time and gain are kept
+   fixed independent of the resulting image brightness.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_control=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_control=<value>
+
+.. _orbbec-exp-max:
+
+.. index::
+   single: auto exposure
+   pair: maximum; exposure time
+   single: gain factor
+   single: motion blur
+   single: image noise
+
+``exp_max`` (*Max Exposure*)
+''''''''''''''''''''''''''''
+   This value is the maximal exposure in auto-exposure
+   mode in seconds. The actual
+   exposure time is adjusted automatically so that the images are exposed
+   correctly. If the maximum exposure is reached, but the images are still
+   underexposed, the gain is stepwise increased to increase the
+   image brightness. Limiting the exposure is useful for avoiding
+   or reducing motion blur during fast movements. However, higher gain
+   introduces noise into the image. The best trade-off depends on the application.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_max=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_max=<value>
+
+.. _orbbec-exp-region:
+
+.. index::
+   single: exposure region
+
+``exp_offset_x``, ``exp_offset_y``, ``exp_width``, ``exp_height`` (*Exposure Region*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+   These values define a rectangular region in the left rectified image for
+   limiting the area used for computing the auto exposure. The exposure time and
+   gain factor of both images are chosen to optimally expose the defined region.
+   This can lead to over- or underexposure of image parts outside the defined
+   region. If either the width or height is 0, then the whole left and right
+   images are considered by the auto exposure function. This is the default.
+
+   The region is visualized in the |webgui| by a rectangle in the left
+   rectified image. It can be defined using the sliders or by selecting
+   it in the image after pressing the button ``Select Region in Image``.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+.. _orbbec-exp-value:
+
+.. index::
+   single: exposure time
+   single: manual exposure
+
+``exp_value`` (*Exposure*)
+''''''''''''''''''''''''''
+    This value is the exposure in manual exposure mode. This exposure is kept constant
+    even if the images are underexposed.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_value=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_value=<value>
+
+.. _orbbec-gain-value:
+
+.. index::
+   single: gain factor
+
+``gain_value`` (*Gain*)
+'''''''''''''''''''''''
+   This value is the gain factor that can be set in manual exposure mode. Higher gain factors
+   reduce the required exposure time but introduce noise.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gain_value=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?gain_value=<value>
+
+.. _orbbec-wb-auto:
+
+.. index::
+   single: white balance
+
+``wb_auto`` (*White Balance Auto* or *Manual*)
+''''''''''''''''''''''''''''''''''''''''''''''
+   This value can be set to `true` for automatic white balancing or `false` for manually
+   setting the white balance using ``wb_value``.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?wb_auto=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?wb_auto=<value>
+
+.. _orbbec-wb-value:
+      
+``wb_value`` (*White Balance Manual Value*)
+'''''''''''''''''''''''''''''''''''''''''''
+This value determines the white balance when ``wb_auto`` is `false`.
+
+Via the |restapi|, this parameter can be set as follows.
+
+.. tabs::
+
+   .. tab:: **API version 2**
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+   .. tab:: **API version 1 (deprecated)**
+
+      .. code-block:: bash
+
+         PUT http://<host>/api/v1/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red>=<value>
+
+.. _sect-orbbec-camera-status-values:
+
+Status values
+-------------
+
+The ``rc_camera`` module of an ``orbbec`` pipeline reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_camera`` module's status values
+   :header:  Name, Description
+
+   "``baseline``","Internally assumed stereo baseline :math:`t` in meters for disparity image computation"
+   "``brightness``","Current brightness of the image as value between 0 and 1"
+   "``color``","0 for monochrome cameras, 1 for color cameras"
+   "``exp``","Current exposure. This value is shown below the image preview in the |webgui| as *Exposure*."
+   "``focal``","Focal length factor normalized to an image width of 1"
+   "``fps``","Current frame rate of the camera images in Hertz. This value is shown in the |webgui| below the image preview as *FPS (Hz)*."
+   "``gain``","Current gain factor. This value is shown in the |webgui| below the image preview as *Gain*."
+   "``height``","Height of the camera image in pixels. This value is shown in the |webgui| below the image preview as the second part of *Resolution (px)*."
+   "``last_capture_ok``", "1 if the last image capture was successful"
+   "``last_timestamp_grabbed``", "Timestamp of the last image acquired"
+   "``test``","0 for live images and 1 for test images"
+   "``width``","Width of the camera image in pixels. This value is shown in the |webgui| below the image preview as the first part of *Resolution (px)*."
+
+.. _sect-orbbec-camera-services:
+
+Services
+--------
+
+In a pipeline of type ``orbbec`` the ``rc_camera`` module offers the following services.
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/reset_defaults
+
+            .. only:: rc_cube or rc_reason_stack
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_camera/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_camera_rc_cube_orbbec_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_camera_rc_cube_orbbec_reset_defaults_response.txt

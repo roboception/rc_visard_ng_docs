@@ -1,0 +1,192 @@
+UserSpace
+
+Der UserSpace ermöglicht es Benutzern, Container auf dem
+
+rc_visard NG
+
+ bereitzustellen und zu verwalten. Es werden Standalone-Container und
+docker-compose Stacks unterstützt.
+
+Bemerkung: Kenntnisse von Docker-Containern werden vorausgesetzt.
+
+Falls der UserSpace verfügbar und aktiviert ist, kann er durch Klicken
+des Menüeintrags
+
+UserSpace
+
+ in der
+
+Web GUI
+
+ angesteuert werden. Diese Seite zeigt die laufenden Apps und
+Container mit ihrem aktuellen Status und, falls verfügbar, einem
+Health-Check. Jeder Container listet die veröffentlichten Ports. Falls
+deren Protokoll http oder https ist, können diese Container direkt in
+der Web GUI erreicht werden.
+
+Konfiguration
+
+Wenn der UserSpace zum ersten Mal aktiviert wird, muss ein Benutzer
+für
+
+Portainer
+
+ erstellt werden: Navigieren Sie in der
+
+Web GUI
+
+ zu
+
+UserSpace
+
+ und klicken Sie auf
+
+UserSpace Apps verwalten
+
+. Anschließend registrieren Sie das Benutzerkonto des Administrators.
+Dieser Schritt muss innerhalb von fünf Minuten abgeschlossen werden,
+nachdem der
+
+rc_visard NG
+
+ hochgefahren wurde.
+
+Bemerkung: Der UserSpace ist standardmäßig nicht aktiviert und kann
+  aus Sicherheitsgründen über die Web GUI ausschließlich dann
+  aktiviert, deaktiviert oder zurückgesetzt werden, wenn der
+  Roboception UserSpace Key QR Code vor der Kamera der platziert wird.
+
+Konfiguration des UserSpace über die Web GUI
+
+Um den UserSpace über die
+
+Web GUI
+
+ zu konfigurieren, navigieren Sie zu
+
+UserSpace
+
+ und klicken auf UserSpace konfigurieren.
+
+Drucken Sie den Roboception UserSpace Key von
+
+hier
+
+ oder
+
+https://roboception.com/roboception-userspace-key/
+
+ aus und platzieren Sie ihn so vor der Kamera  dass er vollständig im
+linken und rechten Kamerabild sichtbar ist.
+
+Nutzen Sie die Buttons zum Aktivieren/Deaktivieren oder Zurücksetzen
+des UserSpace. Beim Zurücksetzen werden alle Container, Datenspeicher
+und die Portainer-Konfiguration gelöscht, einschließlich Secrets und
+Benutzerkonten.
+
+HTTP Proxy konfigurieren
+
+Wenn Ihre Organisation einen Proxyserver verwendet, um eine Verbindung
+zum Internet herzustellen, müssen Sie diesen Proxyserver für Docker
+und Portainer konfigurieren, um Container-Images, die in Container-
+Registries wie Docker Hub gespeichert sind, abzurufen und Git-
+Repositories in Portainer abzurufen. Diese Proxy-Einstellungen gelten
+nur für Docker und Portainer selbst, nicht für die Apps, die in
+Containern ausgeführt werden.
+
+Normalerweise bedeutet dies auch, dass Sie dem CA-Zertifikat des
+Proxyservers vertrauen müssen, um HTTPS-Verbindungen verwenden zu
+können.
+
+Beides kann über die
+
+Web GUI
+
+ unter
+
+UserSpace
+
+ UserSpace konfigurieren eingestellt werden.
+
+Anzeige laufender Apps
+
+UserSpace Informationen einschließlich laufender Apps und ihre
+veröffentlichten Ports können über den
+
+REST-API userspace Endpunkt
+
+ abgefragt werden, oder in der
+
+Web GUI
+
+ im Menü unter
+
+UserSpace
+
+ angezeigt werden.
+
+Containerbezeichnungen (Labels ) "org.opencontainers.image.XXX" können
+genutzt werden um der API zusätzliche Informationen zu liefern, die
+auch in der Web GUI angezeigt werden, siehe
+
+REST-API UserSpaceContainer Definition
+
+.
+
+Netzwerkzugriff auf die UserSpace Anwendungen
+
+Um die Container über Netzwerk zu erreichen, müssen die Container-
+Ports für den Host veröffentlicht sein.
+
+Wenn ein Container eine Webschnittstelle über http oder https
+bereitstellt, können Sie Containerbezeichnungen (Labels) verwenden, um
+einen Button in der Web GUI anzuzeigen, über den sie direkt geöffnet
+werden kann:
+
+com.roboception.app.http: alle öffentlichen TCP-Ports nutzen http
+
+com.roboception.app.https.port=1234,5678: Komma-separierte Liste mit
+https-Ports
+
+Schnittstellen
+
+Im UserSpace verwaltete Container können auf öffentliche
+Schnittstellen des
+
+rc_visard NG
+
+ zugreifen. Insbesondere können die Container über
+
+gRPC
+
+ auf die Bilddaten zugreifen und die
+
+REST-API-Schnittstelle
+
+ aufrufen. Auf den
+
+rc_visard NG
+
+ (den Host) kann durch die Docker-Bridge-IP zugegriffen werden (im
+Standard-Docker-Bridge-Netzwerk 172.17.0.1).
+
+Einschränkungen
+
+Container unterliegen bestimmten Einschränkungen:
+
+Container können nicht privilegiert ausgeführt werden.
+
+Keinen Zugriff auf das Host-Netzwerk (das Docker Bridge-Netzwerk wird
+benutzt).
+
+Nur Pfade innerhalb geklonter git Repositories mit einem docker-
+compose Stack können eingebunden werden, alle anderen Hostpfade nicht.
+
+Auf Hostgeräte kann nicht zugegriffen werden. Dazu gehören z.B  USB-
+und GPU-Geräte.
+
+System Ports und intern verwendete Ports des Hosts können nicht
+gebunden werden. Dazu gehören Ports unter 1024, Ports von 4200 bis
+4299 und die Ports 2342, 2343, 2344, 2345, 3956, 4840, 5353, 6379,
+7000, 7001, 7002, 7003, 7100, 9100, 9118, 9256, 9445, 9446, 11311,
+22350, 22352, 50010, 50051, 50052, 50053 und 50054.

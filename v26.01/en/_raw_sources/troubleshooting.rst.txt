@@ -1,0 +1,341 @@
+.. include:: global_rst.glb
+
+
+.. _sect-troubleshooting:
+
+Troubleshooting
+===============
+
+
+.. only:: rc_visard or rc_visard_ng
+
+    .. _sect-led-colors:
+
+    LED colors
+    ----------
+
+    .. index::
+      single: LED; colors
+
+    During the boot process, the LED will change color several times to indicate stages in the boot process:
+
+    .. only:: rc_visard
+
+      .. _tab-led-color:
+
+      .. table:: LED color codes
+
+        +----------+----------------------------------+
+        |LED color | Boot stage                       |
+        +==========+==================================+
+        | white    | power supply OK                  |
+        +----------+----------------------------------+
+        | yellow   |                                  |
+        +----------+                                  +
+        | purple   | normal boot process in progress  |
+        +----------+                                  +
+        | blue     |                                  |
+        +----------+----------------------------------+
+        | green    | boot complete, |rc_xxx| ready    |
+        +----------+----------------------------------+
+
+      The LED will signal some warning or error states to support the user during troubleshooting.
+
+      .. _tab-led-error:
+
+      .. table:: LED color trouble codes
+
+        ==============================================  ===================================================
+        LED color                                       Warning or error state
+        ==============================================  ===================================================
+        off                                             no power to the sensor
+        brief red flash every 5 seconds                 no network connectivity
+        red while sensor appears to function normally   high-temperature warning (case has exceeded 60 °C)
+        red while case is below 60 °C                   Some process has terminated and failed to restart.
+        ==============================================  ===================================================
+
+    .. only:: rc_visard_ng
+
+      .. _tab-led-color:
+
+      .. table:: LED color codes
+
+        +----------+----------------------------------+
+        |LED color | Boot stage                       |
+        +==========+==================================+
+        | white    | power supply OK                  |
+        +----------+----------------------------------+
+        | blue     | normal boot process in progress  |
+        +----------+----------------------------------+
+        | green    | boot complete, |rc_xxx| ready    |
+        +----------+----------------------------------+
+      
+
+      The LED will signal some warning or error states to support the user during troubleshooting.
+
+      .. _tab-led-error:
+
+      .. table:: LED color trouble codes
+
+        ==============================================  ===================================================
+        LED color                                       Warning or error state
+        ==============================================  ===================================================
+        off                                             no power to the sensor
+        brief red flash every 5 seconds                 no network connectivity
+        red                                             Some process has terminated and failed to restart.
+        yellow                                          high-temperature warning (case has exceeded 60 °C)
+        ==============================================  ===================================================
+
+    Hardware issues
+    ---------------
+
+    **LED does not illuminate**
+
+    The |rc_xxx| does not start up.
+
+    - Ensure that cables are connected and secured properly.
+    - Ensure that adequate DC voltage (18 V to 30 V) with correct polarity is applied to the
+      power connector at the pins labeled as **Power** and **Ground** as described in
+      the device's :ref:`pin assignment specification<tab-power-pin-assignments>`:latex:`\:(Section \ref{hardware_spec:tab-power-pin-assignments})`.
+      Connecting the sensor to voltage outside of the specified range, to alternating current,
+      with reversed polarity, or to a supply with voltage spikes will lead to permanent hardware damage.
+
+    .. only:: rc_visard
+      
+      **LED turns red while the sensor appears to function normally**
+
+    .. only:: rc_visard_ng
+      
+      **LED turns yellow while the sensor appears to function normally**
+
+    This may indicate a high housing temperature. The sensor might be mounted in a position that
+    obstructs free airflow around the cooling fins.
+
+    - Clean cooling fins and housing.
+    - Ensure a minimum of 10 cm free space in all directions around cooling fins to provide adequate convective cooling.
+    - Ensure that ambient temperature is within specified range.
+
+    The sensor may slow down processing when cooling is insufficient or the ambient temperature exceeds the specified range.
+
+    **Reliability issues and/or mechanical damage**
+
+    This may be an indication of ambient conditions (vibration, shock, resonance, and temperature) being outside
+    of specified range. Please refer to the :ref:`specification of environmental conditions<tab-hardware-environment>`:latex:`\ (Section \ref{hardware_spec:tab-hardware-environment})`.
+
+    - Operating the |rc_xxx| outside of specified ambient conditions might lead to damage and will void the warranty.
+
+    **Electrical shock when touching the sensor**
+
+    This indicates an electrical fault in sensor, cabling, or power supply or adjacent system.
+
+    - Immediately turn off power to the system, disconnect cables, and have a qualified electrician check the setup.
+    - Ensure that the sensor housing is properly grounded; check for large ground loops.
+
+
+    Connectivity issues
+    -------------------
+
+    **LED briefly flashes red every 5 seconds**
+
+    If the LED briefly flashes red every 5 seconds, then the |rc_xxx| is not able to detect a network
+    link.
+
+    - Check that the network cable is properly connected to the |rc_xxx| and the network.
+    - If no problem is visible, then replace the Ethernet cable.
+
+    **A GigE Vision client or rcdiscover-gui cannot detect the camera**
+
+    - Check whether the |rc_xxx|'s LED flashes briefly every 5 seconds (check the cable if it does).
+    - Ensure that the |rc_xxx| is connected to the same subnet (the discovery mechanism uses broadcasts that
+      will not work across different subnets).
+
+    **The Web GUI is inaccessible**
+
+    - Ensure that the |rc_xxx| is turned on and connected to the same subnet as the host computer.
+    - Check whether the |rc_xxx|'s LED flashes briefly every 5 seconds (check the cable if it does).
+    - Check whether ``rcdiscover-gui`` detects the sensor. If it reports the |rc_xxx| as unreachable,
+      then the |rc_xxx|'s
+      :ref:`network configuration<sect-network-configuration>`:latex:`\:(Section \ref{installation:sect-network-configuration})` is wrong.
+    - If the |rc_xxx| is reported as reachable, try double clicking the entry to open the |webgui| in a browser.
+    - If this does not work, try entering the |rc_xxx|'s reported IP address directly in the browser
+      as target address.
+
+    **Too many Web GUIs are open at the same time**
+
+    The |webgui| consumes the |rc_xxx|'s processing resources to compress images to be transmitted
+    and for statistical output that is regularly polled by the browser. Leaving several instances of
+    the |webgui| open on the same or different computers can significantly diminish the |rc_xxx|'s
+    performance. The |webgui| is meant for configuration and validation, not to permanently monitor
+    the |rc_xxx|.
+
+.. _sect-camera-issues:
+
+Camera-image issues
+-------------------
+
+**The camera image is too bright**
+
+- If the camera is in manual exposure mode, decrease the exposure time, or
+- switch to auto-exposure mode.
+
+**The camera image is too dark**
+
+- If the camera is in manual exposure mode, increase the exposure time, or
+- switch to auto-exposure mode.
+
+**The camera image is too noisy**
+
+Large gain factors cause high-amplitude image noise. To decrease the image noise,
+
+- use an additional light source to increase the scene's light intensity, or
+- choose a greater maximal auto-exposure time.
+
+**The camera image is out of focus**
+
+- Check whether the object is too close to the lens and increase the distance between the object and the lens if it is.
+- Check whether the camera lenses are dirty and clean them if they are.
+- If none of the above applies, a severe hardware problem might exist.
+  Please :ref:`contact support<sect-contact>`:latex:`\:(Section \ref{contact:sect-contact})`.
+
+**The camera image is blurred**
+
+Fast motions in combination with long exposure times can cause blur. To reduce motion blur,
+
+- decrease the motion speed of the camera,
+- decrease the motion speed of objects in the field of view of the camera, or
+- decrease the exposure time of the camera.
+
+.. only:: rc_visard or rc_visard_ng
+
+    **The camera image is fuzzy**
+
+    - Check whether the lenses are dirty and clean them if so (see :ref:`sect-lens-cleaning`:latex:`, Section \ref{maintenance:sect-lens-cleaning}`).
+    - If none of the above applies, a severe hardware problem might exist.
+      Please :ref:`contact support<sect-contact>`:latex:`\:(Section \ref{contact:sect-contact})`.
+
+**The camera image frame rate is too low**
+
+- Increase the image frame rate.
+- The maximal frame rate of the cameras is 25 Hz.
+
+.. _sect-disparity-issues:
+
+Depth/Disparity, error, and confidence image issues
+---------------------------------------------------
+All these guidelines also apply to error and confidence images, because they correspond directly to the disparity image.
+
+**The disparity image is too sparse or empty**
+
+- Check whether the camera images are well exposed and sharp. Follow the instructions in
+  :ref:`sect-camera-issues`:latex:`\:(Section \ref{troubleshooting:sect-camera-issues})` if applicable.
+- Check whether the scene has enough texture and install an external pattern projector if required.
+- Decrease the :ref:`Minimum Distance
+  <expl-depth-min-depth>`:latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`.
+- Increase the :ref:`Maximum Distance <expl-depth-max-depth>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+- Check whether the object is too close to the cameras. Consider the different depth ranges of the camera variants.
+- Decrease the :ref:`Minimum Confidence <expl-depth-min-conf>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+- Increase the :ref:`Maximum Depth Error <expl-depth-max-depth-err>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+- Choose a lesser :ref:`Disparity Image Quality <expl-depth-quality>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`. Lower resolution disparity images are generally less sparse.
+- Check the cameras' calibration and recalibrate if required (see :ref:`sect-camera-calibration`:latex:`, Section
+  \ref{camera_calibration:sect-camera-calibration}`).
+
+**The disparity images' frame rate is too low**
+
+- Check and increase the frame rate of the camera images.
+  The frame rate of the disparity image cannot be greater than the frame rate of the camera images.
+- Choose a lesser :ref:`Disparity Image Quality <expl-depth-quality>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+- Increase the :ref:`Minimum Distance
+  <expl-depth-min-depth>`:latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`
+  as much as possible for the application.
+
+**The disparity image does not show close objects**
+
+- Check whether the object is too close to the cameras. Consider the depth ranges of the camera variants.
+- Decrease the :ref:`Minimum Distance <expl-depth-min-depth>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+
+**The disparity image does not show distant objects**
+
+- Increase the :ref:`Maximum Distance <expl-depth-max-depth>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+- Increase the :ref:`Maximum Depth Error <expl-depth-max-depth-err>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+- Decrease the :ref:`Minimum Confidence <expl-depth-min-conf>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+
+**The disparity image is too noisy**
+
+- Increase the :ref:`Segmentation value <expl-depth-seg>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+- Increase the :ref:`Fill-In value <expl-depth-fill>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+
+**The disparity values or the resulting depth values are too inaccurate**
+
+- Decrease the distance between the camera and the scene. Depth-measurement error grows quadratically with the distance from the cameras.
+- Check whether the scene contains repetitive patterns and remove them if it does. They could cause wrong disparity measurements.
+
+**The disparity image is too smooth**
+
+- Decrease the :ref:`Fill-In value <expl-depth-fill>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+
+**The disparity image does not show small structures**
+
+- Decrease the :ref:`Segmentation value <expl-depth-seg>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+- Decrease the :ref:`Fill-In value <expl-depth-fill>`:latex:`\:(Section
+  \ref{stereo_matching:sect-disp-image-parameters})`.
+
+
+.. only:: rc_visard
+
+    .. _sect-pose-issues:
+
+    Dynamics issues
+    ---------------
+
+    **State estimates are unavailable**
+
+    - Check in the |webgui| that pose estimation has been switched on
+      (see :ref:`sect-vo-parameters`:latex:`, Section \ref{stereo_visodo:sect-vo-parameters}`).
+    - Check in the |webgui| that the update rate is about |imu-rate|.
+    - Check the *Logs* in the |webgui| for errors.
+
+    **The state estimates are too noisy**
+
+    - Adapt the parameters for visual odometry as described in :ref:`sect-vo-parameters`:latex:`\:(Section
+      \ref{stereo_visodo:sect-vo-parameters})`.
+    - Check whether the *camera pose stream* has enough accuracy.
+
+    **Pose estimation has jumps**
+
+    - Has the SLAM module been turned on? SLAM can cause jumps when reducing errors due to a
+      loop closure.
+    - Adapt the parameters for visual odometry as described in :ref:`sect-vo-parameters`:latex:`\:(Section
+      \ref{stereo_visodo:sect-vo-parameters})`.
+
+    **Pose frequency is too low**
+
+    - Use the real-time pose stream with a |imu-rate| update rate. See
+      :ref:`sect-stereo-ins`:latex:`\:(Section \ref{stereo_ins:sect-stereo-ins})`.
+
+    **Delay/Latency of pose is too great**
+
+    - Use the real-time pose stream. See
+      :ref:`sect-stereo-ins`:latex:`\:(Section \ref{stereo_ins:sect-stereo-ins})`.
+
+.. only:: rc_cube or rc_visard or rc_visard_ng
+
+  GigE Vision/GenICam issues
+  --------------------------
+
+  **No images**
+
+  - Check that the modules are enabled. See ``ComponentSelector`` and ``ComponentEnable`` in
+    :ref:`sect-genicam-params`:latex:`\:(Section \ref{gigevision:sect-genicam-params})`.

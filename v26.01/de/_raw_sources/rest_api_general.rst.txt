@@ -1,0 +1,241 @@
+.. include:: global_rst.glb
+
+
+General API structure
+^^^^^^^^^^^^^^^^^^^^^
+
+.. index::
+   single: REST-API; entry point
+   pair: REST-API; version
+
+.. only:: rc_visard or rc_visard_ng or rc_cube
+
+   The general **entry point** to the |rc-xxx|'s API is ``http://<host>/api/``,
+   where ``<host>`` is either the device's IP address or its :ref:`host name<sect-network-hostname>` as known
+   by the respective DHCP server, as explained in
+   :ref:`network configuration<sect-network-configuration>`:latex:`\ (Section
+   \ref{installation:sect-network-configuration})`.
+   Accessing this entry point with a web browser lets the user explore and test
+   the full API during run-time using the :ref:`sect-swagger-ui`
+   :latex:`\ (Section  \ref{rest_api_swagger_ui:sect-swagger-ui})`.
+
+.. only:: rc_reason_stack
+
+   The general **entry point** to the |rc-xxx|'s API is ``http://<host>/api/``,
+   where ``<host>`` is the IP address of the host PC that runs the |rc_reason_stack| combined with the port 8080,
+   i.e. ``<host-ip>::8080``. Accessing this entry point with a web browser lets the user explore and test
+   the full API during run-time using the :ref:`sect-swagger-ui`
+   :latex:`\ (Section  \ref{rest_api_swagger_ui:sect-swagger-ui})`.
+
+For actual HTTP requests, the **current API version is appended** to the entry point
+of the API, i.e., ``http://<host>/api/v2``. 
+
+All data sent to and
+received by the |rest-api| follows the JavaScript Object Notation (JSON).
+The API is designed to let the user **create, retrieve, modify, and delete**
+so-called **resources** as listed in :ref:`Available resources and requests<sect-rest-resources-and-methods>`:latex:`\ (Section
+\ref{rest_api_general:sect-rest-resources-and-methods})` using the HTTP requests below.
+
+.. tabularcolumns:: |p{40mm}|p{50mm}|
+
++-------------------+---------------------------------------------------------------------+
+| Request type      | Description                                                         |
++===================+=====================================================================+
+| GET               | Access one or more resources and return the result as JSON.         |
++-------------------+---------------------------------------------------------------------+
+| PUT               | Modify a resource and return the modified resource as JSON.         |
++-------------------+---------------------------------------------------------------------+
+| DELETE            | Delete a resource.                                                  |
++-------------------+---------------------------------------------------------------------+
+| POST              | Upload file (e.g., license or firmware image).                      |
++-------------------+---------------------------------------------------------------------+
+
+Depending on the type and the specific request itself, **arguments** to HTTP
+requests can be transmitted as part of the **path** (:term:`URI`) to the
+resource, as
+**query** string, as **form data**, or in the **body** of the request. The following
+examples use the command line tool *curl*, which is available for various operating
+systems. See https://curl.haxx.se.
+
+-  Get a node's current status; its name is encoded in the path (URI)
+
+   .. code-block:: bash
+
+      curl -X GET 'http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching'
+
+-  Get values of some of a node's parameters using a query string
+
+   .. code-block:: bash
+
+      curl -X GET 'http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters?name=minconf&name=maxdepth'
+
+.. only:: rc_visard
+
+      -  Configure a new datastream; the destination parameter is transmitted as form data
+
+         .. code-block:: bash
+
+            curl -X PUT --header 'Content-Type: application/x-www-form-urlencoded' -d 'destination=10.0.1.14%3A30000' 'http://<host>/api/v2/datastreams/pose'
+
+-  Set a node's parameter as JSON-encoded text in the body of the request
+
+   .. code-block:: bash
+
+      curl -X PUT --header 'Content-Type: application/json' -d '[{"name": "mindepth", "value": 0.1}]' 'http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters'
+
+
+As for the responses to such requests, some common return codes for the
+|rcxxx|'s API are:
+
+.. tabularcolumns:: |p{40mm}|p{50mm}|
+
++--------------------------+--------------------------------------------------------------+
+| Status Code              | Description                                                  |
++==========================+==============================================================+
+| ``200 OK``               | The request was successful; the resource is returned as JSON.|
++--------------------------+--------------------------------------------------------------+
+|``400 Bad Request``       | A required attribute or argument of the API request is       |
+|                          | missing or invalid.                                          |
++--------------------------+--------------------------------------------------------------+
+| ``404 Not Found``        | A resource could not be accessed; e.g., an ID for a resource |
+|                          | could not be found.                                          |
++--------------------------+--------------------------------------------------------------+
+| ``403 Forbidden``        | Access is (temporarily) forbidden; e.g., some parameters are |
+|                          | locked while a GigE Vision application is connected.         |
++--------------------------+--------------------------------------------------------------+
+| ``429 Too many requests``| Rate limited due to excessive request frequency.             |
++--------------------------+--------------------------------------------------------------+
+
+The following listing shows a sample response to a successful request that accesses
+information about the ``rc_stereomatching`` node's ``minconf`` parameter:
+
+.. code-block:: http
+
+   HTTP/1.1 200 OK
+   Content-Type: application/json
+   Content-Length: 157
+
+   {
+       "name": "minconf",
+       "min": 0,
+       "default": 0,
+       "max": 1,
+       "value": 0,
+       "type": "float64",
+       "description": "Minimum confidence"
+   }
+
+.. NOTE:: The actual behavior, allowed requests, and specific return codes
+            depend heavily on the specific resource, context, and action.
+            Please refer to the |rcxxx|'s
+            :ref:`available resources <sect-rest-resources-and-methods>`:latex:`\
+            (Section \ref{rest_api_general:sect-rest-resources-and-methods})` and to
+            each :ref:`software module's <sect-modules>`:latex:`\
+            (Section \ref{modules:sect-modules})`
+            parameters and services.
+
+.. only:: rc_visard or rc_cube
+
+   Migration from API version 1
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   API version 1 has become deprecated with the 22.01 firmware release of the |rc_xxx|. The following
+   changes were introduced in API version 2.
+
+   .. only:: rc_cube or rc_reason_stack
+
+      * All 3D-camera, detection and configuration modules which were located under ``/nodes`` in API version 1
+        are now under ``/pipelines/<pipeline number>/nodes`` to support multiple pipelines running on the |rc_xxx|, e.g.
+        ``/pipelines/1/nodes/rc_camera``.
+
+   .. only:: rc_visard or rc_visard_ng
+
+      * All 3D-camera, :visardonly:`navigation,` detection and configuration modules which were located under ``/nodes``  in API version 1
+        are now under ``/pipelines/0/nodes/``, e.g. ``/pipelines/0/nodes/rc_camera``.
+
+   * Configuring load carriers, grippers and regions of interest is now only possible in the global database modules, which
+     are located under ``/nodes``, e.g. ``/nodes/rc_load_carrier_db``. The corresponding services in the detection modules
+     have been removed or deprecated.
+
+   * Templates can now be accessed under ``/templates``, e.g. ``/templates/rc_silhouettematch``.
+
+Available resources and requests
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. _sect-rest-resources-and-methods:
+
+The available |restapi| resources are structured into the following parts:
+
+* ``/nodes``
+      Access the |rcxxx|'s global
+      :doc:`database_modules`
+      :latex:`\:(Section \ref{database_modules:sect-database-modules})`
+      with their run-time status, parameters, and offered services,
+      for storing data used in :cubeonly:`all camera pipelines and`
+      multiple modules, such as load carriers, grippers and regions of interest.
+
+.. only:: rc_cube or rc_reason_stack
+
+   * ``/pipelines/<number>/nodes``
+      Access the |rcxxx|'s 3D-camera, detection and configuration
+      :ref:`software modules<sect-modules>`
+      :latex:`\:(Section \ref{modules:sect-modules})`
+      of the camera pipeline with the specified number,
+      with their run-time status, parameters, and offered services.
+
+.. only:: rc_visard or rc_visard_ng
+
+   * ``/pipelines/0/nodes``
+      Access the |rcxxx|'s 3D-camera, navigation,
+      detection and configuration
+      :ref:`software modules<sect-modules>`
+      :latex:`\:(Section \ref{modules:sect-modules})`
+      with their run-time status, parameters, and offered services.
+
+* ``/pipelines``
+      Access to the status and configuration of the camera pipelines.
+      :visardsonly:`There is always only one camera pipeline with number 0.`
+
+*  ``/templates``
+      Access the object templates on the |rcxxx|.
+
+*  ``/cad``
+      Access the cad elements, e.g. for grippers, on the |rcxxx|.
+
+.. only:: (rc_cube or rc_reason_stack) and (schunk or matrixvision or roboception)
+
+   *  ``/presets``
+         Access the 2D and 3D user-defined presets for |zivid| cameras.
+
+.. only:: rc_visard
+
+   *  ``/datastreams``
+         Access and manage data streams of the |rcxxx|'s
+         :ref:`rc_dynamics interface<sect-rc-dynamics-interface>`:latex:`\ (Section \ref{rc_dynamics:sect-rc-dynamics-interface})`.
+
+*  ``/system``
+      Access the system state, set network configuration,
+      :cubeonly:`configure the camera pipeline types,`
+      and manage licenses as well as firmware updates.
+
+.. only:: rc_cube or rc_visard_ng
+
+   *  ``/userspace``
+         Access the UserSpace on the |rcxxx|.
+
+*  ``/logs``
+      Access the log files on the |rcxxx|.
+
+*  ``/generic_robot_interface``
+      Access the job and hec_configs for the Generic Robot Interface on the |rcxxx|.
+
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+
+   rest_api_nodes
+   :rc_cube_only:rest_api_pipelines
+   :rc_cube_container_exclude:rest_api_datastreams
+   :rc_visard_exclude:rest_api_userspace
+   rest_api_syslogs

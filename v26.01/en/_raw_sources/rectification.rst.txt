@@ -1,0 +1,41 @@
+
+.. include:: global_rst.glb
+
+.. _sect-camera-rectification:
+
+Rectification
+-------------
+
+.. index::
+   single: rectification
+   single: camera model
+   single: stereo camera
+   single: calibration; rectification
+   single: focal length
+   single: baseline
+   single: disparity
+
+To simplify image processing, the camera module rectifies all camera images
+based on the camera calibration. This means that lens distortion is removed and
+the principal point is located exactly in the middle of the image.
+
+The model of a rectified camera is described with just one value, which is the focal length.
+The |rc_xxx| reports a focal length factor via its various interfaces. It
+relates to the image width for supporting different image resolutions. The
+focal length :math:`f` in pixels can be easily obtained by multiplying the
+focal length factor by the image width in pixels.
+
+In case of a stereo camera, rectification also aligns images such that an
+object point is always projected onto the same image row in both images.
+The cameras' optical axes become exactly parallel.
+
+.. This means that points at infinite distance are projected onto the same image column in both images.
+.. The closer an object point is, the larger is the difference between its image
+.. columns in the right and left images. This difference is called disparity.
+
+.. only:: rc_cube or rc_reason_stack
+
+   .. note:: If a |rgbd_only| camera is used instead of a stereo camera, only
+             one camera image is provided. However, the image is rectified,
+             i.e. lens distortion is removed and the principal point is in the
+             image center.

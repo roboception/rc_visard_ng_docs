@@ -1,0 +1,108 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="64"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_itempick" Type="STRING"/>
+      <ELEMENT Tag="req/service/compute_grasps_extended" Type="STRING"/>
+      <ELEMENT Tag="req/args/collision_detection/@gripper_id" Type="STRING"/>
+      <ELEMENT Tag="req/args/collision_detection/pre_grasp_offset/@x" Type="REAL"/>
+      <ELEMENT Tag="req/args/collision_detection/pre_grasp_offset/@y" Type="REAL"/>
+      <ELEMENT Tag="req/args/collision_detection/pre_grasp_offset/@z" Type="REAL"/>
+      <ELEMENT Tag="req/args/item_models/le/type" Type="STRING"/>
+      <ELEMENT Tag="req/args/item_models/le/unknown/max_dimensions/@x" Type="REAL"/>
+      <ELEMENT Tag="req/args/item_models/le/unknown/max_dimensions/@y" Type="REAL"/>
+      <ELEMENT Tag="req/args/item_models/le/unknown/max_dimensions/@z" Type="REAL"/>
+      <ELEMENT Tag="req/args/item_models/le/unknown/min_dimensions/@x" Type="REAL"/>
+      <ELEMENT Tag="req/args/item_models/le/unknown/min_dimensions/@y" Type="REAL"/>
+      <ELEMENT Tag="req/args/item_models/le/unknown/min_dimensions/@z" Type="REAL"/>
+      <ELEMENT Tag="req/args/load_carrier_compartment/box/@x" Type="REAL"/>
+      <ELEMENT Tag="req/args/load_carrier_compartment/box/@y" Type="REAL"/>
+      <ELEMENT Tag="req/args/load_carrier_compartment/box/@z" Type="REAL"/>
+      <ELEMENT Tag="req/args/load_carrier_compartment/pose/@X" Type="REAL"/>
+      <ELEMENT Tag="req/args/load_carrier_compartment/pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="req/args/load_carrier_compartment/pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="req/args/load_carrier_compartment/pose/@A" Type="REAL"/>
+      <ELEMENT Tag="req/args/load_carrier_compartment/pose/@B" Type="REAL"/>
+      <ELEMENT Tag="req/args/load_carrier_compartment/pose/@C" Type="REAL"/>
+      <ELEMENT Tag="req/args/load_carrier_id" Type="STRING"/>
+      <ELEMENT Tag="req/args/pose_frame" Type="STRING"/>
+      <ELEMENT Tag="req/args/region_of_interest_id" Type="STRING"/>
+      <ELEMENT Tag="req/args/robot_pose/@X" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@A" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@B" Type="REAL"/>
+      <ELEMENT Tag="req/args/robot_pose/@C" Type="REAL"/>
+      <ELEMENT Tag="req/args/suction_surface_length" Type="REAL"/>
+      <ELEMENT Tag="req/args/suction_surface_width" Type="REAL"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/grasps/le/item/@pose_frame" Type="STRING"/>
+      <ELEMENT Tag="res/grasps/le/item/@type" Type="STRING"/>
+      <ELEMENT Tag="res/grasps/le/item/@uuid" Type="STRING"/>
+      <ELEMENT Tag="res/grasps/le/item/bounding_box/@x" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/item/bounding_box/@y" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/item/bounding_box/@z" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/item/pose/@X" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/item/pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/item/pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/item/pose/@A" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/item/pose/@B" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/item/pose/@C" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/max_suction_surface_length" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/max_suction_surface_width" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@X" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@A" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@B" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose/@C" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/pose_frame" Type="STRING"/>
+      <ELEMENT Tag="res/grasps/le/quality" Type="REAL"/>
+      <ELEMENT Tag="res/grasps/le/timestamp/@sec" Type="INT"/>
+      <ELEMENT Tag="res/grasps/le/timestamp/@nsec" Type="INT"/>
+      <ELEMENT Tag="res/grasps/le/type" Type="STRING"/>
+      <ELEMENT Tag="res/grasps/le/uuid" Type="STRING"/>
+      <ELEMENT Tag="res/load_carriers/le/height_open_side" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/id" Type="STRING"/>
+      <ELEMENT Tag="res/load_carriers/le/inner_dimensions/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/inner_dimensions/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/inner_dimensions/@z" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/outer_dimensions/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/outer_dimensions/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/outer_dimensions/@z" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/overfilled" Type="BOOL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@X" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@Y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@Z" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@A" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@B" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose/@C" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/pose_frame" Type="STRING"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_ledge/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_ledge/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_step_height" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_thickness/@x" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/rim_thickness/@y" Type="REAL"/>
+      <ELEMENT Tag="res/load_carriers/le/type" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/timestamp/@sec" Type="INT"/>
+      <ELEMENT Tag="res/timestamp/@nsec" Type="INT"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

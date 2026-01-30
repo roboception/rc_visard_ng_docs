@@ -1,0 +1,105 @@
+.. include:: global_rst.glb
+
+.. _sect-franka-emika-format:
+
+Franka Emika Pose Format
+------------------------
+
+Franka Emika robots use a transformation matrix :math:`T` to define a pose. 
+A transformation matrix combines a rotation matrix :math:`R` and a translation vector
+:math:`t=(\begin{array}{cccc}x & y & z\end{array})^T`.
+
+.. math::
+   T = \left(\begin{array}{cccc}
+     r_{00} & r_{01} & r_{02} & x\\
+     r_{10} & r_{11} & r_{12} & y\\
+     r_{20} & r_{21} & r_{22} & z\\
+     0      &   0    &   0    & 1
+   \end{array}\right)
+
+The pose given by Franka Emika's "Measure Pose" App consists of a translation :math:`x, y, z`
+in millimeters and a rotation :math:`x, y, z` in degrees. The rotation convention is 
+:math:`z`-:math:`y'`-:math:`x''` (i.e. :math:`x`-:math:`y`-:math:`z`) and is
+computed by :math:`r_z(z) r_y(y) r_x(x).`
+
+Conversion from transformation matrix to quaternion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from a rotation matrix (with :math:`det(R)=1`) to a quaternion
+:math:`q=(\begin{array}{cccc}q_x & q_y & q_z & q_w \end{array})` can be done as follows:
+
+.. math::
+  q_x &= \text{sign}(r_{21}-r_{12}) \frac{1}{2}\sqrt{\text{max}(0, 1 + r_{00} - r_{11} - r_{22})} \\
+  q_y &= \text{sign}(r_{02}-r_{20}) \frac{1}{2}\sqrt{\text{max}(0, 1 - r_{00} + r_{11} - r_{22})} \\
+  q_z &= \text{sign}(r_{10}-r_{01}) \frac{1}{2}\sqrt{\text{max}(0, 1 - r_{00} - r_{11} + r_{22})} \\
+  q_w &= \frac{1}{2}\sqrt{\text{max}(0, 1 + r_{00} + r_{11} + r_{22})}
+
+The :math:`\text{sign}` operator returns -1 if the argument is negative.
+Otherwise, 1 is returned. It is used to recover the sign for the square root.
+The :math:`\text{max}` function ensures that the argument of the square root
+function is not negative, which can happen in practice due to round-off errors.
+
+Conversion from Rotation-XYZ to quaternion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from the :math:`x, y, z` angles in degrees to a quaternion
+:math:`q=(\begin{array}{cccc}q_x & q_y & q_z & q_w\end{array})` can be done by
+first converting all angles to radians
+
+.. math::
+   X_r = x \frac{\pi}{180} \text{,} \\
+   Y_r = y \frac{\pi}{180} \text{,} \\
+   Z_r = z \frac{\pi}{180} \text{,} \\
+
+and then calculating the quaternion with
+
+.. math::
+   q_x = \cos{(Z_r/2)}\cos{(Y_r/2)}\sin{(X_r/2)} - \sin{(Z_r/2)}\sin{(Y_r/2)}\cos{(X_r/2)} \text{,} \\
+   q_y = \cos{(Z_r/2)}\sin{(Y_r/2)}\cos{(X_r/2)} + \sin{(Z_r/2)}\cos{(Y_r/2)}\sin{(X_r/2)} \text{,} \\
+   q_z = \sin{(Z_r/2)}\cos{(Y_r/2)}\cos{(X_r/2)} - \cos{(Z_r/2)}\sin{(Y_r/2)}\sin{(X_r/2)} \text{,} \\
+   q_w = \cos{(Z_r/2)}\cos{(Y_r/2)}\cos{(X_r/2)} + \sin{(Z_r/2)}\sin{(Y_r/2)}\sin{(X_r/2)} \text{.}
+
+Conversion from quaternion and translation to transformation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from a quaternion :math:`q=(\begin{array}{cccc}q_x & q_y & q_z &
+q_w\end{array})` and a translation vector :math:`t=(\begin{array}{cccc}x & y & z\end{array})^T`
+to a transformation matrix :math:`T` can be done as follows:
+
+.. math::
+   T = \left(\begin{array}{cccc}
+     1 - 2s(q_y^2+q_z^2)  & 2s(q_x q_y-q_z q_w) & 2s(q_x q_z+q_y q_w) & x\\
+     2s(q_x q_y+q_z q_w)    & 1 - 2s(q_x^2+q_z^2) & 2s(q_y q_z-q_x q_w) & y\\
+     2s(q_x q_z-q_y q_w)    & 2s(q_y q_z+q_x q_w)   & 1 - 2s(q_x^2+q_y^2) & z\\
+     0         &     0     &    0                    & 1
+   \end{array}\right)
+
+where :math:`s=||q||^{-2}=\frac{1}{q_x^2+q_y^2+q_z^2+q_w^2}` and :math:`s=1`` if
+:math:`q` is a unit quaternion.
+
+Conversion from quaternion to Rotation-XYZ
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from a quaternion :math:`q=(\begin{array}{cccc}q_x & q_y & q_z &
+q_w\end{array})` with :math:`||q||=1` to the :math:`x, y, z` angles in degrees can
+be done as follows.
+
+.. math::
+   x &= \text{atan}_2{(2(q_w q_z + q_x q_y), 1 - 2(q_y^2 + q_z^2))} \frac{180}{\pi}  \\
+   y &= \text{asin}{(2(q_w q_y - q_z q_x))} \frac{180}{\pi} \\
+   z &= \text{atan}_2{(2(q_w q_x + q_y q_z), 1 - 2(q_x^2 + q_y^2))} \frac{180}{\pi}
+
+Pose representation in RaceCom messages and state machines
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In RaceCom messages and in state machines a pose is usually defined as 
+one-dimensional array of 16 float values, representing the transformation matrix 
+in column-major order. The indices of the matrix entries below correspond to the 
+array indices
+
+.. math::
+   T = \left(\begin{array}{cccc}
+     a_0 & a_4 & a_8    & a_{12}\\
+     a_1 & a_5 & a_9    & a_{13}\\
+     a_2 & a_6 & a_{10} & a_{14}\\
+     a_3 & a_7 & a_{11} & a_{15}
+   \end{array}\right)

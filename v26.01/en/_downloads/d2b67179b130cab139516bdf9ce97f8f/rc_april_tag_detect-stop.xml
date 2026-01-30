@@ -1,0 +1,29 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="2"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_april_tag_detect" Type="STRING"/>
+      <ELEMENT Tag="req/service/stop" Type="STRING"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/accepted" Type="BOOL"/>
+      <ELEMENT Tag="res/current_state" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

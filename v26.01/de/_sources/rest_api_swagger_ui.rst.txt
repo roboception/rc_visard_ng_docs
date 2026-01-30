@@ -1,0 +1,68 @@
+Swagger UI
+
+Die
+
+Swagger UI
+
+ des
+
+rc_visard NG
+
+ ermöglicht es Entwicklern, die REST-API – beispielsweise zu
+Entwicklungs- und Testzwecken –  leicht darzustellen und zu verwenden.
+Der Zugriff auf "http://<host>/api/" oder auf
+"http://<host>/api/swagger" (der erste Link leitet automatisch auf den
+zweiten Link weiter) öffnet eine Vorschau der allgemeinen API-Struktur
+des
+
+rc_visard NG
+
+, einschließlich aller
+
+verfügbaren Ressourcen und Anfragen
+
+ . Auf dieser vereinfachten Benutzeroberfläche lassen sich alle
+Funktionen erkunden und austesten.
+
+Bemerkung: Der Benutzer muss bedenken, dass die Swagger UI des
+
+  rc_visard NG
+
+  , auch wenn sie zur Erprobung der REST-API bestimmt ist, eine voll
+  funktionstüchtige Schnittstelle ist. Das bedeutet, dass alle
+  ausgelösten Anfragen tatsächlich bearbeitet werden und den Zustand
+  und/oder das Verhalten des Geräts beeinflussen. Dies gilt
+  insbesondere für Anfragen des Typs "PUT", "POST" und "DELETE".
+
+
+Mithilfe dieser Schnittstelle können alle verfügbaren Ressourcen und
+Anfragen erprobt werden, indem diese durch Klick auf- und zugeklappt
+werden. Die folgende Abbildung zeigt ein Beispiel dafür, wie sich der
+aktuelle Zustand eines Moduls abrufen lässt, indem die erforderlichen
+Parameter ("pipeline"-Nummer und "node"-Name) ausgefüllt werden und
+anschließend
+
+Execute
+
+ geklickt wird. Daraufhin zeigt die Swagger UI unter anderem den
+"curl"-Befehl an, der bei Auslösung der Anfrage ausgeführt wurde,
+sowie den Antworttext, in dem der aktuelle Status des angefragten
+Moduls in einer Zeichenfolge im JSON-Format enthalten ist.
+
+
+Einige Aktionen, wie das Setzen von Parametern oder der Aufruf von
+Services, bedürfen komplexerer Parameter als eine HTTP-Anfrage. Die
+Swagger UI erlaubt es Entwicklern, die für diese Aktionen benötigten
+Attribute, wie im nächsten Beispiel gezeigt, während der Laufzeit zu
+erkunden. In der folgenden Abbildung werden die Attribute, die für den
+"set_pose"-Service des "rc_hand_eye_calibration"-Moduls benötigt
+werden, erkundet, indem eine "GET"-Anfrage zu dieser Ressource
+durchgeführt wird. Die Antwort enthält eine vollständige Beschreibung
+des angebotenen Services, einschließlich aller erforderlichen
+Argumente mit ihren Namen und Typen in einer Zeichenfolge im JSON-
+Format.
+
+
+Der Benutzer kann diesen vorformatierten JSON-Text als Muster für die
+Argumente nutzen, um damit den Service tatsächlich aufzurufen:
+

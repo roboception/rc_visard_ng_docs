@@ -1,0 +1,17 @@
+Measurement principles
+
+The
+
+rc_visard NG
+
+ is a self-registering 3D camera. It provides rectified camera,
+disparity, confidence, and error images, which enable the viewed
+scene's depth values along with their uncertainties to be computed.
+Furthermore, the motion of visual features in the images is combined
+with acceleration and turn-rate measurements at a high rate, which
+enables the sensor to provide real-time estimates of its current pose,
+velocity, and acceleration.
+
+In the following, the underlying measurement principles are explained
+in more detail.
+

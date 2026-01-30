@@ -1,0 +1,96 @@
+.. include:: global_rst.glb
+
+.. _sect-modules:
+
+Software modules
+================
+
+The |rc_xxx| comes with several software modules, each of which
+corresponds to a certain functionality and can be interfaced via its respective
+*node* in the :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})` or in the
+:doc:`gri`:latex:`\:(Section \ref{gri:sect-gri})`.
+
+.. only:: rc_cube or rc_reason_stack
+
+   .. index:: ! Camera pipelines
+
+   The |rc_xxx| offers the possibility to connect multiple 3D cameras such as the
+   |rc_visard|. The image data from each device is processed in a separate *camera pipeline*,
+   which consists of several different software modules. The modules inside each pipeline are pipeline specific,
+   which means that they can have different parameters for each pipeline. The modules running outside the 
+   pipelines are global and provide data for all modules in all pipelines. An overview is given in 
+   :numref:`fig-pipeline-modules`. The port numbers are given for the default installation as described in 
+   :doc:`installation_stack`:latex:`\:(Section \ref{installation_stack:sec-installation-stack})` and may 
+   be changed in the docker compose file.
+
+   .. _fig-pipeline-modules:
+   .. figure:: images/pipelines_diagram.*
+      :width:  100 %
+      :align: center
+
+      Overview of the pipeline-specific and global software modules on the |rc_xxx|
+
+   The |rc_xxx|'s pipeline-specific software modules can be divided into
+
+.. only:: rc_visard or rc_visard_ng
+
+   The |rc_xxx|'s software modules can be divided into
+
+
+.. only:: rc_visard or rc_visard_ng or rc_cube
+
+   - :doc:`camera`:latex:`\:(Section \ref{camera:sect-camera})`
+      acquires images and performs planar rectification for using the
+      camera as a measurement device.
+      Images are provided both for further internal processing by other modules
+      and for external use as :ref:`GenICam image streams <sect-genicam>`.
+      :cubeonly:`Depending on the chosen camera pipeline type, this module offers different run-time parameters.`
+
+.. only:: rc_reason_stack
+
+   - :doc:`camera`:latex:`\:(Section \ref{camera:sect-camera})`
+      acquires images and performs planar rectification for using the
+      camera as a measurement device. Depending on the chosen camera pipeline type, this module offers different run-time parameters.
+
+.. only:: rc_cube or rc_reason_stack
+
+   - :doc:`camera_modules`:latex:`\:(Section \ref{camera_modules:sect-3d-camera-modules})`
+      which provide 3D depth information such as disparity,
+      error, and confidence images,
+
+.. only:: rc_visard
+
+   - :doc:`stereo_matching`:latex:`\:(Section \ref{stereo_matching:sect-stereo-matching})`
+      which provides 3D depth information such as disparity,
+      error, and confidence images,
+
+   - :doc:`navigation_modules`:latex:`\:(Section \ref{navigation_modules:sect-navigation-modules})`
+      which provide estimates of |rc_visard|'s current pose,
+      velocity, and acceleration,
+
+- :doc:`detection_modules`:latex:`\:(Section \ref{detection_modules:sect-detection-modules})`
+   which provide a variety of detection functionalities, such as grasp point computation and object detection,
+
+- :doc:`configuration_modules`:latex:`\:(Section \ref{configuration_modules:sect-configuration-modules})`
+   which enable the user to perform calibrations and configure the |rc_xxx| for specific applications.
+
+.. only:: rc_cube or rc_reason_stack
+
+   The modules that are global for all camera pipelines running on the |rc_xxx| are the
+
+- :doc:`database_modules`:latex:`\:(Section \ref{database_modules:sect-database-modules})`
+   which enable the user to configure global data available to all other modules, such as load carriers, regions
+   of interest and grippers.
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+
+   camera
+   :rc_cube_only:camera_modules
+   :rc_visard_only:stereo_matching
+   :rc_visard_only:navigation_modules
+   detection_modules
+   configuration_modules
+   database_modules
+

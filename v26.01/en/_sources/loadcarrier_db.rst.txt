@@ -1,0 +1,460 @@
+LoadCarrierDB
+
+Introduction
+
+The LoadCarrierDB module (Load carrier database module) allows the
+global definition of load carriers, which can then be used in many
+detection modules. The specified load carriers are available for all
+modules supporting load carriers on the
+
+rc_visard NG
+
+.
+
+The LoadCarrierDB module is a base module which is available on every
+
+rc_visard NG
+
+.
+
+Specifications of the LoadCarrierDB module      Supported load carrier
+types  4-sided or 3-sided  Supported rim types  solid rim, stepped rim
+or ledged rim  Min. load carrier dimensions  0.1 m x 0.1 m x 0.05 m
+Max. load carrier dimensions  5 m x 5 m x 5 m  Max. number of load
+carriers  50  Load carriers available in  ItemPick\:(Section
+\ref{itempick:sect-itempick}) and BoxPick\:(Section \ref{boxpick:sect-
+boxpick}) and CADMatch\:(Abschnitt \ref{cadmatch:sect-cadmatch}) und
+SilhouetteMatch\:(Abschnitt \ref{silhouettematch:sect-
+silhouettematch})  Supported pose types  no pose, orientation prior,
+exact pose  Supported reference frames  camera, external
+
+Load carrier definition
+
+A load carrier (bin) is a container with four walls, a floor and a
+rectangular rim, which can contain objects. It can be used to limit
+the volume in which to search for objects or grasp points.
+
+A load carrier is defined by its "outer_dimensions" and
+"inner_dimensions". The maximum "outer_dimensions" are 5.0 meters in
+every dimension.
+
+The origin of the load carrier reference frame is in the center of the
+load carrier's
+
+outer
+
+ box and its z axis is perpendicular to the load carrier's floor
+pointing outwards (see
+
+Fig. 49
+
+).
+
+
+Note: Typically, outer and inner dimensions of a load carrier are
+  available in the specifications of the load carrier manufacturer.
+
+The inner volume of the load carrier is defined by its inner
+dimensions, but includes a region of 10 cm height above the load
+carrier, so that also items protruding from the load carrier are
+considered for detection or grasp computation. Furthermore, an
+additional "crop_distance" is subtracted from the inner volume in
+every dimension, which acts as a safety margin and can be configured
+as run-time parameter in the LoadCarrier module (see
+
+Parameters
+
+).
+
+Fig. 50
+
+ visualizes the inner volume of a load carrier. Only points which are
+inside this volume are considered for detections.
+
+
+Since the load carrier detection is based on the detection of the load
+carrier's rim, the rim geometry must be specified if it cannot be
+determined from the difference between outer and inner dimensions. A
+load carrier with a stepped rim can be defined by setting a
+"rim_thickness". The rim thickness gives the thickness of the outer
+part of the rim in the x and y direction. When a rim thickness is
+given, an optional "rim_step_height" can also be specified, which
+gives the height of the step between the outer and the inner part of
+the rim. When the step height is given, it will also be considered
+during collision checking (see
+
+CollisionCheck
+
+). Examples of load carriers with stepped rims are shown in
+
+Fig. 51
+
+ A, B. In addition to the "rim_thickness" and "rim_step_height" the
+"rim_ledge" can be specified for defining load carriers whose inner
+rim protrudes into the interior of the load carrier, such as pallet
+cages. The "rim_ledge" gives the thickness of the inner part of the
+rim in the x and y direction. An example of a load carrier with a
+ledged rim is shown in
+
+Fig. 51
+
+ C.
+
+
+The different rim types are applicable to both, standard 4-sided and
+3-sided load carriers. For a 3-sided load carrier, the "type" must be
+"THREE_SIDED". If the type is set to "STANDARD" or left empty, a
+4-sided load carrier is specified. A 3-sided load carrier has one side
+that is lower than the other three sides. This "height_open_side" is
+measured from the outer bottom of the load carrier. The open side is
+at the negative y-axis of the load carrier's coordinate system.
+Examples of the two load carrier types are given in
+
+Fig. 52
+
+. The height of the lower side is only considered during collision
+checking and not required for the detection of the load carrier.
+
+
+A load carrier can be specified with a full 3D "pose" consisting of a
+"position" and an "orientation" quaternion, given in a "pose_frame".
+Based on the given "pose_type" this pose is either used as an
+orientation prior ("pose_type" is "ORIENTATION_PRIOR" or empty), or as
+the exact pose of the load carrier ("pose_type" is "EXACT_POSE").
+
+In case the pose serves as orientation prior, the detected load
+carrier pose is guaranteed to have the minimum rotation with respect
+to the load carrier's prior pose. This pose type is useful for
+detecting tilted load carriers and for resolving the orientation
+ambiguity in the x and y direction caused by the symmetry of the load
+carrier model.
+
+In case the pose type is set to "EXACT_POSE", no load carrier
+detection will be performed on the scene data, but the given pose will
+be used in exactly the same way as if the load carrier is detected at
+that pose. This pose type is especially useful in cases where load
+carriers do not change their positions and/or are hard to detect (e.g.
+because their rim is too thin or the material is too shiny).
+
+The
+
+rc_visard NG
+
+ can persistently store up to 50 different load carrier models, each
+one identified by a different "id". The configuration of a load
+carrier model is normally performed offline, during the set up the
+desired application. This can be done via the
+
+REST-API interface
+
+ or in the
+
+rc_visard NG
+
+ Web GUI.
+
+Note: The configured load carrier models are persistent even over
+  firmware updates and rollbacks.
+
+Load carrier compartments
+
+Some detection modules can make use of a "load_carrier_compartment" to
+further limit the volume for the detection, for example
+
+ItemPick's compute_grasps service
+
+. A load carrier compartment is a box whose "pose" is defined as the
+transformation from the load carrier reference frame to the
+compartment reference frame, which is located in the center of the
+compartment box (see
+
+Fig. 53
+
+). The load carrier compartment is defined for each detection call
+separately and is not part of the load carrier definition in the
+LoadCarrierDB module.
+
+
+The compartment volume is intersected with the load carrier inner
+volume to compute the volume for the detection. If this intersection
+should also contain the 10 cm region above the load carrier, the
+height of the compartment box must be increased accordingly.
+
+Interaction with other modules
+
+Internally, the LoadCarrierDB module depends on, and interacts with
+other on-board modules as listed below.
+
+Hand-eye calibration
+
+In case the camera has been calibrated to a robot, the load carrier's
+exact pose or orientation prior can be provided in the robot
+coordinate frame by setting the corresponding "pose_frame" argument to
+"external".
+
+Two different "pose_frame" values can be chosen:
+
+Camera frame (camera). The load carrier pose or orientation prior is
+provided in the camera frame, and no prior knowledge about the pose of
+the camera in the environment is required. This means that the
+configured load carriers move with the camera. It is the user's
+responsibility to update the configured poses if the camera frame
+moves (e.g. with a robot-mounted camera).
+
+External frame (external). The load carrier pose or orientation prior
+is provided in the external frame, configured by the user during the
+hand-eye calibration process. The module relies on the on-board Hand-
+eye calibration module\:(Section \ref{handeye_calibration:sect-
+handeye-calibration}) to retrieve the sensor mounting (static or robot
+mounted) and the hand-eye transformation.
+
+Note: If no hand-eye calibration is available, all "pose_frame"
+  values should be set to "camera".
+
+All "pose_frame" values that are not "camera" or "external" are
+rejected.
+
+Services
+
+The LoadCarrierDB module is called "rc_load_carrier_db" in the REST-
+API and is represented in the
+
+Web GUI
+
+ under Database ‣ Load Carriers. The user can explore and call the
+LoadCarrierDB module's services, e.g. for development and testing,
+using the
+
+REST-API interface
+
+ or the Web GUI.
+
+The LoadCarrierDB module offers the following services.
+
+set_load_carrier
+
+   Persistently stores a load carrier on the
+
+   rc_visard NG
+
+   . All configured load carriers are persistent over firmware updates
+   and rollbacks.
+
+   Details
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v2/nodes/rc_load_carrier_db/services/set_load_carrier
+
+   Request
+
+   Details for the definition of the "load_carrier" type are given in
+
+   Load carrier definition
+
+   .
+
+   The field "type" is optional and accepts "STANDARD" and
+   "THREE_SIDED".
+
+   The field "pose_type" is optional and accepts "NO_POSE",
+   "EXACT_POSE" and "ORIENTATION_PRIOR".
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "load_carrier": {
+            "height_open_side": "float64",
+            "id": "string",
+            "inner_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "outer_dimensions": {
+              "x": "float64",
+              "y": "float64",
+              "z": "float64"
+            },
+            "pose": {
+              "orientation": {
+                "w": "float64",
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "position": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              }
+            },
+            "pose_frame": "string",
+            "pose_type": "string",
+            "rim_ledge": {
+              "x": "float64",
+              "y": "float64"
+            },
+            "rim_step_height": "float64",
+            "rim_thickness": {
+              "x": "float64",
+              "y": "float64"
+            },
+            "type": "string"
+          }
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "set_load_carrier",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+get_load_carriers
+
+   Returns the configured load carriers with the requested
+   "load_carrier_ids". If no "load_carrier_ids" are provided, all
+   configured load carriers are returned.
+
+   Details
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v2/nodes/rc_load_carrier_db/services/get_load_carriers
+
+   Request
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "load_carrier_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "get_load_carriers",
+        "response": {
+          "load_carriers": [
+            {
+              "height_open_side": "float64",
+              "id": "string",
+              "inner_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "outer_dimensions": {
+                "x": "float64",
+                "y": "float64",
+                "z": "float64"
+              },
+              "pose": {
+                "orientation": {
+                  "w": "float64",
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                },
+                "position": {
+                  "x": "float64",
+                  "y": "float64",
+                  "z": "float64"
+                }
+              },
+              "pose_frame": "string",
+              "pose_type": "string",
+              "rim_ledge": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "rim_step_height": "float64",
+              "rim_thickness": {
+                "x": "float64",
+                "y": "float64"
+              },
+              "type": "string"
+            }
+          ],
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+delete_load_carriers
+
+   Deletes the configured load carriers with the requested
+   "load_carrier_ids". All load carriers to be deleted must be
+   explicitly stated in "load_carrier_ids".
+
+   Details
+
+   This service can be called as follows.
+
+      PUT http://<host>/api/v2/nodes/rc_load_carrier_db/services/delete_load_carriers
+
+   Request
+
+   The definition for the request arguments with corresponding
+   datatypes is:
+
+      {
+        "args": {
+          "load_carrier_ids": [
+            "string"
+          ]
+        }
+      }
+
+   Response
+
+   The definition for the response with corresponding datatypes is:
+
+      {
+        "name": "delete_load_carriers",
+        "response": {
+          "return_code": {
+            "message": "string",
+            "value": "int16"
+          }
+        }
+      }
+
+Return codes
+
+Each service response contains a "return_code", which consists of a
+"value" plus an optional "message". A successful service returns with
+a "return_code" value of "0". Negative "return_code" values indicate
+that the service failed. Positive "return_code" values indicate that
+the service succeeded with additional information. The smaller value
+is selected in case a service has multiple "return_code" values, but
+all messages are appended in the "return_code" message.
+
+The following table contains a list of common codes:
+
+Return codes of the LoadCarrierDB module's services      Code
+Description  0  Success  -1  An invalid argument was provided  -10
+New element could not be added as the maximum storage capacity of load
+carriers has been exceeded  10  The maximum storage capacity of load
+carriers has been reached  11  An existent persistent model was
+overwritten by the call to set_load_carrier

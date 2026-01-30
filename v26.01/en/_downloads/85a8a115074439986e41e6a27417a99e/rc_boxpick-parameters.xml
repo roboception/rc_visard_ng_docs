@@ -1,0 +1,91 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="1"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_boxpick" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/allow_any_grasp_z_rotation/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/allow_untextured_detections/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/check_collisions_with_point_cloud/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/cluster_max_curvature/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/clustering_discontinuity_factor/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/clustering_max_surface_rmse/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/grasp_filter_orientation_threshold/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/line_sensitivity/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/manual_line_sensitivity/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/parameters/max_grasps/@value" Type="INT"/>
+      <ELEMENT Tag="req/parameters/min_cluster_coverage/@value" Type="REAL"/>
+      <ELEMENT Tag="req/parameters/mode/@value" Type="STRING"/>
+      <ELEMENT Tag="req/parameters/prefer_splits/@value" Type="BOOL"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/parameters/allow_any_grasp_z_rotation/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/allow_any_grasp_z_rotation/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/allow_any_grasp_z_rotation/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/allow_any_grasp_z_rotation/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/allow_untextured_detections/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/allow_untextured_detections/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/allow_untextured_detections/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/allow_untextured_detections/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_point_cloud/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_point_cloud/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_point_cloud/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/check_collisions_with_point_cloud/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/cluster_max_curvature/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/cluster_max_curvature/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/cluster_max_curvature/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/cluster_max_curvature/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_discontinuity_factor/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_discontinuity_factor/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_discontinuity_factor/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_discontinuity_factor/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_max_surface_rmse/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_max_surface_rmse/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_max_surface_rmse/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/clustering_max_surface_rmse/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grasp_filter_orientation_threshold/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grasp_filter_orientation_threshold/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grasp_filter_orientation_threshold/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/grasp_filter_orientation_threshold/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/line_sensitivity/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/line_sensitivity/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/line_sensitivity/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/line_sensitivity/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/manual_line_sensitivity/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/manual_line_sensitivity/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/manual_line_sensitivity/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/manual_line_sensitivity/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/max_grasps/@value" Type="INT"/>
+      <ELEMENT Tag="res/parameters/max_grasps/@default" Type="INT"/>
+      <ELEMENT Tag="res/parameters/max_grasps/@min" Type="INT"/>
+      <ELEMENT Tag="res/parameters/max_grasps/@max" Type="INT"/>
+      <ELEMENT Tag="res/parameters/min_cluster_coverage/@value" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/min_cluster_coverage/@default" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/min_cluster_coverage/@min" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/min_cluster_coverage/@max" Type="REAL"/>
+      <ELEMENT Tag="res/parameters/mode/@value" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/mode/@default" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/mode/@min" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/mode/@max" Type="STRING"/>
+      <ELEMENT Tag="res/parameters/prefer_splits/@value" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/prefer_splits/@default" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/prefer_splits/@min" Type="BOOL"/>
+      <ELEMENT Tag="res/parameters/prefer_splits/@max" Type="BOOL"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

@@ -1,0 +1,34 @@
+<ETHERNETKRL>
+  <CONFIGURATION>
+        <EXTERNAL>
+          <IP>x.x.x.x</IP>
+          <PORT>7000</PORT>
+          <TYPE>Server</TYPE>
+        </EXTERNAL>
+        <INTERNAL>
+          <BUFFERING Mode="FIFO" Limit="32"/>
+          <ALIVE Set_Flag="997"/>
+        </INTERNAL>
+      </CONFIGURATION>
+  <SEND>
+    <XML>
+      <ELEMENT Tag="req/node/rc_iocontrol" Type="STRING"/>
+      <ELEMENT Tag="req/service/get_io_values" Type="STRING"/>
+      <ELEMENT Tag="req/end_of_request" Type="BOOL"/>
+    </XML>
+  </SEND>
+  <RECEIVE>
+    <XML>
+      <ELEMENT Tag="res/input_mask" Type="INT"/>
+      <ELEMENT Tag="res/inverter_mask" Type="INT"/>
+      <ELEMENT Tag="res/output_mask" Type="INT"/>
+      <ELEMENT Tag="res/ratio_mask" Type="INT"/>
+      <ELEMENT Tag="res/return_code/@message" Type="STRING"/>
+      <ELEMENT Tag="res/return_code/@value" Type="INT"/>
+      <ELEMENT Tag="res/timestamp/@sec" Type="INT"/>
+      <ELEMENT Tag="res/timestamp/@nsec" Type="INT"/>
+      <ELEMENT Tag="res/values" Type="INT"/>
+      <ELEMENT Tag="res" Set_Flag="998"/>
+    </XML>
+  </RECEIVE>
+</ETHERNETKRL>

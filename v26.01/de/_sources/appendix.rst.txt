@@ -1,0 +1,82 @@
+Anhang
+
+Formate für Posendaten
+
+Eine Pose besteht aus einer Translation und einer Rotation. Die
+Translation definiert die Verschiebung entlang der x, y und z-Achsen.
+Die Rotation kann auf viele verschiedene Arten definiert werden. Der
+
+rc_visard NG
+
+ benutzt Quaternionen, um Rotationen zu definieren, und Translationen
+werden in Metern angegeben. Dies wird als XYZ+Quaternion Format
+bezeichnet. Dieses Kapitel erklärt Umrechnungen zwischen verschiedenen
+üblichen Posenformaten und dem XYZ+Quaternion Format.
+
+Es ist weit verbreitet, Rotationen in 3D durch drei Winkel als
+Drehungen um die Koordinatenachsen zu definieren. Leider existieren
+hierfür viele verschiedene Möglichkeiten. Übliche Konventionen sind
+Euler- oder Kardanwinkel (letztere werden auch als Tait-Bryan Winkel
+bezeichnet). In beiden Konventionen können die drei Rotationen auf die
+bereits gedrehten Achsen (intrinsische Rotation) oder auf die Achsen
+des festen Koordinatensystems (extrinsische Rotation) angewendet
+werden.
+
+Wir benutzen x, y und z zur Bezeichnung der drei Koordinatenachsen.
+x', y' und z' bezeichnen die Achsen, die einmal rotiert wurden. x'',
+y'' und z'' bezeichnen die Achsen nach zwei Rotationen.
+
+In der ursprünglichen Eulerwinkelkonvention ist die erste und dritte
+Drehachse immer identisch. Die Rotationsreihenfolge z-x'-z'' bedeutet
+z.B. eine Drehung um die z-Achse, dann eine Drehung um die gedrehte
+x-Achse und schließlich eine Drehung um die (zweimal) gedrehte
+z-Achse. In der Kardanwinkelkonvention sind alle drei Drehachsen
+unterschiedlich, z.B. z-y'-x''. Kardanwinkel werden häufig ebenfalls
+als Eulerwinkel bezeichnet.
+
+Für jede intrinsische Rotationsreihenfolge gibt es eine äquivalente
+extrinsische Rotationsreihenfolge, die genau umgekehrt ist. Die
+intrinsische Rotationsreihenfolge z-y'-x'' ist zum Beispiel äquivalent
+zu der extrinsischen Rotationsreihenfolge x-y-z.
+
+Rotationen um die x, y und z-Achse können mit Quaternionen definiert
+werden als
+
+   \begin{align*} r_x(\alpha) &=
+   \left(\begin{array}{c}\sin\frac{\alpha}{2} \\ 0 \\ 0 \\
+   \cos\frac{\alpha}{2}\end{array}\right)\text{,} & r_y(\beta) &=
+   \left(\begin{array}{c}0 \\ \sin\frac{\beta}{2} \\ 0 \\
+   \cos\frac{\beta}{2}\end{array}\right)\text{,} & r_z(\gamma) &=
+   \left(\begin{array}{c}0 \\ 0 \\ \sin\frac{\gamma}{2} \\
+   \cos\frac{\gamma}{2}\end{array}\right)\text{,} \end{align*}
+
+oder durch Rotationsmatrizen als
+
+   r_x(\alpha) &= \left(\begin{array}{ccc}    1 &          0 &
+   0 \\    0 & \cos\alpha & -\sin\alpha \\    0 & \sin\alpha &
+   \cos\alpha \end{array}\right)\text{,} \\ r_y(\beta) &=
+   \left(\begin{array}{ccc}     \cos\beta & 0 & \sin\beta \\
+   0 & 1 &         0 \\    -\sin\beta & 0 & \cos\beta
+   \end{array}\right)\text{,} \\ r_z(\gamma) &=
+   \left(\begin{array}{ccc}    \cos\gamma & -\sin\gamma & 0 \\
+   \sin\gamma &  \cos\gamma & 0 \\             0 &           0 & 1
+   \end{array}\right)\text{.}
+
+Die extrinsische Rotationsreihenfolge x-y-z kann durch die
+Multiplikation einzelner Rotationen in umgekehrter Reihenfolge
+berechnet werden, d.h. r_z(\gamma) r_y(\beta) r_x(\alpha).
+
+Basierend auf diesen Definitionen beschreiben die folgenden Abschnitte
+die Umrechnung zwischen üblichen Konventionen und dem XYZ+Quaternion
+Format.
+
+Bemerkung: Zu beachten sind stets die Einheiten für Positionen und
+  Orientierungen.
+
+  rc_visard NG
+
+   Geräte benutzen stets Meter als Längeneinheit, während die meisten
+  Roboterhersteller Längen in Millimeter oder Inch angeben. Winkel
+  werden üblicherweise in Grad angegeben, können aber auch im Bogenmaß
+  angegeben sein.
+

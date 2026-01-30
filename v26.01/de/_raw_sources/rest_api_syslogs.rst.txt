@@ -1,0 +1,40 @@
+.. include:: global_rst.glb
+
+.. _sect-rest-api-syslogs: 
+
+System and logs
+~~~~~~~~~~~~~~~
+
+.. index::
+   pair: REST-API; logs
+   pair: REST-API; system
+
+The following resources and requests expose the |rcxxx|'s system-level API. They
+enable
+
+   - access to log files (system-wide or module-specific)
+   - access to information about the device and run-time statistics such as
+     date, MAC address, clock-time synchronization status, and available
+     resources;
+   - management of installed software licenses; and
+   - the |rcxxx| to be updated with a new firmware image.
+
+.. only:: rc_visard
+
+    .. include:: _gen/swagger/rc_visard/logs.txt
+    .. include:: _gen/swagger/rc_visard/system.txt
+
+.. only:: rc_visard_ng
+
+    .. include:: _gen/swagger/rc_visard_ng/logs.txt
+    .. include:: _gen/swagger/rc_visard_ng/system.txt
+
+.. only:: rc_cube
+
+    .. include:: _gen/swagger/rc_cube/logs.txt
+    .. include:: _gen/swagger/rc_cube/system.txt
+
+.. only:: rc_reason_stack
+
+    .. include:: _gen/swagger/rc_reason_stack/logs.txt
+    .. include:: _gen/swagger/rc_reason_stack/system.txt

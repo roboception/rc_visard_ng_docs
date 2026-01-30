@@ -1,0 +1,20 @@
+.. include:: global_rst.glb
+
+.. _sect-rest-api-userspace:
+
+UserSpace
+~~~~~~~~~
+
+.. index::
+   pair: REST-API; UserSpace
+
+|userspace| information including running apps and their published ports can be queried via the userspace endpoint.
+An app can be of ``type`` ``container`` or ``compose`` (compose stack with potentially multiple containers).
+
+.. only:: rc_cube
+   
+   .. include:: _gen/swagger/rc_cube/userspace.txt
+
+.. only:: rc_visard_ng
+   
+   .. include:: _gen/swagger/rc_visard_ng/userspace.txt

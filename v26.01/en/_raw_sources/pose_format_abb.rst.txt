@@ -1,0 +1,12 @@
+.. include:: global_rst.glb
+
+.. _sect-abb-format:
+
+ABB pose format
+---------------
+
+ABB robots use a position :math:`X`, :math:`Y`, :math:`Z` and a quaternion :math:`Q1`, :math:`Q2`, 
+:math:`Q3`, :math:`Q4` for describing a pose, similar to |rc_xxx|
+devices. However, the position must be given in millimeters and the quaternion order is as follows:
+
+:math:`q=(\begin{array}{cccc}x & y & z & w\end{array}) = (\begin{array}{cccc}Q2 & Q3 & Q4 & Q1\end{array})`.

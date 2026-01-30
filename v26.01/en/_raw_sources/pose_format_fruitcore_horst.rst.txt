@@ -1,0 +1,9 @@
+.. include:: global_rst.glb
+
+.. _sect-fruitcore-horst-format:
+
+Fruitcore HORST pose format
+---------------------------
+
+Fruitcore HORST robots use a position in meters and a quaternion with :math:`q_0 = w`, :math:`q_1 = x`, :math:`q_2 = y` and :math:`q_3 = z` for describing a pose, like |rc_xxx|
+devices. There is no conversion needed.

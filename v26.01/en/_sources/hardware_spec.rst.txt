@@ -1,0 +1,384 @@
+Hardware specification
+
+Note: The following hardware specifications are provided here as a
+  general reference; differences with the product may exist.
+
+Scope of delivery
+
+Standard delivery for an
+
+rc_visard NG
+
+ includes the
+
+rc_visard NG
+
+ sensor and a quickstart guide only. The full manual is available in
+digital form and is always installed on the sensor, accessible through
+the
+
+Web GUI
+
+, and available at
+
+https://roboception.com/resources/knowledge-base/
+
+.
+
+Note: The following items are not included in the delivery unless
+  otherwise specified:
+
+  Couplings, adapters, mounts
+
+  Power supply unit, cabling, and fuses
+
+  Network cabling
+
+  Please refer to
+
+  Accessories
+
+   for suggested third-party cable vendors.
+
+A connectivity kit can be purchased for the
+
+rc_visard NG
+
+. It contains an M12 to RJ45 network cable, 24 V power supply, and a
+DC plug to M12 power adapter. Please refer to
+
+Accessories
+
+ for details.
+
+Note: The connectivity kit is intended only for initial setup, not
+  for permanent installation in industrial environment.
+
+The following picture shows the important parts of the
+
+rc_visard NG
+
+ which are referenced later in the documentation.
+
+
+Technical specification
+
+The technical specifications for the
+
+rc_visard NG
+
+ are given in
+
+Table 1
+
+. The frame rate for computing the depth image in High resolution (720
+x 540 pixel) is significantly higher when increasing the minimum
+distance to 1.2 meters.
+
+Technical specifications for the rc_visard NG        rc_visard NG
+160-6  Image resolution  1440 x 1080 pixel, monochrome  Field of view
+6 mm lens: Horizontal: 43°, Vertical: 33°  IR Cutoff  650 nm  Depth
+image (with Minimum  Distance of 0.5 m)  1440 x 1080 pixel (Full) @ 3
+Hz  720 x 540 pixel (High) @ 7 Hz  360 x 270 pixel (Medium) @ 25 Hz
+240 x 180 pixel (Low) @ 25 Hz  Depth image (with Minimum  Distance of
+1.2 m)  1440 x 1080 pixel (Full) @ 3 Hz  720 x 540 pixel (High) @ 16
+Hz  360 x 270 pixel (Medium) @ 25 Hz  240 x 180 pixel (Low) @ 25 Hz
+Computing unit  Orin Nano 8GB  Power supply  18 V to 30 V  Cooling
+Passive  Baseline  160 mm  Depth range  0.5 m to infinity  Size (W x H
+x L)  230 mm x 75 mm x 84 mm  Mass  0.965 kg
+
+The resolutions and accuracies at different distances are given in the
+following table.
+
+Resolution and accuracy of the rc_visard NG in millimeters with full
+resolution stereo matching and random dot projection on non-reflective
+and non-transparent objects.          distance (mm)  rc_visard NG
+160-6  lateral resolution (mm)  500  1000  2000  3000  0.3  0.6  1.1
+1.7  depth resolution (mm)  500  1000  2000  3000  0.05  0.2  0.9  2.0
+Average depth accuracy (mm)  500  1000  2000  3000  0.2  0.9  3.5  7.8
+
+The
+
+rc_visard NG
+
+ can be equipped with on-board software modules for additional
+features. These software modules can be ordered from the Roboception
+and require a license update.
+
+
+CAD models of the
+
+rc_visard NG
+
+ can be downloaded from
+
+http://www.roboception.com/download
+
+. The CAD models are provided as-is, with no guarantee of correctness.
+When a material property of aluminum is assigned (density of
+2.76\mathrm{g\over{cm}^3}), the mass properties of the CAD model are
+within 5% of the actual product with respect to weight and center of
+mass, and within 10% with respect to moment of inertia.
+
+Environmental and operating conditions
+
+The
+
+rc_visard NG
+
+ is designed for industrial applications. Always respect the storage,
+transport, and operating environmental conditions outlined in
+
+Table 3
+
+.
+
+Environmental conditions        rc_visard NG  Storage/Transport
+temperature  -25 °C to 70 °C  Operating temperature  0 °C to 50 °C
+Relative humidity (non condensing)  20 % to 80 %  Vibration  5 g
+Shock  50 g  Protection class  IP54  Others  Free from corrosive
+liquids or gases  Free from explosive liquids or gases  Free from
+powerful electromagnetic interference
+
+The
+
+rc_visard NG
+
+ is designed for an operating temperature (surrounding environment) of
+0 °C to 50 °C and relies on convective (passive) cooling. Unobstructed
+airflow, especially around the cooling fins, needs to be ensured
+during use. The
+
+rc_visard NG
+
+ should only be mounted using the provided mechanical mounting
+interface, and all parts of the housing must remain uncovered. A free
+space of at least 10 cm extending in all directions from the housing,
+and sufficient air exchange with the environment is required to ensure
+adequate cooling. Cooling fins must be free of dirt and other
+contamination.
+
+The housing temperature depends on the processing load, sensor
+orientation, and surrounding environmental temperatures. When the
+sensor's exposed housing surfaces exceed 60°C, the LED at the front
+will turn from green to red.
+
+Warning: For hand-guided applications, a heat-insulated handle
+  should be attached to the sensor to reduce the risk of burn injuries
+  due to skin exposure to surface temperatures exceeding 60°C.
+
+Power-supply specifications
+
+The
+
+rc_visard NG
+
+ needs to be supplied by a DC voltage source. The
+
+rc_visard NG
+
+'s standard package doesn't include a  DC power supply. The power
+supply contained in the connectivity kit may be used for initial
+setup. For permanent installation, it is the customer's responsibility
+to provide suitable DC power. Each
+
+rc_visard NG
+
+ must be connected to a separate power supply. Connection to domestic
+grid power is only allowed through a power supply certified as EN55011
+Class B.
+
+Absolute maximum ratings for power supply            Min  Nominal  Max
+Supply voltage  18.0 V  24 V  30.0 V  Max power consumption      25 W
+Overcurrent protection  Supply must be fuse-protected to a maximum of
+2 A
+
+Warning: Exceeding maximum power rating values may lead to damage of
+  the
+
+  rc_visard NG
+
+  , power supply, and connected equipment.
+
+Warning: A separate power supply must power each
+
+  rc_visard NG
+
+  .
+
+Warning: Connection to domestic grid power is allowed through a
+  power supply certified as EN55011 Class B only.
+
+Wiring
+
+Cables are not provided with the
+
+rc_visard NG
+
+ standard package. It is the customer's responsibility to obtain the
+proper cabling.
+
+Accessories
+
+ provides an overview of suggested components.
+
+Warning: Proper cable management is mandatory. Cabling must always
+  be secured to the
+
+  rc_visard NG
+
+   mount with a strain-relief clamp so that no forces due to cable
+  movements are exerted on the
+
+  rc_visard NG
+
+  's M12 connectors. Enough slack needs to be provided to allow for
+  full range of movement of the
+
+  rc_visard NG
+
+   without straining the cable. The cable's minimum bend radius needs
+  to be observed.
+
+The
+
+rc_visard NG
+
+ provides an industrial 8-pin A-coded M12 socket connector for
+Ethernet connectivity and an 8-pin A-coded M12 plug connector for
+power and GPIO connectivity. Both connectors are located at the back.
+The location of both connectors on the
+
+rc_visard NG
+
+ is shown in
+
+Fig. 4
+
+.
+
+
+Connectors are rotated so that standard 90° angled connectors will
+exit horizontally, away from the camera (away from the cooling fins).
+
+
+Pin assignments for the Ethernet connector are given in
+
+Fig. 6
+
+.
+
+
+Pin assignments for the power connector are given in
+
+Table 5
+
+.
+
+Pin assignments for the power connector      Pin  Assignment  1  GPIO
+In 2  2  Power  3  GPIO In 1  4  GPIO Gnd  5  GPIO Vcc  6  GPIO Out 1
+(image exposure)  7  Gnd  8  GPIO Out 2
+
+GPIOs are decoupled by photocoupler.
+
+GPIO Out 1
+
+ by default provides an exposure sync signal with a logic high level
+for the duration of the image exposure. All GPIOs can be controlled
+via the IOControl module (
+
+IO and Projector Control
+
+). Pins of unsused GPIOs should be left floating.
+
+Warning: It is especially important that during the boot phase
+
+  GPIO In 1
+
+   is left floating or remains low. The
+
+  rc_visard NG
+
+   will not boot if the pin is high during boot time.
+
+GPIO circuitry and specifications are shown in
+
+Fig. 7
+
+. The maximum rated voltage for
+
+GPIO In
+
+ and
+
+GPIO Vcc
+
+ is 30 V.
+
+
+Warning: Do not connect signals with voltages higher than 30 V to
+  the
+
+  rc_visard NG
+
+  .
+
+Mechanical interface
+
+The
+
+rc_visard NG
+
+ offers a mounting-point at the bottom.
+
+
+For troubleshooting and static applications, the sensor may be mounted
+using the standardized tripod thread (UNC 1/4"-20) indicated at the
+coordinate-frame origin. For dynamic applications such as mounting on
+a robotic arm, the sensor must be mounted with three M4 (metric
+standard) 8.8 machine screws tightened to 2.5 Nm and secured with a
+medium-strength threadlocking adhesive such as Loctite 243. Maximum
+thread depth is 6 mm. The two 4 mm diameter holes may be used for
+positioning pins (ISO 2338 4 m6) to ensure precise repositioning of
+the sensor.
+
+Warning: For dynamic applications, the
+
+  rc_visard NG
+
+   must be mounted with three M4 8.8 machine screws tightened to 2.5
+  Nm torque and secured with threadlocking adhesive. Do not use high-
+  strength bolts. The engaged thread depth must be at least 5 mm.
+
+Coordinate frames
+
+The
+
+rc_visard NG
+
+'s coordinate-frame origin is defined as the exit pupil of the left
+camera lens. This frame is called sensor coordinate frame or camera
+coordinate frame. An approximate location for the
+
+rc_visard NG
+
+ is shown in the next image.
+
+The mounting-point frame for the
+
+rc_visard NG
+
+ is defined to be at the bottom, centered in the tripod thread, with
+orientation identical to that of the sensor's coordinate frame.
+
+Fig. 9
+
+ shows approximate offsets.
+
+
+Note: The correct offset between the sensor/camera frame and a robot
+  coordinate frame can be calibrated through the
+
+  hand-eye-calibration procedure
+
+  .
