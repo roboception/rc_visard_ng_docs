@@ -9,7 +9,7 @@ angegebene Versionsnummer.
 
 DOKUMENTATIONSVERSION
 
-  26.04.3  11.05.2026
+  26.04.4  11.05.2026
 
 Gültig für
 

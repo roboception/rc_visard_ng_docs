@@ -1,0 +1,31 @@
+Power Modes
+
+The
+
+rc_visard NG
+
+ comes with two different power modes: 15 W and 25 W. By default, the
+device uses the 15 W mode, which is a good compromise between
+performance and hardware temperature.
+
+If faster run times are required, the power mode can be switched to 25
+W. When using the 25 W mode, the housing temperature can increase
+above 60°, depending on on environmental temperature and actual use,
+so that the LED might start flashing red to indicate the high
+temperature (see
+
+LED colors
+
+).
+
+The power mode can be set either via the
+
+Web GUI
+
+ under System ‣ Power Mode, or by using the
+
+REST-API interface
+
+ as follows:
+
+   PUT http://<host>/api/v2/system/power_mode?mode=<15W,25W>
