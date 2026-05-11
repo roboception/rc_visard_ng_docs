@@ -1,0 +1,746 @@
+.. include:: global_rst.glb
+
+Pipeline type *stereo_ace*
+==========================
+
+
+.. _sect-stereo-ace-camera-params:
+
+Parameters
+----------
+
+The camera module on a pipeline of type ``stereo_ace`` is called ``rc_camera`` and is represented by the
+*Camera* page in the desired pipeline in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+The user can change the camera parameters there, or directly via the |rest-api|
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`).
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. index::
+   pair: parameters; stereo ace
+.. include:: _gen/nodes/params/rc_camera_rc_cube_stereo_ace.txt
+
+.. only:: rc_cube
+
+   These parameters are also available over the GenICam interface with slightly different names and partly with different units
+   or data types (see :ref:`sect-genicam`:latex:`, Section \ref{gigevision:sect-genicam}`).
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the |webgui|'s *Camera* page. The name in the
+|webgui| is given in brackets behind the parameter name and the parameters are listed in the order
+they appear in the |webgui|.
+
+.. _stereo_ace-acquisition_mode:
+
+.. index::
+  pair: stereo ace camera; acquisition mode
+
+``acquisition_mode`` (*Acquisition Mode*)
+'''''''''''''''''''''''''''''''''''''''''
+  This values determines the camera acquisition mode. In ``Continuous`` mode, the camera will 
+  acquire images at the specified frame rate ``fps``. In ``Trigger`` mode, images are only 
+  acquired when the camera receives a trigger signal.
+  
+  .. only:: (rc_cube or rc_reason_stack) and (roboception or schunk or matrixvision)
+      
+      .. note::
+
+        This parameter only has an effect when used in a pipeline with an |rc_viscore| or |rc_visard_ng|.
+
+  .. only:: (rc_cube or rc_reason_stack) and basler
+      
+      .. note::
+
+        This parameter only has an effect when used in a pipeline with an |rc_visard_ng|.
+
+  Via the |restapi|, this parameter can be set as follows.
+
+  .. tabs::
+
+      .. tab:: **API version 2**
+
+        .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?acquisition_mode=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+        .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?acquisition_mode=<value>
+
+.. _stereo_ace-trigger_source:
+
+.. index::
+  pair: stereo ace camera; acquisition mode
+
+``trigger_source`` (*Trigger Source*)
+'''''''''''''''''''''''''''''''''''''
+  This value is only used when ``acquisition_mode`` is set to ``Trigger`` and determines the 
+  source for the trigger. In ``Software`` mode a trigger can be sent via the ``rc_camera/acquisition_trigger`` service.
+  When the ``acquisition_mode`` for the depth images is set to ``SingleFrame`` or ``SingleFrameOut1`` 
+  (see :ref:`sect-disp-image-parameters`:latex:`, Section \ref{stereo_matching:sect-disp-image-parameters}`), 
+  the camera software trigger is sent automatically whenever a depth image
+  acquisition is triggered.
+  The modes ``In1`` and ``In2`` are hardware trigger modes.
+  An image is acquired whenever a signal on the chosen input is received.
+  
+  Via the |restapi|, this parameter can be set as follows.
+
+  .. tabs::
+
+      .. tab:: **API version 2**
+
+        .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?trigger_source=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+        .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?trigger_source=<value>
+            
+.. _stereo_ace-trigger_activation:
+
+.. index::
+  pair: stereo ace camera; trigger activation
+
+``trigger_activation`` (*Trigger Activation*)
+'''''''''''''''''''''''''''''''''''''''''''''
+  This value is only used when ``acquisition_mode`` is set to ``Trigger`` and ``trigger_source`` is set to 
+  ``In1`` or ``In2``. It determines the signal edge that should be used to trigger an acquisition. Possible
+  values are ``RisingEdge``, ``FallingEdge`` or ``AnyEdge``.
+  
+  Via the |restapi|, this parameter can be set as follows.
+
+  .. tabs::
+
+      .. tab:: **API version 2**
+
+        .. code-block:: bash
+
+            PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/parameters?trigger_activation=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+        .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?trigger_activation=<value>
+
+.. _stereo_ace-fps:
+
+.. index::
+   pair: stereo ace camera; frame rate
+   pair: stereo ace camera; fps
+
+``fps`` (*FPS (Hz)*)
+''''''''''''''''''''
+   This value is the cameras' frame rate (fps, frames per second),
+   which determines the upper frequency at which depth images
+   can be computed. This is also the frequency at which the |rc_xxx|
+   delivers images via GigE Vision. Reducing this frequency also
+   reduces the network bandwidth required to transmit the images.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+          .. code-block:: bash
+
+              PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?fps=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?fps=<value>
+
+.. _stereo_ace-gamma:
+
+.. index::
+   pair: stereo ace camera; gamma
+
+``gamma`` (*Gamma*)
+'''''''''''''''''''
+   The gamma value determines the mapping of perceived light to the brightness of a pixel.
+   A gamma value of 1 corresponds to a linear relationship. Lower gamma values let dark image
+   parts appear brighter. A value around 0.5 corresponds to human vision.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+          .. code-block:: bash
+
+              PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gamma=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?gamma=<value>
+
+
+.. _stereo_ace-contrast_mode:
+
+.. index::
+  pair: Stereo ace camera; contrast mode
+  pair: linear; contrast mode
+  pair: scurve; contrast mode
+
+``contrast_mode`` (*Contrast Mode*)
+'''''''''''''''''''''''''''''''''''
+  The contrast mode can be set to ``Linear`` (*Linear*) or ``SCurve`` (*S-Curve*) and determines how the image intensity values are scaled when the contrast is adjusted.
+  In the ``Linear`` mode, the camera uses a linear function to adjust the contrast. Increasing or decreasing the contrast, increases or decreases the gradient of the linear function. When increasing the contrast, the darkest and lightest regions of the image will appear completely black or completely white, but the other areas will appear more defined. Decreasing the contrast has the opposite effect.
+  In the ``SCurve`` mode, the camera uses an S-curve function to adjust the contrast. Increasing the contrast darkens dark pixels and lightens light pixels, but the dynamic range of the image is preserved.
+
+  Via the |restapi|, this parameter can be set as follows.
+
+  .. tabs::
+
+      .. tab:: **API version 2**
+            
+        .. code-block:: bash
+        
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?contrast_mode=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+        
+        .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?contrast_mode=<value>
+
+.. _stereo_ace-contrast:
+
+.. index::
+  pair: Stereo ace camera; contrast
+
+``contrast`` (*Contrast*)
+'''''''''''''''''''''''''
+  Adjusting the contrast increases or decreases the difference between light and dark areas in the image. The way the light and dark regions change when adjusting the contrast depends on the specified ``contrast_mode``.
+
+  Via the |restapi|, this parameter can be set as follows.
+
+  .. tabs::
+
+      .. tab:: **API version 2**
+        
+        .. code-block:: bash
+            
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?contrast=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+        
+        .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?contrast=<value>
+
+
+.. _stereo_ace-exp-control:
+
+.. index::
+   pair: stereo ace camera; exposure
+
+``exp_control`` (Exposure *Auto*, *HDR* or *Manual*)
+''''''''''''''''''''''''''''''''''''''''''''''''''''
+   The exposure control mode can be set to `Auto`, `HDR` or `Manual`.
+
+   `Auto`: This is the default mode in which the exposure time and gain
+   factor is chosen automatically to correctly expose the image.
+   The last automatically determined exposure and gain values are set into
+   ``exp_value`` and ``gain_value`` when switching auto-exposure off.
+
+   `HDR`: The HDR mode computes high-dynamic-range images by combining images
+   with different exposure times to avoid under-exposed and over-exposed areas.
+   This decreases the frame rate and is only suitable for static scenes.
+
+   `Manual`: In the manual exposure mode the exposure time and gain are kept
+   fixed independent of the resulting image brightness.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+          .. code-block:: bash
+
+              PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_control=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_control=<value>
+
+.. _stereo_ace-exp-auto-mode:
+
+.. index::
+   pair: stereo ace camera; auto exposure mode
+
+``exp_auto_mode`` (*Auto Exposure Mode*)
+''''''''''''''''''''''''''''''''''''''''
+   The auto exposure mode can be set to `Normal`, `Out1High` or `AdaptiveOut1`. These modes are
+   relevant when the |rc_xxx| is used with an external light source or projector connected
+   to the camera's GPIO Out1,
+   which can be controlled by the IOControl module
+   (:ref:`sect-iocontrol`:latex:`, Section \ref{iocontrol:sect-iocontrol}`).
+
+   `Normal`: All images are considered for exposure control, except if the IOControl mode
+   for GPIO Out1 is `ExposureAlternateActive`: then only images where GPIO Out1 is HIGH will be
+   considered, since these images may be brighter in case GPIO Out1 is used to trigger an external light source.
+
+   `Out1High`: This exposure mode adapts the exposure time using only images with GPIO Out1 HIGH. Images where GPIO Out1 is LOW are not
+   considered at all, which means, that the exposure time does not change when only images with Out1 LOW are acquired.
+   This mode is recommended for using the ``acquisition_mode`` ``SingleFrameOut1`` in the stereo matching module as described in
+   :ref:`Stereo Matching Parameters<sect-disp-image-parameters>`:latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`
+   and having an external projector connected to GPIO Out1, when changes in the brightness of the scene should only be considered when Out1 is HIGH.
+   This is the case, for example, when a bright part of the robot moves through the field of view of the camera just before a detection is triggered,
+   which should not affect the exposure time.
+
+   `AdaptiveOut1`: This exposure mode uses all camera images and tracks the exposure difference between images
+   with GPIO Out1 LOW and HIGH. While the IOControl mode for GPIO Out1 is LOW, the images are under-exposed by this exposure
+   difference to avoid over-exposure for when GPIO Out1 triggers an external projector. The resulting exposure difference
+   is given as *Out1 Reduction* below the live images. This mode is recommended for using the ``acquisition_mode``
+   ``SingleFrameOut1`` in the stereo matching module as described in
+   :ref:`Stereo Matching Parameters<sect-disp-image-parameters>`:latex:`\:(Section \ref{stereo_matching:sect-disp-image-parameters})`
+   and having an external projector connected to GPIO Out1, when changes in the brightness of the scene should be considered at all times.
+   This is the case, for example, in applications where the external lighting changes.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+          .. code-block:: bash
+
+              PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_auto_mode=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_auto_mode=<value>
+
+.. _stereo_ace-exp-max:
+
+.. index::
+   pair: stereo ace camera; max exposure
+
+``exp_max`` (*Max Exposure*)
+''''''''''''''''''''''''''''
+   This value is the maximal exposure time in auto-exposure
+   mode in seconds. The actual
+   exposure time is adjusted automatically so that the images are exposed
+   correctly. If the maximum exposure time is reached, but the images are still
+   underexposed, the |rc_xxx| stepwise increases the gain to increase the
+   images' brightness. Limiting the exposure time is useful for avoiding
+   or reducing motion blur during fast movements. However, higher gain
+   introduces noise into the image. The best trade-off depends on the application.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+          .. code-block:: bash
+
+              PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_max=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_max=<value>
+
+.. _stereo_ace-exp-auto-max-min-average:
+
+.. index::
+   pair: stereo ace camera; brightness
+
+``exp_auto_average_max`` (*Max Brightness*) and ``exp_auto_average_min`` (*Min Brightness*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+   The auto-exposure tries to set the exposure time and gain factor such that the
+   average intensity (i.e. brightness) in the image or exposure region is between a
+   maximum and a minimum. The maximum brightness will be used if there is no saturation, e.g.
+   no over-exposure due to bright surfaces or reflections. In case of saturation,
+   the exposure time and gain factor are reduced, but only down to the minimum
+   brightness.
+
+   The maximum brightness has precedence over the minimum brightness parameter.
+   If the minimum brightness is larger than the maximum brightness, the auto-exposure
+   always tries to make the average intensity equal to the maximum brightness.
+
+   The current brightness is always shown in the status bar below the images.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+          .. code-block:: bash
+
+              PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_auto_average_max|exp_auto_average_min>=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_auto_average_max|exp_auto_average_min>=<value>
+
+.. _stereo_ace-exp-region:
+
+.. index::
+   pair: stereo ace camera; exposure region
+
+``exp_offset_x``, ``exp_offset_y``, ``exp_width``, ``exp_height`` (*Exposure Region*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+   These values define a rectangular region in the left rectified image for
+   limiting the area used for computing the auto exposure. The exposure time and
+   gain factor of both images are chosen to optimally expose the defined region.
+   This can lead to over- or underexposure of image parts outside the defined
+   region. If either the width or height is 0, then the whole left and right
+   images are considered by the auto exposure function. This is the default.
+
+   The region is visualized in the |webgui| by a rectangle in the left
+   rectified image. It can be defined using the sliders or by selecting
+   it in the image after pressing the button ``Select Region in Image``.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+          .. code-block:: bash
+
+              PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?<exp_offset_x|exp_offset_y|exp_width|exp_height>=<value>
+
+.. _stereo_ace-exp-value:
+
+.. index::
+   pair: stereo ace camera; exposure time
+
+``exp_value`` (*Exposure*)
+''''''''''''''''''''''''''
+    This value is the exposure time in manual exposure mode in seconds. This exposure time is kept constant
+    even if the images are underexposed.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+         
+          .. code-block:: bash
+
+              PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?exp_value=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?exp_value=<value>
+
+.. _stereo_ace-gain-value:
+
+.. index::
+   pair: stereo ace camera; gain
+
+``gain_value`` (*Gain (dB)*)
+''''''''''''''''''''''''''''
+   This value is the gain factor in decibel that can be set in manual exposure mode. Higher gain factors
+   reduce the required exposure time but introduce noise.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+          .. code-block:: bash
+
+              PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?gain_value=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?gain_value=<value>
+
+.. _stereo_ace-brightness:
+
+.. index::
+  pair: stereo ace camera; brightness
+
+``brightness`` (*Brightness*)
+'''''''''''''''''''''''''''''
+  Adjusting the brightness lightens or darkens the entire image.
+
+  Via the |restapi|, this parameter can be set as follows.
+
+  .. tabs::
+
+      .. tab:: **API version 2**
+
+        .. code-block:: bash
+        
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?brightness=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+        
+        .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?brightness=<value>
+
+.. _stereo_ace-wb-auto:
+
+.. index::
+  pair: stereo ace camera; white balance
+
+``wb_auto`` (*White Balance Auto* or *Manual*, only available for color cameras)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+   This value can be set to `true` for automatic white balancing or `false` for manually
+   setting the ratio between the colors using ``wb_ratio_red`` and
+   ``wb_ratio_blue``. The last automatically determined ratios are set into
+   ``wb_ratio_red`` and ``wb_ratio_blue`` when switching automatic white balancing off.
+   White balancing is without function for monochrome
+   cameras and will not be displayed in the |webgui| in this case.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+          .. code-block:: bash
+
+              PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?wb_auto=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?wb_auto=<value>
+
+.. _stereo_ace-wb-ratio:
+
+.. index::
+  pair: stereo ace camera; red ratio
+  pair: stereo ace camera; blue ratio
+  pair: stereo ace camera; green ratio
+
+``wb_ratio_blue``, ``wb_ratio_red`` and ``wb_ratio_green`` (*Blue Ratio*, *Red Ratio* and *Green Ratio*, only available for color cameras)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+These values are used to set blue, red and green ratios
+for manual white balance. White balancing is without function for monochrome
+cameras and will not be displayed in the |webgui| in this case.
+
+Via the |restapi|, this parameter can be set as follows.
+
+.. tabs::
+
+  .. tab:: **API version 2**
+
+      .. code-block:: bash
+
+          PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red|wb_ratio_green>=<value>
+
+  .. tab:: **API version 1 (deprecated)**
+
+      .. code-block:: bash
+
+        PUT http://<host>/api/v1/nodes/rc_camera/parameters?<wb_ratio_blue|wb_ratio_red|wb_ratio_green>=<value>
+
+
+.. _stereo_ace-light-source-preset:
+
+.. index::
+  pair: stereo ace camera; light source preset
+
+``light_source_preset`` (*Light Source Preset*, only available for color cameras)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  The light source preset parameter allows to correct color shifts caused by certain light sources.
+  Depending on its specific color temperature, the light used for image acquisition can cause color shifts in the image.
+  These color shifts can be corrected by selecting the related light source preset. Possible values are
+  `Off`, `Tungsten`, `Daylight5000K`, `Daylight6500K` and `FactoryLED6000K`.
+
+  Via the |restapi|, this parameter can be set as follows.
+
+  .. tabs::
+
+      .. tab:: **API version 2**
+
+        .. code-block:: bash
+        
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?light_source_preset=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+        
+        .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?light_source_preset=<value>
+
+.. _stereo_ace-saturation:
+
+.. index::
+  pair: stereo ace camera; saturation
+
+``saturation`` (*Saturation*, only available for color cameras)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Adjusting the saturation changes the colorfulness (intensity) of the colors. A higher saturation, e.g., makes colors easier to distinguish.
+
+  Via the |restapi|, this parameter can be set as follows.
+
+  .. tabs::
+
+      .. tab:: **API version 2**
+
+        .. code-block:: bash
+        
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/parameters?saturation=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+        
+        .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_camera/parameters?saturation=<value>
+
+.. _sect-stereo-ace-status-values:
+
+Status values
+-------------
+
+.. index::
+   pair: status values; stereo ace camera
+
+The ``rc_camera`` module reports the following status values on a pipeline of type ``stereo_ace``.
+
+.. only:: rc_cube or rc_reason_stack
+
+   .. tabularcolumns:: |l|L|
+   .. csv-table:: The ``rc_camera`` module's status values
+      :header:  Name, Description
+
+      "``baseline``","Stereo baseline :math:`t` in meters"
+      "``brightness``","Current brightness of the image as value between 0 and 1"
+      "``color``","0 for monochrome cameras, 1 for color cameras"
+      "``exp``","Current exposure time in seconds. This value is shown below the image preview in the |webgui| as *Exposure (ms)*."
+      "``device_trigger_sources``","Gives the available trigger sources, in case the device can be triggered"
+      "``focal``","Focal length factor normalized to an image width of 1"
+      "``fps``","Current frame rate of the camera images in Hertz. This value is shown in the |webgui| below the image preview as *FPS (Hz)*."
+      "``gain``","Current gain factor in decibel. This value is shown in the |webgui| below the image preview as *Gain (dB)*."
+      "``gamma``","Current gamma value."
+      "``height``","Height of the camera image in pixels. This value is shown in the |webgui| below the image preview as the second part of *Resolution (px)*."
+      "``last_timestamp_grabbed``","Timestamp of the last image acquired in case the camera is in trigger mode"
+      "``out1_reduction``","Fraction of reduction (0.0 - 1.0) of brightness for images with GPIO Out1=LOW in exp_auto_mode=AdaptiveOut1 or exp_auto_mode=Out1High. This value is shown in the |webgui| below the image preview as *Out1 Reduction (%)*."
+      "``params_override_active``","1 if parameters are temporarily overwritten by a running calibration process"
+      "``selfcalib_counter``","How often a correction has been performed by the self-calibration"
+      "``selfcalib_offset``","Current offset determined by the self-calibration"
+      "``test``","0 for live images and 1 for test images"
+      "``width``","Width of the camera image in pixels. This value is shown in the |webgui| below the image preview as the first part of *Resolution (px)*."
+
+.. _sect-stereo-ace-services:
+
+Services
+--------
+
+.. index::
+   pair: stereo ace camera; services
+
+The ``rc_camera`` module offers the following services on a pipeline of type ``stereo_ace``.
+
+``acquisition_trigger``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+  Triggers an image acquisition when ``acquisition_mode`` is set to ``Trigger`` and ``trigger_source`` is set to ``Software``.
+
+  .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+        .. tab:: **API version 2**
+
+            .. code-block:: bash
+
+              PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/acquisition_trigger
+
+        .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+              PUT http://<host>/api/v1/nodes/rc_camera/services/acquisition_trigger
+
+      .. tabs::
+
+        .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_camera_rc_cube_stereo_ace_acquisition_trigger_request.txt
+
+        .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_camera_rc_cube_stereo_ace_acquisition_trigger_response.txt
+
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+
+            .. only:: rc_visard or rc_visard_ng
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/0/nodes/rc_camera/services/reset_defaults
+
+            .. only:: rc_cube or rc_reason_stack
+
+               .. code-block:: bash
+
+                  PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_camera/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_camera/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_camera_rc_cube_stereo_ace_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_camera_rc_cube_stereo_ace_reset_defaults_response.txt

@@ -1,0 +1,11 @@
+Rectification
+
+The model of a rectified camera is described with just one value,
+which is the focal length. The
+
+rc_visard NG
+
+ reports a focal length factor via its various interfaces. It relates
+to the image width for supporting different image resolutions. The
+focal length f in pixels can be easily obtained by multiplying the
+focal length factor by the image width in pixels.

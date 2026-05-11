@@ -1,0 +1,44 @@
+.. include:: global_rst.glb
+
+.. _sect-mitsubishi-format:
+
+Mitsubishi XYZ-ABC format
+-------------------------
+
+The pose format that is used by Mitsubishi robots is the same as that for KUKA robots
+(see :ref:`sect-xyzabc-format`:latex:`, Section \ref{pose_format_kuka:sect-xyzabc-format}`),
+except that :math:`A` is a rotation around :math:`x` axis and :math:`C` is a rotation
+around :math:`z` axis. Thus, the rotation is computed by :math:`r_z(C) r_y(B) r_x(A)`.
+
+Conversion from Mitsubishi-ABC to quaternion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from the :math:`ABC` angles in degrees to a quaternion
+:math:`q=(\begin{array}{cccc}x & y & z & w\end{array})` can be done by first
+converting all angles to radians
+
+.. math::
+   A_r = A \frac{\pi}{180} \text{,} \\
+   B_r = B \frac{\pi}{180} \text{,} \\
+   C_r = C \frac{\pi}{180} \text{,} \\
+
+and then calculating the quaternion with
+
+.. math::
+   x = \cos{(C_r/2)}\cos{(B_r/2)}\sin{(A_r/2)} - \sin{(C_r/2)}\sin{(B_r/2)}\cos{(A_r/2)} \text{,} \\
+   y = \cos{(C_r/2)}\sin{(B_r/2)}\cos{(A_r/2)} + \sin{(C_r/2)}\cos{(B_r/2)}\sin{(A_r/2)} \text{,} \\
+   z = \sin{(C_r/2)}\cos{(B_r/2)}\cos{(A_r/2)} - \cos{(C_r/2)}\sin{(B_r/2)}\sin{(A_r/2)} \text{,} \\
+   w = \cos{(C_r/2)}\cos{(B_r/2)}\cos{(A_r/2)} + \sin{(C_r/2)}\sin{(B_r/2)}\sin{(A_r/2)} \text{.}
+
+Conversion from quaternion to Mitsubishi-ABC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The conversion from a quaternion :math:`q=(\begin{array}{cccc}x & y & z &
+w\end{array})` with :math:`||q||=1` to the :math:`ABC` angles in degrees can
+be done as follows.
+
+.. math::
+   A &= \text{atan}_2{(2(wx + yz), 1 - 2(x^2 + y^2))} \frac{180}{\pi} \\
+   B &= \text{asin}{(2(wy - zx))} \frac{180}{\pi} \\
+   C &= \text{atan}_2{(2(wz + xy), 1 - 2(y^2 + z^2))} \frac{180}{\pi}
+

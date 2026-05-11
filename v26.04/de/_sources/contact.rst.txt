@@ -1,0 +1,62 @@
+Kontakt
+
+Support
+
+Support-Anfragen können Sie uns entweder über die Seite
+
+http://www.roboception.com/support
+
+ oder per E-Mail an
+
+support@roboception.de
+
+ zukommen lassen.
+
+Bei spezifischen Problemen laden Sie bitte die Logdateien herunter
+(siehe
+
+Download der Logdateien
+
+). Laden Sie gegebenenfalls auch einen Snapshot der letzten Erkennung
+herunter: Jedes Softwaremodul ermöglicht das Herunterladen der letzten
+Erkennung auf seiner Seite in der
+
+Web GUI
+
+ durch Klicken auf die blaue Kameraschaltfläche unterhalb der
+Bildstreams.
+
+Das Herunterladen der letzten Erkennung kann auch mithilfe des
+Services "trigger_dump" des jeweiligen Softwaremoduls automatisiert
+werden, siehe z.B.
+
+Services
+
+ für das LoadCarrier-Modul.
+
+Downloads
+
+Software-SDKs usw. können von der Roboception-Homepage heruntergeladen
+werden:
+
+https://roboception.com/resources/knowledge-base
+
+.
+
+Adresse
+
+   Roboception GmbH
+   Kaflerstraße 2
+   81241 München
+   Deutschland
+
+   Web: 
+   http://www.roboception.com
+
+
+   E-Mail: 
+   info@roboception.de
+
+
+   Telefon: +49 89 889 50 79-0
+

@@ -1,0 +1,607 @@
+
+.. include:: global_rst.glb
+
+.. _sect-blaze:
+
+Blaze module
+============
+
+.. index::
+   single: blaze
+   single: depth image
+
+The blaze module is a base module which is available on every |rc_xxx|
+and provides disparity, confidence and error images of a connected Basler |blaze| camera
+in an RGB-D setup, i.e. the blaze
+Time-of-Flight (ToF) camera in combination with the Basler aceA1300 color camera.
+
+After connecting the Basler |blaze| sensor to the |rc_cube|, it can take up to about one minute until it is found. Upon first 
+connection of the sensor to the |rc_cube|, the sensor must be calibrated before it can be used.
+Calibration can be done through the |webgui| on the page :ref:`sect-camera-calibration`:latex:`\:(Section
+\ref{camera_calibration:sect-camera-calibration})` under *Configuration* in the respective pipeline.
+After storing the calibration, it will persistently reside on the |rc_cube| and automatically be 
+used whenever the sensor is connected to the |rc_cube| again, regardless of the port or pipeline.
+
+The blaze module only runs in camera pipelines of type ``blaze``.
+
+.. _sect-blaze-image-parameters:
+
+Parameters
+----------
+
+.. index::
+   pair: parameters; disparity image
+   pair: disparity image; Web GUI
+   pair: depth image; Web GUI
+
+The blaze module is called ``rc_blaze`` in the |rest-api| and it is represented by the
+*Depth Image* page in the desired pipeline in the :ref:`Web GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`,
+when a Basler |blaze| camera is connected and running in the corresponding pipeline.
+The user can change the |blaze| parameters there, or use the |rest-api|
+(:ref:`sect-rest-api`:latex:`, Section \ref{rest_api:sect-rest-api}`).
+
+Parameter overview
+^^^^^^^^^^^^^^^^^^
+
+.. include:: _gen/nodes/params/rc_blaze.txt
+
+Description of run-time parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each run-time parameter is represented by a row on the |webgui|'s *Depth Image* page. The name in the
+|webgui| is given in brackets behind the parameter name and the parameters are listed in the order
+they appear in the |webgui|.
+
+.. _expl-depth-exp-value:
+
+.. index::
+   pair: blaze; exposure time
+
+``exp_value`` (*Exposure Time*)
+'''''''''''''''''''''''''''''''
+    This parameter is the exposure time of the |blaze| camera in seconds. It controls for how long the 
+    photosensitive cells are exposed to light. If the operating mode is changed, the exposure 
+    time is set to the recommended default value. Reducing the exposure time may reduce measurement
+    accuracy and is only recommended when the image is overexposed.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?exp_value=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?exp_value=<value>
+
+.. _expl-depth-acquisition-mode:
+
+.. index::
+   pair: blaze; acquisition mode
+
+``acquisition_mode`` (*Acquisition Mode*)
+'''''''''''''''''''''''''''''''''''''''''
+    The acquisition mode can be set to ``Continuous`` (*Continuous*) or ``SingleFrame`` (*Single*).
+    The first one is the default and continuously provides depth images.
+    In single frame mode, images are only captured when the :guilabel:`Acquire` button is clicked.
+
+    Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+            
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?acquisition_mode=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?acquisition_mode=<value>
+
+.. _expl-depth-min-depth:
+
+.. index::
+   pair: blaze; minimum distance
+
+``mindepth`` (*Minimum Distance*)
+'''''''''''''''''''''''''''''''''
+   The minimum distance is the smallest distance from the camera
+   at which measurements should be possible. The minimum distance
+   is given in meters.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+          
+         .. code-block:: bash
+            
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?mindepth=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?mindepth=<value>
+
+.. _expl-depth-max-depth:
+
+.. index::
+   pair: blaze; maximum distance
+
+``maxdepth`` (*Maximum Distance*)
+'''''''''''''''''''''''''''''''''
+   The maximum distance is the largest distance from the camera
+   at which measurements should be possible. Pixels with larger distance values are
+   set to invalid in the disparity image. The maximum distance is given in meters.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+            
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?maxdepth=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?maxdepth=<value>
+
+.. _expl-depth-fill:
+
+.. index::
+   pair: blaze; fill-in
+
+``fill`` (*Fill-in*)
+''''''''''''''''''''
+   This option is used to fill holes in the disparity image by interpolation.
+   The fill-in value is the maximum allowed disparity step on the border of the
+   hole. Larger fill-in values can decrease the number of holes, but the interpolated
+   values can have larger errors. At most 5% of pixels are interpolated. Interpolation
+   of small holes is preferred over interpolation of larger holes. The confidence for
+   the interpolated pixels is set to a low value of 0.5. A fill-in value of 0
+   switches hole filling off.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?fill=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?fill=<value>
+
+.. _expl-depth-seg:
+
+.. index::
+   pair: blaze; segmentation
+
+``seg`` (*Segmentation*)
+''''''''''''''''''''''''
+   The segmentation parameter is used to set the minimum number of
+   pixels that a connected disparity region in the disparity image must fill.
+   Isolated regions that are smaller are set to invalid in the disparity image.
+   Segmentation is useful for removing erroneous disparities. However,
+   larger values may also remove real objects.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?seg=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?seg=<value>
+
+.. _expl-depth-min-conf:
+
+.. index::
+   pair: blaze; minimum confidence
+
+``minconf`` (*Minimum Confidence*)
+''''''''''''''''''''''''''''''''''
+   The minimum confidence can be set to filter potentially false disparity measurements.
+   All pixels with less confidence than the chosen value are set to invalid
+   in the disparity image.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?minconf=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?minconf=<value>
+
+.. _expl-depth-spatial-filter:
+
+.. index::
+   pair: blaze; spatial filter
+
+``spatial_filter`` (*Spatial Filter*)
+'''''''''''''''''''''''''''''''''''''
+   This parameter enables the spatial noise filter. The spatial noise filter uses the 
+   values of neighboring pixels to filter out noise in an image. 
+   It is based on the raw data of the image.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?spatial_filter=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?spatial_filter=<value>
+
+.. _expl-depth-temporal-filter:
+
+.. index::
+   pair: blaze; temporal filter
+
+``temporal_filter`` (*Temporal Filter*)
+'''''''''''''''''''''''''''''''''''''''
+   This parameter enables the temporal noise filter. The temporal noise filter 
+   uses the values of the same pixel at different points in time to filter out 
+   noise in an image. It is based on the depth data of the image.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?temporal_filter=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?temporal_filter=<value>
+
+
+.. _expl-depth-temporal-filter-strength:
+
+.. index::
+   pair: blaze; temporal filter strength
+
+``temporal_filter_strength`` (*Strength*)
+'''''''''''''''''''''''''''''''''''''''''
+
+   This parameter represents the strength of the temporal filter. 
+   The higher the value, the stronger the filter. High values may 
+   cause motion artifacts, while low values reduce the efficacy of the filter.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?temporal_filter_strength=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?temporal_filter_strength=<value>
+
+.. _expl-depth-outlier-removal:
+
+.. index::
+   pair: blaze; outlier removal
+
+``outlier_removal`` (*Outlier Removal*)
+'''''''''''''''''''''''''''''''''''''''
+
+   This parameter enables the outlier removal filter. 
+   It removes pixels that differ significantly from their local environment.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?outlier_removal=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?outlier_removal=<value>
+
+.. _expl-depth-outlier-removal-threshold:
+
+.. index::
+   pair: blaze; outlier removal threshold
+
+``outlier_removal_threshold`` (*Threshold*)
+'''''''''''''''''''''''''''''''''''''''''''
+
+   This parameter determines the strength of the outlier removal filter. 
+   The higher the value, the more outliers will be removed.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?outlier_removal_threshold=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?outlier_removal_threshold=<value>
+
+.. _expl-depth-ambiguity-filter:
+
+.. index::
+   pair: blaze; ambiguity filter
+
+``ambiguity_filter`` (*Ambiguity Filter*)
+'''''''''''''''''''''''''''''''''''''''''
+
+   This parameter enables the ambiguity filter. The ambiguity filter removes
+   pixels whose depth data is ambiguous. In certain demanding scenes, e.g., 
+   because of stray light or multi-path effects, detection may fail. In this case, 
+   the filter should be disabled.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?ambiguity_filter=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?ambiguity_filter=<value>
+
+
+.. _expl-depth-ambiguity-filter-threshold:
+
+.. index::
+   pair: blaze; ambiguity filter threshold
+
+``ambiguity_filter_threshold`` (*Threshold*)
+''''''''''''''''''''''''''''''''''''''''''''
+
+   This parameter determines the strength of the ambiguity filter. 
+   The higher the value, the stronger the filter. 
+   Higher values increase the reliability of the filter.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?ambiguity_filter_threshold=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?ambiguity_filter_threshold=<value>
+
+
+.. _expl-depth-gamma-correction:
+
+.. index::
+   pair: blaze; gamma correction
+
+``gamma_correction`` (*Gamma Correction*)
+'''''''''''''''''''''''''''''''''''''''''
+
+   This parameter enables gamma correction on the intensity image, which is
+   a nonlinear operation to lighten the dark regions of the image.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?gamma_correction=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?gamma_correction=<value>
+
+
+.. _expl-depth-thermal-drift-correction:
+
+.. index::
+   pair: blaze; thermal drift correction
+
+``thermal_drift_correction`` (*Thermal Drift Correction*)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+   This parameter activates the correction of the thermal drift.
+
+   Via the |restapi|, this parameter can be set as follows.
+
+   .. tabs::
+
+      .. tab:: **API version 2**
+
+         .. code-block:: bash
+         
+            PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/parameters?thermal_drift_correction=<value>
+
+      .. tab:: **API version 1 (deprecated)**
+         
+         .. code-block:: bash
+
+            PUT http://<host>/api/v1/nodes/rc_blaze/parameters?thermal_drift_correction=<value>
+
+
+Status values
+-------------
+
+This module reports the following status values:
+
+.. tabularcolumns:: |l|L|
+.. csv-table:: The ``rc_blaze`` module's status values
+   :header:  Name, Description
+
+   "``fps``","Actual frame rate of the disparity, error, and confidence images. This value is shown in the |webgui| below the image preview as *FPS (Hz)*."
+   "``latency``","Time in seconds between image acquisition and publishing of disparity image"
+   "``width``","Current width of the disparity, error, and confidence images in pixels"
+   "``height``","Current height of the disparity, error, and confidence images in pixels"
+   "``mindepth``","Actual minimum working distance in meters"
+   "``maxdepth``","Actual maximum working distance in meters"
+
+.. _sect-blaze-services:
+
+Services
+--------
+
+The Blaze module offers the following services.
+
+``acquisition_trigger``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+   Signals the module to acquire a depth image, if the parameter ``acquisition_mode`` is set to ``SingleFrame``.
+
+   .. toggle-header::
+      :header: **Details**
+
+      An error is returned if the ``acquisition_mode`` is set to ``Continuous``.
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+               
+            .. code-block:: bash
+            
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/services/acquisition_trigger
+
+         .. tab:: **API version 1 (deprecated)**
+            
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_blaze/services/acquisition_trigger
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_blaze_acquisition_trigger_request.txt
+
+         .. tab:: **Response**
+
+            Possible return codes are shown below.
+
+            .. tabularcolumns:: |c|L|
+            .. _tab-blaze-acquisition-trigger-return-codes:
+            .. csv-table:: Possible return codes of the ``acquisition_trigger`` service call.
+               :header:  Code, Description
+
+               "0",   "Success"
+               "-8",  "Triggering is only possible in SingleFrame acquisition mode"
+               "101", "Trigger is ignored, because there is a trigger call pending"
+               "102", "Trigger is ignored, because there are no subscribers"
+
+            .. include:: _gen/nodes/services/rc_blaze_acquisition_trigger_response.txt
+
+``reset_defaults``
+^^^^^^^^^^^^^^^^^^
+
+   Restores and applies the default values for this module's parameters
+   ("factory reset").
+
+   .. toggle-header::
+      :header: **Details**
+
+      This service can be called as follows.
+
+      .. tabs::
+
+         .. tab:: **API version 2**
+            
+            .. code-block:: bash
+            
+               PUT http://<host>/api/v2/pipelines/<0,1,2,3>/nodes/rc_blaze/services/reset_defaults
+
+         .. tab:: **API version 1 (deprecated)**
+            
+            .. code-block:: bash
+
+               PUT http://<host>/api/v1/nodes/rc_blaze/services/reset_defaults
+
+      .. tabs::
+
+         .. tab:: **Request**
+
+            .. include:: _gen/nodes/services/rc_blaze_reset_defaults_request.txt
+
+         .. tab:: **Response**
+
+            .. include:: _gen/nodes/services/rc_blaze_reset_defaults_response.txt
+

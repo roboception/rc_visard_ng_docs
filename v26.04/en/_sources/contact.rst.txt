@@ -1,0 +1,57 @@
+Contact
+
+Support
+
+For support issues, please see
+
+http://www.roboception.com/support
+
+ or contact
+
+support@roboception.de
+
+.
+
+For specific issues, please download the log files (see
+
+Downloading log files
+
+) and, if applicable, download a snapshot of the last detection: Every
+software module allows to download the last detection on its
+
+Web GUI
+
+ page by clicking the blue camera button below the image streams.
+
+Downloading the last detection can also be automated by using the
+"trigger_dump" service of the respective software module, e.g. see
+
+Services
+
+ for the LoadCarrier module.
+
+Downloads
+
+Software SDKs, etc. can be downloaded from
+
+https://roboception.com/resources/knowledge-base
+
+.
+
+Address
+
+   Roboception GmbH
+   Kaflerstrasse 2
+   81241 Munich
+   Germany
+
+   Web: 
+   http://www.roboception.com
+
+
+   Email: 
+   info@roboception.de
+
+
+   Phone: +49 89 889 50 79-0
+

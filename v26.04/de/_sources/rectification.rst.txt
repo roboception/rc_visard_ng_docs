@@ -1,0 +1,12 @@
+Rektifizierung
+
+Eine rektifizierte Kamera kann mit der Brennweite als einzigen
+Modellparameter beschrieben werden. Der
+
+rc_visard NG
+
+ stellt über seine verschiedenen Schnittstellen einen
+Brennweitenfaktor bereit. Er bezieht sich auf die Bildbreite, um
+verschiedene Bildauflösungen zu unterstützen. Die Brennweite f in
+Pixeln lässt sich leicht bestimmen, indem der Brennweitenfaktor mit
+der Bildbreite (in Pixeln) multipliziert wird.

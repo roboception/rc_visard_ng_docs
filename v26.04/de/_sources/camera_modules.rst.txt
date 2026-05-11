@@ -1,0 +1,25 @@
+3D-Module
+
+Die 3D-Kamera-Software des
+
+rc_visard NG
+
+ enthält die folgenden Module:
+
+Stereo-Matching Modul (rc_stereomatching, Abschnitt
+\ref{stereo_matching:sect-stereo-matching})  nutzt die rektifizierten
+Stereo-Bildpaare, um 3D-Tiefeninformationen, z.B. für Disparitäts-,
+Fehler- und Konfidenzbilder, zu berechnen. Diese werden auch als
+GenICam-Bild-Streams bereitgestellt.
+
+Die 3D Kameramodule, die 3D-Tiefeninformationen wie Disparitäts-,
+Fehler- und Konfidenzbilder bereitstellen, sind auch über die
+
+GigE Vision/GenICam-Schnittstelle
+
+ des
+
+rc_visard NG
+
+ konfigurierbar.
+

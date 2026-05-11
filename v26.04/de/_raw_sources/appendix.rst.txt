@@ -1,0 +1,103 @@
+.. include:: global_rst.glb
+
+.. _sect-appendix:
+
+Appendix
+========
+
+.. _sect-pose-formats:
+
+Pose formats
+------------
+
+A pose consists of a translation and rotation. The translation defines the
+shift along the :math:`x`, :math:`y` and :math:`z` axes. 
+The rotation can be defined in many different ways. The
+|rc_xxx| uses quaternions to define rotations and translations are given in meters. 
+This is called the
+XYZ+quaternion format. This chapter explains the conversion between different
+common conventions and the XYZ+quaternion format.
+
+It is quite common to define rotations in 3D by three angles that define
+rotations around the three coordinate axes. Unfortunately, there are many
+different ways to do that. The most common conventions are Euler and Cardan
+angles (also called Tait-Bryan angles). In both conventions, the rotations can
+be applied to the previously rotated axis (intrinsic rotation) or to the axis
+of a fixed coordinate system (extrinsic rotation).
+
+We use :math:`x`, :math:`y` and :math:`z` to denote the three coordinate axes.
+:math:`x'`, :math:`y'` and :math:`z'` refer to the axes that have been rotated
+one time. Similarly, :math:`x''`, :math:`y''` and :math:`z''` are the axes
+after two rotations.
+
+In the (original) Euler angle convention, the first and the third axis are
+always the same. The rotation order :math:`z`-:math:`x'`-:math:`z''` means
+rotating around the :math:`z`-axis, then around the already rotated
+:math:`x`-axis and finally around the (two times) rotated :math:`z`-axis. In
+the Cardan angle convention, three different rotation axes are used, e.g.
+:math:`z`-:math:`y'`-:math:`x''`. Cardan angles are often also just called
+Euler angles.
+
+For each intrinsic rotation order, there is an equivalent extrinsic rotation
+order, which is inverted, e.g. the intrinsic rotation order
+:math:`z`-:math:`y'`-:math:`x''` is equivalent to the extrinsic rotation order
+:math:`x`-:math:`y`-:math:`z`.
+
+Rotations around the :math:`x`, :math:`y` and :math:`z` axes can be defined
+by quaternions as
+
+.. math::
+   \begin{align*}
+   r_x(\alpha) &= \left(\begin{array}{c}\sin\frac{\alpha}{2} \\ 0 \\ 0 \\ \cos\frac{\alpha}{2}\end{array}\right)\text{,} &
+   r_y(\beta) &= \left(\begin{array}{c}0 \\ \sin\frac{\beta}{2} \\ 0 \\ \cos\frac{\beta}{2}\end{array}\right)\text{,} &
+   r_z(\gamma) &= \left(\begin{array}{c}0 \\ 0 \\ \sin\frac{\gamma}{2} \\ \cos\frac{\gamma}{2}\end{array}\right)\text{,}
+   \end{align*}
+
+or by rotation matrices as
+
+.. math::
+   r_x(\alpha) &=
+   \left(\begin{array}{ccc}
+      1 &          0 &           0 \\
+      0 & \cos\alpha & -\sin\alpha \\
+      0 & \sin\alpha & \cos\alpha
+   \end{array}\right)\text{,} \\
+   r_y(\beta) &=
+   \left(\begin{array}{ccc}
+       \cos\beta & 0 & \sin\beta \\
+               0 & 1 &         0 \\
+      -\sin\beta & 0 & \cos\beta
+   \end{array}\right)\text{,} \\
+   r_z(\gamma) &=
+   \left(\begin{array}{ccc}
+      \cos\gamma & -\sin\gamma & 0 \\
+      \sin\gamma &  \cos\gamma & 0 \\
+               0 &           0 & 1
+   \end{array}\right)\text{.}
+
+The extrinsic rotation order :math:`x`-:math:`y`-:math:`z` can be computed by
+multiplying the individual rotations in inverse order, i.e. :math:`r_z(\gamma)
+r_y(\beta) r_x(\alpha)`.
+
+Based on these definitions, the following sections explain the conversion
+between common conventions and the XYZ+quaternion format.
+
+.. Note:: Please be aware of units for positions and orientations. |rc_xxx|
+   devices always specify positions in meters, while most robot manufacturers use
+   millimeters or inches. Angles are typically specified in degrees, but may
+   sometimes also be given in radians.
+
+.. toctree::
+   :maxdepth: 1
+
+   pose_format_rt
+   pose_format_abb
+   pose_format_fanuc
+   pose_format_franka_emika
+   pose_format_fruitcore_horst
+   pose_format_kawasaki
+   pose_format_kuka
+   pose_format_mitsubishi
+   pose_format_ur
+   pose_format_yaskawa
+   

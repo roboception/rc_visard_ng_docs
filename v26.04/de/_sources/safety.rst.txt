@@ -1,0 +1,149 @@
+Sicherheit
+
+Warnung: Vor Inbetriebnahme des
+
+  rc_visard NG
+
+  -Produkts muss der Bediener alle Anweisungen in diesem Handbuch
+  gelesen und verstanden haben.
+
+Bemerkung: Der Begriff "Bediener" bezieht sich auf jede Person, die
+  in Verbindung mit dem
+
+  rc_visard NG
+
+   mit einer der folgenden Aufgaben betraut ist:
+
+     Installation
+
+     Wartung
+
+     Inspektion
+
+     Kalibrierung
+
+     Programmierung
+
+     Außerbetriebnahme
+
+Das vorliegende Handbuch geht auf die verschiedenen Softwaremodule des
+
+rc_visard NG
+
+ ein und erläutert allgemeine Aspekte zum Lebenszyklus des Produkts:
+von der Installation über die Verwendung bis hin zur
+Außerbetriebnahme.
+
+Die im vorliegenden Handbuch enthaltenen Zeichnungen und Fotos sind
+Beispiele zur Veranschaulichung. Das ausgelieferte Produkt kann
+hiervon abweichen.
+
+Allgemeine Sicherheitshinweise
+
+Bemerkung: Wird der
+
+  rc_visard NG
+
+   entgegen den hierin angegebenen Sicherheitshinweisen verwendet, so
+  kann dies zu Personen- oder Sachschäden sowie zum Verlust der
+  Garantie führen.
+
+Warnung:
+
+  Der rc_visard NG muss vor der Verwendung ordnungsgemäß montiert
+  werden.
+
+  Alle Kabel sind am rc_visard NG und an seiner Halterung zu sichern.
+
+  Die Länge der verwendeten Kabel darf 30 Meter nicht überschreiten.
+
+  Die Stromversorgung für den rc_visard NG muss über eine geeignete
+  Gleichstromquelle erfolgen.
+
+  Jeder rc_visard NG muss an eine separate Gleichstromquelle
+  angeschlossen werden.
+
+  Das Gehäuse des rc_visard NG muss geerdet werden.
+
+  Die zum rc_visard NG oder zugehöriger Ausrüstung angegebenen
+  Sicherheitshinweise müssen stets eingehalten werden.
+
+  Der rc_visard NG fällt nicht in den Anwendungsbereich der
+  europäischen Maschinen-, Niederspannungs- oder
+  Medizinprodukterichtlinie.
+
+-[ Risikobewertung und Endanwendung ]-
+
+Der
+
+rc_visard NG
+
+ kann auf einem Roboter installiert werden. Der Roboter, der
+
+rc_visard NG
+
+ und jede andere für die Endanwendung eingesetzte Ausrüstung müssen im
+Rahmen einer Risikobewertung begutachtet werden. Der Systemintegrator
+ist verpflichtet, die Einhaltung aller lokalen Sicherheitsmaßnahmen
+und Vorschriften zu gewährleisten. Je nach Anwendung kann es Risiken
+geben, die zusätzliche Schutz- oder Sicherheitsmaßnahmen erfordern.
+
+Bestimmungsgemäße Verwendung
+
+Der
+
+rc_visard NG
+
+ ist für die Datenerfassung (z.B. Kamerabilder,  und
+Disparitätsbilder) in stationären oder mobilen Robotik-Anwendungen
+bestimmt. Der
+
+rc_visard NG
+
+ kann dabei auf einem Roboter, einer automatischen Maschine, einer
+mobilen Plattform oder einer stationären Vorrichtung montiert sein. Er
+eignet sich zudem für die Datenerfassung in anderen Anwendungen.
+
+Warnung: Der
+
+  rc_visard NG
+
+   ist
+
+  NICHT
+
+   für sicherheitskritische Anwendungen bestimmt.
+
+Der vom
+
+rc_visard NG
+
+ verwendete Schnittstellenstandard GigE Vision® unterstützt weder
+Authentifizierung noch Verschlüsselung. Alle von diesem und an dieses
+Gerät gesandten Daten werden ohne Authentifizierung und
+Verschlüsselung übermittelt und könnten daher von einem Dritten
+abgefangen oder manipuliert werden. Es liegt in der Verantwortung des
+Bedieners, den
+
+rc_visard NG
+
+ nur an ein gesichertes internes Netzwerk anzuschließen.
+
+Warnung: Der
+
+  rc_visard NG
+
+   muss an gesicherte interne Netzwerke angeschlossen werden.
+
+Der
+
+rc_visard NG
+
+ darf nur im Rahmen seiner technischen Spezifikation verwendet werden.
+Jede andere Verwendung des Produkts gilt als nicht bestimmungsgemäße
+Verwendung. Roboception haftet nicht für Schäden, die aus
+unsachgemäßer oder nicht bestimmungsgemäßer Verwendung entstehen.
+
+Warnung: Die lokalen und/oder nationalen Gesetze, Vorschriften und
+  Richtlinien zu Automationssicherheit und allgemeiner
+  Maschinensicherheit sind stets einzuhalten.

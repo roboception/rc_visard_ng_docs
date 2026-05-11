@@ -1,0 +1,44 @@
+.. include:: global_rst.glb
+
+.. _sect-configuration-modules:
+
+Configuration modules
+=====================
+
+The |rc_xxx| provides several configuration modules which enable the user to configure 
+the |rc_xxx| for specific applications.
+
+The configuration modules are:
+
+- :doc:`handeye_calibration` (``rc_hand_eye_calibration``:latex:`, Section \ref{handeye_calibration:sect-handeye-calibration}`)
+   enables the user to calibrate the camera with respect to a robot,
+   either via the |webgui| or the |restapi|.
+
+- :doc:`collisioncheck` (``rc_collision_check``:latex:`, Section \ref{collisioncheck:sect-collision}`)
+   provides an easy way to check if a gripper is in collision.
+
+- :doc:`camera_calibration` (``rc_stereocalib``:latex:`, Section \ref{camera_calibration:sect-camera-calibration}`)
+   enables the user to check and perform camera calibration via the
+   :ref:`WEB GUI<sect-web-gui>`:latex:`\:(Section \ref{webgui:sect-web-gui})`.
+
+- :doc:`iocontrol` (``rc_iocontrol``:latex:`, Section \ref{iocontrol:sect-iocontrol}`)
+   provides control over the camera's general purpose inputs and outputs with special modes
+   for controlling an external random dot projector.
+
+
+.. only:: rc_cube or rc_reason_stack
+
+   These modules are pipeline specific, which means that they run inside each
+   camera pipeline. Changes to their settings or parameters
+   only affect the corresponding pipeline and have no influence on the other
+   camera pipelines running on the |rc_xxx|.
+
+.. toctree-filt::
+   :maxdepth: 2
+   :hidden:
+   
+   handeye_calibration
+   collisioncheck
+   camera_calibration
+   iocontrol
+   

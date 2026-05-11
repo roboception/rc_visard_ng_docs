@@ -1,0 +1,106 @@
+Berechnung von 3D Daten
+
+Die folgenden Abschnitte beschreiben, wie Disparitäts-, Fehler- und
+Konfidenzbilder verwendet werden können, um daraus Tiefendaten und
+-fehler zu berechnen.
+
+Berechnung von Tiefenbildern und Punktwolken
+
+Die folgenden Gleichungen zeigen, wie sich die tatsächlichen 3D-
+Koordinaten P_x, P_y, P_z eines Objektpunkts bezogen auf das Kamera-
+Koordinatensystem aus den Pixelkoordinaten p_{x}, p_{y} des
+Disparitätsbilds und dem Disparitätswert d in Pixeln berechnen lassen:
+
+   P_x&=\frac{p_x \cdot t}{d}\\ P_y&=\frac{p_y \cdot t}{d}\\
+   P_z&=\frac{f \cdot t}{d},
+
+wobei f die Brennweite nach der Rektifizierung (in Pixeln) und t der
+während der Kalibrierung ermittelte Stereo-Basisabstand (in Metern)
+ist. Diese Werte werden auch über die GenICam-Schnittstelle zur
+Verfügung gestellt (siehe
+
+Besondere Parameter der GenICam-Schnittstelle des rc_visard NG
+
+).
+
+Bemerkung: Das Kamera-Koordinatensystem des
+
+  rc_visard NG
+
+   ist in
+
+  Koordinatensysteme
+
+   definiert.
+
+Bemerkung: Der
+
+  rc_visard NG
+
+   stellt über seine verschiedenen Schnittstellen einen
+  Brennweitenfaktor bereit. Er bezieht sich auf die Bildbreite, um
+  verschiedene Bildauflösungen zu unterstützen. Die Brennweite f in
+  Pixeln lässt sich leicht bestimmen, indem der Brennweitenfaktor mit
+  der Bildbreite (in Pixeln) multipliziert wird.
+
+Es ist zu beachten, dass für die Gleichungen davon ausgegangen wird,
+dass das Bildkoordinatensystem im Bildhauptpunkt zentriert ist, der
+üblicherweise in der Bildmitte liegt, und dass sich p_{x}, p_{y} auf
+die Mitte des Pixels bezieht, durch Addieren von 0.5 auf die
+ganzzahligen Pixelkoordinaten. In der folgenden Abbildung ist die
+Definition des Bildkoordinatensystems dargestellt.
+
+
+Die gleichen Formeln, aber mit den entsprechenden GenICam-Parametern,
+sind in
+
+Umwandlung von Bild-Streams
+
+ angegeben.
+
+Die Gesamtheit aller aus dem Disparitätsbild errechneten Objektpunkte
+ergibt eine Punktwolke, die für 3D-Modellierungsanwendungen verwendet
+werden kann. Das Disparitätsbild kann in ein Tiefenbild umgewandelt
+werden, indem der Disparitätswert jedes Pixels durch den Wert P_z
+ersetzt wird.
+
+Bemerkung: Auf der Homepage von Roboception (
+
+  http://www.roboception.com/download
+
+  ) stehen Software und Beispiele zur Verfügung, um Disparitätsbilder,
+  welche über GigE Vision vom
+
+  rc_visard NG
+
+   empfangen werden, in Tiefenbilder und Punktwolken umzuwandeln.
+
+Konfidenz- und Fehlerbilder
+
+Für jedes Disparitätsbild wird zusätzlich ein Fehler- und ein
+Konfidenzbild zur Verfügung gestellt, um die Unsicherheit jedes
+einzelnen Disparitätswerts anzugeben. Fehler- und Konfidenzbilder
+besitzen die gleiche Auflösung und Bildwiederholrate wie das
+Disparitätsbild. Im Fehlerbild ist der Disparitätsfehler d_{eps} in
+Pixeln angegeben. Er bezieht sich auf den Disparitätswert an der
+gleichen Bildkoordinate im Disparitätsbild. Das Konfidenzbild gibt den
+entsprechenden Konfidenzwert c zwischen 0 und 1 an. Die Konfidenz gibt
+an, wie wahrscheinlich es ist, dass der wahre Disparitätswert
+innerhalb des Intervalls des dreifachen Fehlers um die gemessene
+Disparität d liegt, d.h. [d-3d_{eps}, d+3d_{eps}]. So lässt sich das
+Disparitätsbild mit Fehler- und Konfidenzwerten in Anwendungen
+einsetzen, für die probabilistische Folgerungen nötig sind. Die
+Konfidenz- und Fehlerwerte für eine ungültige Disparitätsmessung
+betragen 0.
+
+Der Disparitätsfehler d_{eps} (in Pixeln) lässt sich mithilfe der
+Brennweite f (in Pixeln), des Basisabstands t (in Metern) und des
+Disparitätswerts d (in Pixeln) desselben Pixels im Disparitätsbild in
+einen Tiefenfehler z_{eps} (in Metern) umrechnen:
+
+   z_{eps}=\frac{d_{eps}\cdot f\cdot t}{d^2}.
+
+Durch Kombination der Gleichungen kann der Tiefenfehler zur Tiefe in
+Bezug gebracht werden:
+
+   z_{eps}=\frac{d_{eps}\cdot{P_z}^2}{f\cdot t}.

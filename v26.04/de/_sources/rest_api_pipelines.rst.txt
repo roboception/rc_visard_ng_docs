@@ -1,0 +1,10 @@
+Pipelines
+
+Pipelines repräsentieren die Kamerapipelines des
+
+rc_visard NG
+
+.
+
+Die folgende Liste enthält alle REST-API Anfragen bezüglich der
+Konfiguration der Kamerapipelines:

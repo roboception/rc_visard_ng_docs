@@ -1,0 +1,302 @@
+.. include:: global_rst.glb
+
+.. raw:: latex
+
+    \newpage
+
+.. _glossary:
+
+Glossary
+========
+
+.. only:: rc_visard
+
+   .. glossary::
+      :sorted:
+
+      DHCP
+         The Dynamic Host Configuration Protocol (DHCP) is used to automatically assign an
+         :term:`IP` address to a network device. Some DHCP servers only accept known devices.
+         In this case, an administrator needs to configure the DHCP server with the
+         fixed :term:`MAC address` of a device.
+
+      .. disparity
+      .. disparity image
+      ..   Disparity is the displacement of the projections of an object point in two camera
+      ..   images. If the images are :term:`rectified`, then the disparity is the difference
+      ..   between the column index of the projection in the left image and the column index
+      ..   of the projection in the right image. The disparity is inversely proportional to
+      ..   the distance (i.e., depth)
+      ..   of the object point from the camera and becomes 0 if the object point is at infinity.
+      ..   A disparity image contains disparities for each pixel.
+
+      DNS
+      mDNS
+         The Domain Name Server (DNS) manages the host names and :term:`IP` addresses of all
+         network devices. It is responsible for resolving the host name into the IP address for
+         communication with a device. A DNS can be configured to get this information
+         automatically when a device appears on a network or manually by an administrator. In
+         contrast, *multicast DNS* (mDNS) works without a central server by querying all devices
+         on a local network each time a host name needs to be resolved. mDNS is available by
+         default on Linux and Mac operating systems and is used when '.local' is appended to a host
+         name.
+
+      DOF
+         The Degrees Of Freedom (DOF) are the number of independent parameters for translation
+         and rotation. In 3D space, 6DOF (i.e. three for translation and three rotation) are
+         sufficient to describe an arbitrary position and orientation.
+
+      GenICam
+         GenICam is a generic standard interface for cameras. It serves as a unified interface
+         around other standards such as :term:`GigE Vision`, Camera Link, USB, etc. See
+         http://genicam.org for more information.
+
+      GigE
+         Gigabit Ethernet (GigE) is a networking technology for transmitting data at
+         one gigabit per second.
+
+      GigE Vision
+         GigE Vision\ |reg| is a standard for configuring cameras and transmitting images over a
+         :term:`GigE` network link. See http://gigevision.com for more information.
+
+      IMU
+         An Inertial Measurement Unit (IMU) consists of three accelerometers and three gyroscopes
+         that measure the linear accelerations and the turn rates in all three dimensions.
+
+      INS
+         An Inertial Navigation System (INS) is a 3D measurement system which uses inertial
+         measurements (accelerations and turn rates) to compute position and orientation information.
+         We refer to our combination of stereo vision and inertial navigation as stereo INS.
+
+      IP
+      IP address
+         The Internet Protocol (IP) is a standard for sending data between devices in a computer
+         network. Every device requires an IP address, which must be unique in the network.
+         The IP address can be configured by :term:`DHCP`, :term:`Link-Local`, or manually.
+
+      Link-Local
+         Link-Local is a technology where network devices associate themselves with an :term:`IP address`
+         from the 169.254.0.0/16 IP range and check if it is unique in the local network.
+         Link-Local can be used if
+         :term:`DHCP` is unavailable and manual IP configuration is not or cannot be done.
+         Link-Local is especially useful for connecting a network device directly to a
+         host computer. By default, Windows 10 reverts automatically to Link-Local if
+         DHCP is unavailable. Under Linux, Link-Local must be enabled manually in the network
+         manager.
+
+      MAC address
+         The Media Access Control (MAC) address is a unique, persistent address for
+         networking devices. It is also known as the hardware address of a device. In contrast
+         to the :term:`IP address`, the MAC address is (normally) permanently given to
+         a device and does not change.
+
+      NTP
+         The Network Time Protocol (NTP) is a TCP/IP protocol for synchronizing time over a network.
+         Basically a client requests the current time from a server, and uses it to set its own clock.
+
+      PTP
+         The Precision Time Protocol (PTP, also known as IEEE1588) is a protocol which enables more precise
+         and robust clock synchronization than with NTP.
+
+      .. pose
+      ..   A pose represents an object's *position* and *orientation*
+      ..   relative to some *reference coordinate system* or *reference frame*.
+      ..   It can be described by means of a rotation and translation transformation
+      ..   that brings the object from a reference pose to the observed pose.
+      ..   This rotation transformation can be represented in different ways, e.g.,
+      ..   as a rotation matrix or a quaternion.
+
+      .. rectification
+      .. rectified
+      ..   Rectification is a transformation process for images. In a stereo camera setting,
+      ..   both images are often projected onto a common plane with parallel optical axes.
+      ..   The resulting rectified images are free of lens distortion. Moreover,
+      ..   an object point in the scene is always projected into the same row in both images.
+      ..   The column index will be the same if the object point is at infinity. For closer
+      ..   objects, the column index in the right image will be smaller than in the left image.
+
+      SDK
+         A Software Development Kit (SDK) is a collection of software development tools or
+         a collection of software components.
+
+      SLAM
+         SLAM stands for Simultaneous Localization and Mapping and describes the process of
+         creating a map of an unknown environment and simultaneously updating the sensor pose
+         within the map.
+
+      SGM
+         SGM stands for Semi-Global Matching and is a state-of-the-art stereo matching algorithm
+         which offers brief run times and a great accuracy, especially at object borders, fine
+         structures, and in weakly textured areas.
+
+      TCP
+         The Tool Center Point (TCP) is the position of the tool at the end effector of
+         a robot. The position and orientation of the TCP determines the position and
+         orientation of the tool in 3D space.
+
+      UDP
+         The User Datagram Protocol (UDP) is the minimal message-oriented transport
+         layer of the Internet Protocol (:term:`IP`) family. It uses a simple
+         connectionless transmission model with a minimum of protocol mechanism
+         such as integrity verification (via checksum). The |rc_xxx| uses UDP
+         for publishing its
+         :ref:`estimated dynamical states <sect-dynamics-streams>`:latex:`\:(Section
+         \ref{dynamics:sect-dynamics-streams})`
+         via the
+         :ref:`rc_dynamics interface <sect-rc-dynamics-interface>`:latex:`\:(Section
+         \ref{rc_dynamics:sect-rc-dynamics-interface})`.
+         To receive this data, applications may use datagram sockets to
+         bind to the endpoint of the data transmission consisting of a combination
+         of an :term:`IP address` and a service port number such as
+         ``192.168.0.100:49500``, which is typically referred to as a
+         *destination* of an rc_dynamics data stream in this documentation.
+
+      URI
+      URL
+         A Uniform Resource Identifier (URI) is a string of characters
+         identifying resources of the |rc_xxx|'s |restapi|. An example of such a
+         URI is ``/nodes/rc_camera/parameters/fps``, which points
+         to the ``fps`` run-time parameter of the stereo camera module.
+
+         A Uniform Resource Locator (URL) additionally specifies the full
+         network location and protocol, i.e., an exemplary URL to locate the
+         above resource would be
+         ``https://<ip>/api/v1/nodes/rc_camera/parameters/fps``
+         where ``<ip>`` refers to the |rc_xxx|'s :term:`IP address`.
+
+      XYZABC
+         Format to represent a pose. See :ref:`sect-xyzabc-format`:latex:`\:(Section \ref{pose_format_kuka:sect-xyzabc-format})`
+         for its definition.
+
+      XYZ+quaternion
+         Format to represent a pose. See :ref:`sect-xyz-quaternion-format`:latex:`\:(Section \ref{pose_format_rt:sect-xyz-quaternion-format})`
+         for its definition.
+
+
+.. only:: rc_cube or rc_visard_ng
+
+   .. glossary::
+      :sorted:
+
+      DHCP
+         The Dynamic Host Configuration Protocol (DHCP) is used to automatically assign an
+         :term:`IP` address to a network device. Some DHCP servers only accept known devices.
+         In this case, an administrator needs to configure the DHCP server with the
+         fixed :term:`MAC address` of a device.
+
+      .. disparity
+      .. disparity image
+      ..   Disparity is the displacement of the projections of an object point in two camera
+      ..   images. If the images are :term:`rectified`, then the disparity is the difference
+      ..   between the column index of the projection in the left image and the column index
+      ..   of the projection in the right image. The disparity is inversely proportional to
+      ..   the distance (i.e., depth)
+      ..   of the object point from the camera and becomes 0 if the object point is at infinity.
+      ..   A disparity image contains disparities for each pixel.
+
+      DNS
+      mDNS
+         The Domain Name Server (DNS) manages the host names and :term:`IP` addresses of all
+         network devices. It is responsible for resolving the host name into the IP address for
+         communication with a device. A DNS can be configured to get this information
+         automatically when a device appears on a network or manually by an administrator. In
+         contrast, *multicast DNS* (mDNS) works without a central server by querying all devices
+         on a local network each time a host name needs to be resolved. mDNS is available by
+         default on Linux and Mac operating systems and is used when '.local' is appended to a host
+         name.
+
+      DOF
+         The Degrees Of Freedom (DOF) are the number of independent parameters for translation
+         and rotation. In 3D space, 6 DOF (i.e. three for translation and three rotation) are
+         sufficient to describe an arbitrary position and orientation.
+
+      GenICam
+         GenICam is a generic standard interface for cameras. It serves as a unified interface
+         around other standards such as :term:`GigE Vision`, Camera Link, USB, etc. See
+         http://genicam.org for more information.
+
+      GigE
+         Gigabit Ethernet (GigE) is a networking technology for transmitting data at
+         one gigabit per second.
+
+      GigE Vision
+         GigE Vision\ |reg| is a standard for configuring cameras and transmitting images over a
+         :term:`GigE` network link. See http://gigevision.com for more information.
+
+      IP
+      IP address
+         The Internet Protocol (IP) is a standard for sending data between devices in a computer
+         network. Every device requires an IP address, which must be unique in the network.
+         The IP address can be configured by :term:`DHCP`, :term:`Link-Local`, or manually.
+
+      Link-Local
+         Link-Local is a technology where network devices associate themselves with an :term:`IP address`
+         from the 169.254.0.0/16 IP range and check if it is unique in the local network.
+         Link-Local can be used if
+         :term:`DHCP` is unavailable and manual IP configuration is not or cannot be done.
+         Link-Local is especially useful for connecting a network device directly to a
+         host computer. By default, Windows 10 reverts automatically to Link-Local if
+         DHCP is unavailable. Under Linux, Link-Local must be enabled manually in the network
+         manager.
+
+      MAC address
+         The Media Access Control (MAC) address is a unique, persistent address for
+         networking devices. It is also known as the hardware address of a device. In contrast
+         to the :term:`IP address`, the MAC address is (normally) permanently given to
+         a device and does not change.
+
+      NTP
+         The Network Time Protocol (NTP) is a TCP/IP protocol for synchronizing time over a network.
+         Basically a client requests the current time from a server, and uses it to set its own clock.
+
+      .. pose
+      ..   A pose represents an object's *position* and *orientation*
+      ..   relative to some *reference coordinate system* or *reference frame*.
+      ..   It can be described by means of a rotation and translation transformation
+      ..   that brings the object from a reference pose to the observed pose.
+      ..   This rotation transformation can be represented in different ways, e.g.,
+      ..   as a rotation matrix or a quaternion.
+
+      .. rectification
+      .. rectified
+      ..   Rectification is a transformation process for images. In a stereo camera setting,
+      ..   both images are often projected onto a common plane with parallel optical axes.
+      ..   The resulting rectified images are free of lens distortion. Moreover,
+      ..   an object point in the scene is always projected into the same row in both images.
+      ..   The column index will be the same if the object point is at infinity. For closer
+      ..   objects, the column index in the right image will be smaller than in the left image.
+
+      SDK
+         A Software Development Kit (SDK) is a collection of software development tools or
+         a collection of software components.
+
+      SGM
+         SGM stands for Semi-Global Matching and is a state-of-the-art stereo matching algorithm
+         which offers short run times and a great accuracy, especially at object borders, fine
+         structures, and in weakly textured areas.
+
+      TCP
+         The Tool Center Point (TCP) is the position of the tool at the end effector of
+         a robot. The position and orientation of the TCP determines the position and
+         orientation of the tool in 3D space.
+
+      URI
+      URL
+         A Uniform Resource Identifier (URI) is a string of characters
+         identifying resources of the |rc_xxx|'s |restapi|. An example of such a
+         URI is ``/nodes/rc_camera/parameters/fps``, which points
+         to the ``fps`` run-time parameter of the stereo camera module.
+
+         A Uniform Resource Locator (URL) additionally specifies the full
+         network location and protocol, i.e., an exemplary URL to locate the
+         above resource would be
+         ``https://<ip>/api/v1/nodes/rc_camera/parameters/fps``
+         where ``<ip>`` refers to the |rc_xxx|'s :term:`IP address`.
+
+      XYZABC
+         Format to represent a pose. See :ref:`sect-xyzabc-format`:latex:`\:(Section \ref{pose_format_kuka:sect-xyzabc-format})`
+         for its definition.
+
+      XYZ+quaternion
+         Format to represent a pose. See :ref:`sect-xyz-quaternion-format`:latex:`\:(Section \ref{pose_format_rt:sect-xyz-quaternion-format})`
+         for its definition.

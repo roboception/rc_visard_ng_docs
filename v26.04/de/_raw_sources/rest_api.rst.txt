@@ -1,0 +1,38 @@
+.. include:: global_rst.glb
+
+.. _sect-rest-api:
+
+|rest-api| interface
+--------------------
+
+.. index::
+   single: REST-API
+
+The |rc_xxx| offers a comprehensive RESTful web
+interface (|rest-api|) which any HTTP client or library can access.
+Whereas most of the provided parameters, services, and functionalities can also
+be accessed via the user-friendly :ref:`Web GUI<sect-web-gui>`:latex:`\ (Section
+\ref{webgui:sect-web-gui})`, the |rest-api| serves rather as a
+machine-to-machine interface to the |rc_xxx|, e.g., to programmatically
+
+*  set and get run-time parameters of computation nodes, e.g., of cameras
+   or image processing modules;
+*  do service calls, e.g., to start and stop individual computational nodes,
+   or to use offered services such as the hand-eye calibration;
+*  read the current state of the system and individual computational nodes; or
+*  update the |rc_xxx|'s firmware or license.
+
+
+.. NOTE:: In the |rc_xxx|'s |rest-api|, a *node* is a computational component
+            that bundles certain algorithmic functionality and offers a
+            holistic interface (parameters, services, current status). Examples
+            for such nodes are the stereo matching node or the hand-eye calibration node.
+
+
+.. toctree-filt::
+   :hidden:
+   :maxdepth: 2
+
+   rest_api_general
+   rest_api_datamodel
+   rest_api_swagger_ui

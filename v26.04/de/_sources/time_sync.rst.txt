@@ -1,0 +1,128 @@
+Zeitsynchronisierung
+
+Der
+
+rc_visard NG
+
+ stellt für alle Bilder und Nachrichten Zeitstempel zur Verfügung. Um
+diese mit der Zeit auf dem Applikations-Rechner zu vergleichen, muss
+die Zeit synchronisiert werden.
+
+   Dies kann über das Network Time Protocol (NTP), welches die
+   Standardeinstellung ist, oder über das Precision Time Protocol
+   (PTP) erfolgen.
+
+Die aktuelle Systemzeit sowie der Status der Zeitsynchronisierung
+können über die
+
+REST-API
+
+ abgerufen und darüber hinaus auch in der
+
+Web GUI
+
+ auf der Seite
+
+System
+
+ eingesehen werden.
+
+Bemerkung: Abhängig von der Erreichbarkeit von NTP- oder PTP-
+  Servern, kann es bis zu mehreren Minuten dauern, bis die Zeit
+  synchronisiert ist.
+
+NTP
+
+Das Network Time Protocol (NTP) ist ein TCP/IP Protokoll um Zeit über
+ein Netzwerk zu synchronisieren. Im Wesentlichen fordert ein Client
+die aktuelle Zeit periodisch von einem Server an und nutzt diese, um
+seine eigene Uhr zu stellen bzw. zu korrigieren.
+
+Standardmäßig versucht der
+
+rc_visard NG
+
+ den NTP-Server des NTP-Pool-Projekts zu erreichen, wozu eine
+Verbindung zum Internet nötig ist.
+
+Falls die Netzwerkkonfiguration des
+
+rc_visard NG
+
+ auf
+
+DHCP
+
+ (entspricht der Werkseinstellung) konfiguriert ist, werden NTP-Server
+auch vom DHCP-Server angefordert und verwendet.
+
+Weiterhin können über den
+
+/system/time
+
+ Endpoint der REST-API bis zu drei NTP-Server manuell gesetzt werden.
+Eine einfachere Möglichkeit zum Setzen der manuellen NTP-Server gibt
+es auf der Seite
+
+Systemzeit
+
+ der
+
+Web GUI
+
+ .
+
+PTP
+
+Das Precision Time Protocol (PTP, auch als IEEE1588 bekannt) ist ein
+Protokoll, welches eine genauere und robustere Synchronisation der
+Uhren erlaubt als NTP.
+
+Der
+
+rc_visard
+
+ kann als PTP-Slave konfiguriert werden. Dies ist über die Standard
+
+GigE Vision 2.0/GenICam-Schnittstelle
+
+ mit dem Parameter "GevIEEE1588" möglich.
+
+Mindestens ein PTP-Master muss die Zeit im Netzwerk zur Verfügung
+stellen. Unter Linux kann ein PTP-Master beispielsweise auf dem
+Netzwerkport "eth0" gestartet werden mit "sudo ptpd --masteronly
+--foreground -i eth0".
+
+Während der
+
+rc_visard
+
+ mit einem PTP-Master synchronisiert ist (Sensor ist im PTP SLAVE-
+Status), ist die Synchronisierung via NTP pausiert.
+
+Manuelles Setzen der Zeit
+
+Der
+
+rc_visard NG
+
+ ermöglicht das manuelle Setzen des aktuellen Datums und der Uhrzeit
+über den
+
+/system/time
+
+ Endpoint der REST-API, wenn keine Zeitsynchronisation aktiv ist
+(siehe
+
+System und Logs
+
+). Eine einfachere Möglichkeit zum Setzen der Systemzeit gibt es auf
+der Seite
+
+Systemzeit
+
+ der
+
+Web GUI
+
+ .

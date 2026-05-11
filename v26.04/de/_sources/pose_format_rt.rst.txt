@@ -1,0 +1,43 @@
+Rotationsmatrix und Translationsvektor
+
+Eine Pose kann mit einer Rotationsmatrix R und einem
+Translationsvektor T definiert werden.
+
+   R = \left(\begin{array}{ccc}   r_{00} & r_{01} & r_{02} \\   r_{10}
+   & r_{11} & r_{12} \\   r_{20} & r_{21} & r_{22} \end{array}\right),
+   \qquad T = \left(\begin{array}{c}   X \\   Y \\   Z
+   \end{array}\right).
+
+Die Posentransformation für einen Punkt P ist
+
+   P' = R P + T.
+
+Umrechnung von Rotationsmatrizen in Quaternionen
+
+Die Umrechnung von einer Rotationsmatrix (mit det(R)=1) in eine
+Quaternion q=(\begin{array}{cccc}x & y & z & w\end{array}) kann wie
+folgt durchgeführt werden.
+
+   x &= \text{sign}(r_{21}-r_{12}) \frac{1}{2}\sqrt{\text{max}(0, 1 +
+   r_{00} - r_{11} - r_{22})} \\ y &= \text{sign}(r_{02}-r_{20})
+   \frac{1}{2}\sqrt{\text{max}(0, 1 - r_{00} + r_{11} - r_{22})} \\ z
+   &= \text{sign}(r_{10}-r_{01}) \frac{1}{2}\sqrt{\text{max}(0, 1 -
+   r_{00} - r_{11} + r_{22})} \\ w &= \frac{1}{2}\sqrt{\text{max}(0, 1
+   + r_{00} + r_{11} + r_{22})}
+
+Der \text{sign} Operator gibt -1 zurück, falls sein Argument negativ
+ist. Sonst wird 1 zurück gegeben. Er wird zur Wiederherstellung das
+Vorzeichens der Wurzel benutzt. Die \text{max} Funktion stellt sicher,
+dass das Argument der Wurzel nicht negativ ist, was in der Praxis
+durch Rundungsfehler passieren kann.
+
+Umrechnung von Quaternionen in Rotationsmatrizen
+
+Die Umrechnung von einer Quaternion q=(\begin{array}{cccc}x & y & z &
+w\end{array}) mit ||q||=1 in eine Rotationsmatrix kann wie folgt
+durchgeführt werden.
+
+   R = 2 \left(\begin{array}{ccc}   \frac{1}{2} - y^2 - z^2 & x y - z
+   w & x z + y w \\   x y + z w & \frac{1}{2} - x^2 - z^2 & y z - x w
+   \\   x z - y w & y z + x w & \frac{1}{2} - x^2 - y^2
+   \end{array}\right)

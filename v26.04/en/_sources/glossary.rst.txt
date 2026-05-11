@@ -1,0 +1,169 @@
+Glossary
+
+DHCP
+   The Dynamic Host Configuration Protocol (DHCP) is used to
+   automatically assign an
+
+   IP
+
+    address to a network device. Some DHCP servers only accept known
+   devices. In this case, an administrator needs to configure the DHCP
+   server with the fixed
+
+   MAC address
+
+    of a device.
+
+DNS
+mDNS
+   The Domain Name Server (DNS) manages the host names and
+
+   IP
+
+    addresses of all network devices. It is responsible for resolving
+   the host name into the IP address for communication with a device.
+   A DNS can be configured to get this information automatically when
+   a device appears on a network or manually by an administrator. In
+   contrast,
+
+   multicast DNS
+
+    (mDNS) works without a central server by querying all devices on a
+   local network each time a host name needs to be resolved. mDNS is
+   available by default on Linux and Mac operating systems and is used
+   when '.local' is appended to a host name.
+
+DOF
+   The Degrees Of Freedom (DOF) are the number of independent
+   parameters for translation and rotation. In 3D space, 6 DOF (i.e.
+   three for translation and three rotation) are sufficient to
+   describe an arbitrary position and orientation.
+
+GenICam
+   GenICam is a generic standard interface for cameras. It serves as a
+   unified interface around other standards such as
+
+   GigE Vision
+
+   , Camera Link, USB, etc. See
+
+   http://genicam.org
+
+    for more information.
+
+GigE
+   Gigabit Ethernet (GigE) is a networking technology for transmitting
+   data at one gigabit per second.
+
+GigE Vision
+   GigE Vision® is a standard for configuring cameras and transmitting
+   images over a
+
+   GigE
+
+    network link. See
+
+   http://gigevision.com
+
+    for more information.
+
+IP
+IP address
+   The Internet Protocol (IP) is a standard for sending data between
+   devices in a computer network. Every device requires an IP address,
+   which must be unique in the network. The IP address can be
+   configured by
+
+   DHCP
+
+   ,
+
+   Link-Local
+
+   , or manually.
+
+Link-Local
+   Link-Local is a technology where network devices associate
+   themselves with an
+
+   IP address
+
+    from the 169.254.0.0/16 IP range and check if it is unique in the
+   local network. Link-Local can be used if
+
+   DHCP
+
+    is unavailable and manual IP configuration is not or cannot be
+   done. Link-Local is especially useful for connecting a network
+   device directly to a host computer. By default, Windows 10 reverts
+   automatically to Link-Local if DHCP is unavailable. Under Linux,
+   Link-Local must be enabled manually in the network manager.
+
+MAC address
+   The Media Access Control (MAC) address is a unique, persistent
+   address for networking devices. It is also known as the hardware
+   address of a device. In contrast to the
+
+   IP address
+
+   , the MAC address is (normally) permanently given to a device and
+   does not change.
+
+NTP
+   The Network Time Protocol (NTP) is a TCP/IP protocol for
+   synchronizing time over a network. Basically a client requests the
+   current time from a server, and uses it to set its own clock.
+
+SDK
+   A Software Development Kit (SDK) is a collection of software
+   development tools or a collection of software components.
+
+SGM
+   SGM stands for Semi-Global Matching and is a state-of-the-art
+   stereo matching algorithm which offers short run times and a great
+   accuracy, especially at object borders, fine structures, and in
+   weakly textured areas.
+
+TCP
+   The Tool Center Point (TCP) is the position of the tool at the end
+   effector of a robot. The position and orientation of the TCP
+   determines the position and orientation of the tool in 3D space.
+
+URI
+URL
+   A Uniform Resource Identifier (URI) is a string of characters
+   identifying resources of the
+
+   rc_visard NG
+
+   's REST-API. An example of such a URI is
+   "/nodes/rc_camera/parameters/fps", which points to the "fps" run-
+   time parameter of the stereo camera module.
+
+   A Uniform Resource Locator (URL) additionally specifies the full
+   network location and protocol, i.e., an exemplary URL to locate the
+   above resource would be
+   "https://<ip>/api/v1/nodes/rc_camera/parameters/fps" where "<ip>"
+   refers to the
+
+   rc_visard NG
+
+   's
+
+   IP address
+
+   .
+
+XYZ+quaternion
+   Format to represent a pose. See
+
+   Rotation matrix and translation vector
+
+    for its definition.
+
+XYZABC
+   Format to represent a pose. See
+
+   KUKA XYZ-ABC format
+
+    for its definition.

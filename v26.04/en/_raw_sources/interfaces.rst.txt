@@ -1,0 +1,67 @@
+.. include:: global_rst.glb
+
+
+.. _sect-interfaces:
+
+Interfaces
+==========
+
+The following interfaces are provided for configuring and obtaining data from the |rc_xxx|:
+
+- :doc:`webgui`:latex:`\:(Section \ref{webgui:sect-web-gui})`
+
+   Easy-to-use graphical interface to configure the |rc_xxx|, do calibrations, view live images,
+   do service calls, visualize results, etc.
+
+- :doc:`rest_api`:latex:`\:(Section \ref{rest_api:sect-rest-api})`
+
+   API to configure the |rc_xxx|, query status information, do service calls, etc.
+
+.. only:: rc_visard
+
+    - :doc:`rc_dynamics streams<rc_dynamics>`:latex:`\:(Section \ref{rc_dynamics:sect-rc-dynamics-interface})`
+
+        Real-time streams containing state estimates with poses, velocities, etc. are provided over the *rc_dynamics* interface.
+        It sends *protobuf*-encoded messages via UDP.
+
+- :doc:`gri`:latex:`\:(Section \ref{gri:sect-gri})`
+
+   TCP socket communication interface for configuring the |rc_xxx| and for service calls.
+
+- :doc:`opc_ua`:latex:`\:(Section \ref{opc_ua:sect-opc-ua})`
+
+   OPC UA interface for configuring the |rc_xxx| and for service calls.
+
+- :doc:`eki`:latex:`\:(Section \ref{eki:sect-eki})`
+
+   API to configure the |rc_xxx| and do service calls from KUKA KSS robots.
+
+.. only:: rc_cube or rc_visard or rc_visard_ng
+
+   - :doc:`GigE Vision 2.0/GenICam<gigevision>`:latex:`\:(Section \ref{gigevision:sect-genicam})`
+
+      Images and camera related configuration.
+
+- :doc:`grpc`:latex:`\:(Section \ref{grpc:sect-grpc})`
+
+   Stream synchronized image sets via gRPC.
+
+.. only::  rc_cube or rc_visard or rc_visard_ng
+
+   - :doc:`time_sync`:latex:`\:(Section \ref{time_sync:sect-time-sync})`
+
+      Time synchronization between the |rc_xxx| and the application host.
+
+.. toctree-filt::
+   :hidden:
+   :maxdepth: 2
+
+   webgui
+   rest_api
+   :rc_cube_container_exclude:rc_dynamics
+   gri
+   opc_ua
+   eki
+   :rc_container_exclude:gigevision
+   grpc
+   :rc_container_exclude:time_sync

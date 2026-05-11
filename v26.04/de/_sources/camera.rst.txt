@@ -1,0 +1,10 @@
+Kamera Modul
+
+Das Kameramodul ist ein Basismodul welches auf jedem
+
+rc_visard NG
+
+ verfügbar ist. Es ist für die Bildakquise und die Rektifizierung der
+Bilder verantwortlich. Das Modul bietet diverse Parameter um z.B. die
+Belichtungszeit oder die Bildwiederholrate zu verändern.
+

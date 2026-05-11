@@ -1,0 +1,252 @@
+.. include:: global_rst.glb
+
+.. _sect-rest-api-nodes:
+
+Nodes, parameters, and services
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index::
+   pair: REST-API; node
+
+Nodes represent the |rcxxx|'s
+:ref:`software modules <sect-modules>`
+:latex:`\:(Section \ref{modules:sect-modules})`, each
+bundling a certain algorithmic functionality. All available global |restapi| database nodes
+can be listed with their service calls and parameters using
+
+.. code-block:: bash
+
+   curl -X GET http://<host>/api/v2/nodes
+
+Information about a specific node (e.g., ``rc_load_carrier_db``) can be retrieved using
+
+.. code-block:: bash
+
+   curl -X GET http://<host>/api/v2/nodes/rc_load_carrier_db
+
+.. only:: rc_cube or rc_reason_stack
+
+   All available 3D camera, detection and configuration |restapi| nodes
+   can be listed with their service calls and parameters using
+
+   .. code-block:: bash
+
+      curl -X GET http://<host>/api/v2/pipelines/<pipeline number>/nodes
+
+   Information about a specific node (e.g., ``rc_camera`` on camera pipeline 1) can be retrieved using
+
+   .. code-block:: bash
+
+      curl -X GET http://<host>/api/v2/pipelines/1/nodes/rc_camera
+
+.. only:: rc_visard or rc_visard_ng
+
+   All available 3D camera, :visardonly:`navigation,` detection and configuration |restapi| nodes
+   can be listed with their service calls and parameters using
+
+   .. code-block:: bash
+
+      curl -X GET http://<host>/api/v2/pipelines/0/nodes
+
+   Information about a specific node (e.g., ``rc_camera``) can be retrieved using
+
+   .. code-block:: bash
+
+      curl -X GET http://<host>/api/v2/pipelines/0/nodes/rc_camera
+
+.. index::
+   pair: REST-API; status value
+
+Status:
+   During run-time, each node offers information about its current status.
+   This includes not only the current **processing status** of the module
+   (e.g., ``running`` or ``stale``), but
+   most nodes also offer run-time statistics or read-only parameters,
+   so-called **status values**. As an example, the ``rc_camera`` values
+   can be retrieved using
+
+   .. only:: rc_cube or rc_reason_stack
+   
+      .. code-block:: bash
+
+         curl -X GET http://<host>/api/v2/pipelines/<pipeline number>/nodes/rc_camera/status
+
+   .. only:: rc_visard or rc_visard_ng
+   
+      .. code-block:: bash
+
+         curl -X GET http://<host>/api/v2/pipelines/0/nodes/rc_camera/status
+
+   .. note:: The returned **status values** are specific to individual nodes and
+      are documented in the respective
+      :ref:`software module <sect-modules>`
+      :latex:`\:(Section \ref{modules:sect-modules})`.
+
+   .. note:: The **status values** are only reported when the respective
+      node is in the ``running`` state.
+
+.. index::
+   pair: REST-API; parameter
+
+Parameters:
+   Most nodes expose parameters via the |rcxxx|'s |restapi| to allow
+   their run-time behaviors to be changed according to application context or requirements.
+   The |restapi| permits to read and write a parameter's value, but also
+   provides further information such as minimum, maximum, and default
+   values.
+
+   As an example, the ``rc_stereomatching`` parameters can be
+   retrieved using
+
+   .. only:: rc_cube or rc_reason_stack
+
+      .. code-block:: bash
+
+         curl -X GET http://<host>/api/v2/pipelines/<pipeline number>/nodes/rc_stereomatching/parameters
+
+   .. only:: rc_visard or rc_visard_ng
+   
+      .. code-block:: bash
+
+         curl -X GET http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters
+
+   Its ``quality`` parameter could be set to ``Full`` using
+
+   .. only:: rc_cube or rc_reason_stack
+
+      .. code-block:: bash
+
+         curl -X PUT http://<host>/api/v2/pipelines/<pipeline number>/nodes/rc_stereomatching/parameters?quality=Full
+
+      or equivalently
+
+      .. code-block:: bash
+
+         curl -X PUT --header 'Content-Type: application/json' -d '{ "value": "Full" }' http://<host>/api/v2/pipelines/<pipeline number>/nodes/rc_stereomatching/parameters/quality
+
+   .. only:: rc_visard or rc_visard_ng
+   
+      .. code-block:: bash
+
+         curl -X PUT http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters?quality=Full
+
+      or equivalently
+
+      .. code-block:: bash
+
+         curl -X PUT --header 'Content-Type: application/json' -d '{ "value": "Full" }' http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/parameters/quality
+
+
+   .. note:: Run-time parameters are specific to individual nodes and
+      are documented in the respective
+      :ref:`software module <sect-modules>`
+      :latex:`\:(Section \ref{modules:sect-modules})`.
+
+   .. note:: Most of the parameters that nodes offer via the |restapi| can be
+      explored and tested via the |rcxxx|'s user-friendly :ref:`Web GUI<sect-web-gui>`
+      :latex:`\ (Section \ref{webgui:sect-web-gui})`.
+
+   .. only:: rc_cube or rc_visard or rc_visard_ng
+      
+      .. note:: Some parameters exposed via the |rcxxx|'s |restapi| are also
+         available from the
+         :ref:`sect-genicam` :latex:`\:(Section \ref{gigevision:sect-genicam})`.
+         Please note that setting those parameters via the |rest-api| or |webgui| is
+         prohibited if a GenICam client is connected.
+
+   In addition, each node that offers run-time parameters also features
+   a service to restore the default values for all of its parameters.
+
+.. index::
+   pair: REST-API; services
+
+Services:
+   Most nodes also offer services that can be called via |restapi|, e.g., to
+   restore parameters as discussed above, or to start and stop nodes.
+   As an example, the
+   :ref:`services of the hand-eye calibration module <sect-handeye-calibration-services>`
+   :latex:`(Section \ref{handeye_calibration:sect-handeye-calibration-services})`
+   could be listed using
+
+   .. only:: rc_cube or rc_reason_stack
+
+      .. code-block:: bash
+
+         curl -X GET http://<host>/api/v2/pipelines/<pipeline number>/nodes/rc_hand_eye_calibration/services
+
+   .. only:: rc_visard or rc_visard_ng
+
+      .. code-block:: bash
+
+         curl -X GET http://<host>/api/v2/pipelines/0/nodes/rc_hand_eye_calibration/services
+
+   A node's service is called by issuing a ``PUT`` request for the
+   respective resource and providing the service-specific arguments
+   (see the ``"args"`` field of the
+   :ref:`Service data model <sect-rest-datamodel-service>`:latex:`, Section \ref{rest_api_datamodel:sect-rest-datamodel-service}`).
+   As an example, the stereo matching module can be triggered to do an acquisition by:
+
+   .. only:: rc_cube or rc_reason_stack
+
+      .. code-block:: bash
+
+         curl -X PUT --header 'Content-Type: application/json' -d '{ "args": {} }' http://<host>/api/v2/pipelines/<pipeline number>/nodes/rc_stereomatching/services/acquisition_trigger
+
+   .. only:: rc_visard or rc_visard_ng
+
+      .. code-block:: bash
+
+         curl -X PUT --header 'Content-Type: application/json' -d '{ "args": {} }' http://<host>/api/v2/pipelines/0/nodes/rc_stereomatching/services/acquisition_trigger
+
+
+   .. note:: The services and corresponding argument data models are
+      specific to individual nodes and are documented in the respective
+      :ref:`software module <sect-modules>`
+      :latex:`\:(Section \ref{modules:sect-modules})`.
+
+
+The following list includes all |restapi| requests regarding the global database nodes' status,
+parameters, and services calls:
+
+.. only:: rc_visard
+
+    .. include:: _gen/swagger/rc_visard/global_nodes.txt
+
+.. only:: rc_visard_ng
+
+    .. include:: _gen/swagger/rc_visard_ng/global_nodes.txt
+
+.. only:: rc_cube
+
+    .. include:: _gen/swagger/rc_cube/global_nodes.txt
+
+.. only:: rc_reason_stack
+
+    .. include:: _gen/swagger/rc_reason_stack/global_nodes.txt
+
+.. only:: rc_visard
+
+   The following list includes all |restapi| requests regarding the 3D camera, navigation, detection and configuration nodes' status,
+   parameters, and services calls:
+
+   .. include:: _gen/swagger/rc_visard/pipeline_nodes.txt
+
+.. only:: rc_visard_ng
+
+   The following list includes all |restapi| requests regarding the 3D camera, detection and configuration nodes' status,
+   parameters, and services calls:
+
+   .. include:: _gen/swagger/rc_visard_ng/pipeline_nodes.txt
+
+.. only:: rc_cube or rc_reason_stack
+
+   The following list includes all |restapi| requests regarding the pipeline-specific 3D camera, detection and configuration nodes' status,
+   parameters, and services calls:
+
+   .. only:: rc_cube
+
+      .. include:: _gen/swagger/rc_cube/pipeline_nodes.txt
+
+   .. only:: rc_reason_stack
+      
+      .. include:: _gen/swagger/rc_reason_stack/pipeline_nodes.txt
